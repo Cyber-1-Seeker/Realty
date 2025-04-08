@@ -1,12 +1,13 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
-import Navbar from '../Navbar/Navbar' // тот что снизу появляется
+import Navbar from '../Navbar/Navbar' 
 import Footer from '../Footer/Footer'
+
 
 const Layout = () => {
   return (
     <>
-      {/*<Navbar />*/}
+      <Navbar/> {/* Добавляем фиксированный navbar */}
       <main>
         <Outlet />
       </main>
@@ -14,5 +15,6 @@ const Layout = () => {
     </>
   )
 }
+
 
 export default Layout
