@@ -1,0 +1,28 @@
+.testimonials {
+  background-color: white;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.testimonials h2 {
+  font-size: 28px;
+  margin-bottom: 40px;
+  color: #1e40af;
+}
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: center;
+}
+
+.item {
+  max-width: 300px;
+  background: #f0f4f8;
+  padding: 20px;
+  border-radius: 12px;
+  font-style: italic;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  color: #1f2937;
+}

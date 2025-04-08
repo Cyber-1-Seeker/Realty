@@ -1,0 +1,28 @@
+.whyUs {
+  background: #edfbf0;
+  padding: 60px 20px;
+  text-align: center;
+  background: url('WhyUs.png') no-repeat center center/cover;
+}
+
+.whyUs h2 {
+  font-size: 28px;
+  margin-bottom: 40px;
+  color: #1e40af;
+}
+
+.reasons {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.reason {
+  max-width: 300px;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  color: #1f2937;
+}
