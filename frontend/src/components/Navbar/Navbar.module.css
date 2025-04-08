@@ -2,9 +2,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #1a1a1a;
+  background-color: whitesmoke;
   padding: 20px 40px;
-  color: white;
+  color: #000000;
   position: sticky;
   top: 0;
   z-index: 100;
@@ -22,7 +22,7 @@
 }
 
 .navLinks li a {
-  color: white;
+  color: #000000;
   text-decoration: none;
   font-weight: 500;
   transition: color 0.3s ease;
