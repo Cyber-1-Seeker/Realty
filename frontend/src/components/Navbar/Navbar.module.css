@@ -16,6 +16,33 @@
   font-weight: bold;
 }
 
+/* Контактные данные на десктопе */
+.contacts {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  flex: 1;
+  justify-content: flex-start;
+  margin-left: 60px;
+}
+
+.contacts a {
+  color: white;
+  font-size: 14px;
+  text-decoration: none;
+  transition: color 0.3s;
+  left: 50px;
+}
+
+.contacts a:hover {
+  color: #90ee90;
+}
+
+.icon {
+  font-size: 18px;
+  color: white;
+}
+
 .burger {
   display: none;
   font-size: 24px;
@@ -23,14 +50,13 @@
   border: none;
   color: white;
   cursor: pointer;
-  margin-left: auto; /* 👈 толкает вправо */
+  margin-left: auto;
 }
 
 .navLinks {
   list-style: none;
   display: flex;
   gap: 20px;
-  align-items: center;
 }
 
 .navLinks li a {
@@ -60,21 +86,24 @@
   overflow: hidden;
 }
 
-/* 📱 Мобильная версия */
 @media (max-width: 768px) {
   .burger {
     display: block;
   }
 
+  .contacts {
+    display: none;
+  }
+
   .navLinks {
     position: absolute;
     top: 60px;
-    right: 0;             /* 👈 привязка к правой стороне */
+    right: 0;
     left: auto;
-    width: 220px;         /* фиксированная ширина для выравнивания */
+    width: 220px;
     flex-direction: column;
     background-color: #1a1a1a;
-    text-align: right;    /* 👈 текст выровнен вправо */
+    text-align: right;
     padding: 15px 20px;
     z-index: 99;
     border-radius: 8px 0 0 8px;
@@ -82,5 +111,9 @@
 
   .navLinks li {
     margin: 10px 0;
+  }
+
+  .iconsMobile a {
+    margin-right: 10px;
   }
 }
