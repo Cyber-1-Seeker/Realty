@@ -9,7 +9,7 @@ const Hero = () => {
 
         <nav className={classes.heroNav}>
           <Link to="#">Получить аванс</Link>
-          <Link to="/calculator">Калькулятор стоимости</Link>
+            <a href="#calculator">Калькулятор стоимости</a>
           <Link to="#">Купить</Link>
           <Link to="#">База квартир</Link>
           <Link to="/about">О нас</Link>
@@ -22,7 +22,7 @@ const Hero = () => {
             <p>Аванс сразу после подписания договора</p>
           </div>
           <div className={classes.heroForm}>
-            <div className={classes.heroFormTitle}>Узнайте стоимость своей квартиры</div>
+            <div className={classes.heroFormTitle}>Получите консультацию</div>
             <div className={classes.heroFormBody}>
               <input type="text" placeholder="Введите имя"/>
               <input type="tel" placeholder="Введите телефон"/>
