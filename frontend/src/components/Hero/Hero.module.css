@@ -241,3 +241,10 @@
   }
 }
 
+@media (max-width: 768px) {
+  .heroNav {
+    display: none;
+  }
+}
+
+
