@@ -5,6 +5,7 @@ import ProcessSteps from '../Home/ProcessSteps/ProcessSteps'
 import Testimonials from '../Home/Testimonials/Testimonials'
 import CallToAction from '../Home/CallToAction/CallToAction'
 import Services from "./Services/Services.jsx";
+import MapSection from "../MapSection/MapSection.jsx";
 
 const Home = () => {
   return (
@@ -14,6 +15,7 @@ const Home = () => {
       <CallToAction />
       <WhyUs />
       <ProcessSteps />
+      <MapSection/>
       <Testimonials />
     </>
   )
