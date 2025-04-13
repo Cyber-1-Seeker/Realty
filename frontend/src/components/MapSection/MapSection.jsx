@@ -1,12 +1,12 @@
-import React from 'react'
-import {YMaps, Map, Placemark} from 'react-yandex-maps'
-import styles from './MapSection.module.css'
+import React from 'react';
+import { YMaps, Map, Placemark } from '@pbe/react-yandex-maps';
+import styles from './MapSection.module.css';
 
 const MapSection = () => {
-    const coordinates = [55.752004, 37.592645] // ул. Арбат, 1
+    const coordinates = [55.751817, 37.599292]; // ул. Арбат, 1
 
     return (
-        <section className={styles.mapSection}>
+        <section id="contacts" className={styles.mapSection}>
             <div className={styles.contactBox}>
                 <h3>Наши контакты</h3>
                 <p><strong>Телефон:</strong> <a href="tel:+79999999999">+7 (999) 999 99-99</a></p>
@@ -18,12 +18,13 @@ const MapSection = () => {
             <div className={styles.mapContainer}>
                 <YMaps>
                     <Map
-                        defaultState={{center: coordinates, zoom: 16}}
-                        className={styles.map}
-                        options={{zoomControl: true}}
+                        defaultState={{ center: coordinates, zoom: 16 }}
+                        width="100%"
+                        height="400px"
+                        modules={['geoObject.addon.balloon', 'geoObject.addon.hint']}
                     >
                         <Placemark
-                            geometry={[55.752004, 37.592645]}
+                            geometry={coordinates}
                             properties={{
                                 balloonContent: 'Москва, ул. Арбат, д. 1',
                                 hintContent: 'Realty – наш офис',
@@ -32,14 +33,14 @@ const MapSection = () => {
                                 iconLayout: 'default#image',
                                 iconImageHref: 'https://img.icons8.com/color/48/marker.png',
                                 iconImageSize: [40, 40],
-                                iconImageOffset: [-20, -40]
+                                iconImageOffset: [-20, -40],
                             }}
                         />
                     </Map>
                 </YMaps>
             </div>
         </section>
-    )
-}
+    );
+};
 
-export default MapSection
+export default MapSection;

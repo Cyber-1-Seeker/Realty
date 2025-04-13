@@ -67,7 +67,7 @@ const Navbar = () => {
             <li><a href="#calculator" onClick={() => setMenuOpen(false)}>Калькулятор</a></li>
             <li><Link to="/about" onClick={() => setMenuOpen(false)}>О нас</Link></li>
             <li><Link to="#">База квартир</Link></li>
-            <li><Link to="#">Контакты</Link></li>
+            <li><a href="#contacts">Контакты</a></li>
 
             {isMobile && (
               <>
