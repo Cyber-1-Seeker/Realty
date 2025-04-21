@@ -1,9 +1,9 @@
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
-import Hero from './components/Hero/Hero'
 import Layout from './components/Layout/Layout'
 import About from './components/pages/About/About.jsx'
 import "./App.css"
-import Home from "./components/Home/Home.jsx";
+import Home from "./components/pages/Home/Home.jsx";
+import ListingsPage from "./components/pages/Listings/ListingsPage.jsx";
 
 function App() {
     return (
@@ -12,6 +12,7 @@ function App() {
                 <Route element={<Layout/>}>
                     <Route path="/" element={<Home/>}/>
                     <Route path="/about" element={<About/>}/>
+                    <Route path="/listings" element={<ListingsPage/>}/>
                 </Route>
             </Routes>
         </BrowserRouter>

@@ -1,5 +1,5 @@
 import React from 'react'
-import Hero from '../Hero/Hero'
+import Hero from "./Hero/Hero.jsx";
 import WhyUs from '../Home/WhyUs/WhyUs'
 import ProcessSteps from '../Home/ProcessSteps/ProcessSteps'
 import Testimonials from '../Home/Testimonials/Testimonials'
