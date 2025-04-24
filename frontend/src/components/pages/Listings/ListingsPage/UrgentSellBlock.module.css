@@ -1,0 +1,57 @@
+.block {
+  background-size: cover;
+  background-position: center;
+  padding: 80px 20px;
+  position: relative;
+  color: white;
+  text-align: center;
+  margin-top: 60px;
+}
+
+.overlay {
+  background: rgba(0, 0, 0, 0.6);
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 50px 30px;
+  border-radius: 20px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.overlay h2 {
+  font-size: 30px;
+  margin-bottom: 20px;
+}
+
+.overlay p {
+  font-size: 18px;
+  margin-bottom: 25px;
+  line-height: 1.6;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form input {
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+}
+
+.form button {
+  background-color: #4caf50;
+  color: white;
+  padding: 14px;
+  font-size: 16px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.form button:hover {
+  background-color: #45a049;
+}
