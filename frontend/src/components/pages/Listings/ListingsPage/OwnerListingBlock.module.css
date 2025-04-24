@@ -1,0 +1,46 @@
+.block {
+  background-image: url('../../assets/listings/owner-bg.jpg'); /* или urgent-bg.jpg */
+  background-size: cover;
+  background-position: center;
+  padding: 80px 20px;
+  position: relative;
+  color: white;
+  text-align: center;
+  margin-top: 60px;
+}
+
+.overlay {
+  background: rgba(0, 0, 0, 0.55);
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 50px 30px;
+  border-radius: 20px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+
+.overlay h2 {
+  font-size: 32px;
+  margin-bottom: 20px;
+}
+
+.overlay p {
+  font-size: 18px;
+  line-height: 1.5;
+  margin-bottom: 30px;
+}
+
+.button {
+  background-color: #4caf50;
+  color: white;
+  padding: 14px 28px;
+  font-size: 16px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.button:hover {
+  background-color: #45a049;
+}

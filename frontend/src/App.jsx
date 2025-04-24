@@ -3,7 +3,8 @@ import Layout from './components/Layout/Layout'
 import About from './components/pages/About/About.jsx'
 import "./App.css"
 import Home from "./components/pages/Home/Home.jsx";
-import ListingsPage from "./components/pages/Listings/ListingsPage.jsx";
+import ListingsPage from "./components/pages/Listings/ListingsPage/ListingsPage.jsx";
+import AddListingForm from "@/components/pages/Listings/AddListingForm.jsx";
 
 function App() {
     return (
@@ -13,6 +14,7 @@ function App() {
                     <Route path="/" element={<Home/>}/>
                     <Route path="/about" element={<About/>}/>
                     <Route path="/listings" element={<ListingsPage/>}/>
+                    <Route path="/listings/add" element={<AddListingForm/>}></Route>
                 </Route>
             </Routes>
         </BrowserRouter>

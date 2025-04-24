@@ -2,7 +2,7 @@
   background: #edfbf0;
   padding: 60px 20px;
   text-align: center;
-  background: url('WhyUs.png') no-repeat center center/cover;
+  background: url('../../../../../public/assets/Home/WhyUs.png') no-repeat center center/cover;
 }
 
 .whyUs h2 {
