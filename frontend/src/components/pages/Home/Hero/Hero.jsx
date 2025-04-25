@@ -11,7 +11,7 @@ const Hero = () => {
                 <Link to="#">Получить аванс</Link>
                 <a href="#calculator">Калькулятор стоимости</a>
                 <Link to="#">Купить</Link>
-                <Link to="#">База квартир</Link>
+                <Link to="/listings">База квартир</Link>
                 <a href="/#contacts">Контакты</a>
                 {/*<Link to="/about">О нас</Link>*/}
             </nav>

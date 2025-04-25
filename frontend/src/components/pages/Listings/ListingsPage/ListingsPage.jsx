@@ -1,20 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
-import Navbar from '../../../Navbar/Navbar.jsx';
 import Hero from './ListingsHero.jsx';
 import styles from './ListingsPage.module.css';
 
 import backgroundImage from '@/assets/Listings/Hero2.jpg';
-
-
 import ListingGridSection from "@/components/pages/Listings/ListingsPage/ListingGridSection.jsx";
-import OwnerListingBlock from "@/components/pages/Listings/ListingsPage/OwnerListingBlock.jsx";
-import UrgentSellBlock from "@/components/pages/Listings/ListingsPage/UrgentSellBlock.jsx";
-
+import ModalForm from "@/components/pages/Listings/ListingsPage/ModalForm.jsx";
+import AddListingForm from "@/components/pages/Listings/ListingsPage/AddListingForm.jsx";
+import UrgentSellForm from "@/components/pages/Listings/ListingsPage/UrgentSellForm.jsx";
 
 const ListingsPage = () => {
   const [listings, setListings] = useState([]);
+  const [visibleCount, setVisibleCount] = useState(6);
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [showUrgentForm, setShowUrgentForm] = useState(false);
+
   const API_URL = 'http://127.0.0.1:8000';
+  const CHUNK_SIZE = 12;
 
   useEffect(() => {
     axios
@@ -23,49 +25,43 @@ const ListingsPage = () => {
       .catch((err) => console.error(err));
   }, []);
 
+  const remainingListings = listings.slice(0, visibleCount);
+  const hasMore = listings.length > visibleCount;
+
+  const handleShowMore = () => {
+    setVisibleCount((prev) => prev + CHUNK_SIZE);
+  };
+
   return (
     <div>
-      <Navbar />
       <Hero
         title="Доступные квартиры"
         subtitle="Найдите идеальное жилье для себя"
         backgroundImage={backgroundImage}
+        onAddClick={() => setShowAddForm(true)}
+        onUrgentClick={() => setShowUrgentForm(true)}
       />
 
-     <ListingGridSection listings={listings} startIndex={0}/>
-
-     <OwnerListingBlock/>
-
-    <ListingGridSection listings={listings} startIndex={0} />
-
-    <UrgentSellBlock/>
-
       <div className={styles.container}>
-        <div className={styles.list}>
-          {listings.map((listing) => (
-              <div key={listing.id} className={styles.card}>
-                  <div className={styles.imageWrapper}>
-                      {listing.image ? (
-                          <img
-                              src={`${API_URL}${listing.image}`}
-                              alt={listing.address}
-                              className={styles.image}
-                          />
-                      ) : (
-                          <div className={styles.imagePlaceholder}>Нет фото</div>
-                      )}
-                  </div>
+        <ListingGridSection listings={remainingListings} />
 
-                  <div className={styles.content}>
-                      <h2 className={styles.address}>{listing.address}</h2>
-                      <p className={styles.price}>Цена: {listing.price} ₽</p>
-                      <p className={styles.floor}>Этаж: {listing.floor}</p>
-                      <button className={styles.button}>Подробнее</button>
-                  </div>
-              </div>
-          ))}
-        </div>
+        {hasMore && (
+          <div className={styles.showMoreWrapper}>
+            <button className={styles.showMoreButton} onClick={handleShowMore}>
+              Показать ещё
+            </button>
+          </div>
+        )}
       </div>
+
+      {/* Модалки */}
+      <ModalForm isOpen={showAddForm} onClose={() => setShowAddForm(false)}>
+        <AddListingForm onClose={() => setShowAddForm(false)} />
+      </ModalForm>
+
+      <ModalForm isOpen={showUrgentForm} onClose={() => setShowUrgentForm(false)}>
+        <UrgentSellForm onClose={() => setShowUrgentForm(false)} />
+      </ModalForm>
     </div>
   );
 };
