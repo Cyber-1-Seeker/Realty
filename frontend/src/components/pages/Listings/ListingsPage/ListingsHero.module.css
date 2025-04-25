@@ -6,25 +6,105 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 0 20px;
   color: white;
 }
 
 .overlay {
-  background: rgba(0, 0, 0, 0.5);
-  padding: 40px 30px;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 60px 40px;
   border-radius: 24px;
-  max-width: 700px;
+  max-width: 900px;
+  width: 100%;
   text-align: center;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
 .title {
-  font-size: 2.8rem;
+  font-size: 3rem;
+  font-weight: 800;
   margin-bottom: 20px;
-  font-weight: bold;
+  line-height: 1.2;
 }
 
 .subtitle {
-  font-size: 1.2rem;
-  opacity: 0.95;
+  font-size: 1.25rem;
+  margin-bottom: 30px;
+  color: #e5e7eb;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.mainButton {
+  padding: 16px 32px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 9999px;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+.mainButton:hover {
+  background-color: #2563eb;
+  transform: scale(1.05);
+}
+
+.smallButtons {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.smallButton {
+  padding: 10px 16px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-radius: 9999px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  opacity: 0.9;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.primarySmall {
+  background-color: #10b981;
+  color: white;
+}
+
+.urgentSmall {
+  background-color: #ef4444;
+  color: white;
+}
+
+.smallButton:hover {
+  opacity: 1;
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 2rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
+
+  .smallButtons {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .overlay {
+    padding: 40px 20px;
+  }
 }

@@ -4,7 +4,7 @@ import About from './components/pages/About/About.jsx'
 import "./App.css"
 import Home from "./components/pages/Home/Home.jsx";
 import ListingsPage from "./components/pages/Listings/ListingsPage/ListingsPage.jsx";
-import AddListingForm from "@/components/pages/Listings/AddListingForm.jsx";
+import AddListingForm from "@/components/pages/Listings/ListingsPage/AddListingForm.jsx";
 
 function App() {
     return (

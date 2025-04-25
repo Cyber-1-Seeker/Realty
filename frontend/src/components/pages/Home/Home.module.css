@@ -1,0 +1,9 @@
+.gradientTop {
+  height: 80px;
+  background: linear-gradient(to bottom, #edfbf0 0%, transparent 100%);
+}
+
+.gradientBottom {
+  height: 80px;
+  background: linear-gradient(to top, #edfbf0 0%, transparent 100%);
+}
