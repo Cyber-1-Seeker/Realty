@@ -28,16 +28,10 @@ class CustomUserManager(BaseUserManager):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
 
-        if extra_fields.get('is_staff') is not True:
-            raise ValueError('Суперпользователь должен иметь is_staff=True.')
-        if extra_fields.get('is_superuser') is not True:
-            raise ValueError('Суперпользователь должен иметь is_superuser=True.')
-
         if not password:
             raise ValueError("Суперпользователь должен иметь пароль.")
 
         return self.create_user(email, phone_number, first_name, password, **extra_fields)
-
 
 
 class CustomUser(AbstractUser, PermissionsMixin):
