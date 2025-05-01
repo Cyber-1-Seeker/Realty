@@ -131,6 +131,28 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-AUTH_USER_MODEL = 'account.CustomUser'
+
+AUTH_USER_MODEL = 'accounts.CustomUser'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+    ]
+}
+
+
+CORS_ALLOW_CREDENTIALS = True
+
+CSRF_COOKIE_NAME = "csrftoken"
+CSRF_COOKIE_HTTPONLY = False  # иначе фронт не сможет прочитать токен
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:5173",  # или твой домен в проде
+]
+
+# если используешь django-cors-headers
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+]

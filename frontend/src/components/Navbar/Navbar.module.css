@@ -6,7 +6,7 @@
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
     border-bottom: 1px solid #e5e7eb;
     padding: 12px 20px;
-    color: #374151; /* text-gray-700 */
+    color: #374151;
     z-index: 100;
     position: sticky;
     top: 0;
@@ -16,28 +16,33 @@
 .logo {
     font-size: 18px;
     font-weight: bold;
-    color: #1e40af; /* акцентный синий */
+    color: #1e40af;
+}
+
+.centerSection {
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
 }
 
 .contacts {
     display: flex;
     gap: 20px;
     align-items: center;
-    flex: 1;
     justify-content: flex-start;
     margin-left: 60px;
 }
 
 .contacts a {
-    color: #374151; /* text-gray-700 */
+    color: #374151;
     font-size: 14px;
     text-decoration: none;
     transition: color 0.3s;
-    left: 50px;
 }
 
 .contacts a:hover {
-    color: #10b981; /* тоже зелёный при наведении */
+    color: #10b981;
 }
 
 .icon {
@@ -71,9 +76,8 @@
 }
 
 .navLinks li a:hover {
-    color: #10b981; /* зелёный акцент */
+    color: #10b981;
 }
-
 
 .visible {
     opacity: 1;
@@ -92,10 +96,18 @@
     overflow: hidden;
 }
 
+.profileDesktop {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-left: 20px;
+}
+
 @media (max-width: 768px) {
     .burger {
         display: block;
-        color: #10b981; /* зелёный значок меню на мобилке */
+        color: #10b981;
     }
 
     .contacts {
@@ -123,5 +135,11 @@
 
     .iconsMobile a {
         margin-right: 10px;
+    }
+
+    .profileMobile {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 10px;
     }
 }

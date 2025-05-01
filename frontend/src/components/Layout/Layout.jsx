@@ -3,11 +3,10 @@ import { Outlet } from 'react-router-dom'
 import Navbar from '../Navbar/Navbar'
 import Footer from '../Footer/Footer'
 
-
-const Layout = () => {
+const Layout = ({ isAuthenticated, user }) => {
   return (
     <>
-      <Navbar/> {/* Добавляем фиксированный navbar */}
+      <Navbar isAuthenticated={isAuthenticated} user={user} />
       <main>
         <Outlet />
       </main>
@@ -15,6 +14,5 @@ const Layout = () => {
     </>
   )
 }
-
 
 export default Layout
