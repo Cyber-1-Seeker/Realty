@@ -35,7 +35,7 @@ const AddListingForm = ({onClose}) => {
         }
 
         try {
-            const res = await axios.post('http://127.0.0.1:8000/apartment/api/apartments/', payload, {
+            const res = await axios.post('http://127.0.0.1:8000/api/apapartment/apartments/', payload, {
                 headers: {'Content-Type': 'multipart/form-data'},
             });
             alert('Квартира успешно добавлена!');

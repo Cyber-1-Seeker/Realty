@@ -20,7 +20,7 @@ const ListingsPage = () => {
 
   useEffect(() => {
     axios
-      .get(`${API_URL}/apartment/api/apartments/`)
+      .get(`${API_URL}/api/apapartment/apartments/`)
       .then((res) => setListings(res.data))
       .catch((err) => console.error(err));
   }, []);
