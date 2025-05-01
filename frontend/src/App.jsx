@@ -12,7 +12,7 @@ function App() {
     const [user, setUser] = useState(null)
 
     useEffect(() => {
-        fetch('/api/accounts/csrf/', {credentials: 'include'})
+        fetch('http://localhost:8000/api/accounts/csrf/', {credentials: 'include'})
             .then(res => {
                 if (!res.ok) throw new Error("CSRF не выдан");
             })
