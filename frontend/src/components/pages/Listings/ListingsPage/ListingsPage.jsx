@@ -8,12 +8,15 @@ import ListingGridSection from "@/components/pages/Listings/ListingsPage/Listing
 import ModalForm from "@/components/pages/Listings/ListingsPage/ModalForm.jsx";
 import AddListingForm from "@/components/pages/Listings/ListingsPage/AddListingForm.jsx";
 import UrgentSellForm from "@/components/pages/Listings/ListingsPage/UrgentSellForm.jsx";
+import AuthModal from '@/components/AuthModal/AuthModal.jsx';
+import useAuthGuard from '@/hooks/useAuthGuard';
 
-const ListingsPage = () => {
+const ListingsPage = ({ isAuthenticated }) => {
   const [listings, setListings] = useState([]);
   const [visibleCount, setVisibleCount] = useState(6);
   const [showAddForm, setShowAddForm] = useState(false);
   const [showUrgentForm, setShowUrgentForm] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
 
   const API_URL = 'http://127.0.0.1:8000';
   const CHUNK_SIZE = 12;
@@ -24,6 +27,8 @@ const ListingsPage = () => {
       .then((res) => setListings(res.data))
       .catch((err) => console.error(err));
   }, []);
+
+  const guard = useAuthGuard(isAuthenticated, () => setShowAuthModal(true));
 
   const remainingListings = listings.slice(0, visibleCount);
   const hasMore = listings.length > visibleCount;
@@ -38,8 +43,8 @@ const ListingsPage = () => {
         title="Доступные квартиры"
         subtitle="Найдите идеальное жилье для себя"
         backgroundImage={backgroundImage}
-        onAddClick={() => setShowAddForm(true)}
-        onUrgentClick={() => setShowUrgentForm(true)}
+        onAddClick={guard(() => setShowAddForm(true))}
+        onUrgentClick={guard(() => setShowUrgentForm(true))}
       />
 
       <div className={styles.container}>
@@ -62,6 +67,8 @@ const ListingsPage = () => {
       <ModalForm isOpen={showUrgentForm} onClose={() => setShowUrgentForm(false)}>
         <UrgentSellForm onClose={() => setShowUrgentForm(false)} />
       </ModalForm>
+
+      {showAuthModal && <AuthModal onClose={() => setShowAuthModal(false)} />}
     </div>
   );
 };

@@ -1,15 +1,23 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import classes from './Navbar.module.css'
 import { motion, AnimatePresence } from 'framer-motion'
 import { FaTelegramPlane, FaWhatsapp, FaUserCircle } from 'react-icons/fa'
 import AuthModal from '../AuthModal/AuthModal'
+import useAuthGuard from '@/hooks/useAuthGuard'
 
 const Navbar = ({ isAuthenticated, user }) => {
   const [menuOpen, setMenuOpen] = useState(false)
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
   const [showNavbar, setShowNavbar] = useState(window.innerWidth <= 768)
   const [showAuthModal, setShowAuthModal] = useState(false)
+  const navigate = useNavigate()
+
+  const guard = useAuthGuard(isAuthenticated, () => setShowAuthModal(true))
+
+  const handleProfileClick = guard(() => {
+    navigate('/profile') // редиректим в профиль
+  })
 
   useEffect(() => {
     const handleResize = () => {
@@ -36,15 +44,6 @@ const Navbar = ({ isAuthenticated, user }) => {
       setShowNavbar(true)
     }
   }, [isMobile])
-
-  const handleProfileClick = () => {
-    if (!isAuthenticated) {
-      setShowAuthModal(true)
-    } else {
-      // Здесь можно добавить открытие меню профиля или редирект
-      console.log('Пользователь уже вошёл:', user)
-    }
-  }
 
   return (
     <>

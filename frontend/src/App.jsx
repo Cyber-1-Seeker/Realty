@@ -6,6 +6,7 @@ import "./App.css"
 import Home from "./components/pages/Home/Home.jsx"
 import ListingsPage from "./components/pages/Listings/ListingsPage/ListingsPage.jsx"
 import AddListingForm from "@/components/pages/Listings/ListingsPage/AddListingForm.jsx"
+import ProfilePage from "@/components/pages/Profile/ProfilePage.jsx";
 
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -13,11 +14,19 @@ function App() {
 
     useEffect(() => {
         fetch('http://localhost:8000/api/accounts/csrf/', {credentials: 'include'})
-            .then(res => {
-                if (!res.ok) throw new Error("CSRF не выдан");
+            .then(() => {
+                return fetch('http://localhost:8000/api/accounts/me/', {
+                    credentials: 'include'
+                })
             })
-            .catch(err => {
-                console.error("CSRF ошибка:", err);
+            .then(res => res.ok ? res.json() : Promise.reject())
+            .then(data => {
+                setUser(data);
+                setIsAuthenticated(true);
+            })
+            .catch(() => {
+                setUser(null);
+                setIsAuthenticated(false);
             });
     }, []);
 
@@ -35,8 +44,9 @@ function App() {
                 >
                     <Route path="/" element={<Home/>}/>
                     <Route path="/about" element={<About/>}/>
-                    <Route path="/listings" element={<ListingsPage/>}/>
+                    <Route path="/listings" element={<ListingsPage isAuthenticated={isAuthenticated}/>}/>
                     <Route path="/listings/add" element={<AddListingForm/>}/>
+                    <Route path="/profile" element={<ProfilePage/>}/>
                 </Route>
             </Routes>
         </BrowserRouter>
