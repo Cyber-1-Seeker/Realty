@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from django.contrib.auth import get_user_model, login, logout
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import ensure_csrf_cookie
@@ -6,6 +5,7 @@ from django.http import JsonResponse
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 from .serializers import RegisterSerializer
 
 User = get_user_model()
@@ -35,7 +35,10 @@ class LoginView(APIView):
             return Response({'error': 'Пользователь с таким номером не найден'}, status=status.HTTP_404_NOT_FOUND)
 
 
+#Проверить, вошёл ли пользователь и получить его данные
 class MeView(APIView):
+    permission_classes = [IsAuthenticated]
+
     def get(self, request):
         if request.user.is_authenticated:
             return Response({
@@ -47,11 +50,14 @@ class MeView(APIView):
 
 
 class LogoutView(APIView):
+    permission_classes = [IsAuthenticated]
+
     def post(self, request):
         logout(request)
         return Response({'message': 'Выход выполнен'})
 
 
+#Выдаёт csrftoken куку при GET
 @method_decorator(ensure_csrf_cookie, name='dispatch')
 class GetCSRFToken(APIView):
     def get(self, request):

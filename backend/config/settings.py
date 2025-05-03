@@ -156,3 +156,13 @@ CSRF_TRUSTED_ORIGINS = [
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
 ]
+
+SESSION_COOKIE_HTTPONLY = True         # ✅ оставить — защита от JS-доступа
+SESSION_COOKIE_SAMESITE = 'Lax'        # ✅ хорошо для баланса между безопасностью и удобством
+SESSION_COOKIE_SECURE = False          # ⚠️ в проде поставить True (только по HTTPS)
+CSRF_COOKIE_SECURE = False             # ⚠️ в проде поставить True
+
+
+if not DEBUG:
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
