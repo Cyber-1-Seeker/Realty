@@ -6,19 +6,31 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from .serializers import RegisterSerializer
+from .serializers import PhoneConfirmationRequestSerializer, PhoneCodeVerificationSerializer
 
 User = get_user_model()
 
 
 class RegisterView(APIView):
     def post(self, request):
-        serializer = RegisterSerializer(data=request.data)
+        serializer = PhoneConfirmationRequestSerializer(data=request.data)
         if serializer.is_valid():
-            user = serializer.save()
-            login(request, user)  # <-- автоматический вход после регистрации
-            return Response({'message': 'Пользователь создан'}, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            obj = serializer.save()
+            return Response({
+                "message": "Код отправлен по SMS",
+                "token": str(obj.token)
+            }, status=201)
+        return Response(serializer.errors, status=400)
+
+
+class VerifyPhoneView(APIView):
+    def post(self, request):
+        serializer = PhoneCodeVerificationSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.validated_data["user"]
+            login(request, user)
+            return Response({"message": "Регистрация завершена, пользователь вошёл в систему"})
+        return Response(serializer.errors, status=400)
 
 
 class LoginView(APIView):
@@ -35,7 +47,7 @@ class LoginView(APIView):
             return Response({'error': 'Пользователь с таким номером не найден'}, status=status.HTTP_404_NOT_FOUND)
 
 
-#Проверить, вошёл ли пользователь и получить его данные
+# Проверить, вошёл ли пользователь и получить его данные
 class MeView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -57,7 +69,7 @@ class LogoutView(APIView):
         return Response({'message': 'Выход выполнен'})
 
 
-#Выдаёт csrftoken куку при GET
+# Выдаёт csrftoken куку при GET
 @method_decorator(ensure_csrf_cookie, name='dispatch')
 class GetCSRFToken(APIView):
     def get(self, request):

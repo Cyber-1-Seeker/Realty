@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import styles from './LoginRegisterForm.module.css';
 import { secureFetch } from '@/utils/api';
+import ConfirmPhoneForm from './ConfirmPhoneForm';
 
 const RegisterForm = ({ switchToLogin }) => {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [token, setToken] = useState(null);
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -21,21 +24,26 @@ const RegisterForm = ({ switchToLogin }) => {
         method: 'POST',
         body: JSON.stringify({
           first_name: name,
-          phone_number: phone,
+          phone: phone,
           email: email,
+          password: password
         }),
       });
 
       const data = await response.json();
       if (response.ok) {
-        window.location.reload();
+        setToken(data.token); // ждём подтверждение
       } else {
-        setError(data.phone_number?.[0] || data.email?.[0] || 'Ошибка регистрации');
+        setError(data.phone?.[0] || data.email?.[0] || 'Ошибка регистрации');
       }
     } catch {
       setError('Сервер недоступен');
     }
   };
+
+  if (token) {
+    return <ConfirmPhoneForm token={token} />;
+  }
 
   return (
     <form onSubmit={handleSubmit} className={styles.authForm}>
@@ -74,10 +82,21 @@ const RegisterForm = ({ switchToLogin }) => {
         />
       </label>
 
+      <label className={styles.label}>
+        Пароль:
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          className={styles.input}
+        />
+      </label>
+
       {error && <div className={styles.error}>{error}</div>}
 
       <button type="submit" className={styles.button}>
-        Создать аккаунт
+        Получить код
       </button>
     </form>
   );
