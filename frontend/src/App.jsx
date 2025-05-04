@@ -45,7 +45,7 @@ function App() {
                     <Route path="/" element={<Home/>}/>
                     <Route path="/about" element={<About/>}/>
                     <Route path="/listings" element={<ListingsPage isAuthenticated={isAuthenticated}/>}/>
-                    <Route path="/listings/add" element={<AddListingForm/>}/>
+                    <Route path="/listings/add" element={<AddListingForm isAuthenticated={isAuthenticated}/>}/>
                     <Route path="/profile" element={<ProfilePage/>}/>
                 </Route>
             </Routes>
