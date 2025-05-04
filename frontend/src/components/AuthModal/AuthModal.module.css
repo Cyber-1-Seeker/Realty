@@ -38,15 +38,28 @@
 }
 
 .switchText {
-  margin-top: 1rem;
+  margin-top: 1.5rem;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .switchButton {
   background: none;
-  height: 50px;
   border: none;
   color: #007bff;
   cursor: pointer;
-  margin-left: 0.4rem;
+  font-weight: bold;
+  font-size: 1rem;
 }
+
+
+.switchButton:hover {
+  color: #0056b3; /* более тёмно-синий */
+  background-color: rgba(0, 123, 255, 0.1); /* лёгкий синий фон */
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+
