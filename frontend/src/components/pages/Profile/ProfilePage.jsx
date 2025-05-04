@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { secureFetch } from '@/utils/api';
+import styles from './ProfilePage.module.css'
 
 const ProfilePage = () => {
   const [user, setUser] = useState(null);
@@ -19,13 +20,12 @@ const ProfilePage = () => {
   if (!user) return <p>Загрузка...</p>;
 
   return (
-    <div>
-      <h1>Профиль</h1>
-      <p>Email: {user.email}</p>
-      <p>Телефон: {user.phone_number}</p>
-      <p>Имя: {user.first_name}</p>
-      <button onClick={handleLogout}>Выйти</button>
-    </div>
+      <div className={styles.container}><h1>Профиль</h1>
+          <p>Email: {user.email}</p>
+          <p>Телефон: {user.phone_number}</p>
+          <p>Имя: {user.first_name}</p>
+          <button  className={styles.logoutButton} onClick={handleLogout}>Выйти</button>
+      </div>
   );
 };
 

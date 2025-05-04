@@ -21,6 +21,13 @@ class ApartmentListAPIView(APIView):
         return Response(serializer.data)
 
     def post(self, request):
+        print("=== ПОЛУЧЕН POST ===")
+        print("Cookies:", request.COOKIES)
+        print("Headers:", request.headers)
+        print("CSRF Token (из заголовка):", request.headers.get('X-CSRFToken'))
+        print("request.user:", request.user)
+        print("user.is_authenticated:", request.user.is_authenticated)
+
         serializer = ApartmentSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
