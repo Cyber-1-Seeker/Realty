@@ -1,6 +1,8 @@
 import {useState} from 'react';
 import axios from 'axios';
 import styles from './AddListingForm.module.css';
+import {getCSRFTokenFromCookie} from '@/utils/csrf';
+
 
 const AddListingForm = ({onClose}) => {
     const [formData, setFormData] = useState({
@@ -23,9 +25,9 @@ const AddListingForm = ({onClose}) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const form = e.target; // сама форма
+        const form = e.target;
         if (!form.checkValidity()) {
-            form.reportValidity(); // показать стандартные ошибки браузера
+            form.reportValidity();
             return;
         }
 
@@ -34,10 +36,23 @@ const AddListingForm = ({onClose}) => {
             payload.append(key, formData[key]);
         }
 
+        const axiosInstance = axios.create({
+            baseURL: 'http://127.0.0.1:8000',
+            withCredentials: true,
+        });
+
         try {
-            const res = await axios.post('http://127.0.0.1:8000/api/apartment/apartments/', payload, {
-                headers: {'Content-Type': 'multipart/form-data'},
-            });
+            const csrfToken = getCSRFTokenFromCookie();
+            const res = await axiosInstance.post(
+                'http://127.0.0.1:8000/api/apartment/apartments/',
+                payload,
+                {
+                    headers: {
+                        'X-CSRFToken': csrfToken
+                    },
+                    withCredentials: true  // ← вот ТУТ обязательно
+                }
+            );
             alert('Квартира успешно добавлена!');
             onClose();
         } catch (err) {
