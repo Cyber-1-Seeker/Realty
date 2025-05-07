@@ -7,7 +7,6 @@ const RegisterForm = ({ switchToLogin }) => {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [token, setToken] = useState(null);
   const [error, setError] = useState('');
 
@@ -26,7 +25,6 @@ const RegisterForm = ({ switchToLogin }) => {
           first_name: name,
           phone: phone,
           email: email,
-          password: password
         }),
       });
 
@@ -82,16 +80,16 @@ const RegisterForm = ({ switchToLogin }) => {
         />
       </label>
 
-      <label className={styles.label}>
-        Пароль:
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          className={styles.input}
-        />
-      </label>
+      {/*<label className={styles.label}>*/}
+      {/*  Пароль:*/}
+      {/*  <input*/}
+      {/*    type="password"*/}
+      {/*    value={password}*/}
+      {/*    onChange={(e) => setPassword(e.target.value)}*/}
+      {/*    required*/}
+      {/*    className={styles.input}*/}
+      {/*  />*/}
+      {/*</label>*/}
 
       {error && <div className={styles.error}>{error}</div>}
 

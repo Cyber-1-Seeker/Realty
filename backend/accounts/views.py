@@ -6,7 +6,11 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from rest_framework import viewsets
+from rest_framework.permissions import IsAdminUser
+from .serializers import UserListSerializer
 from .serializers import PhoneConfirmationRequestSerializer, PhoneCodeVerificationSerializer
+from .models import CustomUser
 
 User = get_user_model()
 
@@ -20,6 +24,7 @@ class RegisterView(APIView):
                 "message": "Код отправлен по SMS",
                 "token": str(obj.token)
             }, status=201)
+        print("Ошибки сериализатора:", serializer.errors)
         return Response(serializer.errors, status=400)
 
 
@@ -74,3 +79,9 @@ class LogoutView(APIView):
 class GetCSRFToken(APIView):
     def get(self, request):
         return JsonResponse({'message': 'CSRF token set'})
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = CustomUser.objects.all().order_by('-date_joined')
+    serializer_class = UserListSerializer
+    permission_classes = [IsAdminUser]

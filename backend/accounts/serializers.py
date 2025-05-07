@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from .models import CustomUser, PhoneConfirmation
-from django.contrib.auth.hashers import make_password
 import random
 import uuid
 
@@ -9,17 +8,18 @@ class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ['email', 'phone_number', 'first_name']
-        extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
-        return CustomUser.objects.create_user(**validated_data)
+        user = CustomUser(**validated_data)
+        user.set_unusable_password()  # ← теперь пароль не нужен
+        user.save()
+        return user
 
 
 class PhoneConfirmationRequestSerializer(serializers.Serializer):
     email = serializers.EmailField()
     phone = serializers.CharField()
     first_name = serializers.CharField()
-    password = serializers.CharField(write_only=True, min_length=8)
 
     def validate_email(self, value):
         if CustomUser.objects.filter(email=value).exists():
@@ -37,7 +37,6 @@ class PhoneConfirmationRequestSerializer(serializers.Serializer):
         code = str(random.randint(1000, 9999))
         print(code)
         token = uuid.uuid4()
-        hashed_password = make_password(validated_data["password"])
 
         confirmation = PhoneConfirmation.objects.create(
             token=token,
@@ -45,10 +44,9 @@ class PhoneConfirmationRequestSerializer(serializers.Serializer):
             code=code,
             email=validated_data["email"],
             first_name=validated_data["first_name"],
-            password=hashed_password,
         )
 
-        # Отправка SMS
+        # Отправка SMS (если используешь)
         import requests
         requests.get("https://sms.ru/sms/send", params={
             "api_id": "ТВОЙ_API_КЛЮЧ",
@@ -77,12 +75,20 @@ class PhoneCodeVerificationSerializer(serializers.Serializer):
             obj.delete()
             raise serializers.ValidationError("Код истёк")
 
-        # Всё хорошо — создаём пользователя
-        user = CustomUser.objects.create_user(
+        # Создание пользователя с отключенным паролем
+        user = CustomUser(
             email=obj.email,
             phone_number=obj.phone,
-            first_name=obj.first_name,
-            password=obj.password  # уже хешированный
+            first_name=obj.first_name
         )
+        user.set_unusable_password()
+        user.save()
+
         obj.delete()
         return {"user": user}
+
+
+class UserListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ['id', 'first_name', 'email', 'phone_number', 'is_active', 'is_staff']
