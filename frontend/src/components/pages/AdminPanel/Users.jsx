@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 import {Table, Button, Popconfirm, Switch, message} from 'antd';
-import {API_AUTH} from '@/api/axiosWithAuth';
+import {API_AUTH} from '@/utils/api/axiosWithAuth';
 
 export default function Users() {
     const [users, setUsers] = useState([]);
@@ -10,7 +10,7 @@ export default function Users() {
     const fetchUsers = async () => {
         setLoading(true);
         try {
-            const res = await API_AUTH.get('accounts/users/');
+            const res = await API_AUTH.get('/api/accounts/users/');
             // Добавляем поле index для вывода "№" в таблице
             const indexed = res.data.map((user, idx) => ({
                 ...user,
@@ -27,7 +27,7 @@ export default function Users() {
     // Изменение активности пользователя (вкл/выкл)
     const toggleActive = async (id, isActive) => {
         try {
-            await API_AUTH.patch(`accounts/users/${id}/`, {is_active: isActive});
+            await API_AUTH.patch(`/api/accounts/users/${id}/`, {is_active: isActive});
             message.success('Статус пользователя обновлён');
             fetchUsers();
         } catch {
@@ -38,7 +38,7 @@ export default function Users() {
     // Удаление пользователя из системы
     const deleteUser = async (id) => {
         try {
-            await API_AUTH.delete(`accounts/users/${id}/`);
+            await API_AUTH.delete(`/api/accounts/users/${id}/`);
             message.success('Пользователь удалён');
             fetchUsers();
         } catch {

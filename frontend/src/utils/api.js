@@ -1,4 +1,4 @@
-import { getCSRFTokenFromCookie } from './csrf';
+import { getCSRFTokenFromCookie } from './api/csrf.js';
 import { API_URL } from './config';
 
 export const secureFetch = async (endpoint, options = {}) => {
@@ -7,7 +7,6 @@ export const secureFetch = async (endpoint, options = {}) => {
   return fetch(`${API_URL}${endpoint}`, {
     ...options,
     headers: {
-      'Content-Type': 'application/json',
       'X-CSRFToken': csrfToken,
       ...(options.headers || {}),
     },
