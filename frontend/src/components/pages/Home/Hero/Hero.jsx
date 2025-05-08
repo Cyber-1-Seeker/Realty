@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {API_PUBLIC} from "@/api/axiosPublic.js";
+import {API_PUBLIC} from "@/utils/api/axiosPublic.js";
 import classes from './Hero.module.css';
 import {Link} from 'react-router-dom';
 

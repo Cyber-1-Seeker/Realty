@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 import {Table, Select, Button, Popconfirm, message} from 'antd';
-import {API_AUTH} from "@/api/axiosWithAuth.js";
+import {API_AUTH} from "@/utils/api/axiosWithAuth.js";
 
 const {Option} = Select;
 
@@ -19,7 +19,7 @@ export default function Requests() {
     const fetchRequests = async () => {
         setLoading(true);
         try {
-            const res = await API_AUTH.get('applications/applications/');
+            const res = await API_AUTH.get('/api/applications/applications/');
             // Добавляем индекс для стабильной нумерации
             const dataWithIndex = res.data.map((item, idx) => ({
                 ...item,
@@ -37,7 +37,7 @@ export default function Requests() {
     // Обновление статуса заявки
     const updateStatus = async (id, status) => {
         try {
-            await API_AUTH.patch(`applications/applications/${id}/`, {status});
+            await API_AUTH.patch(`/api/applications/applications/${id}/`, {status});
             message.success('Статус обновлён');
             fetchRequests();
         } catch {
@@ -48,7 +48,7 @@ export default function Requests() {
     // Удаление заявки
     const deleteRequest = async (id) => {
         try {
-            await API_AUTH.delete(`applications/applications/${id}/`);
+            await API_AUTH.delete(`/api/applications/applications/${id}/`);
             message.success('Заявка удалена');
             fetchRequests();
         } catch {
