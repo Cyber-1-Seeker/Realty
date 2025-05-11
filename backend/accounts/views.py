@@ -8,9 +8,11 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import viewsets
 from rest_framework.permissions import IsAdminUser
+from datetime import date
 from .serializers import UserListSerializer
 from .serializers import PhoneConfirmationRequestSerializer, PhoneCodeVerificationSerializer
 from .models import CustomUser
+from monitoring.models import DailyStats
 
 User = get_user_model()
 
@@ -34,6 +36,10 @@ class VerifyPhoneView(APIView):
         if serializer.is_valid():
             user = serializer.validated_data["user"]
             login(request, user)
+            today = date.today()
+            stat, _ = DailyStats.objects.get_or_create(date=today)
+            stat.new_registers += 1
+            stat.save()
             return Response({"message": "Регистрация завершена, пользователь вошёл в систему"})
         return Response(serializer.errors, status=400)
 
