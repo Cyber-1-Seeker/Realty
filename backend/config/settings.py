@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'apartment',
     'accounts',
     'applications',
+    'monitoring',
 ]
 
 # === Middleware ===
@@ -45,6 +46,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'monitoring.middleware.UserVisitMiddleware',
 ]
 
 # === URLs и шаблоны ===

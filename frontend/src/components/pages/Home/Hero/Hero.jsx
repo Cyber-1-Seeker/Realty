@@ -1,7 +1,9 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {API_PUBLIC} from "@/utils/api/axiosPublic.js";
 import classes from './Hero.module.css';
 import {Link} from 'react-router-dom';
+import { getCSRFTokenFromCookie } from "@/utils/api/csrf.js";
+
 
 const Hero = () => {
     const [name, setName] = useState('');
@@ -12,6 +14,11 @@ const Hero = () => {
     const [showModal, setShowModal] = useState(false);
     const [commentError, setCommentError] = useState(false);
     const [nickname, setNickname] = useState('');
+
+    // Загружаем CSRF-токен при монтировании формы
+    useEffect(() => {
+        API_PUBLIC.get('/api/accounts/csrf/');
+    }, []);
 
     const handleOpenModal = () => {
         if (!name || !phone) {
@@ -30,12 +37,22 @@ const Hero = () => {
 
         setLoading(true);
         try {
-            await API_PUBLIC.post('applications/applications/', {
-                name,
-                phone,
-                comment,
-                nickname,
-            });
+            await API_PUBLIC.post(
+                '/api/applications/applications/',
+                {
+                    name,
+                    phone,
+                    comment,
+                    nickname,
+                },
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCSRFTokenFromCookie(), // 👈 нужен
+                    },
+                    withCredentials: true, // 👈 тоже нужен
+                }
+            );
 
             setSuccess(true);
             setName('');
