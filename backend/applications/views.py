@@ -1,7 +1,7 @@
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework import viewsets
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import IsAdminUser
 from django.views.decorators.csrf import csrf_exempt
 from .models import Application
 from .serializers import ApplicationSerializer
@@ -22,8 +22,8 @@ class ApplicationListCreateView(generics.ListCreateAPIView):
 
         return super().create(request, *args, **kwargs)
 
-@method_decorator(csrf_exempt, name='dispatch')
+
 class ApplicationViewSet(viewsets.ModelViewSet):
     queryset = Application.objects.all().order_by('-created_at')
     serializer_class = ApplicationSerializer
-    permission_classes = [AllowAny]  # 👈 разрешаем всем временно
+    permission_classes = [IsAdminUser]

@@ -12,18 +12,21 @@ const ConfirmPhoneForm = ({token}) => {
         setError('');
 
         try {
-            const response = await API_PUBLIC.post('/api/accounts/confirm-code/', {
+            const response = await API_PUBLIC.post('/api/accounts/verify-phone/', {
                 token,
                 code
+            }, {
+                withCredentials: true // 👈 ОБЯЗАТЕЛЬНО
             });
 
-            const data = await response.json();
-            if (response.ok) {
+            const data = response.data;
+            if (response.status === 200) {
                 setConfirmed(true);
                 window.location.reload();
             } else {
-                setError(data.error || 'Ошибка подтверждения');
+                setError(data.detail || data.error || 'Ошибка подтверждения');
             }
+
         } catch {
             setError('Сервер недоступен');
         }

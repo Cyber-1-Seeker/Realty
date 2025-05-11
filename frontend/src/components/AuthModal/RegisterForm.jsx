@@ -10,6 +10,7 @@ const RegisterForm = ({switchToLogin}) => {
     const [token, setToken] = useState(null);
     const [error, setError] = useState('');
 
+    // Загружаем CSRF-токен при монтировании формы
     useEffect(() => {
         API_PUBLIC.get('/api/accounts/csrf/');
     }, []);
@@ -19,22 +20,40 @@ const RegisterForm = ({switchToLogin}) => {
         setError('');
 
         try {
-            const response = await API_PUBLIC.post('/api/accounts/register/', {
-                first_name: name,
-                phone,
-                email
-            });
+            const response = await API_PUBLIC.post(
+                '/api/accounts/register/',
+                {
+                    first_name: name,
+                    phone,
+                    email,
+                },
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                }
+            );
 
-            if (response.status === 200) {
+            // Проверяем успешность (2xx)
+            if (response.status >= 200 && response.status < 300) {
                 setToken(response.data.token);
-            } else {
-                setError(response.data.phone?.[0] || response.data.email?.[0] || 'Ошибка регистрации');
             }
-        } catch {
-            setError('Сервер недоступен');
+        } catch (err) {
+            // Извлекаем ошибки с сервера, если они есть
+            const data = err?.response?.data;
+            const detailedError =
+                data?.first_name?.[0] ||
+                data?.phone?.[0] ||
+                data?.email?.[0] ||
+                data?.non_field_errors?.[0] ||
+                data?.detail ||
+                'Ошибка регистрации';
+
+            setError(detailedError);
         }
     };
 
+    // Если получили токен — показываем форму подтверждения
     if (token) {
         return <ConfirmPhoneForm token={token}/>;
     }

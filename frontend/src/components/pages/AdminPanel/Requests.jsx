@@ -1,12 +1,15 @@
 import {useEffect, useState} from 'react';
 import {Table, Select, Button, Popconfirm, message} from 'antd';
 import {API_AUTH} from "@/utils/api/axiosWithAuth.js";
+import {Grid} from 'antd';
 
 const {Option} = Select;
+const {useBreakpoint} = Grid;
 
 export default function Requests() {
     const [requests, setRequests] = useState([]);
     const [loading, setLoading] = useState(false);
+    const screens = useBreakpoint();
 
     // Цвета и метки статуса
     const statusLabels = {
@@ -117,6 +120,8 @@ export default function Requests() {
                 rowKey="id"
                 loading={loading}
                 pagination={false}
+                scroll={{x: true}}
+                size={screens.xs ? 'small' : 'middle'}
             />
         </>
     );

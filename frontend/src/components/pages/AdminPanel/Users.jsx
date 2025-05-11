@@ -1,10 +1,15 @@
 import {useEffect, useState} from 'react';
 import {Table, Button, Popconfirm, Switch, message} from 'antd';
 import {API_AUTH} from '@/utils/api/axiosWithAuth';
+import {Grid} from 'antd';
+
+
+const {useBreakpoint} = Grid;
 
 export default function Users() {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(false);
+    const screens = useBreakpoint();
 
     // Получение списка пользователей с добавлением нумерации
     const fetchUsers = async () => {
@@ -96,6 +101,8 @@ export default function Users() {
                 rowKey="id"
                 loading={loading}
                 pagination={false}
+                scroll={{x: true}}
+                size={screens.xs ? 'small' : 'middle'}  // более компактно на мобилке
             />
         </>
     );
