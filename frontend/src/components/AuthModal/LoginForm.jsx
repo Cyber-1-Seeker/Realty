@@ -6,6 +6,7 @@ const LoginForm = ({switchToRegister}) => {
     const [phone, setPhone] = useState('');
     const [error, setError] = useState('');
 
+    // Загружаем CSRF при монтировании
     useEffect(() => {
         API_AUTH.get('/api/accounts/csrf/');
     }, []);
@@ -16,16 +17,21 @@ const LoginForm = ({switchToRegister}) => {
 
         try {
             const response = await API_AUTH.post('/api/accounts/login/', {
-                phone_number: phone
+                phone_number: phone,
             });
 
             if (response.status === 200) {
-                window.location.reload();
-            } else {
-                setError(response.data?.error || 'Ошибка входа');
+                window.location.reload(); // Успешный вход — обновляем сессию
             }
-        } catch {
-            setError('Сервер недоступен');
+        } catch (err) {
+            const data = err?.response?.data;
+            const message =
+                data?.phone_number?.[0] ||
+                data?.non_field_errors?.[0] ||
+                data?.detail ||
+                'Номер не найден';
+
+            setError(message);
         }
     };
 

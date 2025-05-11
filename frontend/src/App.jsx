@@ -35,6 +35,7 @@ function App() {
     return (
         <BrowserRouter>
             <Routes>
+                <Route path="/admin-panel" element={<AdminLayout/>}/>
                 <Route
                     element={
                         <Layout
@@ -48,7 +49,6 @@ function App() {
                     <Route path="/listings" element={<ListingsPage isAuthenticated={isAuthenticated}/>}/>
                     <Route path="/listings/add" element={<AddListingForm isAuthenticated={isAuthenticated}/>}/>
                     <Route path="/profile" element={<ProfilePage/>}/>
-                    <Route path="/admin-panel" element={<AdminLayout/>}/>
                 </Route>
             </Routes>
         </BrowserRouter>
