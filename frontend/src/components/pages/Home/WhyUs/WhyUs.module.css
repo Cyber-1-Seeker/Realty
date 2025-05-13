@@ -1,37 +1,39 @@
 .whyUs {
-  background: url('../../../../../public/assets/Home/whyus-bg.png') no-repeat center center/cover;
-  background-blend-mode: overlay;
-  padding: 100px 20px; /* Больше отступов */
-  text-align: center;
-  min-height: 700px; /* ✅ Чтобы фон раскрылся */
+    padding: 100px 20px;
+    display: flex;
+    justify-content: center;
 }
 
-.whyUs h2 {
+.reasons {
+    background-color: #ffffffee;
+    padding: 80px 60px; /* увеличили */
+    border-radius: 24px;
+    box-shadow: 0 10px 50px rgba(0, 0, 0, 0.06);
+    max-width: 1400px; /* шире */
+    width: 100%;
+    text-align: center;
+}
+
+.reasonsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+}
+
+.hyText {
   font-size: 40px;
   margin-bottom: 60px;
   color: #1e40af;
   text-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-.reasons {
-  display: flex;
-  justify-content: center;
-  gap: 40px;
-  flex-wrap: wrap;
-}
-
 .reason {
-  flex: 1 1 350px;
-  max-width: 400px;
-  background: white;
-  padding: 40px 30px;
-  border-radius: 16px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-  color: #1f2937;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+    background-color: white;
+    border-radius: 24px;
+    padding: 40px 30px; /* больше внутреннее пространство */
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    text-align: center;
+    transition: transform 0.3s ease;
 }
 
 .reason:hover {
