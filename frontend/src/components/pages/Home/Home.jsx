@@ -24,12 +24,12 @@ const Home = () => {
             <div className={styles.gradientTop}></div>
             <div className={styles.gradientBottom}></div>
             <section className="nextSection">
-                <Services/>
+                <AboutUs/>
             </section>
             <div className={styles.gradientTop}></div>
             <div className={styles.gradientBottom}></div>
             <section className="nextSection">
-                <AboutUs/>
+                <Services/>
             </section>
             <div className={styles.gradientTop}></div>
             <div className={styles.gradientBottom}></div>

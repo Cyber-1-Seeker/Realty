@@ -1,9 +1,10 @@
 .process{
-  background: url('../../../../../public/assets/Home/process.png') no-repeat center center/cover;
+  background: url('../../../../../public/assets/Home/processSteps-bg.png') no-repeat center center/cover;
   background-blend-mode: overlay;
   padding: 60px 20px;
   color: #1e3a8a;
   text-align: center;
+  margin-bottom: 10em;
 }
 
 
@@ -14,9 +15,9 @@
 
 .steps {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(4, 1fr); /* фиксированные 4 колонки */
   gap: 30px;
-  max-width: 1000px;
+  max-width: 1200px; /* увеличь ширину, чтобы 4 карточки влезли */
   margin: 0 auto;
 }
 
