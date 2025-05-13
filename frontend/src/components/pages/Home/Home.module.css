@@ -1,9 +1,13 @@
+.pageWrapper {
+    background-color: #f8f5f1;
+}
+
 .gradientTop {
-  height: 80px;
-  background: linear-gradient(to bottom, #edfbf0 0%, transparent 100%);
+    height: 80px;
+    background-color: #f8f5f1;
 }
 
 .gradientBottom {
-  height: 80px;
-  background: linear-gradient(to top, #edfbf0 0%, transparent 100%);
+    height: 80px;
+    background-color: #f8f5f1;
 }
