@@ -44,7 +44,7 @@ const ListingsPage = ({ isAuthenticated }) => {
         subtitle="Найдите идеальное жилье для себя"
         backgroundImage={backgroundImage}
         onAddClick={guard(() => setShowAddForm(true))}
-        onUrgentClick={guard(() => setShowUrgentForm(true))}
+        onUrgentClick={() => setShowUrgentForm(true)}
       />
 
       <div className={styles.container}>

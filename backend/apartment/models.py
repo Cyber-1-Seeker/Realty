@@ -5,6 +5,8 @@ from django.db import models
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
 
+from accounts.models import CustomUser
+
 
 # Генерация уникального имени файла
 def apartment_image_upload_path(instance, filename):
@@ -15,13 +17,14 @@ def apartment_image_upload_path(instance, filename):
 
 # Create your models here.
 class Apartment(models.Model):
-    # owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='apartment')
+    owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='apartment')
     price = models.IntegerField()
     address = models.CharField(max_length=100)
     rooms = models.IntegerField()
     floor = models.IntegerField()
     area = models.DecimalField(max_digits=6, decimal_places=2)
-    image = models.ImageField(upload_to=apartment_image_upload_path, null=True, blank=True)
+    # image = models.ImageField(upload_to=apartment_image_upload_path, null=True, blank=True)
+    is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -31,6 +34,14 @@ class Apartment(models.Model):
 
     def __str__(self):
         return f'{self.address}, {self.price}'
+
+
+class ApartmentImage(models.Model):
+    apartment = models.ForeignKey('Apartment', related_name='images', on_delete=models.CASCADE)
+    image = models.ImageField(upload_to=apartment_image_upload_path, null=True, blank=True)
+
+    def __str__(self):
+        return f'Image for {self.apartment.address}'
 
 
 # Автоматическое удаление файла при удалении объекта

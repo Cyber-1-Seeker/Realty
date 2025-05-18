@@ -1,117 +1,170 @@
-import React, { useState, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import React, {useState, useEffect, useRef} from 'react'
+import {Link, useNavigate} from 'react-router-dom'
 import classes from './Navbar.module.css'
-import { motion, AnimatePresence } from 'framer-motion'
-import { FaTelegramPlane, FaWhatsapp, FaUserCircle } from 'react-icons/fa'
+import {motion, AnimatePresence} from 'framer-motion'
+import {FaTelegramPlane, FaWhatsapp, FaUserCircle} from 'react-icons/fa'
 import AuthModal from '../AuthModal/AuthModal'
 import useAuthGuard from '@/hooks/useAuthGuard'
 
-const Navbar = ({ isAuthenticated, user }) => {
-  const [menuOpen, setMenuOpen] = useState(false)
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
-  const [showNavbar, setShowNavbar] = useState(window.innerWidth <= 768)
-  const [showAuthModal, setShowAuthModal] = useState(false)
-  const navigate = useNavigate()
+const Navbar = ({isAuthenticated, user}) => {
+    const [menuOpen, setMenuOpen] = useState(false)
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
+    const [showNavbar, setShowNavbar] = useState(window.innerWidth <= 768)
+    const [showAuthModal, setShowAuthModal] = useState(false)
+    const navigate = useNavigate()
+    const hideTimeoutRef = useRef(null)
+    const navbarRef = useRef(null) // Ref для навигационной панели
+    const [scrolledDown, setScrolledDown] = useState(false)
 
-  const guard = useAuthGuard(isAuthenticated, () => setShowAuthModal(true))
+    const guard = useAuthGuard(isAuthenticated, () => setShowAuthModal(true))
 
-  const handleProfileClick = guard(() => {
-    navigate('/profile') // редиректим в профиль
-  })
+    const handleProfileClick = guard(() => {
+        navigate('/profile')
+    })
 
-  useEffect(() => {
-    const handleResize = () => {
-      const mobile = window.innerWidth <= 768
-      setIsMobile(mobile)
-      setMenuOpen(false)
-      if (!mobile) setShowNavbar(false)
-      else setShowNavbar(true)
-    }
+    useEffect(() => {
+        const handleResize = () => {
+            const mobile = window.innerWidth <= 768
+            setIsMobile(mobile)
+            setMenuOpen(false)
+            if (!mobile) setShowNavbar(false)
+            else setShowNavbar(true)
+        }
 
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
+        window.addEventListener('resize', handleResize)
+        return () => window.removeEventListener('resize', handleResize)
+    }, [])
 
-  useEffect(() => {
-    if (!isMobile) {
-      const handleScroll = () => {
-        setShowNavbar(window.scrollY > window.innerHeight - 100)
-      }
+    useEffect(() => {
+        if (!isMobile) {
+            const handleScroll = () => {
+                const shouldShowNavbar = window.scrollY > window.innerHeight - 100
+                setShowNavbar(shouldShowNavbar)
+                setScrolledDown(shouldShowNavbar)
+            }
 
-      window.addEventListener('scroll', handleScroll)
-      return () => window.removeEventListener('scroll', handleScroll)
-    } else {
-      setShowNavbar(true)
-    }
-  }, [isMobile])
+            window.addEventListener('scroll', handleScroll)
+            return () => window.removeEventListener('scroll', handleScroll)
+        } else {
+            setShowNavbar(true)
+        }
+    }, [isMobile])
 
-  return (
-    <>
-      <nav className={`${classes.navbar} ${!isMobile && !showNavbar ? classes.hidden : classes.visible}`}>
-        <div className={classes.logo}>🏠 Realty</div>
+    // === NEW: Показ при наведении мыши на верх ===
+    useEffect(() => {
+        if (!isMobile) {
+            const handleMouseMove = (e) => {
+                const y = e.clientY;
+                if (y <= 3) {
+                    setShowNavbar(true);
+                }
+            };
 
-        <div className={classes.centerSection}>
-          {!isMobile && (
-            <div className={classes.contacts}>
-              <a href="tel:+79999999999">+7 (999) 999 99-99</a>
-              <a href="mailto:info@realty.ru">info@realty.ru</a>
-              <a href="#"><FaTelegramPlane className={classes.icon} /></a>
-              <a href="#"><FaWhatsapp className={classes.icon} /></a>
-            </div>
-          )}
-        </div>
+            const handleMouseLeave = () => {
+                if (!scrolledDown) {
+                    hideTimeoutRef.current = setTimeout(() => {
+                        setShowNavbar(false);
+                    }, 500); // 1.5 секунды
+                }
+            };
 
-        {isMobile && (
-          <button className={classes.burger} onClick={() => setMenuOpen(!menuOpen)}>
-            ☰
-          </button>
-        )}
+            const handleMouseEnter = () => {
+                if (hideTimeoutRef.current) {
+                    clearTimeout(hideTimeoutRef.current);
+                    hideTimeoutRef.current = null;
+                }
+            };
 
-        <AnimatePresence>
-          {(menuOpen || !isMobile) && (
-            <motion.ul
-              className={`${classes.navLinks} ${isMobile && menuOpen ? classes.open : ''}`}
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.2 }}
+            window.addEventListener('mousemove', handleMouseMove);
+            const navbarEl = navbarRef.current;
+
+            if (navbarEl) {
+                navbarEl.addEventListener('mouseleave', handleMouseLeave);
+                navbarEl.addEventListener('mouseenter', handleMouseEnter);
+            }
+
+            return () => {
+                window.removeEventListener('mousemove', handleMouseMove);
+                if (navbarEl) {
+                    navbarEl.removeEventListener('mouseleave', handleMouseLeave);
+                    navbarEl.removeEventListener('mouseenter', handleMouseEnter);
+                }
+                clearTimeout(hideTimeoutRef.current);
+            };
+        }
+    }, [isMobile, scrolledDown]);
+
+
+    return (
+        <>
+            <nav
+                className={`${classes.navbar} ${!isMobile && !showNavbar ? classes.hidden : classes.visible}`}
+                ref={navbarRef}
             >
-              {isMobile && (
-                <li className={classes.profileMobile} onClick={handleProfileClick}>
-                  <FaUserCircle className={classes.icon} size={24} />
-                </li>
-              )}
+                <div className={classes.logo}>🏠 Realty</div>
 
-              <li><Link to="/" onClick={() => setMenuOpen(false)}>Главная</Link></li>
-              <li><a href="#calculator" onClick={() => setMenuOpen(false)}>Калькулятор</a></li>
-              <li><Link to="/about" onClick={() => setMenuOpen(false)}>О нас</Link></li>
-              <li><Link to="/listings" onClick={() => setMenuOpen(false)}>База квартир</Link></li>
-              <li><a href="#contacts">Контакты</a></li>
+                <div className={classes.centerSection}>
+                    {!isMobile && (
+                        <div className={classes.contacts}>
+                            <a href="tel:+79999999999">+7 (999) 999 99-99</a>
+                            <a href="mailto:info@realty.ru">info@realty.ru</a>
+                            <a href="#"><FaTelegramPlane className={classes.icon}/></a>
+                            <a href="#"><FaWhatsapp className={classes.icon}/></a>
+                        </div>
+                    )}
+                </div>
 
-              {!isMobile && (
-                <li className={classes.profileDesktop} onClick={handleProfileClick}>
-                  <FaUserCircle className={classes.icon} size={24} />
-                </li>
-              )}
+                {isMobile && (
+                    <button className={classes.burger} onClick={() => setMenuOpen(!menuOpen)}>
+                        ☰
+                    </button>
+                )}
 
-              {isMobile && (
-                <>
-                  <li><a href="tel:+79999999999">+7 (999) 999 99-99</a></li>
-                  <li><a href="mailto:info@realty.ru">info@realty.ru</a></li>
-                  <li className={classes.iconsMobile}>
-                    <a href="#"><FaTelegramPlane className={classes.icon} /></a>
-                    <a href="#"><FaWhatsapp className={classes.icon} /></a>
-                  </li>
-                </>
-              )}
-            </motion.ul>
-          )}
-        </AnimatePresence>
-      </nav>
+                <AnimatePresence>
+                    {(menuOpen || !isMobile) && (
+                        <motion.ul
+                            className={`${classes.navLinks} ${isMobile && menuOpen ? classes.open : ''}`}
+                            initial={{opacity: 0, y: -10}}
+                            animate={{opacity: 1, y: 0}}
+                            exit={{opacity: 0, y: -10}}
+                            transition={{duration: 0.3, ease: "easeInOut"}}
+                        >
+                            {isMobile && (
+                                <li className={classes.profileMobile} onClick={handleProfileClick}>
+                                    <FaUserCircle className={classes.icon} size={24}/>
+                                </li>
+                            )}
 
-      {showAuthModal && <AuthModal onClose={() => setShowAuthModal(false)} />}
-    </>
-  )
+                            <li><Link to="/" onClick={() => setMenuOpen(false)}>Главная</Link></li>
+                            <li><a href="#calculator" onClick={() => setMenuOpen(false)}>Калькулятор</a></li>
+                            <li><Link to="/about" onClick={() => setMenuOpen(false)}>О нас</Link></li>
+                            <li><Link to="/listings" onClick={() => setMenuOpen(false)}>База квартир</Link></li>
+                            <li><a href="#contacts">Контакты</a></li>
+
+                            {!isMobile && (
+                                <li className={classes.profileDesktop} onClick={handleProfileClick}>
+                                    <FaUserCircle className={classes.icon} size={24}/>
+                                </li>
+                            )}
+
+                            {isMobile && (
+                                <>
+                                    <li><a href="tel:+79999999999">+7 (999) 999 99-99</a></li>
+                                    <li><a href="mailto:info@realty.ru">info@realty.ru</a></li>
+                                    <li className={classes.iconsMobile}>
+                                        <a href="#"><FaTelegramPlane className={classes.icon}/></a>
+                                        <a href="#"><FaWhatsapp className={classes.icon}/></a>
+                                    </li>
+                                </>
+                            )}
+                        </motion.ul>
+                    )}
+                </AnimatePresence>
+            </nav>
+
+            {showAuthModal && <AuthModal onClose={() => setShowAuthModal(false)}/>}
+        </>
+    )
 }
 
 export default Navbar
