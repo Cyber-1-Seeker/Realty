@@ -1,76 +1,104 @@
-import { useState } from 'react';
+import {useState, useEffect} from 'react';
 import styles from './UrgentSellForm.module.css';
 import axios from 'axios';
+import {getCSRFTokenFromCookie} from '@/utils/api/csrf.js'; // если уже есть
+import {API_PUBLIC} from '@/utils/api/axiosPublic.js'; // axios instance с baseURL и т.д.
 
-const UrgentSellForm = ({ onClose }) => {
-  const [formData, setFormData] = useState({
-    name: '',
-    phone: '',
-    address: '',
-    comment: '',
-  });
+const UrgentSellForm = ({onClose}) => {
+    const [formData, setFormData] = useState({
+        name: '',
+        phone: '',
+        nickname: '', // для honeypot
+    });
+    const [loading, setLoading] = useState(false);
+    const [success, setSuccess] = useState(false);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+    // Запрашиваем CSRF при монтировании
+    useEffect(() => {
+        API_PUBLIC.get('/api/accounts/csrf/');
+    }, []);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+    const handleChange = (e) => {
+        const {name, value} = e.target;
+        setFormData((prev) => ({...prev, [name]: value}));
+    };
 
-    try {
-      // пока заглушка отправки, потом можно подключить API
-      console.log('Заявка отправлена:', formData);
-      alert('Заявка успешно отправлена!');
-      onClose();
-    } catch (error) {
-      console.error('Ошибка при отправке заявки:', error);
-      alert('Ошибка отправки.');
-    }
-  };
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
-  return (
-    <form onSubmit={handleSubmit} className={styles.form}>
-      <h2>Срочная продажа квартиры</h2>
+        if (!formData.name || !formData.phone) {
+            alert('Пожалуйста, заполните имя и телефон');
+            return;
+        }
 
-      <input
-        type="text"
-        name="name"
-        placeholder="Ваше имя"
-        value={formData.name}
-        onChange={handleChange}
-        required
-      />
+        setLoading(true);
+        try {
+            await API_PUBLIC.post(
+                '/api/applications/applications/',
+                {
+                    name: formData.name,
+                    phone: formData.phone,
+                    comment: 'Срочная продажа',
+                    nickname: formData.nickname,
+                },
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCSRFTokenFromCookie(),
+                    },
+                    withCredentials: true,
+                }
+            );
 
-      <input
-        type="tel"
-        name="phone"
-        placeholder="Телефон"
-        value={formData.phone}
-        onChange={handleChange}
-        required
-      />
+            setSuccess(true);
+            alert('Заявка успешно отправлена!');
+            onClose();
+        } catch (error) {
+            console.error('Ошибка при отправке заявки:', error);
+            alert('Ошибка отправки.');
+        } finally {
+            setLoading(false);
+        }
+    };
 
-      <input
-        type="text"
-        name="address"
-        placeholder="Адрес квартиры"
-        value={formData.address}
-        onChange={handleChange}
-        required
-      />
+    return (
+        <form onSubmit={handleSubmit} className={styles.form}>
+            <h2>Срочная продажа квартиры</h2>
 
-      <textarea
-        name="comment"
-        placeholder="Комментарий (необязательно)"
-        value={formData.comment}
-        onChange={handleChange}
-        rows="4"
-      />
+            <input
+                type="text"
+                name="name"
+                placeholder="Ваше имя"
+                value={formData.name}
+                onChange={handleChange}
+                required
+            />
 
-      <button type="submit">Отправить заявку</button>
-    </form>
-  );
+            <input
+                type="tel"
+                name="phone"
+                placeholder="Телефон"
+                value={formData.phone}
+                onChange={handleChange}
+                required
+            />
+
+            {/* Honeypot field (скрытый) */}
+            <input
+                type="text"
+                name="nickname"
+                style={{display: 'none'}}
+                value={formData.nickname}
+                onChange={handleChange}
+                autoComplete="off"
+                tabIndex="-1"
+            />
+
+            <button type="submit" disabled={loading}>
+                {loading ? 'Отправка...' : 'Отправить заявку'}
+            </button>
+        </form>
+    );
 };
 
 export default UrgentSellForm;

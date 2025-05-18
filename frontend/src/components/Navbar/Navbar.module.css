@@ -82,6 +82,7 @@
 .visible {
     opacity: 1;
     transform: translateY(0);
+    transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .hidden {
@@ -94,6 +95,7 @@
     right: 0;
     height: 0;
     overflow: hidden;
+    transition: opacity 0.9s ease, transform 0.9s ease;
 }
 
 .profileDesktop {

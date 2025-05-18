@@ -22,16 +22,24 @@ const AddListingForm = ({onClose}) => {
         floor: '',
         rooms: '',
         area: '',
-        image: null,
+        images: null,
     });
 
     const handleChange = (e) => {
         const {name, value, files} = e.target;
-        setFormData({
-            ...formData,
-            [name]: files ? files[0] : value,
-        });
+        if (name === 'images') {
+            setFormData({
+                ...formData,
+                [name]: files, // FileList
+            });
+        } else {
+            setFormData({
+                ...formData,
+                [name]: value,
+            });
+        }
     };
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -44,8 +52,15 @@ const AddListingForm = ({onClose}) => {
 
         const payload = new FormData();
         for (let key in formData) {
-            payload.append(key, formData[key]);
+            if (key === 'images') {
+                for (let i = 0; i < formData.images.length; i++) {
+                    payload.append('images', formData.images[i]);
+                }
+            } else {
+                payload.append(key, formData[key]);
+            }
         }
+
 
         try {
             const csrfToken = getCSRFTokenFromCookie();
@@ -130,9 +145,10 @@ const AddListingForm = ({onClose}) => {
 
             <input
                 type="file"
-                name="image"
+                name="images"
                 accept="image/*"
                 onChange={handleChange}
+                multiple
             />
 
             <button type="submit">Добавить квартиру</button>

@@ -8,6 +8,7 @@ import ListingsPage from "./components/pages/Listings/ListingsPage/ListingsPage.
 import AddListingForm from "@/components/pages/Listings/ListingsPage/AddListingForm.jsx"
 import ProfilePage from "@/components/pages/Profile/ProfilePage.jsx";
 import AdminLayout from "@/components/pages/AdminPanel/AdminLayout.jsx";
+import ListingDetails from "@/components/pages/Listings/ListingDetails.jsx";
 
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -48,6 +49,7 @@ function App() {
                     <Route path="/about" element={<About/>}/>
                     <Route path="/listings" element={<ListingsPage isAuthenticated={isAuthenticated}/>}/>
                     <Route path="/listings/add" element={<AddListingForm isAuthenticated={isAuthenticated}/>}/>
+                    <Route path="/listings/:id" element={<ListingDetails/>}/>
                     <Route path="/profile" element={<ProfilePage/>}/>
                 </Route>
             </Routes>
