@@ -1,7 +1,10 @@
+from django.core.cache import cache
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 from .models import CustomUser, PhoneConfirmation
 import random
 import uuid
+import time
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -34,26 +37,52 @@ class PhoneConfirmationRequestSerializer(serializers.Serializer):
         return value
 
     def create(self, validated_data):
+        phone = validated_data["phone"]
+        ip = self.context['request'].META.get('REMOTE_ADDR', '')
+
+        phone_minute_key = f"sms_rate:{phone}:1min"
+        phone_hour_key = f"sms_rate:{phone}:hour"
+        ip_hour_key = f"sms_rate:ip:{ip}:hour"
+
+        # Проверка лимита в минуту
+        if cache.get(phone_minute_key):
+            raise ValidationError("Можно отправлять код только раз в минуту")
+
+        # Проверка лимита 5 в час по номеру
+        phone_hour_count = cache.get(phone_hour_key) or 0
+        if phone_hour_count >= 5:
+            raise ValidationError("Превышен лимит отправок кода на этот номер")
+
+        # Проверка лимита 5 в час по IP
+        ip_hour_count = cache.get(ip_hour_key) or 0
+        if ip_hour_count >= 5:
+            raise ValidationError("Превышен лимит отправок с этого IP")
+
+        # Всё ок — отправляем
         code = str(random.randint(1000, 9999))
-        print(code)
         token = uuid.uuid4()
 
         confirmation = PhoneConfirmation.objects.create(
             token=token,
-            phone=validated_data["phone"],
+            phone=phone,
             code=code,
             email=validated_data["email"],
             first_name=validated_data["first_name"],
         )
 
-        # Отправка SMS (если используешь)
+        # Отправка SMS
         import requests
         requests.get("https://sms.ru/sms/send", params={
             "api_id": "ТВОЙ_API_КЛЮЧ",
-            "to": validated_data["phone"],
+            "to": phone,
             "msg": f"Код подтверждения: {code}",
             "json": 1
         })
+
+        # Ставим флаги в кеш
+        cache.set(phone_minute_key, True, timeout=60)  # 1 минута
+        cache.set(phone_hour_key, phone_hour_count + 1, timeout=3600)
+        cache.set(ip_hour_key, ip_hour_count + 1, timeout=3600)
 
         return confirmation
 
@@ -91,4 +120,19 @@ class PhoneCodeVerificationSerializer(serializers.Serializer):
 class UserListSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['id', 'first_name', 'email', 'phone_number', 'is_active', 'is_staff']
+        fields = ['id', 'first_name', 'email', 'phone_number', 'is_active', 'is_staff', 'role']
+        read_only_fields = ['is_staff', 'email', 'phone_number']
+
+    def update(self, instance, validated_data):
+        request = self.context.get('request')
+        if 'role' in validated_data:
+            if request and request.user.role != 'admin':
+                raise serializers.ValidationError("Вы не можете менять роль пользователей")
+            instance.role = validated_data['role']
+        if 'is_active' in validated_data:
+            instance.is_active = validated_data['is_active']
+        instance.save()
+        return instance
+
+
+

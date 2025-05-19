@@ -113,6 +113,14 @@ REST_FRAMEWORK = {
     ]
 }
 
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",  # или Redis если хочешь
+        "LOCATION": "rate-limit-cache",
+    }
+}
+
+
 # === CORS и CSRF ===
 
 CORS_ALLOWED_ORIGINS = ["http://localhost:5173"]
