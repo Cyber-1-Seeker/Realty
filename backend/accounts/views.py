@@ -90,4 +90,4 @@ class GetCSRFToken(APIView):
 class UserViewSet(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all().order_by('-date_joined')
     serializer_class = UserListSerializer
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAuthenticated]

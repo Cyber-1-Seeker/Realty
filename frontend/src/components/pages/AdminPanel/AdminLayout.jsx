@@ -12,6 +12,7 @@ import Requests from './Requests';
 import Listings from './Listings';
 import Analytics from './Analytics';
 import Users from './Users';
+import Roles from './Roles.jsx';
 
 const {Header, Sider, Content} = Layout;
 const {useBreakpoint} = Grid;
@@ -31,6 +32,8 @@ export default function AdminLayout() {
                 return <Analytics/>;
             case 'users':
                 return <Users/>;
+            case 'roles':
+                return <Roles/>;
             default:
                 return <Requests/>;
         }
@@ -40,7 +43,8 @@ export default function AdminLayout() {
         {key: 'requests', icon: <FileTextOutlined/>, label: 'Заявки'},
         {key: 'listings', icon: <HomeOutlined/>, label: 'Объявления'},
         {key: 'analytics', icon: <BarChartOutlined/>, label: 'Аналитика'},
-        {key: 'users', icon: <UserOutlined/>, label: 'Пользователи'}
+        {key: 'users', icon: <UserOutlined/>, label: 'Пользователи'},
+        {key: 'roles', icon: <UserOutlined/>, label: 'Роли'},
     ];
 
     return (
