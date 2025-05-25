@@ -1,91 +1,95 @@
 .servicesWrapper {
-    padding: 100px 20px;
+    padding: 60px 20px;
     display: flex;
     justify-content: center;
 }
 
-
 .servicesBox {
     background-color: #ffffffee;
-    padding: 80px 60px; /* увеличили */
+    padding: 40px 20px;
     border-radius: 24px;
     box-shadow: 0 10px 50px rgba(0, 0, 0, 0.06);
-    max-width: 1400px; /* шире */
+    max-width: 1400px;
     width: 100%;
     text-align: center;
 }
 
 .servicesBox h2 {
-    font-size: 42px; /* крупнее */
+    font-size: 32px;
     color: #1e3a8a;
-    margin-bottom: 50px;
+    margin-bottom: 40px;
 }
 
 .cards {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 40px; /* больше расстояние между карточками */
+    gap: 30px;
 }
 
 .card {
     background-color: white;
     border-radius: 24px;
-    padding: 40px 30px; /* больше внутреннее пространство */
+    padding: 30px 20px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
     text-align: center;
     transition: transform 0.3s ease;
 }
 
-.card:hover {
-    transform: translateY(-6px);
+/* Мобильная адаптация */
+@media (max-width: 1200px) {
+    .cards {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 25px;
+    }
+
+    .servicesBox {
+        padding: 60px 30px;
+    }
 }
 
-.servicesBox {
-    background-color: #ffffffee;
-    padding: 80px 60px; /* увеличили */
-    border-radius: 24px;
-    box-shadow: 0 10px 50px rgba(0, 0, 0, 0.06);
-    max-width: 1400px; /* шире */
-    width: 100%;
-    text-align: center;
+@media (max-width: 768px) {
+    .cards {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    .servicesBox {
+        padding: 40px 15px;
+        border-radius: 16px;
+    }
+
+    .servicesBox h2 {
+        font-size: 28px;
+        margin-bottom: 30px;
+    }
+
+    .card {
+        padding: 25px 15px;
+    }
+
+    .icon {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 20px;
+    }
+
+    .card h3 {
+        font-size: 20px;
+    }
+
+    .card p {
+        font-size: 15px;
+    }
 }
 
-.servicesBox h2 {
-    font-size: 42px; /* крупнее */
-    color: #1e3a8a;
-    margin-bottom: 50px;
-}
+@media (max-width: 480px) {
+    .servicesWrapper {
+        padding: 40px 10px;
+    }
 
-.cards {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 40px; /* больше расстояние между карточками */
+    .servicesBox h2 {
+        font-size: 24px;
+    }
 }
-
-.card {
-    background-color: white;
-    border-radius: 24px;
-    padding: 40px 30px; /* больше внутреннее пространство */
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-    text-align: center;
-    transition: transform 0.3s ease;
-}
-
-.icon {
-    width: 120px; /* увеличено с 64 */
-    height: 120px;
-    margin-bottom: 30px;
-    object-fit: contain;
-}
-
-.card h3 {
-    font-size: 22px; /* крупнее заголовок */
-    margin-bottom: 12px;
-    color: #111827;
-}
-
-.card p {
-    font-size: 17px; /* крупнее описание */
-    color: #4b5563;
-}
-

@@ -8,6 +8,7 @@ env_path = BASE_DIR / '.env'
 load_dotenv(dotenv_path=env_path)
 
 BOT_TOKEN = os.getenv('BOT_TOKEN')
+WEBHOOK_TOKEN = os.getenv('WEBHOOK_TOKEN')
 ADMIN_CHAT_ID = int(os.getenv('ADMIN_CHAT_ID'))
 API_URL = os.getenv('API_URL')
 

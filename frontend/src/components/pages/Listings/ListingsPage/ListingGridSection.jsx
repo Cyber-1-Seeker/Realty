@@ -10,7 +10,7 @@ const ListingGridSection = ({listings}) => {
                     <div className={styles.imageWrapper}>
                         {listing.images && listing.images.length > 0 ? (
                             <img
-                                src={`http://127.0.0.1:8000${listing.images[0].image}`}
+                                src={listing.images[0].image}
                                 alt={listing.address}
                                 className={styles.image}
                             />

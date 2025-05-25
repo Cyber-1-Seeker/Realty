@@ -12,6 +12,7 @@ from datetime import date
 from .serializers import UserListSerializer
 from .serializers import PhoneConfirmationRequestSerializer, PhoneCodeVerificationSerializer
 from .models import CustomUser
+from .permissions import CanManageUsers, CanAssignRoles
 from monitoring.models import DailyStats
 
 User = get_user_model()
@@ -19,7 +20,7 @@ User = get_user_model()
 
 class RegisterView(APIView):
     def post(self, request):
-        serializer = PhoneConfirmationRequestSerializer(data=request.data)
+        serializer = PhoneConfirmationRequestSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
             obj = serializer.save()
             return Response({
@@ -90,4 +91,10 @@ class GetCSRFToken(APIView):
 class UserViewSet(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all().order_by('-date_joined')
     serializer_class = UserListSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [CanManageUsers]
+
+
+class UserRoleViewSet(viewsets.ModelViewSet):
+    queryset = CustomUser.objects.all().order_by('-date_joined')
+    serializer_class = UserListSerializer
+    permission_classes = [CanAssignRoles]

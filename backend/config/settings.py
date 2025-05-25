@@ -120,7 +120,6 @@ CACHES = {
     }
 }
 
-
 # === CORS и CSRF ===
 
 CORS_ALLOWED_ORIGINS = ["http://localhost:5173"]
@@ -137,6 +136,13 @@ SESSION_COOKIE_HTTPONLY = True
 
 CSRF_COOKIE_SAMESITE = "Lax"
 SESSION_COOKIE_SAMESITE = "Lax"
+
+# WEBHOOK
+WEBHOOK_TOKEN = os.getenv('WEBHOOK_TOKEN')
+
+# TELEGRAM BOT
+BOT_TOKEN = os.getenv('BOT_TOKEN')
+ADMIN_CHAT_ID = int(os.getenv('ADMIN_CHAT_ID'))
 
 # === Безопасность по окружению ===
 

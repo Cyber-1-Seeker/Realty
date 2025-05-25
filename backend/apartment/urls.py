@@ -1,8 +1,10 @@
-from django.urls import path
-from .views import ApartmentListAPIView, ApartmentDetailAPIView, toggle_active
+# urls.py
 
-urlpatterns = [
-    path('apartments/', ApartmentListAPIView.as_view(), name='apartments'),
-    path('apartments/<int:pk>/', ApartmentDetailAPIView.as_view(), name='apartment-detail'),
-    path('apartments/<int:pk>/toggle_active/', toggle_active),
-]
+from rest_framework.routers import DefaultRouter
+from .views import ApartmentViewSet, AdminApartmentViewSet
+
+router = DefaultRouter()
+router.register(r'apartments', ApartmentViewSet, basename='apartment')
+router.register(r'admin-apartments', AdminApartmentViewSet, basename='admin-apartment')
+
+urlpatterns = router.urls
