@@ -10,18 +10,23 @@ export default function Users() {
     const [filteredUsers, setFilteredUsers] = useState([]);
     const [loading, setLoading] = useState(false);
     const [search, setSearch] = useState('');
+    const [currentUserId, setCurrentUserId] = useState(null);
     const screens = useBreakpoint();
 
     const fetchUsers = async () => {
         setLoading(true);
         try {
-            const res = await API_AUTH.get('/api/accounts/users/');
-            const indexed = res.data.map((user, idx) => ({
+            const [usersRes, meRes] = await Promise.all([
+                API_AUTH.get('/api/accounts/users/'),
+                API_AUTH.get('/api/accounts/me/')
+            ]);
+            const indexed = usersRes.data.map((user, idx) => ({
                 ...user,
-                index: res.data.length - idx,
+                index: usersRes.data.length - idx,
             }));
             setUsers(indexed);
             setFilteredUsers(indexed);
+            setCurrentUserId(meRes.data.id);
         } catch {
             message.error('Ошибка при загрузке пользователей');
         } finally {
@@ -73,7 +78,11 @@ export default function Users() {
             dataIndex: 'is_active',
             key: 'is_active',
             render: (isActive, record) => (
-                <Switch checked={isActive} onChange={(val) => toggleActive(record.id, val)}/>
+                <Switch
+                    checked={isActive}
+                    onChange={(val) => toggleActive(record.id, val)}
+                    disabled={record.id === currentUserId}
+                />
             ),
         },
         {
@@ -85,8 +94,9 @@ export default function Users() {
                     onConfirm={() => deleteUser(record.id)}
                     okText="Да"
                     cancelText="Нет"
+                    disabled={record.id === currentUserId}
                 >
-                    <Button danger>Удалить</Button>
+                    <Button danger disabled={record.id === currentUserId}>Удалить</Button>
                 </Popconfirm>
             ),
         },

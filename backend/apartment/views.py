@@ -1,78 +1,57 @@
-from rest_framework.views import APIView
+from rest_framework import viewsets, status
 from rest_framework.response import Response
-from rest_framework import status
-from rest_framework.permissions import IsAuthenticated, AllowAny
-from rest_framework.generics import RetrieveAPIView
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.decorators import action
+from rest_framework.exceptions import PermissionDenied
 
-from .serializers import ApartmentSerializer
 from .models import Apartment, ApartmentImage
+from .serializers import ApartmentSerializer
+from accounts.permissions import CanEditPublishedApartments
 
 
-# Create your views here.
-
-
-class ApartmentListAPIView(APIView):
-    def get_permissions(self):
-        if self.request.method == 'POST':
-            return [IsAuthenticated()]  # Только авторизованным
-        return [AllowAny()]  # GET доступен всем
-
-    def get(self, request):
-        user = request.user
-        if user.is_authenticated and user.is_staff:
-            apartments = Apartment.objects.all()
-        else:
-            apartments = Apartment.objects.filter(is_active=True)
-
-        serializer = ApartmentSerializer(apartments, many=True)
-        return Response(serializer.data)
-
-    def post(self, request):
-        serializer = ApartmentSerializer(data=request.data)
-        if serializer.is_valid():
-            apartment = serializer.save(owner=request.user)
-
-            # Сохраняем изображения
-            for image in request.FILES.getlist('images'):
-                ApartmentImage.objects.create(apartment=apartment, image=image)
-
-            return Response(ApartmentSerializer(apartment).data, status=status.HTTP_201_CREATED)
-        print("ERRORS:", serializer.errors)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class ApartmentDetailAPIView(RetrieveAPIView):
+class ApartmentViewSet(viewsets.ModelViewSet):
     queryset = Apartment.objects.all()
     serializer_class = ApartmentSerializer
-    permission_classes = [AllowAny]
 
-    def get_object(self):
-        apartment = super().get_object()
+    def get_permissions(self):
+        if self.action == 'create':
+            return [IsAuthenticated()]
+        return [AllowAny()]
+
+    def get_queryset(self):
+        return Apartment.objects.filter(is_active=True)
+
+    def perform_create(self, serializer):
+        apartment = serializer.save(owner=self.request.user)
+        for image in self.request.FILES.getlist('images'):
+            ApartmentImage.objects.create(apartment=apartment, image=image)
+
+
+class AdminApartmentViewSet(viewsets.ModelViewSet):
+    serializer_class = ApartmentSerializer
+    permission_classes = [CanEditPublishedApartments]
+
+    def get_queryset(self):
         user = self.request.user
+        return Apartment.objects.all()
 
-        if apartment.is_active:
-            return apartment
+    def perform_destroy(self, instance):
+        instance.delete()
 
-        if user.is_authenticated and (user.is_staff or apartment.owner == user):
-            return apartment
+    @action(detail=True, methods=['patch'], permission_classes=[IsAuthenticated, CanEditPublishedApartments])
+    def set_active(self, request, pk=None):
+        try:
+            apartment = Apartment.objects.get(pk=pk)
+        except Apartment.DoesNotExist:
+            return Response({'error': 'Not found'}, status=404)
 
-        from rest_framework.exceptions import PermissionDenied
-        raise PermissionDenied("Недостаточно прав для просмотра этого объявления.")
+        if apartment.owner != request.user and request.user.role not in ['manager', 'admin']:
+            raise PermissionDenied("Вы не можете изменить статус этой квартиры.")
 
+        is_active = request.data.get('is_active')
+        if isinstance(is_active, bool):
+            apartment.is_active = is_active
+            apartment.save()
+            return Response({'status': 'updated', 'is_active': apartment.is_active})
 
-@api_view(['PATCH'])
-@permission_classes([IsAuthenticated])
-def toggle_active(request, pk):
-    try:
-        apartment = Apartment.objects.get(pk=pk, owner=request.user)
-    except Apartment.DoesNotExist:
-        return Response({'error': 'Not found'}, status=404)
-
-    is_active = request.data.get('is_active')
-    if isinstance(is_active, bool):
-        apartment.is_active = is_active
-        apartment.save()
-        return Response({'status': 'updated', 'is_active': apartment.is_active})
-
-    return Response({'error': 'Invalid data'}, status=400)
+        return Response({'error': 'Invalid data'}, status=400)

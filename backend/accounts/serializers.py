@@ -60,6 +60,7 @@ class PhoneConfirmationRequestSerializer(serializers.Serializer):
 
         # Всё ок — отправляем
         code = str(random.randint(1000, 9999))
+        print(code)
         token = uuid.uuid4()
 
         confirmation = PhoneConfirmation.objects.create(
@@ -133,6 +134,3 @@ class UserListSerializer(serializers.ModelSerializer):
             instance.is_active = validated_data['is_active']
         instance.save()
         return instance
-
-
-

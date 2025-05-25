@@ -34,23 +34,31 @@ const RegisterForm = ({switchToLogin}) => {
                 }
             );
 
-            // Проверяем успешность (2xx)
             if (response.status >= 200 && response.status < 300) {
                 setToken(response.data.token);
             }
         } catch (err) {
-            // Извлекаем ошибки с сервера, если они есть
             const data = err?.response?.data;
-            const detailedError =
-                data?.first_name?.[0] ||
-                data?.phone?.[0] ||
-                data?.email?.[0] ||
-                data?.non_field_errors?.[0] ||
-                data?.detail ||
-                'Ошибка регистрации';
 
-            setError(detailedError);
+            // Собираем все возможные ошибки в массив
+            let messages = [];
+
+            if (typeof data === 'string') {
+                messages.push(data); // например: "Можно отправлять код только раз в минуту"
+            } else if (typeof data === 'object') {
+                for (const key in data) {
+                    if (Array.isArray(data[key])) {
+                        messages.push(...data[key]); // ошибки по полям
+                    } else {
+                        messages.push(data[key]); // общие ошибки
+                    }
+                }
+            }
+
+            // Показываем первую ошибку (или все сразу, по желанию)
+            setError(messages[0] || 'Ошибка регистрации');
         }
+
     };
 
     // Если получили токен — показываем форму подтверждения

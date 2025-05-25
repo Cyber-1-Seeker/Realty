@@ -18,21 +18,21 @@ class IsAdmin(BasePermission):
 
 
 # Какой роли что можно сделать в админ панели
-class CanViewApplications(BasePermission): # Смотреть на заявки
+class CanViewApplications(BasePermission):  # Управление заявками и смотреть на мониторинг
     def has_permission(self, request, view):
         return request.user.is_authenticated and request.user.role in ['moderator', 'manager', 'admin']
 
 
-class CanManageUsers(BasePermission): # Управление пользователями
+class CanManageUsers(BasePermission):  # Управление пользователями
     def has_permission(self, request, view):
         return request.user.is_authenticated and request.user.role in ['manager', 'admin']
 
 
-class CanEditPublishedApartments(BasePermission): # Управление опубликованных квартир
+class CanEditPublishedApartments(BasePermission):  # Управление опубликованных квартир
     def has_permission(self, request, view):
-        return request.user.is_authenticated and request.user.role in ['manager', 'admin']
+        return request.user.is_authenticated and request.user.role in ['moderator', 'manager', 'admin']
 
 
-class CanAssignRoles(BasePermission): # Управление ролями других пользователей
+class CanAssignRoles(BasePermission):  # Управление ролями других пользователей
     def has_permission(self, request, view):
         return request.user.is_authenticated and request.user.role == 'admin'

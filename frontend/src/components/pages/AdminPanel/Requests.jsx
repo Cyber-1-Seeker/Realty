@@ -1,35 +1,48 @@
 import {useEffect, useState} from 'react';
-import {Table, Select, Button, Popconfirm, message} from 'antd';
+import {
+    Table,
+    Select,
+    Button,
+    Popconfirm,
+    message,
+    Input,
+    Row,
+    Col,
+    DatePicker
+} from 'antd';
 import {API_AUTH} from "@/utils/api/axiosWithAuth.js";
 import {Grid} from 'antd';
+import dayjs from 'dayjs';
 
 const {Option} = Select;
+const {RangePicker} = DatePicker;
 const {useBreakpoint} = Grid;
+
+const statusLabels = {
+    new: 'Новая',
+    in_progress: 'В процессе',
+    done: 'Завершена',
+};
 
 export default function Requests() {
     const [requests, setRequests] = useState([]);
+    const [filteredRequests, setFilteredRequests] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [search, setSearch] = useState('');
+    const [statusFilter, setStatusFilter] = useState('');
+    const [dateRange, setDateRange] = useState([]);
     const screens = useBreakpoint();
 
-    // Цвета и метки статуса
-    const statusLabels = {
-        new: 'Новая',
-        in_progress: 'В процессе',
-        done: 'Завершена',
-    };
-
-    // Загрузка заявок с сервера
     const fetchRequests = async () => {
         setLoading(true);
         try {
             const res = await API_AUTH.get('/api/applications/applications/');
-            // Добавляем индекс для стабильной нумерации
             const dataWithIndex = res.data.map((item, idx) => ({
                 ...item,
                 index: res.data.length - idx,
             }));
-
             setRequests(dataWithIndex);
+            setFilteredRequests(dataWithIndex);
         } catch {
             message.error('Ошибка при загрузке заявок');
         } finally {
@@ -37,7 +50,6 @@ export default function Requests() {
         }
     };
 
-    // Обновление статуса заявки
     const updateStatus = async (id, status) => {
         try {
             await API_AUTH.patch(`/api/applications/applications/${id}/`, {status});
@@ -48,7 +60,6 @@ export default function Requests() {
         }
     };
 
-    // Удаление заявки
     const deleteRequest = async (id) => {
         try {
             await API_AUTH.delete(`/api/applications/applications/${id}/`);
@@ -63,13 +74,30 @@ export default function Requests() {
         fetchRequests();
     }, []);
 
+    useEffect(() => {
+        const lowerSearch = search.toLowerCase();
+
+        const filtered = requests.filter(req => {
+            const matchSearch =
+                req.name?.toLowerCase().includes(lowerSearch) ||
+                req.phone?.toLowerCase().includes(lowerSearch);
+
+            const matchStatus = statusFilter ? req.status === statusFilter : true;
+
+            const matchDate =
+                dateRange.length === 2
+                    ? dayjs(req.created_at).isAfter(dateRange[0].startOf('day')) &&
+                    dayjs(req.created_at).isBefore(dateRange[1].endOf('day'))
+                    : true;
+
+            return matchSearch && matchStatus && matchDate;
+        });
+
+        setFilteredRequests(filtered);
+    }, [search, statusFilter, dateRange, requests]);
+
     const columns = [
-        {
-            title: '№',
-            dataIndex: 'index',
-            key: 'index',
-            width: 50,
-        },
+        {title: '№', dataIndex: 'index', key: 'index', width: 50},
         {title: 'Имя', dataIndex: 'name', key: 'name'},
         {title: 'Телефон', dataIndex: 'phone', key: 'phone'},
         {title: 'Комментарий', dataIndex: 'comment', key: 'comment'},
@@ -77,6 +105,7 @@ export default function Requests() {
             title: 'Дата',
             dataIndex: 'created_at',
             key: 'created_at',
+            sorter: (a, b) => new Date(a.created_at) - new Date(b.created_at),
             render: (date) => new Date(date).toLocaleString(),
         },
         {
@@ -85,7 +114,7 @@ export default function Requests() {
             key: 'status',
             render: (status, record) => (
                 <Select
-                    defaultValue={status}
+                    value={status}
                     style={{width: 150}}
                     onChange={(value) => updateStatus(record.id, value)}
                 >
@@ -114,9 +143,42 @@ export default function Requests() {
     return (
         <>
             <h1 style={{fontSize: 24, fontWeight: 'bold', marginBottom: 16}}>ЗАЯВКИ</h1>
+
+            <Row gutter={[16, 16]} style={{marginBottom: 16}}>
+                <Col xs={24} sm={12} md={8}>
+                    <Input
+                        placeholder="Поиск по имени или телефону"
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        allowClear
+                    />
+                </Col>
+                <Col xs={24} sm={12} md={8}>
+                    <Select
+                        placeholder="Фильтр по статусу"
+                        value={statusFilter || undefined}
+                        onChange={(value) => setStatusFilter(value)}
+                        allowClear
+                        style={{width: '100%'}}
+                    >
+                        {Object.entries(statusLabels).map(([value, label]) => (
+                            <Option key={value} value={value}>{label}</Option>
+                        ))}
+                    </Select>
+                </Col>
+                <Col xs={24} sm={24} md={8}>
+                    <RangePicker
+                        style={{width: '100%'}}
+                        value={dateRange}
+                        onChange={(dates) => setDateRange(dates || [])}
+                        allowClear
+                    />
+                </Col>
+            </Row>
+
             <Table
                 columns={columns}
-                dataSource={requests}
+                dataSource={filteredRequests}
                 rowKey="id"
                 loading={loading}
                 pagination={false}
