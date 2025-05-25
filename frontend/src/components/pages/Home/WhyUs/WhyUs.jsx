@@ -14,7 +14,7 @@ const reasons = [
         description: 'Оперативная оценка вашей недвижимости и аванс сразу.'
     },
     {
-        img: '/icons/WhyUs/whyus3',
+        img: '/icons/Home/whyus3.svg',
         title: 'Юридическая поддержка',
         description: 'Наши специалисты сопровождают сделку от начала до конца.'
     }
