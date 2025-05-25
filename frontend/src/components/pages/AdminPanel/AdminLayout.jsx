@@ -1,5 +1,6 @@
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {Layout, Menu, Grid, Button, Drawer} from 'antd';
-import {useState} from 'react';
 import {
     FileTextOutlined,
     HomeOutlined,
@@ -7,6 +8,7 @@ import {
     UserOutlined,
     MenuOutlined
 } from '@ant-design/icons';
+import {API_AUTH} from "@/utils/api/axiosWithAuth.js";
 
 import Requests from './Requests';
 import Listings from './Listings';
@@ -21,6 +23,35 @@ export default function AdminLayout() {
     const [selectedKey, setSelectedKey] = useState('requests');
     const [drawerVisible, setDrawerVisible] = useState(false);
     const screens = useBreakpoint();
+
+    const [accessGranted, setAccessGranted] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const checkAdminAccess = async () => {
+            try {
+                const response = await API_AUTH.get('/api/accounts/admin/check-access/');
+                if (response.data) {
+                    setAccessGranted(true);
+                }
+            } catch (error) {
+                navigate('/'); // Перенаправляем на главную если нет доступа
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        checkAdminAccess();
+    }, [navigate]);
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    if (!accessGranted) {
+        return null; // Или компонент с сообщением об ошибке
+    }
 
     const renderContent = () => {
         switch (selectedKey) {

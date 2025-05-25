@@ -12,7 +12,7 @@ from datetime import date
 from .serializers import UserListSerializer
 from .serializers import PhoneConfirmationRequestSerializer, PhoneCodeVerificationSerializer
 from .models import CustomUser
-from .permissions import CanManageUsers, CanAssignRoles
+from .permissions import CanManageUsers, CanAssignRoles, CanViewApplications
 from monitoring.models import DailyStats
 
 User = get_user_model()
@@ -98,3 +98,19 @@ class UserRoleViewSet(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all().order_by('-date_joined')
     serializer_class = UserListSerializer
     permission_classes = [CanAssignRoles]
+
+
+class AdminPanelAccess(APIView):
+    permission_classes = [CanViewApplications]
+
+    def get(self, request):
+        # Возвращаем данные для всех вкладок админки
+        return Response({
+            "permissions": {
+                "requests": True,
+                "listings": True,
+                "analytics": True,
+                "users": True,
+                "roles": True
+            }
+        })

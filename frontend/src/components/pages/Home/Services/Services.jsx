@@ -4,22 +4,22 @@ import { motion } from 'framer-motion';
 
 const services = [
   {
-    img: '/icons/Home/buy.svg',
+    img: '/icons/Home/services.svg',
     title: 'Срочный выкуп',
     description: 'Покупаем квартиру за 1 день. Аванс сразу.'
   },
   {
-    img: '/icons/Home/exchange.svg',
+    img: '/icons/Home/services2.svg',
     title: 'Альтернатива',
     description: 'Обмен квартиры с доплатой или без.'
   },
   {
-    img: '/icons/Home/legal.svg',
+    img: '/icons/Home/services3.svg',
     title: 'Юрист бесплатно',
     description: 'Проверим документы и решим любые вопросы.'
   },
   {
-    img: '/icons/Home/share.svg',
+    img: '/icons/Home/services4.svg',
     title: 'Выкуп долей',
     description: 'Покупаем комнаты и доли по рыночной цене.'
   }

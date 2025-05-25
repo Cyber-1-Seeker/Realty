@@ -82,7 +82,7 @@
 .visible {
     opacity: 1;
     transform: translateY(0);
-    transition: opacity 0.3s ease, transform 0.3s ease;
+    transition: opacity 0.4s ease, transform 0.4s ease; /* Одинаковая скорость открытия */
 }
 
 .hidden {
@@ -95,7 +95,7 @@
     right: 0;
     height: 0;
     overflow: hidden;
-    transition: opacity 0.9s ease, transform 0.9s ease;
+    transition: opacity 0.6s ease, transform 0.6s ease; /* Одинаковая скорость закрытия */
 }
 
 .profileDesktop {
@@ -143,5 +143,38 @@
         display: flex;
         justify-content: flex-end;
         margin-bottom: 10px;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 999px) {
+    .navbar {
+        padding: 10px 15px;
+    }
+
+    .contacts {
+        margin-left: 30px;
+        gap: 15px;
+    }
+
+    .contacts a {
+        font-size: 13px;
+    }
+
+    .navLinks {
+        gap: 15px;
+    }
+
+    .navLinks li a {
+        font-size: 14px;
+    }
+
+    .logo {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 999px) {
+    .navLinks {
+        gap: 12px;
     }
 }

@@ -36,13 +36,10 @@ const Home = () => {
             <section className="nextSection">
                 <CallToAction/>
             </section>
-            <div className={styles.gradientTop}></div>
-            <div className={styles.gradientBottom}></div>
             <section className="nextSection">
                 <WhyUs/>
             </section>
-            <div className={styles.gradientTop}></div>
-            <div className={styles.gradientBottom}></div>
+
             <section className="nextSection">
                 <ProcessSteps/>
             </section>

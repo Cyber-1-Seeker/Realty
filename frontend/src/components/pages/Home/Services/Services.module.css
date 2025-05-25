@@ -32,7 +32,12 @@
     padding: 30px 20px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
     text-align: center;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Добавляем transition для плавности */
+}
+
+.card:hover {
+    transform: translateY(-8px); /* Поднимаем карточку при наведении */
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15); /* Усиливаем тень при наведении */
 }
 
 /* Мобильная адаптация */
@@ -50,7 +55,7 @@
 @media (max-width: 768px) {
     .cards {
         grid-template-columns: 1fr;
-        gap: 20px;
+        gap: 30px; /* Увеличиваем отступ между карточками */
         max-width: 500px;
         margin: 0 auto;
     }
@@ -66,21 +71,23 @@
     }
 
     .card {
-        padding: 25px 15px;
+        padding: 30px 20px; /* Увеличиваем внутренний отступ карточки */
     }
 
     .icon {
-        width: 80px;
-        height: 80px;
-        margin-bottom: 20px;
+        width: 120px; /* Уменьшаем размер иконки */
+        height: 120px; /* Уменьшаем размер иконки */
+        margin-bottom: 15px; /* Уменьшаем отступ до текста */
     }
 
     .card h3 {
-        font-size: 20px;
+        font-size: 22px; /* Увеличиваем размер заголовка */
+        margin-bottom: 10px; /* Уменьшаем отступ до параграфа */
     }
 
     .card p {
-        font-size: 15px;
+        font-size: 16px; /* Увеличиваем размер параграфа */
+        line-height: 1.5; /* Увеличиваем межстрочный интервал */
     }
 }
 

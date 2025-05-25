@@ -1,61 +1,118 @@
 .whyUs {
-    padding: 100px 20px;
-    display: flex;
-    justify-content: center;
+    padding: 120px 20px;
+    background: linear-gradient(135deg, #f8f5f0 0%, #f2e8df 100%); /* Мягкий градиентный фон */
+    overflow: hidden;
+    margin-bottom: 0;
+    margin-top: 0;
+    position: relative; /* Необходимо для позиционирования псевдоэлемента */
+}
+
+/* Добавляем псевдоэлемент для тени */
+.whyUs::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 10px; /* Высота тени */
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(255, 255, 255, 0)); /* Градиент от тени к прозрачному */
+    pointer-events: none; /* Чтобы не мешать взаимодействию с контентом */
 }
 
 .reasons {
-    background-color: #ffffffee;
-    padding: 80px 60px;
-    border-radius: 24px;
-    box-shadow: 0 10px 50px rgba(0, 0, 0, 0.06);
-    max-width: 1400px;
-    width: 100%;
+    max-width: 1500px;
+    margin: 0 auto;
     text-align: center;
+}
+
+.hyText {
+    font-size: 52px; /* Увеличенный размер текста */
+    color: #374151; /* Более темный цвет текста */
+    margin-top: 120px;
+    margin-bottom: 80px;
+    font-weight: 700;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* Тень для текста */
 }
 
 .reasonsGrid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 40px;
-}
-
-.hyText {
-    font-size: 40px;
-    margin-bottom: 60px;
-    color: #1e40af;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    gap: 50px;
+    justify-items: center;
 }
 
 .reason {
-    background-color: white;
-    border-radius: 24px;
-    padding: 40px 30px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-    text-align: center;
-    transition: transform 0.3s ease;
+    background: #fff; /* Белый фон */
+    border-radius: 20px; /* Уменьшенный радиус скругления */
+    padding: 50px 35px; /* Уменьшенные отступы */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* Усиленная тень */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 100%;
+    max-width: 400px;
+    border: 1px solid #e5e7eb; /* Добавляем тонкую границу */
 }
 
 .reason:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+    transform: translateY(-8px); /* Меньший подъем при наведении */
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15); /* Усиленная тень при наведении */
+}
+
+.icon {
+    width: 170px; /* Увеличенный размер иконок */
+    height: 170px; /* Увеличенный размер иконок */
+    margin: 0 auto 30px; /* Уменьшенный отступ снизу */
+    display: block;
+    object-fit: contain;
+    filter: drop-shadow(0 6px 12px rgba(212, 175, 55, 0.35)); /* Усиленная тень для иконок */
 }
 
 .reason h3 {
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #111827;
+    font-size: 26px; /* Уменьшенный размер заголовка */
+    margin-bottom: 20px; /* Уменьшенный отступ снизу */
+    color: #1f2937; /* Более темный цвет заголовка */
+    font-weight: 600;
 }
 
 .reason p {
-    font-size: 17px;
+    font-size: 18px; /* Уменьшенный размер текста */
     color: #4b5563;
-    line-height: 1.6;
+    line-height: 1.6; /* Увеличенный интервал между строками */
 }
 
-/* Новое: стиль для иконок */
-.icon {
-    width: 60px;
-    height: 60px;
-    margin-bottom: 20px;
+/* Адаптивность */
+@media (max-width: 1024px) {
+    .reasonsGrid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 40px;
+    }
+
+    .icon {
+        width: 140px !important;
+        height: 140px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .reasonsGrid {
+        grid-template-columns: 1fr;
+        gap: 50px;
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    .hyText {
+        font-size: 40px;
+        padding: 0 20px;
+    }
+
+    .icon {
+        width: 120px !important;
+        height: 120px !important;
+    }
+
+    .reason {
+        padding: 40px 25px;
+        margin: 0 auto;
+    }
 }
