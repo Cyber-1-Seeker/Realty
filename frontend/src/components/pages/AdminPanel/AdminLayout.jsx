@@ -1,15 +1,17 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import {Layout, Menu, Grid, Button, Drawer} from 'antd';
+import {useEffect, useState} from 'react';
+import {useNavigate} from 'react-router-dom';
+import {Layout, Menu, Grid, Button, Drawer, Spin, message, Alert} from 'antd';
 import {
     FileTextOutlined,
     HomeOutlined,
     BarChartOutlined,
     UserOutlined,
-    MenuOutlined
+    MenuOutlined,
+    LoadingOutlined
 } from '@ant-design/icons';
 import {API_AUTH} from "@/utils/api/axiosWithAuth.js";
 
+// Импортируем компоненты
 import Requests from './Requests';
 import Listings from './Listings';
 import Analytics from './Analytics';
@@ -19,14 +21,32 @@ import Roles from './Roles.jsx';
 const {Header, Sider, Content} = Layout;
 const {useBreakpoint} = Grid;
 
+// Кастомная иконка для лоадера
+const antIcon = <LoadingOutlined style={{fontSize: 48}} spin/>;
+
 export default function AdminLayout() {
     const [selectedKey, setSelectedKey] = useState('requests');
     const [drawerVisible, setDrawerVisible] = useState(false);
     const screens = useBreakpoint();
-
     const [accessGranted, setAccessGranted] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const navigate = useNavigate();
+
+    // Обработчик для отображения ошибок
+// AdminLayout.jsx
+    const showError = (err) => {
+        const serverError = err.response?.data;
+        const errorMessage =
+            serverError?.detail ||
+            serverError?.non_field_errors?.[0] ||
+            serverError?.error ||
+            err.message ||
+            'Ошибка сервера';
+
+        message.error(errorMessage);
+        console.error('Детали ошибки:', serverError); // Для отладки
+    };
 
     useEffect(() => {
         const checkAdminAccess = async () => {
@@ -36,7 +56,8 @@ export default function AdminLayout() {
                     setAccessGranted(true);
                 }
             } catch (error) {
-                navigate('/'); // Перенаправляем на главную если нет доступа
+                setError(error);
+                navigate('/');
             } finally {
                 setLoading(false);
             }
@@ -45,29 +66,58 @@ export default function AdminLayout() {
         checkAdminAccess();
     }, [navigate]);
 
+    // Стилизованный лоадер
     if (loading) {
-        return <div>Loading...</div>;
+        return (
+            <div style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '100vh',
+                flexDirection: 'column',
+                gap: 20
+            }}>
+                <Spin indicator={antIcon}/>
+                <p style={{fontSize: 18, color: '#1890ff'}}>Загрузка админ-панели...</p>
+            </div>
+        );
+    }
+
+    // Компонент ошибки
+    if (error) {
+        return (
+            <div style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '100vh',
+                padding: 20
+            }}>
+                <Alert
+                    message="Ошибка доступа"
+                    description={error.response?.data?.detail || 'У вас нет прав доступа к админ-панели'}
+                    type="error"
+                    showIcon
+                    style={{maxWidth: 500}}
+                />
+            </div>
+        );
     }
 
     if (!accessGranted) {
-        return null; // Или компонент с сообщением об ошибке
+        return null;
     }
 
     const renderContent = () => {
-        switch (selectedKey) {
-            case 'requests':
-                return <Requests/>;
-            case 'listings':
-                return <Listings/>;
-            case 'analytics':
-                return <Analytics/>;
-            case 'users':
-                return <Users/>;
-            case 'roles':
-                return <Roles/>;
-            default:
-                return <Requests/>;
-        }
+        const components = {
+            'requests': <Requests onError={showError}/>,
+            'listings': <Listings onError={showError}/>,
+            'analytics': <Analytics onError={showError}/>,
+            'users': <Users onError={showError}/>,
+            'roles': <Roles onError={showError}/>
+        };
+
+        return components[selectedKey] || <Requests onError={showError}/>;
     };
 
     const menuItems = [
@@ -80,35 +130,28 @@ export default function AdminLayout() {
 
     return (
         <Layout style={{minHeight: '100vh'}}>
+            {/* Мобильное меню */}
             {!screens.md ? (
-                <>
-                    <Drawer
-                        title={
-                            <div style={{fontWeight: 'bold', fontSize: 18}}>
-                                АДМИН-ПАНЕЛЬ
-                            </div>
-                        }
-                        placement="left"
-                        onClose={() => setDrawerVisible(false)}
-                        open={drawerVisible}
-                        bodyStyle={{padding: 0}}
-                    >
-
-                        <Menu
-                            mode="inline"
-                            selectedKeys={[selectedKey]}
-                            onClick={({key}) => {
-                                setSelectedKey(key);
-                                setDrawerVisible(false);
-                            }}
-                            items={menuItems.map((item) => ({
-                                ...item,
-                                label: <span style={{fontSize: 16, padding: '6px 0'}}>{item.label}</span>,
-                            }))}
-                        />
-
-                    </Drawer>
-                </>
+                <Drawer
+                    title={<div style={{fontWeight: 'bold', fontSize: 18}}>АДМИН-ПАНЕЛЬ</div>}
+                    placement="left"
+                    onClose={() => setDrawerVisible(false)}
+                    open={drawerVisible}
+                    bodyStyle={{padding: 0}}
+                >
+                    <Menu
+                        mode="inline"
+                        selectedKeys={[selectedKey]}
+                        onClick={({key}) => {
+                            setSelectedKey(key);
+                            setDrawerVisible(false);
+                        }}
+                        items={menuItems.map((item) => ({
+                            ...item,
+                            label: <span style={{fontSize: 16, padding: '6px 0'}}>{item.label}</span>,
+                        }))}
+                    />
+                </Drawer>
             ) : (
                 <Sider breakpoint="md" collapsedWidth="0">
                     <div style={{color: 'white', fontWeight: 'bold', fontSize: 18, padding: 16}}>
@@ -130,20 +173,28 @@ export default function AdminLayout() {
                     display: 'flex',
                     justifyContent: 'space-between',
                     alignItems: 'center',
-                    padding: '0 16px'
+                    padding: '0 16px',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
                 }}>
                     {!screens.md && (
-                        <Button icon={<MenuOutlined/>} onClick={() => setDrawerVisible(true)}/>
+                        <Button
+                            icon={<MenuOutlined/>}
+                            onClick={() => setDrawerVisible(true)}
+                            style={{border: 'none', boxShadow: 'none'}}
+                        />
                     )}
-                    <a href="/logout">Выйти</a>
+                    <Button type="text" danger onClick={() => navigate('/logout')}>
+                        Выйти
+                    </Button>
                 </Header>
                 <Content
                     style={{
                         margin: '16px',
                         background: '#fff',
-                        padding: screens.xs ? 8 : 16,  // адаптивный padding
+                        padding: screens.xs ? 16 : 24,
                         borderRadius: 8,
-                        boxShadow: '0 0 8px rgba(0,0,0,0.05)',
+                        boxShadow: '0 2px 12px rgba(0,0,0,0.05)',
+                        minHeight: 'calc(100vh - 64px - 32px)'
                     }}
                 >
                     {renderContent()}
