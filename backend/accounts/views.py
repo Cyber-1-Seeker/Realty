@@ -12,7 +12,7 @@ from datetime import date
 from .serializers import UserListSerializer
 from .serializers import PhoneConfirmationRequestSerializer, PhoneCodeVerificationSerializer
 from .models import CustomUser
-from .permissions import CanManageUsers, CanAssignRoles, CanViewApplications
+from .permissions import CanAssignRoles, CanViewApplications, IsNotSelfOrReadOnly
 from monitoring.models import DailyStats
 
 User = get_user_model()
@@ -91,7 +91,20 @@ class GetCSRFToken(APIView):
 class UserViewSet(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all().order_by('-date_joined')
     serializer_class = UserListSerializer
-    permission_classes = [CanManageUsers]
+    permission_classes = [IsAdminUser, IsNotSelfOrReadOnly]  # Изменяем permissions
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+
+        # Дополнительная проверка (на всякий случай)
+        instance = self.get_object()
+        if instance == request.user:
+            return Response(
+                {"detail": "Нельзя удалить свой аккаунт"},  # ← Единый формат
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        return super().destroy(request, *args, **kwargs)
 
 
 class UserRoleViewSet(viewsets.ModelViewSet):

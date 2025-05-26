@@ -5,7 +5,7 @@ import {Grid} from 'antd';
 
 const {useBreakpoint} = Grid;
 
-export default function Users() {
+export default function Users({onError}) {
     const [users, setUsers] = useState([]);
     const [filteredUsers, setFilteredUsers] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -27,7 +27,8 @@ export default function Users() {
             setUsers(indexed);
             setFilteredUsers(indexed);
             setCurrentUserId(meRes.data.id);
-        } catch {
+        } catch (error) {
+            onError(error); // Передаем ошибку в родительский компонент
             message.error('Ошибка при загрузке пользователей');
         } finally {
             setLoading(false);
@@ -39,7 +40,8 @@ export default function Users() {
             await API_AUTH.patch(`/api/accounts/users/${id}/`, {is_active: isActive});
             message.success('Статус пользователя обновлён');
             fetchUsers();
-        } catch {
+        } catch (error) {
+            onError(error); // Передаем ошибку в родительский компонент
             message.error('Ошибка при обновлении статуса');
         }
     };
@@ -49,8 +51,15 @@ export default function Users() {
             await API_AUTH.delete(`/api/accounts/users/${id}/`);
             message.success('Пользователь удалён');
             fetchUsers();
-        } catch {
-            message.error('Ошибка при удалении пользователя');
+        } catch (error) {
+            onError(error); // Передаем ошибку в родительский компонент
+
+            // Показываем более конкретное сообщение об ошибке
+            if (error.response?.status === 403) {
+                message.error('Недостаточно прав для удаления пользователя');
+            } else {
+                message.error('Ошибка при удалении пользователя');
+            }
         }
     };
 
