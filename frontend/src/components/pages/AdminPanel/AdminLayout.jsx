@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useEffect, useState, useRef, useCallback} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {Layout, Menu, Grid, Button, Drawer, Spin, message, Alert} from 'antd';
 import {
@@ -32,10 +32,9 @@ export default function AdminLayout() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
+    const errorShownRef = useRef(false); // Используем ref вместо state
 
-    // Обработчик для отображения ошибок
-// AdminLayout.jsx
-    const showError = (err) => {
+    const showError = useCallback((err) => {
         const serverError = err.response?.data;
         const errorMessage =
             serverError?.detail ||
@@ -44,9 +43,18 @@ export default function AdminLayout() {
             err.message ||
             'Ошибка сервера';
 
-        message.error(errorMessage);
-        console.error('Детали ошибки:', serverError); // Для отладки
-    };
+        if (!errorShownRef.current) {
+            errorShownRef.current = true;
+            message.error({
+                content: errorMessage,
+                duration: 2,
+                onClose: () => {
+                    errorShownRef.current = false;
+                }
+            });
+            console.error('Детали ошибки:', serverError);
+        }
+    }, []);
 
     useEffect(() => {
         const checkAdminAccess = async () => {
@@ -57,6 +65,7 @@ export default function AdminLayout() {
                 }
             } catch (error) {
                 setError(error);
+                showError(error); // Используем общий обработчик
                 navigate('/');
             } finally {
                 setLoading(false);
@@ -64,7 +73,7 @@ export default function AdminLayout() {
         };
 
         checkAdminAccess();
-    }, [navigate]);
+    }, [navigate, showError]);
 
     // Стилизованный лоадер
     if (loading) {
@@ -183,8 +192,8 @@ export default function AdminLayout() {
                             style={{border: 'none', boxShadow: 'none'}}
                         />
                     )}
-                    <Button type="text" danger onClick={() => navigate('/logout')}>
-                        Выйти
+                    <Button type="text" danger onClick={() => navigate('/')}>
+                        На главную
                     </Button>
                 </Header>
                 <Content

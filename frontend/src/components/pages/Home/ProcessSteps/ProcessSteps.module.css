@@ -1,7 +1,7 @@
 .process {
     margin-top: 0;
     padding: 100px 20px;
-    background: #ffffff;
+    background: #f3f1ec;
     text-align: center;
     overflow: hidden;
     position: relative; /* Необходимо для позиционирования псевдоэлемента */

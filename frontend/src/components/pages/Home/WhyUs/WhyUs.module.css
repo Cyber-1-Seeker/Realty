@@ -42,7 +42,7 @@
 }
 
 .reason {
-    background: #fff; /* Белый фон */
+    background: #fafafa; /* Белый фон */
     border-radius: 20px; /* Уменьшенный радиус скругления */
     padding: 50px 35px; /* Уменьшенные отступы */
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* Усиленная тень */

@@ -9,26 +9,41 @@
     min-height: 700px;
     position: relative;
     margin-top: 80px;
-    box-shadow: inset 0 100px 100px -80px rgba(255, 255, 255, 0.6),
-    inset 0 -100px 100px -80px rgba(255, 255, 255, 0.6);
+    filter: brightness(0.90) contrast(1.2);
+    transition: filter 0.3s ease;
+    overflow: hidden; /* Важно для правильного отображения теней */
 }
 
-/* Добавляем псевдоэлемент для тени */
+/* Тень сверху */
 .aboutUs::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    height: 5px; /* Высота тени */
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(255, 255, 255, 0)); /* Градиент от тени к прозрачному */
-    pointer-events: none; /* Чтобы не мешать взаимодействию с контентом */
+    height: 20px; /* Высота тени */
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), transparent);
+    pointer-events: none;
+    z-index: 2; /* Чтобы тень была над контентом */
+}
+
+/* Тень снизу */
+.aboutUs::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 20px; /* Высота тени */
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.2), transparent);
+    pointer-events: none;
+    z-index: 0; /* Чтобы тень была над контентом */
 }
 
 .textBlock {
     margin-left: 0.5em;
     max-width: 560px;
-    background-color: #ffffffee;
+    background-color: white;
     padding: 50px 40px;
     border-radius: 16px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);

@@ -29,7 +29,7 @@ export default function Users({onError}) {
             setCurrentUserId(meRes.data.id);
         } catch (error) {
             onError(error); // Передаем ошибку в родительский компонент
-            message.error('Ошибка при загрузке пользователей');
+            // УДАЛЕН ЛИШНИЙ message.error
         } finally {
             setLoading(false);
         }
@@ -42,7 +42,7 @@ export default function Users({onError}) {
             fetchUsers();
         } catch (error) {
             onError(error); // Передаем ошибку в родительский компонент
-            message.error('Ошибка при обновлении статуса');
+            // УДАЛЕН ЛИШНИЙ message.error
         }
     };
 
@@ -53,13 +53,7 @@ export default function Users({onError}) {
             fetchUsers();
         } catch (error) {
             onError(error); // Передаем ошибку в родительский компонент
-
-            // Показываем более конкретное сообщение об ошибке
-            if (error.response?.status === 403) {
-                message.error('Недостаточно прав для удаления пользователя');
-            } else {
-                message.error('Ошибка при удалении пользователя');
-            }
+            // УДАЛЕН ЛИШНИЙ БЛОК С message.error
         }
     };
 

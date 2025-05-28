@@ -133,19 +133,19 @@ class UserListSerializer(serializers.ModelSerializer):
                 {"detail": "Вы не можете изменять свой аккаунт"}
             )
 
-        # Только админы могут менять роли
-        if 'role' in validated_data:
-            if not (request and request.user.role == 'admin'):
-                raise serializers.ValidationError({
-                    "role": "Только администраторы могут изменять роли пользователей"
-                })
-
-        # Только админы могут деактивировать пользователей
-        if 'is_active' in validated_data:
-            if not (request and request.user.role == 'admin'):
-                raise serializers.ValidationError({
-                    "is_active": "Только администраторы могут деактивировать пользователей"
-                })
+        # # Только админы могут менять роли
+        # if 'role' in validated_data:
+        #     if not (request and request.user.role == 'admin'):
+        #         raise serializers.ValidationError({
+        #             "role": "Только администраторы могут изменять роли пользователей"
+        #         })
+        #
+        # # Только админы могут деактивировать пользователей
+        # if 'is_active' in validated_data:
+        #     if not (request and request.user.role == 'admin'):
+        #         raise serializers.ValidationError({
+        #             "is_active": "Только администраторы могут деактивировать пользователей"
+        #         })
 
         instance.role = validated_data.get('role', instance.role)
         instance.is_active = validated_data.get('is_active', instance.is_active)

@@ -45,7 +45,8 @@ class ApartmentImage(models.Model):
 
 
 # Автоматическое удаление файла при удалении объекта
-@receiver(post_delete, sender=Apartment)
+@receiver(post_delete, sender=ApartmentImage)
 def delete_apartment_image(sender, instance, **kwargs):
+    """Удаление файла изображения при удалении объекта ApartmentImage"""
     if instance.image and os.path.isfile(instance.image.path):
         os.remove(instance.image.path)

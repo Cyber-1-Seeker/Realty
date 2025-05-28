@@ -2,6 +2,7 @@
     padding: 60px 20px;
     display: flex;
     justify-content: center;
+    background-color: #f3f1ec;
 }
 
 
@@ -17,6 +18,8 @@
     background-blend-mode: overlay; /* накладывает цвет на изображение */
     color: #333;
     display: flex;
+    filter: brightness(0.95) contrast(1.2);
+    transition: filter 0.3s ease; /* Плавное изменение */
     flex-direction: column;
     justify-content: center; /* центрируем по вертикали */
     align-items: flex-start; /* по левому краю */

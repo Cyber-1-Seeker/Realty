@@ -12,7 +12,7 @@ from datetime import date
 from .serializers import UserListSerializer
 from .serializers import PhoneConfirmationRequestSerializer, PhoneCodeVerificationSerializer
 from .models import CustomUser
-from .permissions import CanAssignRoles, CanViewApplications, IsNotSelfOrReadOnly
+from .permissions import CanManageUsers, CanAssignRoles, CanViewApplications, IsNotSelfOrReadOnly
 from monitoring.models import DailyStats
 
 User = get_user_model()
@@ -91,7 +91,7 @@ class GetCSRFToken(APIView):
 class UserViewSet(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all().order_by('-date_joined')
     serializer_class = UserListSerializer
-    permission_classes = [IsAdminUser, IsNotSelfOrReadOnly]  # Изменяем permissions
+    permission_classes = [CanManageUsers, IsNotSelfOrReadOnly]  # Изменяем permissions
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -127,3 +127,14 @@ class AdminPanelAccess(APIView):
                 "roles": True
             }
         })
+
+
+class SelfDeleteAccount(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request):
+        user = request.user
+        # Выходим перед удалением
+        logout(request)
+        user.delete()
+        return Response({"message": "Аккаунт успешно удален"}, status=status.HTTP_204_NO_CONTENT)

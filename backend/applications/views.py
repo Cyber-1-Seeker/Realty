@@ -39,6 +39,7 @@ class ApplicationViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
+        print(serializer)
 
         # 📈 Обновляем статистику
         today = date.today()

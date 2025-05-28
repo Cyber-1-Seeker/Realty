@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {Table, Button, Select, message, Spin, Input, Row, Col} from 'antd';
+import {Table, Button, Select, Spin, Input, Row, Col, message} from 'antd';
 import {API_AUTH} from '@/utils/api/axiosWithAuth';
 
 const roleLabels = {
@@ -9,7 +9,7 @@ const roleLabels = {
     user: 'Пользователь'
 };
 
-export default function Roles() {
+export default function Roles({onError}) {  // Добавляем пропс onError
     const [users, setUsers] = useState([]);
     const [filteredUsers, setFilteredUsers] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -22,8 +22,8 @@ export default function Roles() {
             const res = await API_AUTH.get('/api/accounts/role-users/');
             setUsers(res.data);
             setFilteredUsers(res.data);
-        } catch {
-            message.error('Ошибка при загрузке пользователей');
+        } catch (error) {
+            onError(error); // Используем общий обработчик ошибок
         } finally {
             setLoading(false);
         }
@@ -34,8 +34,8 @@ export default function Roles() {
             await API_AUTH.patch(`/api/accounts/role-users/${id}/`, {role});
             message.success('Роль обновлена');
             fetchUsers();
-        } catch {
-            message.error('Ошибка при обновлении роли');
+        } catch (error) {
+            onError(error); // Используем общий обработчик ошибок
         }
     };
 
