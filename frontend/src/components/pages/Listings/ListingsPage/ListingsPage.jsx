@@ -11,22 +11,26 @@ import UrgentSellForm from "@/components/pages/Listings/ListingsPage/UrgentSellF
 import AuthModal from '@/components/AuthModal/AuthModal.jsx';
 import useAuthGuard from '@/hooks/useAuthGuard';
 
-const ListingsPage = ({ isAuthenticated }) => {
+const ListingsPage = ({ isAuthenticated, currentUser }) => { // Добавляем currentUser в пропсы
   const [listings, setListings] = useState([]);
   const [visibleCount, setVisibleCount] = useState(6);
   const [showAddForm, setShowAddForm] = useState(false);
   const [showUrgentForm, setShowUrgentForm] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
-
+  console.log("Текущий пользователь это", {currentUser})
   const API_URL = 'http://127.0.0.1:8000';
   const CHUNK_SIZE = 12;
 
   useEffect(() => {
+    fetchListings();
+  }, []);
+
+  const fetchListings = () => {
     axios
       .get(`${API_URL}/api/apartment/apartments/`)
       .then((res) => setListings(res.data))
       .catch((err) => console.error(err));
-  }, []);
+  };
 
   const guard = useAuthGuard(isAuthenticated, () => setShowAuthModal(true));
 
@@ -35,6 +39,12 @@ const ListingsPage = ({ isAuthenticated }) => {
 
   const handleShowMore = () => {
     setVisibleCount((prev) => prev + CHUNK_SIZE);
+  };
+
+  const handleAddSuccess = (newListing) => {
+    setListings(prev => [newListing, ...prev]); // Добавляем новое объявление в список
+    setShowAddForm(false); // Закрываем модальное окно
+    message.success('Объявление успешно добавлено!');
   };
 
   return (
@@ -61,7 +71,11 @@ const ListingsPage = ({ isAuthenticated }) => {
 
       {/* Модалки */}
       <ModalForm isOpen={showAddForm} onClose={() => setShowAddForm(false)}>
-        <AddListingForm onClose={() => setShowAddForm(false)} />
+        <AddListingForm
+          onClose={() => setShowAddForm(false)}
+          onSuccess={handleAddSuccess}
+          user={currentUser} // Передаём текущего пользователя
+        />
       </ModalForm>
 
       <ModalForm isOpen={showUrgentForm} onClose={() => setShowUrgentForm(false)}>

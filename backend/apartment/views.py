@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.decorators import action
 from rest_framework.exceptions import PermissionDenied, NotFound
+from rest_framework.parsers import MultiPartParser, FormParser
 
 from .models import Apartment, ApartmentImage
 from .serializers import ApartmentSerializer, ApartmentImageSerializer
@@ -10,11 +11,12 @@ from accounts.permissions import CanEditPublishedApartments
 
 
 class ApartmentViewSet(viewsets.ModelViewSet):
+    parser_classes = [MultiPartParser, FormParser]
     queryset = Apartment.objects.all()
     serializer_class = ApartmentSerializer
 
     def get_permissions(self):
-        if self.action in ['create', 'destroy', 'my']:
+        if self.action in ['create', 'destroy', 'my', 'update', 'partial_update']:
             return [IsAuthenticated()]
         return [AllowAny()]
 
@@ -23,37 +25,62 @@ class ApartmentViewSet(viewsets.ModelViewSet):
             return Apartment.objects.filter(is_active=True)
         return super().get_queryset()
 
-    def perform_create(self, serializer):
-        apartment = serializer.save(owner=self.request.user)
-        for image in self.request.FILES.getlist('images'):
-            ApartmentImage.objects.create(apartment=apartment, image=image)
+    def create(self, request, *args, **kwargs):
+        print("\n=== Поступил запрос на создание ===")
+        print("Метод:", request.method)
+        print("Пользователь:", request.user)
+        print("Данные:", request.data)
+        print("Файлы:", request.FILES)
 
-    # ДОБАВЛЯЕМ МЕТОД ДЛЯ УДАЛЕНИЯ
+        try:
+            # Добавляем владельца в данные перед валидацией
+            request.data._mutable = True
+            request.data['owner'] = request.user.id
+            request.data._mutable = False
+
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+
+            print("Данные после сериализации:", serializer.validated_data)
+
+            # Создаем объект
+            apartment = serializer.save()
+
+            # Обрабатываем изображения
+            if 'images' in request.FILES:
+                for image in request.FILES.getlist('images'):
+                    ApartmentImage.objects.create(apartment=apartment, image=image)
+
+            headers = self.get_success_headers(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+        except Exception as e:
+            print("Ошибка при создании:", str(e))
+            return Response(
+                {'error': str(e)},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
     def destroy(self, request, *args, **kwargs):
         try:
             instance = self.get_object()
-        except NotFound:
-            return Response({'error': 'Объявление не найдено'}, status=status.HTTP_404_NOT_FOUND)
-
-        # Проверяем, является ли пользователь владельцем
-        if instance.owner != request.user:
+            if instance.owner != request.user:
+                return Response(
+                    {'error': 'Вы не можете удалить это объявление'},
+                    status=status.HTTP_403_FORBIDDEN
+                )
+            self.perform_destroy(instance)
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Exception as e:
             return Response(
-                {'error': 'Вы не можете удалить это объявление'},
-                status=status.HTTP_403_FORBIDDEN
+                {'error': str(e)},
+                status=status.HTTP_400_BAD_REQUEST
             )
 
-        self.perform_destroy(instance)
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
-    def perform_destroy(self, instance):
-        # Удаляем все связанные изображения
-        for image in instance.images.all():
-            image.delete()
-        instance.delete()
-
-    @action(detail=False, methods=['get'], permission_classes=[IsAuthenticated])
+    @action(detail=False, methods=['get'])
     def my(self, request):
         """Получение квартир текущего пользователя"""
+        print("Запрос на получение моих квартир от:", request.user)
         queryset = Apartment.objects.filter(owner=request.user)
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
