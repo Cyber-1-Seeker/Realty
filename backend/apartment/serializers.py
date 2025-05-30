@@ -9,11 +9,7 @@ class ApartmentImageSerializer(serializers.ModelSerializer):
 
 
 class ApartmentSerializer(serializers.ModelSerializer):
-    images = serializers.ListField(
-        child=serializers.ImageField(),
-        write_only=True,
-        required=False
-    )
+    images = ApartmentImageSerializer(many=True, read_only=True)
     owner = serializers.SerializerMethodField()
 
     class Meta:
@@ -31,8 +27,9 @@ class ApartmentSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         # Получаем request из контекста
         request = self.context.get('request')
-        images_data = request.FILES.getlist('images')
+        validated_data['owner'] = request.user
 
+        images_data = request.FILES.getlist('images')
         validated_data.pop('images', None)
 
         apartment = Apartment.objects.create(**validated_data)

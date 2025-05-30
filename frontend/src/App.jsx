@@ -47,8 +47,12 @@ function App() {
                 >
                     <Route path="/" element={<Home/>}/>
                     <Route path="/about" element={<About/>}/>
-                    <Route path="/listings" element={<ListingsPage isAuthenticated={isAuthenticated} currentUser={user}/>}/>
-                    <Route path="/listings/add" element={<AddListingForm isAuthenticated={isAuthenticated}/>}/>
+                    <Route path="/listings"
+                           element={<ListingsPage isAuthenticated={isAuthenticated} currentUser={user}/>}/>
+                    <Route path="/listings/add" element={<AddListingForm
+                        isAuthenticated={isAuthenticated}
+                        user={user}  // Добавляем передачу пользователя
+                    />}/>
                     <Route path="/listings/:id" element={<ListingDetails/>}/>
                     <Route path="/profile" element={<ProfilePage/>}/>
                 </Route>

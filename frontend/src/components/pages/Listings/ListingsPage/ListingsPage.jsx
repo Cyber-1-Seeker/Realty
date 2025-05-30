@@ -17,7 +17,6 @@ const ListingsPage = ({ isAuthenticated, currentUser }) => { // Добавляе
   const [showAddForm, setShowAddForm] = useState(false);
   const [showUrgentForm, setShowUrgentForm] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
-  console.log("Текущий пользователь это", {currentUser})
   const API_URL = 'http://127.0.0.1:8000';
   const CHUNK_SIZE = 12;
 
@@ -74,7 +73,7 @@ const ListingsPage = ({ isAuthenticated, currentUser }) => { // Добавляе
         <AddListingForm
           onClose={() => setShowAddForm(false)}
           onSuccess={handleAddSuccess}
-          user={currentUser} // Передаём текущего пользователя
+          user={currentUser}
         />
       </ModalForm>
 

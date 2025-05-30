@@ -33,11 +33,6 @@ class ApartmentViewSet(viewsets.ModelViewSet):
         print("Файлы:", request.FILES)
 
         try:
-            # Добавляем владельца в данные перед валидацией
-            request.data._mutable = True
-            request.data['owner'] = request.user.id
-            request.data._mutable = False
-
             serializer = self.get_serializer(data=request.data)
             serializer.is_valid(raise_exception=True)
 
