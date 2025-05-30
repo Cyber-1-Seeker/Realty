@@ -1,17 +1,6 @@
 import {useState, useEffect} from 'react';
+import {Form, Input, Button, Select, Switch, Upload, Steps, message} from 'antd';
 import {
-    Form,
-    Input,
-    Button,
-    Select,
-    Switch,
-    Upload,
-    Tooltip,
-    Steps,
-    message
-} from 'antd';
-import {
-    InfoCircleOutlined,
     PlusOutlined,
     HomeOutlined,
     SettingOutlined,
@@ -27,23 +16,26 @@ const {Step} = Steps;
 const {TextArea} = Input;
 
 const AddListingForm = ({onClose, onSuccess, user}) => {
-    console.log(user)
     const [form] = Form.useForm();
     const [currentStep, setCurrentStep] = useState(0);
     const [fileList, setFileList] = useState([]);
     const [loading, setLoading] = useState(false);
     const [formValues, setFormValues] = useState({});
+    const [propertyType, setPropertyType] = useState('apartment');
 
     // Определение констант для типов
     const propertyTypes = [
         {value: 'apartment', label: 'Квартира'},
         {value: 'apartments', label: 'Апартаменты'},
         {value: 'studio', label: 'Студия'},
+        {value: 'house', label: 'Дом'},
+        {value: 'townhouse', label: 'Таунхаус'},
     ];
 
     const bathroomTypes = [
         {value: 'separate', label: 'Раздельный'},
         {value: 'combined', label: 'Совмещенный'},
+        {value: 'multiple', label: 'Несколько санузлов'},
     ];
 
     const renovationTypes = [
@@ -51,17 +43,21 @@ const AddListingForm = ({onClose, onSuccess, user}) => {
         {value: 'clean', label: 'Чистовая'},
         {value: 'euro', label: 'Евроремонт'},
         {value: 'design', label: 'Дизайнерский'},
+        {value: 'partial', label: 'Частичный ремонт'},
     ];
 
     const viewTypes = [
         {value: 'yard', label: 'Двор'},
         {value: 'street', label: 'Улица'},
         {value: 'park', label: 'Парк'},
+        {value: 'river', label: 'Река'},
+        {value: 'city', label: 'Вид на город'},
     ];
 
     const dealTypes = [
         {value: 'sale', label: 'Продажа'},
         {value: 'rent', label: 'Аренда'},
+        {value: 'rent_daily', label: 'Посуточная аренда'},
     ];
 
     // Шаги формы
@@ -85,12 +81,11 @@ const AddListingForm = ({onClose, onSuccess, user}) => {
     const nextStep = () => {
         form.validateFields()
             .then(values => {
-                console.log(`Шаг ${currentStep} значения:`, values);
                 setFormValues(prev => ({...prev, ...values}));
                 setCurrentStep(currentStep + 1);
             })
             .catch(error => {
-                console.log('Validation Error:', error);
+                console.log('Validation Errors:', error.errorFields);
                 message.error('Пожалуйста, заполните все обязательные поля');
             });
     };
@@ -100,30 +95,58 @@ const AddListingForm = ({onClose, onSuccess, user}) => {
         setCurrentStep(currentStep - 1);
     };
 
-    // Валидатор для площадей (не более 4 цифр до запятой)
+    // Валидатор для площадей
     const validateArea = (_, value) => {
         if (!value) return Promise.resolve();
 
-        const stringValue = value.toString();
-        const [wholePart] = stringValue.split('.');
-
-        if (wholePart.length > 4) {
-            return Promise.reject('Максимум 4 цифры до запятой');
+        if (value <= 0) {
+            return Promise.reject('Площадь должна быть положительным числом');
+        }
+        if (value >= 10000) {
+            return Promise.reject('Слишком большое число');
         }
 
         return Promise.resolve();
     };
 
-    // Валидатор для целых чисел (не более 4 цифр)
-    const validateInteger = (_, value) => {
+    const validateYear = (_, value) => {
         if (!value) return Promise.resolve();
+        const year = parseInt(value);
+        if (isNaN(year)) return Promise.reject('Введите корректный год');
+        if (year < 1800) return Promise.reject('Год должен быть не ранее 1800');
+        if (year > 2100) return Promise.reject('Год не может быть позже 2100');
+        return Promise.resolve();
+    };
 
-        const stringValue = value.toString();
+    // Валидатор для цены
+    const validatePrice = (_, value) => {
+        if (!value) return Promise.reject('Введите цену');
 
-        if (stringValue.length > 4) {
-            return Promise.reject('Максимум 4 цифры');
+        const cleanedValue = String(value)
+            .replace(/[^\d,.]/g, '')
+            .replace(',', '.');
+
+        const price = parseFloat(cleanedValue);
+
+        if (isNaN(price)) {
+            return Promise.reject('Введите корректное число');
         }
 
+        if (price <= 0) {
+            return Promise.reject('Цена должна быть положительной');
+        }
+
+        if (price > 1e27) {
+            return Promise.reject('Цена слишком большая');
+        }
+
+        return Promise.resolve();
+    };
+
+    const validateFloor = (_, value) => {
+        if (!value) return Promise.resolve();
+        if (value < 0) return Promise.reject('Этаж не может быть отрицательным');
+        if (value > 32767) return Promise.reject('Слишком большое значение этажа');
         return Promise.resolve();
     };
 
@@ -131,99 +154,161 @@ const AddListingForm = ({onClose, onSuccess, user}) => {
     const handleSubmit = async () => {
         try {
             setLoading(true);
-
-            // Получаем значения последнего шага
             const lastStepValues = await form.validateFields();
-
-            // Объединяем все значения формы
             const allValues = {...formValues, ...lastStepValues};
-            console.log('Все значения формы:', allValues);
 
             const formData = new FormData();
+            if (user?.id) formData.append('owner', user.id);
 
-            // Добавляем владельца объявления
-            if (user?.id) {
-                formData.append('owner', user.id);
-                console.log('Добавлен владелец:', user.id);
-            } else {
-                throw new Error('Пользователь не определен');
-            }
-
-            // Список числовых полей
             const numericFields = [
                 'total_area', 'floor', 'total_floors', 'rooms', 'price',
                 'living_area', 'kitchen_area', 'balcony', 'deposit',
                 'construction_year', 'last_renovation_year'
             ];
 
-            // Добавляем все поля с преобразованием типов
+            const cleanNumberValue = (value) => {
+                if (value === undefined || value === null || value === '') return null;
+                const cleaned = String(value)
+                    .replace(/[^\d,.-]/g, '')
+                    .replace(',', '.');
+                const numValue = parseFloat(cleaned);
+                return isNaN(numValue) ? null : numValue;
+            };
+
             for (const [key, value] of Object.entries(allValues)) {
                 if (key === 'images') continue;
 
                 if (numericFields.includes(key)) {
-                    // Преобразуем в число
-                    if (value !== undefined && value !== null && value !== '') {
-                        formData.append(key, Number(value));
+                    const cleanedValue = cleanNumberValue(value);
+                    if (cleanedValue !== null) {
+                        formData.append(key, cleanedValue);
                     }
                 } else if (key === 'bargain') {
-                    // Булево значение
                     formData.append(key, value ? 'true' : 'false');
-                } else {
-                    // Все остальные поля
-                    if (value !== undefined && value !== null) {
-                        formData.append(key, value);
-                    }
+                } else if (value !== undefined && value !== null) {
+                    formData.append(key, value);
                 }
             }
 
-            // Установка значений по умолчанию
             if (!allValues.bathroom_type) formData.append('bathroom_type', 'combined');
             if (!allValues.renovation) formData.append('renovation', 'clean');
             if (!allValues.view) formData.append('view', 'yard');
             if (!allValues.deal_type) formData.append('deal_type', 'sale');
             if (allValues.balcony === undefined) formData.append('balcony', 0);
 
-            // Добавляем изображения
             if (allValues.images?.length) {
                 allValues.images.forEach(file => {
                     if (file.originFileObj) {
-                        formData.append('images', file.originFileObj);
+                        formData.append('images', file.originFileObj, file.name);
                     }
                 });
             }
 
-            // Отладочный вывод
-            console.log('Содержимое FormData:');
-            for (let [key, value] of formData.entries()) {
-                console.log(key, value);
-            }
-
-            // Отправка данных
             const response = await API_AUTH.post('/api/apartment/apartments/', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                }
+                headers: {'Content-Type': 'multipart/form-data'}
             });
 
             message.success('Объявление успешно добавлено!');
             if (onSuccess) onSuccess(response.data);
             if (onClose) onClose();
         } catch (error) {
-            console.error('Полная ошибка:', error);
+            console.error('Ошибка:', error);
+            let errorMessage = 'Не удалось добавить объявление';
+
             if (error.response) {
-                console.error('Данные ответа:', error.response.data);
-                console.error('Статус ответа:', error.response.status);
+                if (error.response.data) {
+                    errorMessage = Object.values(error.response.data)
+                        .flat()
+                        .join(', ');
+                }
+            } else if (error.message) {
+                errorMessage = error.message;
             }
-            message.error(error.response?.data?.message || error.message || 'Не удалось добавить объявление');
+
+            message.error(errorMessage);
         } finally {
             setLoading(false);
         }
     };
 
+    // Определение, нужно ли поле "Этаж"
+    const showFloorFields = () => {
+        return ['apartment', 'apartments', 'studio', 'townhouse'].includes(propertyType);
+    };
+
+    // Компонент для шага с ценой
+    const PriceStep = () => {
+        const dealType = Form.useWatch('deal_type', form);
+
+        return (
+            <>
+                <Form.Item
+                    name="deal_type"
+                    label="Тип сделки"
+                    rules={[{required: true, message: 'Выберите тип сделки'}]}
+                >
+                    <Select placeholder="Выберите тип сделки">
+                        {dealTypes.map(type => (
+                            <Option key={type.value} value={type.value}>{type.label}</Option>
+                        ))}
+                    </Select>
+                </Form.Item>
+
+                <Form.Item
+                    name="price"
+                    label="Цена (₽)"
+                    rules={[{validator: validatePrice}]}
+                >
+                    <Input
+                        placeholder="₽"
+                        onChange={(e) => {
+                            const value = e.target.value.replace(/[^\d,]/g, '');
+                            form.setFieldsValue({price: value});
+                        }}
+                    />
+                </Form.Item>
+
+                {(dealType === 'rent' || dealType === 'rent_daily') && (
+                    <Form.Item
+                        name="deposit"
+                        label="Залог (₽)"
+                        rules={[
+                            {required: true, message: 'Введите залог'},
+                            {validator: validatePrice}
+                        ]}
+                    >
+                        <Input
+                            placeholder="₽"
+                            onChange={(e) => {
+                                const value = e.target.value.replace(/[^\d,]/g, '');
+                                form.setFieldsValue({deposit: value});
+                            }}
+                        />
+                    </Form.Item>
+                )}
+
+                <Form.Item
+                    name="utilities"
+                    label="Коммунальные платежи"
+                    rules={[{max: 100, message: 'Максимальная длина 100 символов'}]}
+                >
+                    <Input placeholder="Например: 5000 ₽ в месяц"/>
+                </Form.Item>
+
+                <Form.Item
+                    name="bargain"
+                    label="Возможен торг"
+                    valuePropName="checked"
+                >
+                    <Switch/>
+                </Form.Item>
+            </>
+        );
+    };
+
+
     // Рендер шагов формы
     const renderFormStep = () => {
-        // Устанавливаем значения формы из сохраненных данных
-
         switch (currentStep) {
             case 0: // Основное
                 return (
@@ -233,7 +318,10 @@ const AddListingForm = ({onClose, onSuccess, user}) => {
                             label="Тип недвижимости"
                             rules={[{required: true, message: 'Выберите тип недвижимости'}]}
                         >
-                            <Select placeholder="Выберите тип">
+                            <Select
+                                placeholder="Выберите тип"
+                                onChange={value => setPropertyType(value)}
+                            >
                                 {propertyTypes.map(type => (
                                     <Option key={type.value} value={type.value}>{type.label}</Option>
                                 ))}
@@ -243,15 +331,21 @@ const AddListingForm = ({onClose, onSuccess, user}) => {
                         <Form.Item
                             name="address"
                             label="Адрес"
-                            rules={[{required: true, message: 'Введите адрес'}]}
+                            rules={[
+                                {required: true, message: 'Введите адрес'},
+                                {max: 255, message: 'Максимальная длина адреса 255 символов'}
+                            ]}
                         >
-                            <Input placeholder="Город, улица, дом"/>
+                            <Input placeholder="Город, улица, дом" autoFocus/>
                         </Form.Item>
 
                         <Form.Item
                             name="title"
                             label="Заголовок объявления"
-                            rules={[{required: true, message: 'Введите заголовок'}]}
+                            rules={[
+                                {required: true, message: 'Введите заголовок'},
+                                {max: 100, message: 'Максимум 100 символов'}
+                            ]}
                         >
                             <Input placeholder="Например: Светлая 2-комн. квартира в новом доме"/>
                         </Form.Item>
@@ -261,36 +355,55 @@ const AddListingForm = ({onClose, onSuccess, user}) => {
                             label="Общая площадь (м²)"
                             rules={[
                                 {required: true, message: 'Введите площадь'},
-                                {pattern: /^\d+(\.\d{1,2})?$/, message: 'Введите корректное число'},
                                 {validator: validateArea}
                             ]}
                         >
-                            <Input type="number" min="1" step="0.01" placeholder="м²"/>
+                            <Input type="number" min="0.01" step="0.01" placeholder="м²"/>
                         </Form.Item>
 
-                        <Form.Item
-                            name="floor"
-                            label="Этаж"
-                            rules={[
-                                {required: true, message: 'Введите этаж'},
-                                {pattern: /^\d+$/, message: 'Введите целое число'},
-                                {validator: validateInteger}
-                            ]}
-                        >
-                            <Input type="number" min="0" placeholder="Этаж"/>
-                        </Form.Item>
+                        {showFloorFields() && (
+                            <>
+                                <Form.Item
+                                    name="floor"
+                                    label="Этаж"
+                                    tooltip={
+                                        propertyType === 'house' || propertyType === 'townhouse'
+                                            ? 'Для домов и таунхаусов можно указать основной этаж'
+                                            : 'На каком этаже расположен объект'
+                                    }
+                                    rules={[
+                                        {pattern: /^\d+$/, message: 'Введите целое число'},
+                                        {
+                                            required: !['house', 'townhouse'].includes(propertyType),
+                                            message: 'Введите этаж'
+                                        },
+                                        {validator: validateFloor}
+                                    ]}
+                                >
+                                    <Input type="number" min="0" placeholder="Например: 1"/>
+                                </Form.Item>
 
-                        <Form.Item
-                            name="total_floors"
-                            label="Этажность дома"
-                            rules={[
-                                {required: true, message: 'Введите этажность'},
-                                {pattern: /^\d+$/, message: 'Введите целое число'},
-                                {validator: validateInteger}
-                            ]}
-                        >
-                            <Input type="number" min="1" placeholder="Всего этажей"/>
-                        </Form.Item>
+                                <Form.Item
+                                    name="total_floors"
+                                    label="Этажность здания"
+                                    tooltip={
+                                        propertyType === 'house' || propertyType === 'townhouse'
+                                            ? 'Общее количество этажей в здании'
+                                            : 'Сколько всего этажей в доме'
+                                    }
+                                    rules={[
+                                        {pattern: /^\d+$/, message: 'Введите целое число'},
+                                        {
+                                            required: !['house', 'townhouse'].includes(propertyType),
+                                            message: 'Введите этажность'
+                                        },
+                                        {validator: validateFloor}
+                                    ]}
+                                >
+                                    <Input type="number" min="1" placeholder="Например: 5"/>
+                                </Form.Item>
+                            </>
+                        )}
                     </>
                 );
 
@@ -303,10 +416,11 @@ const AddListingForm = ({onClose, onSuccess, user}) => {
                             rules={[
                                 {required: true, message: 'Введите количество комнат'},
                                 {pattern: /^\d+$/, message: 'Введите целое число'},
-                                {validator: validateInteger}
+                                {min: 0, message: 'Не может быть отрицательным'},
+                                {max: 10, message: 'Слишком большое количество комнат'}
                             ]}
                         >
-                            <Input type="number" min="1" placeholder="Количество комнат"/>
+                            <Input type="number" min="0" placeholder="0 для студии"/>
                         </Form.Item>
 
                         <Form.Item
@@ -348,8 +462,10 @@ const AddListingForm = ({onClose, onSuccess, user}) => {
                         <Form.Item
                             name="balcony"
                             label="Балкон/лоджия"
-                            initialValue={0}
-                            rules={[{validator: validateInteger}]}
+                            rules={[
+                                {pattern: /^\d+$/, message: 'Введите целое число'},
+                                {max: 4, message: 'Слишком большое количество'},
+                            ]}
                         >
                             <Input type="number" min="0" placeholder="Количество"/>
                         </Form.Item>
@@ -357,96 +473,39 @@ const AddListingForm = ({onClose, onSuccess, user}) => {
                         <Form.Item
                             name="living_area"
                             label="Жилая площадь (м²)"
-                            rules={[
-                                {pattern: /^\d+(\.\d{1,2})?$/, message: 'Введите корректное число'},
-                                {validator: validateArea}
-                            ]}
+                            rules={[{validator: validateArea}]}
                         >
-                            <Input type="number" min="1" step="0.01" placeholder="м²"/>
+                            <Input type="number" min="0" step="0.01" placeholder="м²"/>
                         </Form.Item>
 
                         <Form.Item
                             name="kitchen_area"
                             label="Площадь кухни (м²)"
-                            rules={[
-                                {pattern: /^\d+(\.\d{1,2})?$/, message: 'Введите корректное число'},
-                                {validator: validateArea}
-                            ]}
+                            rules={[{validator: validateArea}]}
                         >
-                            <Input type="number" min="1" step="0.01" placeholder="м²"/>
+                            <Input type="number" min="0" step="0.01" placeholder="м²"/>
                         </Form.Item>
 
                         <Form.Item
                             name="construction_year"
                             label="Год постройки"
-                            rules={[{validator: validateInteger}]}
+                            rules={[{validator: validateYear}]}
                         >
-                            <Input type="number" min="1900" max={new Date().getFullYear()} placeholder="Год"/>
+                            <Input type="number" placeholder="Год постройки"/>
                         </Form.Item>
 
                         <Form.Item
                             name="last_renovation_year"
                             label="Год ремонта"
-                            rules={[{validator: validateInteger}]}
+                            rules={[{validator: validateYear}]}
                         >
-                            <Input type="number" min="1900" max={new Date().getFullYear()} placeholder="Год"/>
+                            <Input type="number" placeholder="Год последнего ремонта"/>
                         </Form.Item>
                     </>
                 );
 
             case 2: // Цена
-                return (
-                    <>
-                        <Form.Item
-                            name="deal_type"
-                            label="Тип сделки"
-                            rules={[{required: true, message: 'Выберите тип сделки'}]}
-                        >
-                            <Select placeholder="Выберите тип сделки">
-                                {dealTypes.map(type => (
-                                    <Option key={type.value} value={type.value}>{type.label}</Option>
-                                ))}
-                            </Select>
-                        </Form.Item>
-
-                        <Form.Item
-                            name="price"
-                            label="Цена (₽)"
-                            rules={[
-                                {required: true, message: 'Введите цену'},
-                                {pattern: /^\d+$/, message: 'Введите целое число'},
-                                {validator: validateInteger}
-                            ]}
-                        >
-                            <Input type="number" min="1" step="1000" placeholder="₽"/>
-                        </Form.Item>
-
-                        <Form.Item
-                            name="deposit"
-                            label="Залог (₽)"
-                            style={{display: form.getFieldValue('deal_type') === 'rent' ? 'block' : 'none'}}
-                            rules={[{validator: validateInteger}]}
-                        >
-                            <Input type="number" min="0" placeholder="₽"/>
-                        </Form.Item>
-
-                        <Form.Item
-                            name="utilities"
-                            label="Коммунальные платежи"
-                        >
-                            <Input placeholder="Например: 5000 ₽ в месяц"/>
-                        </Form.Item>
-
-                        <Form.Item
-                            name="bargain"
-                            label="Возможен торг"
-                            valuePropName="checked"
-                            initialValue={false}
-                        >
-                            <Switch/>
-                        </Form.Item>
-                    </>
-                );
+                return <PriceStep/>;
 
             case 3: // Описание
                 return (
@@ -454,16 +513,30 @@ const AddListingForm = ({onClose, onSuccess, user}) => {
                         <Form.Item
                             name="description"
                             label="Описание"
-                            rules={[{required: true, message: 'Введите описание'}]}
+                            rules={[
+                                {required: true, message: 'Введите описание'},
+                                {max: 500, message: 'Максимальная длина описания 500 символов'}
+                            ]}
                         >
-                            <TextArea rows={4} placeholder="Опишите квартиру..."/>
+                            <TextArea
+                                rows={6}
+                                placeholder="Опишите объект недвижимости..."
+                                showCount
+                                maxLength={500}
+                            />
                         </Form.Item>
 
                         <Form.Item
                             name="features"
                             label="Особенности"
+                            rules={[{max: 500, message: 'Максимальная длина 500 символов'}]}
                         >
-                            <TextArea rows={2} placeholder="Ключевые особенности через запятую"/>
+                            <TextArea
+                                rows={3}
+                                placeholder="Ключевые особенности через запятую: кондиционер, парковка, ремонт"
+                                showCount
+                                maxLength={500}
+                            />
                         </Form.Item>
                     </>
                 );
@@ -482,7 +555,13 @@ const AddListingForm = ({onClose, onSuccess, user}) => {
                                 listType="picture-card"
                                 fileList={fileList}
                                 onChange={({fileList}) => setFileList(fileList)}
-                                beforeUpload={() => false}
+                                beforeUpload={(file) => {
+                                    const isLt10M = file.size / 1024 / 1024 < 10;
+                                    if (!isLt10M) {
+                                        message.error('Изображение должно быть меньше 10MB');
+                                    }
+                                    return false;
+                                }}
                                 multiple
                                 maxCount={20}
                                 accept="image/*"
@@ -502,9 +581,7 @@ const AddListingForm = ({onClose, onSuccess, user}) => {
                 return null;
         }
     };
-    useEffect(() => {
-        form.setFieldsValue(formValues);
-    }, [currentStep, formValues]); // Зависимости от currentStep и formValues
+
     return (
         <div className={styles.container}>
             <Steps current={currentStep} className={styles.steps}>
@@ -517,6 +594,11 @@ const AddListingForm = ({onClose, onSuccess, user}) => {
                 form={form}
                 layout="vertical"
                 className={styles.form}
+                initialValues={{
+                    deal_type: 'sale',
+                    balcony: 0,
+                    bargain: false
+                }}
                 onFinish={currentStep === steps.length - 1 ? handleSubmit : nextStep}
             >
                 <div className={styles.formContent}>
