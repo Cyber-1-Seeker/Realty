@@ -9,8 +9,8 @@ load_dotenv(dotenv_path=env_path)
 
 BOT_TOKEN = os.getenv('BOT_TOKEN')
 WEBHOOK_TOKEN = os.getenv('WEBHOOK_TOKEN')
-ADMIN_CHAT_ID = int(os.getenv('ADMIN_CHAT_ID'))
 API_URL = os.getenv('API_URL')
+API_TOKEN = os.getenv('API_TOKEN')
 
-if not BOT_TOKEN or not ADMIN_CHAT_ID or not API_URL:
-    raise Exception("Проверь .env — отсутствует BOT_TOKEN, ADMIN_CHAT_ID или API_URL")
+if not BOT_TOKEN or not API_URL or not API_TOKEN:
+    raise Exception("Проверь .env — отсутствует BOT_TOKEN или API_URL")

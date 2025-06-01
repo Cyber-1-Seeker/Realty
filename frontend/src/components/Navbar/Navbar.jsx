@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react'
-import {Link, useNavigate} from 'react-router-dom'
+import {Link, useNavigate, useLocation} from 'react-router-dom'
 import classes from './Navbar.module.css'
 import {motion, AnimatePresence} from 'framer-motion'
 import {FaTelegramPlane, FaWhatsapp, FaUserCircle} from 'react-icons/fa'
@@ -12,8 +12,9 @@ const Navbar = ({isAuthenticated, user}) => {
     const [showNavbar, setShowNavbar] = useState(window.innerWidth <= 768)
     const [showAuthModal, setShowAuthModal] = useState(false)
     const navigate = useNavigate()
+    const location = useLocation() // Добавлено: получение текущего местоположения
     const hideTimeoutRef = useRef(null)
-    const navbarRef = useRef(null) // Ref для навигационной панели
+    const navbarRef = useRef(null)
     const [scrolledDown, setScrolledDown] = useState(false)
 
     const guard = useAuthGuard(isAuthenticated, () => setShowAuthModal(true))
@@ -21,6 +22,39 @@ const Navbar = ({isAuthenticated, user}) => {
     const handleProfileClick = guard(() => {
         navigate('/profile')
     })
+
+    // Функция для обработки клика на "Калькулятор"
+    const handleCalculatorClick = () => {
+        setMenuOpen(false);
+
+        // Если мы на главной странице
+        if (location.pathname === '/') {
+            // Прокручиваем к калькулятору
+            const calculatorElement = document.getElementById('calculator');
+            if (calculatorElement) {
+                calculatorElement.scrollIntoView({behavior: 'smooth'});
+            }
+        } else {
+            // Переходим на главную страницу с якорем калькулятора
+            navigate('/#calculator');
+        }
+    };
+
+    const handleContactsClick = () => {
+        setMenuOpen(false);
+
+        // Если мы на главной странице
+        if (location.pathname === '/') {
+            // Прокручиваем к контактам
+            const contactsElement = document.getElementById('contacts');
+            if (contactsElement) {
+                contactsElement.scrollIntoView({behavior: 'smooth'});
+            }
+        } else {
+            // Переходим на главную страницу с якорем калькулятора
+            navigate('/#contacts');
+        }
+    };
 
     useEffect(() => {
         const handleResize = () => {
@@ -50,7 +84,6 @@ const Navbar = ({isAuthenticated, user}) => {
         }
     }, [isMobile])
 
-    // === NEW: Показ при наведении мыши на верх ===
     useEffect(() => {
         if (!isMobile) {
             const handleMouseMove = (e) => {
@@ -64,7 +97,7 @@ const Navbar = ({isAuthenticated, user}) => {
                 if (!scrolledDown) {
                     hideTimeoutRef.current = setTimeout(() => {
                         setShowNavbar(false);
-                    }, 500); // 1.5 секунды
+                    }, 500);
                 }
             };
 
@@ -136,10 +169,33 @@ const Navbar = ({isAuthenticated, user}) => {
                             )}
 
                             <li><Link to="/" onClick={() => setMenuOpen(false)}>Главная</Link></li>
-                            <li><a href="#calculator" onClick={() => setMenuOpen(false)}>Калькулятор</a></li>
+
+                            {/* Исправленная кнопка калькулятора */}
+                            <li>
+                                <a
+                                    href="/#calculator"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        handleCalculatorClick();
+                                    }}
+                                >
+                                    Калькулятор
+                                </a>
+                            </li>
+
                             <li><Link to="/about" onClick={() => setMenuOpen(false)}>О нас</Link></li>
                             <li><Link to="/listings" onClick={() => setMenuOpen(false)}>База квартир</Link></li>
-                            <li><a href="#contacts">Контакты</a></li>
+                            <li>
+                                <a
+                                    href="#contacts"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        handleContactsClick();
+                                    }}
+                                >
+                                    Контакты
+                                </a>
+                            </li>
 
                             {!isMobile && (
                                 <li className={classes.profileDesktop} onClick={handleProfileClick}>

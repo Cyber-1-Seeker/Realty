@@ -121,7 +121,7 @@ class PhoneCodeVerificationSerializer(serializers.Serializer):
 class UserListSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['id', 'first_name', 'email', 'phone_number', 'is_active', 'is_staff', 'role']
+        fields = ['id', 'first_name', 'email', 'phone_number', 'is_active', 'is_staff', 'role', 'telegram_id']
         read_only_fields = ['is_staff', 'email', 'phone_number']
 
     def update(self, instance, validated_data):

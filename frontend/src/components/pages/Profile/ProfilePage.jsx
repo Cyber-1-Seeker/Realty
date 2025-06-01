@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {secureFetch} from '@/utils/api';
-import {Button, Modal, Table, Tag, Spin, message, Space, Image, Popconfirm} from 'antd';
+import {Button, Modal, Table, Tag, Spin, message, Space, Image, Popconfirm, Tooltip} from 'antd';
 import {
     ExclamationCircleOutlined,
     CheckCircleOutlined,
@@ -11,7 +11,8 @@ import {
     UserOutlined,
     MailOutlined,
     PhoneOutlined,
-    PlusOutlined
+    PlusOutlined,
+    InfoCircleOutlined
 } from '@ant-design/icons';
 import styles from './ProfilePage.module.css';
 
@@ -27,7 +28,8 @@ const ProfilePage = () => {
     const [deletingId, setDeletingId] = useState(null);
     const [deletingAccount, setDeletingAccount] = useState(false);
     const [showAddForm, setShowAddForm] = useState(false);
-
+    const [statusModalVisible, setStatusModalVisible] = useState(false);
+    const [currentApartment, setCurrentApartment] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -123,6 +125,55 @@ const ProfilePage = () => {
         });
     };
 
+    const showStatusInfo = (apartment) => {
+        setCurrentApartment(apartment);
+        setStatusModalVisible(true);
+    };
+
+    const getStatusInfo = (apartment) => {
+        switch (apartment.status) {
+            case 'pending':
+                return {
+                    title: 'На рассмотрении',
+                    description: 'Ваше объявление ожидает проверки модератором. Обычно это занимает 1-2 рабочих дня.',
+                    color: 'orange',
+                    icon: <ExclamationCircleOutlined/>
+                };
+            case 'rejected':
+                return {
+                    title: 'Отклонено',
+                    description: apartment.rejection_reason
+                        ? `Причина отклонения: ${apartment.rejection_reason}`
+                        : 'Объявление отклонено модератором. Пожалуйста, проверьте соответствие требованиям.',
+                    color: 'red',
+                    icon: <CloseCircleOutlined/>
+                };
+            case 'approved':
+                if (apartment.is_active) {
+                    return {
+                        title: 'Опубликовано',
+                        description: 'Ваше объявление прошло модерацию и опубликовано на сайте.',
+                        color: 'green',
+                        icon: <CheckCircleOutlined/>
+                    };
+                } else {
+                    return {
+                        title: 'Принято (черновик)',
+                        description: 'Ваше объявление прошло модерацию, но еще не опубликовано.',
+                        color: 'blue',
+                        icon: <CheckCircleOutlined/>
+                    };
+                }
+            default:
+                return {
+                    title: 'Неизвестный статус',
+                    description: 'Статус вашего объявления не определен. Пожалуйста, обратитесь в поддержку.',
+                    color: 'gray',
+                    icon: <ExclamationCircleOutlined/>
+                };
+        }
+    };
+
     const columns = [
         {
             title: 'Фото',
@@ -169,16 +220,23 @@ const ProfilePage = () => {
         },
         {
             title: 'Статус',
-            dataIndex: 'is_active',
-            key: 'is_active',
-            render: (isActive) => (
-                <Tag
-                    color={isActive ? 'green' : 'orange'}
-                    icon={isActive ? <CheckCircleOutlined/> : <CloseCircleOutlined/>}
-                >
-                    {isActive ? 'Опубликовано' : 'Не опубликовано'}
-                </Tag>
-            ),
+            key: 'status',
+            render: (_, record) => {
+                const statusInfo = getStatusInfo(record);
+                return (
+                    <div style={{display: 'flex', alignItems: 'center', gap: 8}}>
+                        <Tag color={statusInfo.color} icon={statusInfo.icon}>
+                            {statusInfo.title}
+                        </Tag>
+                        <Tooltip title="Подробнее о статусе">
+                            <InfoCircleOutlined
+                                style={{color: '#1890ff', cursor: 'pointer'}}
+                                onClick={() => showStatusInfo(record)}
+                            />
+                        </Tooltip>
+                    </div>
+                );
+            },
             width: '15%'
         },
         {
@@ -193,15 +251,7 @@ const ProfilePage = () => {
                         target="_blank"
                         className={styles.actionButton}
                     >
-                        Просмотр
-                    </Button>
-                    <Button
-                        type="link"
-                        icon={<EditOutlined/>}
-                        href={`/edit-apartment/${record.id}`}
-                        className={styles.actionButton}
-                    >
-                        Редактировать
+                        Посмотреть
                     </Button>
                     <Popconfirm
                         title="Удалить объявление?"
@@ -334,6 +384,45 @@ const ProfilePage = () => {
                     )}
                 </div>
             </div>
+
+            {/* Модальное окно с информацией о статусе */}
+            <Modal
+                title="Статус объявления"
+                open={statusModalVisible}
+                onCancel={() => setStatusModalVisible(false)}
+                footer={[
+                    <Button key="close" onClick={() => setStatusModalVisible(false)}>
+                        Закрыть
+                    </Button>
+                ]}
+                centered
+            >
+                {currentApartment && (
+                    <div className={styles.statusInfoContainer}>
+                        <div className={styles.statusHeader}>
+                            <h3>{currentApartment.address}</h3>
+                            <Tag
+                                color={getStatusInfo(currentApartment).color}
+                                style={{fontSize: '14px', padding: '4px 8px'}}
+                            >
+                                {getStatusInfo(currentApartment).title}
+                            </Tag>
+                        </div>
+
+                        <div className={styles.statusDescription}>
+                            {getStatusInfo(currentApartment).description}
+                        </div>
+
+                        {currentApartment.status === 'rejected' && (
+                            <div className={styles.rejectionActions}>
+
+                            </div>
+                        )}
+                    </div>
+                )}
+            </Modal>
+
+            {/* Модальное окно для добавления объявления */}
             <ModalForm
                 isOpen={showAddForm}
                 onClose={() => setShowAddForm(false)}
@@ -350,4 +439,5 @@ const ProfilePage = () => {
         </div>
     );
 };
+
 export default ProfilePage;

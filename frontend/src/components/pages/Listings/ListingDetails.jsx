@@ -21,7 +21,9 @@ import {
     LeftOutlined,
     RightOutlined,
     FullscreenExitOutlined,
-    FullscreenOutlined
+    FullscreenOutlined,
+    MessageOutlined,
+    CommentOutlined
 } from '@ant-design/icons';
 import {Image, Tag, Button, Divider, Card, Row, Col, Skeleton, Empty, Modal} from 'antd';
 import styles from './ListingDetails.module.css';
@@ -341,53 +343,85 @@ const ListingDetails = () => {
                     </h2>
 
                     <div className={styles.detailsGrid}>
-                        <DetailItem
-                            icon={<SettingOutlined/>}
-                            label="Санузел"
-                            value={bathroomTypeMap[apartment.bathroom_type] || apartment.bathroom_type}
-                        />
+                        {/* Группировка по категориям */}
+                        <div className={styles.detailsGroup}>
+                            <h3 className={styles.detailsSubtitle}>Планировка</h3>
+                            <DetailItem
+                                icon={<ApartmentOutlined/>}
+                                label="Тип недвижимости"
+                                value={propertyTypeMap[apartment.property_type] || apartment.property_type}
+                            />
+                            <DetailItem
+                                icon={<HomeOutlined/>}
+                                label="Комнат"
+                                value={renderValue(apartment.rooms)}
+                            />
+                            <DetailItem
+                                icon={<BankOutlined/>}
+                                label="Общая площадь"
+                                value={renderArea(apartment.total_area)}
+                            />
+                            <DetailItem
+                                icon={<BankOutlined/>}
+                                label="Жилая площадь"
+                                value={renderArea(apartment.living_area)}
+                            />
+                            <DetailItem
+                                icon={<BankOutlined/>}
+                                label="Площадь кухни"
+                                value={renderArea(apartment.kitchen_area)}
+                            />
+                        </div>
 
-                        <DetailItem
-                            icon={<BuildOutlined/>}
-                            label="Ремонт"
-                            value={renovationTypeMap[apartment.renovation] || apartment.renovation}
-                        />
+                        <div className={styles.detailsGroup}>
+                            <h3 className={styles.detailsSubtitle}>Особенности</h3>
+                            <DetailItem
+                                icon={<SettingOutlined/>}
+                                label="Санузел"
+                                value={bathroomTypeMap[apartment.bathroom_type] || apartment.bathroom_type}
+                            />
+                            <DetailItem
+                                icon={<BuildOutlined/>}
+                                label="Ремонт"
+                                value={renovationTypeMap[apartment.renovation] || apartment.renovation}
+                            />
+                            <DetailItem
+                                icon={<EyeOutlined/>}
+                                label="Вид из окна"
+                                value={viewTypeMap[apartment.view] || apartment.view}
+                            />
+                            <DetailItem
+                                icon={<InfoCircleOutlined/>}
+                                label="Балкон/лоджия"
+                                value={apartment.balcony ? `${apartment.balcony} шт.` : 'Нет'}
+                            />
+                        </div>
 
-                        <DetailItem
-                            icon={<EyeOutlined/>}
-                            label="Вид из окна"
-                            value={viewTypeMap[apartment.view] || apartment.view}
-                        />
-
-                        <DetailItem
-                            icon={<InfoCircleOutlined/>}
-                            label="Балкон/лоджия"
-                            value={renderValue(apartment.balcony, ' шт.')}
-                        />
-
-                        <DetailItem
-                            icon={<BankOutlined/>}
-                            label="Жилая площадь"
-                            value={renderArea(apartment.living_area)}
-                        />
-
-                        <DetailItem
-                            icon={<BankOutlined/>}
-                            label="Площадь кухни"
-                            value={renderArea(apartment.kitchen_area)}
-                        />
-
-                        <DetailItem
-                            icon={<CalendarOutlined/>}
-                            label="Год постройки"
-                            value={renderValue(apartment.construction_year)}
-                        />
-
-                        <DetailItem
-                            icon={<CalendarOutlined/>}
-                            label="Год ремонта"
-                            value={renderValue(apartment.last_renovation_year)}
-                        />
+                        <div className={styles.detailsGroup}>
+                            <h3 className={styles.detailsSubtitle}>Дом и окружение</h3>
+                            <DetailItem
+                                icon={<BuildOutlined/>}
+                                label="Этаж"
+                                value={apartment.floor && apartment.total_floors
+                                    ? `${apartment.floor}/${apartment.total_floors}`
+                                    : '—'}
+                            />
+                            <DetailItem
+                                icon={<CalendarOutlined/>}
+                                label="Год постройки"
+                                value={renderValue(apartment.construction_year)}
+                            />
+                            <DetailItem
+                                icon={<CalendarOutlined/>}
+                                label="Год ремонта"
+                                value={renderValue(apartment.last_renovation_year)}
+                            />
+                            {/*<DetailItem*/}
+                            {/*    icon={<EnvironmentOutlined/>}*/}
+                            {/*    label="Район"*/}
+                            {/*    value={apartment.district || 'Не указан'}*/}
+                            {/*/>*/}
+                        </div>
                     </div>
                 </div>
 
@@ -403,7 +437,18 @@ const ListingDetails = () => {
                             <DollarOutlined className={styles.priceIcon}/>
                             <div>
                                 <div className={styles.priceLabel}>Цена</div>
-                                <div className={styles.priceValue}>{renderPrice(apartment.price)}</div>
+                                <div className={styles.priceValue}>
+                                    {renderPrice(apartment.price)}
+                                    {apartment.deal_type === 'rent' &&
+                                        <span className={styles.pricePeriod}> / месяц</span>}
+                                    {apartment.deal_type === 'rent_daily' &&
+                                        <span className={styles.pricePeriod}> / сутки</span>}
+                                </div>
+                                {apartment.bargain && (
+                                    <div className={styles.bargainNote}>
+                                        <Tag color="gold">Возможен торг</Tag>
+                                    </div>
+                                )}
                             </div>
                         </div>
 
@@ -422,11 +467,42 @@ const ListingDetails = () => {
                                 <DollarOutlined className={styles.priceIcon}/>
                                 <div>
                                     <div className={styles.priceLabel}>Коммунальные платежи</div>
-                                    <div className={styles.priceValue}>{apartment.utilities}</div>
+                                    <div className={styles.priceValue}>
+                                        {apartment.utilities.includes('₽')
+                                            ? apartment.utilities
+                                            : `${apartment.utilities} ₽`}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {apartment.commission && (
+                            <div className={styles.priceItem}>
+                                <DollarOutlined className={styles.priceIcon}/>
+                                <div>
+                                    <div className={styles.priceLabel}>Комиссия</div>
+                                    <div className={styles.priceValue}>
+                                        {apartment.commission.includes('%')
+                                            ? apartment.commission
+                                            : `${apartment.commission} ₽`}
+                                    </div>
                                 </div>
                             </div>
                         )}
                     </div>
+
+                    {apartment.payment_options && (
+                        <div className={styles.paymentOptions}>
+                            <h3 className={styles.subsectionTitle}>Варианты оплаты</h3>
+                            <div className={styles.paymentTags}>
+                                {apartment.payment_options.split(',').map((option, index) => (
+                                    <Tag key={index} className={styles.paymentTag}>
+                                        {option.trim()}
+                                    </Tag>
+                                ))}
+                            </div>
+                        </div>
+                    )}
                 </div>
 
                 {/* Описание и особенности */}
@@ -488,7 +564,13 @@ const ListingDetails = () => {
                                     <div className={styles.contactItem}>
                                         <PhoneOutlined className={styles.contactIcon}/>
                                         <div className={styles.contactValue}>
-                                            {apartment.owner.phone}
+                                            <a
+                                                href={`tel:${apartment.owner.phone.replace(/[^0-9+]/g, '')}`}
+                                                className={styles.contactLink}
+                                                onClick={(e) => e.stopPropagation()}
+                                            >
+                                                {apartment.owner.phone}
+                                            </a>
                                         </div>
                                     </div>
                                 )}
@@ -497,19 +579,66 @@ const ListingDetails = () => {
                                     <div className={styles.contactItem}>
                                         <MailOutlined className={styles.contactIcon}/>
                                         <div className={styles.contactValue}>
-                                            {apartment.owner.email}
+                                            <a
+                                                href={`mailto:${apartment.owner.email}?subject=Вопрос по объявлению ${apartment.id}`}
+                                                className={styles.contactLink}
+                                                onClick={(e) => e.stopPropagation()}
+                                            >
+                                                {apartment.owner.email}
+                                            </a>
                                         </div>
+                                    </div>
+                                )}
+
+                                {(!apartment.owner.phone && !apartment.owner.email) && (
+                                    <div className={styles.noContacts}>
+                                        Контактная информация не указана
                                     </div>
                                 )}
                             </div>
 
-                            <Button
-                                type="primary"
-                                className={styles.contactButton}
-                                icon={<PhoneOutlined/>}
-                            >
-                                Связаться с владельцем
-                            </Button>
+                            <div className={styles.contactButtons}>
+                                {apartment.owner.phone && (
+                                    <>
+                                        <Button
+                                            type="primary"
+                                            className={styles.contactButton}
+                                            icon={<PhoneOutlined/>}
+                                            onClick={() => window.open(`tel:${apartment.owner.phone.replace(/[^0-9+]/g, '')}`, '_blank')}
+                                            block
+                                        >
+                                            Позвонить
+                                        </Button>
+                                        <Button
+                                            className={`${styles.contactButton} ${styles.whatsappButton}`}
+                                            icon={<MessageOutlined/>}
+                                            onClick={() => window.open(`https://wa.me/${apartment.owner.phone.replace(/[^0-9]/g, '')}`, '_blank')}
+                                            block
+                                        >
+                                            WhatsApp
+                                        </Button>
+                                        {/*<Button*/}
+                                        {/*    className={`${styles.contactButton} ${styles.telegramButton}`}*/}
+                                        {/*    icon={<CommentOutlined/>}*/}
+                                        {/*    onClick={() => window.open(`https://t.me/${apartment.owner.phone.replace(/[^0-9]/g, '')}`, '_blank')}*/}
+                                        {/*    block*/}
+                                        {/*>*/}
+                                        {/*    Telegram*/}
+                                        {/*</Button>*/}
+                                    </>
+                                )}
+
+                                {/*{apartment.owner.email && (*/}
+                                {/*    <Button*/}
+                                {/*        className={`${styles.contactButton} ${styles.emailButton}`}*/}
+                                {/*        icon={<MailOutlined/>}*/}
+                                {/*        onClick={() => window.open(`mailto:${apartment.owner.email}?subject=Вопрос по объявлению ${apartment.id}`, '_blank')}*/}
+                                {/*        block*/}
+                                {/*    >*/}
+                                {/*        Написать email*/}
+                                {/*    </Button>*/}
+                                {/*)}*/}
+                            </div>
                         </Card>
                     </div>
                 )}
@@ -544,13 +673,15 @@ const ListingDetails = () => {
                 className={styles.galleryModal}
                 width="100%"
                 style={{top: 0}}
-                bodyStyle={{
-                    padding: 0,
-                    height: '100vh',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    background: 'rgba(0, 0, 0, 0.9)'
+                styles={{
+                    body: {
+                        padding: 0,
+                        height: '100vh',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        background: 'rgba(0, 0, 0, 0.9)'
+                    }
                 }}
                 closeIcon={<FullscreenExitOutlined style={{color: 'white'}}/>}
             >

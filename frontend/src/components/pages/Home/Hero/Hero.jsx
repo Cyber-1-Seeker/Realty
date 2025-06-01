@@ -1,39 +1,78 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {API_PUBLIC} from "@/utils/api/axiosPublic.js";
 import classes from './Hero.module.css';
-import {Link} from 'react-router-dom';
-import { getCSRFTokenFromCookie } from "@/utils/api/csrf.js";
+import {Link, useNavigate} from 'react-router-dom';
+import {getCSRFTokenFromCookie} from "@/utils/api/csrf.js";
+import ModalForm from '@/components/pages/Listings/ListingsPage/ModalForm.jsx';
+import AdvancePaymentForm from "@/components/pages/Home/AdvancePaymentForm/AdvancePaymentForm.jsx";
+import {FaUserCircle} from 'react-icons/fa';
+import AuthModal from "@/components/AuthModal/AuthModal.jsx";
+import useAuthGuard from '@/hooks/useAuthGuard';
 
-
-const Hero = () => {
+const Hero = ({isAuthenticated}) => {
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
     const [comment, setComment] = useState('');
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
-    const [showModal, setShowModal] = useState(false);
+    const [showAdvanceModal, setShowAdvanceModal] = useState(false);
+    const [showConsultModal, setShowConsultModal] = useState(false);
     const [commentError, setCommentError] = useState(false);
     const [nickname, setNickname] = useState('');
+    const [showAuthModal, setShowAuthModal] = useState(false);
 
-    // Загружаем CSRF-токен при монтировании формы
-    useEffect(() => {
-        API_PUBLIC.get('/api/accounts/csrf/');
-    }, []);
+    const navigate = useNavigate();
+    const guard = useAuthGuard(isAuthenticated, () => setShowAuthModal(true));
 
-    const handleOpenModal = () => {
+    // Защищенная функция для перехода в профиль
+    const handleProfileClick = guard(() => {
+        navigate('/profile');
+    });
+
+    const handleAdvanceSubmit = async (e) => {
+        e.preventDefault();
         if (!name || !phone) {
-            alert('Пожалуйста, заполните имя и телефон');
+            alert('Заполните имя и телефон');
             return;
         }
-        setShowModal(true);
+
+        setLoading(true);
+        try {
+            await API_PUBLIC.post(
+                '/api/applications/applications/',
+                {
+                    name,
+                    phone,
+                    comment: 'Запрос на аванс',
+                    nickname,
+                },
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCSRFTokenFromCookie(),
+                    },
+                    withCredentials: true,
+                }
+            );
+            setSuccess(true);
+            setTimeout(() => {
+                setSuccess(false);
+                setShowAdvanceModal(false);
+            }, 2000);
+        } catch (error) {
+            alert('Ошибка отправки');
+            console.error(error);
+        } finally {
+            setLoading(false);
+        }
     };
 
-    const handleSendApplication = async () => {
+    const handleConsultSubmit = async () => {
         if (!comment.trim()) {
             setCommentError(true);
             return;
         }
-        setCommentError(false); // сброс, если всё ок
+        setCommentError(false);
 
         setLoading(true);
         try {
@@ -48,19 +87,18 @@ const Hero = () => {
                 {
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-CSRFToken': getCSRFTokenFromCookie(), // 👈 нужен
+                        'X-CSRFToken': getCSRFTokenFromCookie(),
                     },
-                    withCredentials: true, // 👈 тоже нужен
+                    withCredentials: true,
                 }
             );
-
             setSuccess(true);
             setName('');
             setPhone('');
             setComment('');
-            setShowModal(false);
+            setShowConsultModal(false);
         } catch (error) {
-            alert('Ошибка при отправке заявки');
+            alert('Ошибка отправки');
             console.error(error);
         } finally {
             setLoading(false);
@@ -72,9 +110,16 @@ const Hero = () => {
             <div className={classes.heroOverlay}></div>
 
             <nav className={classes.heroNav}>
-                <Link to="#">Получить аванс</Link>
+                <button onClick={() => setShowAdvanceModal(true)}>
+                    Получить аванс
+                </button>
                 <a href="#calculator">Калькулятор стоимости</a>
-                <Link to="#">Купить</Link>
+
+                {/* Заменена кнопка "Купить" на "Профиль" */}
+                <button onClick={handleProfileClick}>
+                    Профиль
+                </button>
+
                 <Link to="/listings">База квартир</Link>
                 <a href="/#contacts">Контакты</a>
             </nav>
@@ -87,17 +132,17 @@ const Hero = () => {
                 </div>
 
                 <div className={classes.heroForm}>
-                    <div className={classes.heroFormTitle}>Получите консультацию</div>
+                    <div className={classes.heroFormTitle}>Консультация</div>
                     <div className={classes.heroFormBody}>
                         <input
                             type="text"
-                            placeholder="Введите имя"
+                            placeholder="Ваше имя"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                         />
                         <input
                             type="tel"
-                            placeholder="Введите телефон"
+                            placeholder="Телефон"
                             value={phone}
                             onChange={(e) => setPhone(e.target.value)}
                         />
@@ -110,43 +155,75 @@ const Hero = () => {
                             autoComplete="off"
                             tabIndex="-1"
                         />
-                        <button onClick={handleOpenModal} disabled={loading}>
+                        <button
+                            onClick={() => {
+                                if (!name || !phone) {
+                                    alert('Заполните имя и телефон');
+                                    return;
+                                }
+                                setShowConsultModal(true);
+                            }}
+                            disabled={loading}
+                        >
                             {loading ? 'Отправка...' : 'Оставить заявку'}
                         </button>
-                        {success && <div style={{color: 'green', marginTop: 10}}>Заявка успешно отправлена!</div>}
+                        {success && (
+                            <div className={classes.successMessage}>
+                                Заявка отправлена! Мы вам перезвоним.
+                            </div>
+                        )}
                     </div>
                     <div className={classes.heroFormNote}>
-                        Нажимая на кнопку, вы соглашаетесь с{' '}
-                        <a href="#">политикой конфиденциальности сайта</a>
+                        Нажимая на кнопку, вы соглашаетесь с <a href="#">политикой конфиденциальности</a>
                     </div>
                 </div>
             </div>
 
-            {showModal && (
-                <div className={classes.modalOverlay}>
-                    <div className={classes.modal}>
-                        <h3>Уточните тему заявки</h3>
-                        <textarea
-                            className={commentError ? classes.errorInput : ''}
-                            placeholder="Опишите, какая у вас ситуация"
-                            value={comment}
-                            onChange={(e) => setComment(e.target.value)}
-                            rows={4}
-                            maxLength={200}
-                        />
-                        {commentError && <div className={classes.errorText}>Комментарий обязателен</div>}
+            {/* Модальное окно для аванса */}
+            <ModalForm isOpen={showAdvanceModal} onClose={() => setShowAdvanceModal(false)}>
+                <AdvancePaymentForm
+                    onClose={() => {
+                        setShowAdvanceModal(false);
+                        setSuccess(true);
+                        setTimeout(() => setSuccess(false), 2000);
+                    }}
+                />
+            </ModalForm>
 
-                        <div className={classes.modalButtons}>
-                            <button onClick={handleSendApplication} className={classes.submitButton}>
-                                Отправить
-                            </button>
-                            <button onClick={() => setShowModal(false)} className={classes.cancelButton}>
-                                Отмена
-                            </button>
-                        </div>
+            {/* Модальное окно для консультации */}
+            <ModalForm isOpen={showConsultModal} onClose={() => setShowConsultModal(false)}>
+                <div className={classes.consultModal}>
+                    <h3>Уточните тему заявки</h3>
+                    <textarea
+                        className={commentError ? classes.errorInput : ''}
+                        placeholder="Опишите, какая у вас ситуация"
+                        value={comment}
+                        onChange={(e) => setComment(e.target.value)}
+                        rows={4}
+                        maxLength={200}
+                    />
+                    {commentError && <div className={classes.errorText}>Комментарий обязателен</div>}
+
+                    <div className={classes.modalButtons}>
+                        <button
+                            onClick={handleConsultSubmit}
+                            className={classes.submitButton}
+                            disabled={loading}
+                        >
+                            {loading ? 'Отправка...' : 'Отправить'}
+                        </button>
+                        <button
+                            onClick={() => setShowConsultModal(false)}
+                            className={classes.cancelButton}
+                        >
+                            Отмена
+                        </button>
                     </div>
                 </div>
-            )}
+            </ModalForm>
+
+            {/* Добавлено модальное окно авторизации */}
+            {showAuthModal && <AuthModal onClose={() => setShowAuthModal(false)} />}
         </section>
     );
 };

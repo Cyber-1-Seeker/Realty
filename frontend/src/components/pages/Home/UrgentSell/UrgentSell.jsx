@@ -18,7 +18,7 @@ const UrgentSell = () => {
         >
             <div className={styles.servicesBox}>
                 <h2>Нужно срочно продать квартиру?</h2>
-                <p><strong>Оставьте заявку, и мы свяжемся с вами в ближайшее время.</strong></p>
+                <h3><strong>Оставьте заявку, и мы свяжемся с вами в ближайшее время.</strong></h3>
                 <button onClick={() => setShowUrgentForm(true)}>Оставить заявку</button>
             </div>
 

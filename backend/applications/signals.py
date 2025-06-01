@@ -20,7 +20,6 @@ def send_telegram_notification(sender, instance, created, **kwargs):
             httpx.post(
                 f"https://api.telegram.org/bot{settings.BOT_TOKEN}/sendMessage",
                 json={
-                    "chat_id": settings.ADMIN_CHAT_ID,
                     "text": message,
                     "parse_mode": "HTML"
                 },

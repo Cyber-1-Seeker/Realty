@@ -59,7 +59,10 @@ export default function Analytics() {
             <Row gutter={16} style={{marginBottom: 24}}>
                 {METRIC_OPTIONS.map((item) => (
                     <Col xs={24} sm={12} md={6} key={item.key} onClick={() => setMetric(item.key)}>
-                        <Card hoverable bordered={metric === item.key}>
+                        <Card
+                            hoverable
+                            variant={metric === item.key ? "outlined" : "borderless"}
+                        >
                             <Statistic
                                 title={item.label}
                                 value={metric === item.key ? total : '—'}

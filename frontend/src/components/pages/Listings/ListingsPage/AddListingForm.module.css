@@ -23,6 +23,7 @@
     max-height: 60vh;
     overflow-y: auto;
     padding: 10px;
+    scroll-behavior: smooth; /* Плавная прокрутка */
 }
 
 .formRow {
@@ -86,6 +87,16 @@
     background-color: #fff;
 }
 
+.ant-form-item-required::before {
+    display: inline-block;
+    margin-right: 4px;
+    color: #ff4d4f;
+    font-size: 14px;
+    font-family: SimSun, sans-serif;
+    line-height: 1;
+    content: "*";
+}
+
 /* Адаптивность */
 @media (max-width: 768px) {
     .form {
@@ -101,7 +112,7 @@
     }
 }
 
- @media (max-width: 480px) {
+@media (max-width: 480px) {
     .formActions {
         flex-direction: column;
         gap: 10px;
@@ -114,4 +125,146 @@
     .formContent {
         max-height: 45vh;
     }
+}
+
+/* Стили для модального окна успеха */
+.successModal .ant-modal-content {
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modalContent {
+    text-align: center;
+    padding: 30px 20px;
+}
+
+.modalIcon {
+    font-size: 60px;
+    color: #52c41a;
+    margin-bottom: 20px;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.modalTitle {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #262626;
+    margin-bottom: 25px;
+}
+
+.modalCard {
+    display: flex;
+    align-items: flex-start;
+    text-align: left;
+    background: #f9f9f9;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 15px;
+    border-left: 4px solid #52c41a;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.modalCard:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.clockIcon {
+    font-size: 24px;
+    color: #1890ff;
+    margin-right: 15px;
+    margin-top: 3px;
+}
+
+.badge {
+    background: #1890ff;
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    margin-right: 15px;
+    flex-shrink: 0;
+}
+
+.modalCard h3 {
+    font-size: 1.1rem;
+    margin-bottom: 6px;
+    color: #1d1d1d;
+}
+
+.modalCard p {
+    font-size: 0.95rem;
+    color: #595959;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.modalFooter {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #f0f0f0;
+}
+
+.modalButton {
+    width: 100%;
+    height: 46px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    border-radius: 10px;
+    background: #1890ff;
+    border-color: #1890ff;
+    transition: all 0.3s;
+}
+
+.modalButton:hover {
+    background: #40a9ff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(24, 144, 255, 0.3);
+}
+
+.supportText {
+    margin-top: 15px;
+    color: #8c8c8c;
+    font-size: 0.9rem;
+}
+
+.supportText a {
+    color: #1890ff;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.supportText a:hover {
+    color: #40a9ff;
+    text-decoration: underline;
 }

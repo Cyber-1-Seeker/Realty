@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react';
-import {Table, Button, Select, Spin, Input, Row, Col, message} from 'antd';
+import {Table, Button, Select, Spin, Input, Row, Col, message, Tooltip} from 'antd';
 import {API_AUTH} from '@/utils/api/axiosWithAuth';
+import {QuestionCircleOutlined} from '@ant-design/icons';
 
 const roleLabels = {
     admin: 'Админ',
@@ -9,7 +10,7 @@ const roleLabels = {
     user: 'Пользователь'
 };
 
-export default function Roles({onError}) {  // Добавляем пропс onError
+export default function Roles({onError}) {
     const [users, setUsers] = useState([]);
     const [filteredUsers, setFilteredUsers] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -23,19 +24,19 @@ export default function Roles({onError}) {  // Добавляем пропс onE
             setUsers(res.data);
             setFilteredUsers(res.data);
         } catch (error) {
-            onError(error); // Используем общий обработчик ошибок
+            onError(error);
         } finally {
             setLoading(false);
         }
     };
 
-    const updateRole = async (id, role) => {
+    const updateUser = async (id, data) => {
         try {
-            await API_AUTH.patch(`/api/accounts/role-users/${id}/`, {role});
-            message.success('Роль обновлена');
+            await API_AUTH.patch(`/api/accounts/role-users/${id}/`, data);
+            message.success('Данные обновлены');
             fetchUsers();
         } catch (error) {
-            onError(error); // Используем общий обработчик ошибок
+            onError(error);
         }
     };
 
@@ -47,7 +48,9 @@ export default function Roles({onError}) {  // Добавляем пропс onE
         const lower = search.toLowerCase();
         const filtered = users.filter(user =>
             (!selectedRole || user.role === selectedRole) &&
-            (user.first_name?.toLowerCase().includes(lower) || user.email?.toLowerCase().includes(lower))
+            (user.first_name?.toLowerCase().includes(lower) ||
+                user.email?.toLowerCase().includes(lower) ||
+                (user.telegram_id && user.telegram_id.toLowerCase().includes(lower)))
         );
         setFilteredUsers(filtered);
     }, [search, selectedRole, users]);
@@ -56,12 +59,25 @@ export default function Roles({onError}) {  // Добавляем пропс onE
         {title: 'Имя', dataIndex: 'first_name', key: 'first_name'},
         {title: 'Email', dataIndex: 'email', key: 'email'},
         {
+            title: 'Telegram ID',
+            dataIndex: 'telegram_id',
+            key: 'telegram_id',
+            render: (value, record) => (
+                <Input
+                    value={value || ''}
+                    placeholder="Не задан"
+                    onChange={e => updateUser(record.id, {telegram_id: e.target.value})}
+                    style={{width: 150}}
+                />
+            ),
+        },
+        {
             title: 'Роль',
             key: 'role',
             render: (_, record) => (
                 <Select
                     value={record.role}
-                    onChange={(value) => updateRole(record.id, value)}
+                    onChange={value => updateUser(record.id, {role: value})}
                     style={{width: 150}}
                 >
                     {Object.entries(roleLabels).map(([value, label]) => (
@@ -74,7 +90,15 @@ export default function Roles({onError}) {  // Добавляем пропс onE
 
     return (
         <>
-            <h1 style={{fontSize: 24, fontWeight: 'bold', marginBottom: 16}}>УПРАВЛЕНИЕ РОЛЯМИ</h1>
+            <h1 style={{fontSize: 24, fontWeight: 'bold', marginBottom: 16}}>
+                УПРАВЛЕНИЕ РОЛЯМИ
+                <Tooltip
+                    title="Telegram ID можно получить через любого бота в Telegram, например, через @userinfobot"
+                    placement="right"
+                >
+                    <QuestionCircleOutlined style={{marginLeft: 10, color: '#1890ff'}}/>
+                </Tooltip>
+            </h1>
 
             <Row gutter={[16, 16]} style={{marginBottom: 16}}>
                 <Col xs={24} sm={12} md={8}>
@@ -93,9 +117,9 @@ export default function Roles({onError}) {  // Добавляем пропс onE
 
                 <Col xs={24} sm={12} md={8}>
                     <Input
-                        placeholder="Поиск по имени или email"
+                        placeholder="Поиск по имени, email или Telegram ID"
                         value={search}
-                        onChange={(e) => setSearch(e.target.value)}
+                        onChange={e => setSearch(e.target.value)}
                         allowClear
                     />
                 </Col>

@@ -579,19 +579,68 @@
     font-weight: 500;
 }
 
+/* Добавьте в ListingDetails.module.css */
+
+.contactButtons {
+    display: grid;
+    gap: 12px;
+    margin-top: 20px;
+}
+
 .contactButton {
-    width: 100%;
-    height: 50px;
-    font-size: 16px;
-    font-weight: 500;
-    background: linear-gradient(90deg, #1890ff, #52c41a);
-    border: none;
+    height: 45px;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     transition: all 0.3s ease;
+    border: none;
 }
 
 .contactButton:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(24, 144, 255, 0.3);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.whatsappButton {
+    background-color: #25D366;
+    color: white;
+}
+
+.whatsappButton:hover {
+    background-color: #128C7E;
+    color: white;
+}
+
+.telegramButton {
+    background-color: #0088cc;
+    color: white;
+}
+
+/*.telegramButton:hover {*/
+/*    background-color: #006699;*/
+/*    color: white;*/
+/*}*/
+
+/*.emailButton {*/
+/*    background-color: #ea4335;*/
+/*    color: white;*/
+/*}*/
+
+.emailButton:hover {
+    background-color: #d33426;
+    color: white;
+}
+
+.contactLink {
+    color: #1890ff;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.contactLink:hover {
+    color: #40a9ff;
+    text-decoration: underline;
 }
 
 /* Мета-информация */

@@ -1,12 +1,15 @@
-import {useState, useEffect} from 'react';
-import {Form, Input, Button, Select, Switch, Upload, Steps, message} from 'antd';
+import {useState, useEffect, useRef} from 'react';
+import {Form, Input, Button, Select, Switch, Upload, Steps, Modal} from 'antd';
+import {Link} from 'react-router-dom'
 import {
     PlusOutlined,
     HomeOutlined,
     SettingOutlined,
     DollarOutlined,
     FileTextOutlined,
-    CameraOutlined
+    CameraOutlined,
+    CheckCircleOutlined,
+    ClockCircleOutlined
 } from '@ant-design/icons';
 import styles from './AddListingForm.module.css';
 import {API_AUTH} from "@/utils/api/axiosWithAuth.js";
@@ -22,6 +25,15 @@ const AddListingForm = ({onClose, onSuccess, user}) => {
     const [loading, setLoading] = useState(false);
     const [formValues, setFormValues] = useState({});
     const [propertyType, setPropertyType] = useState('apartment');
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
+    const formContentRef = useRef(null);
+
+    // Автоматическая прокрутка вверх при смене шага
+    useEffect(() => {
+        if (formContentRef.current) {
+            formContentRef.current.scrollTop = 0;
+        }
+    }, [currentStep]);
 
     // Определение констант для типов
     const propertyTypes = [
@@ -84,9 +96,11 @@ const AddListingForm = ({onClose, onSuccess, user}) => {
                 setFormValues(prev => ({...prev, ...values}));
                 setCurrentStep(currentStep + 1);
             })
-            .catch(error => {
-                console.log('Validation Errors:', error.errorFields);
-                message.error('Пожалуйста, заполните все обязательные поля');
+            .catch(() => {
+                Modal.error({
+                    title: 'Ошибка заполнения',
+                    content: 'Пожалуйста, заполните все обязательные поля',
+                });
             });
     };
 
@@ -204,13 +218,11 @@ const AddListingForm = ({onClose, onSuccess, user}) => {
                 });
             }
 
-            const response = await API_AUTH.post('/api/apartment/apartments/', formData, {
+            await API_AUTH.post('/api/apartment/apartments/', formData, {
                 headers: {'Content-Type': 'multipart/form-data'}
             });
 
-            message.success('Объявление успешно добавлено!');
-            if (onSuccess) onSuccess(response.data);
-            if (onClose) onClose();
+            setShowSuccessModal(true);
         } catch (error) {
             console.error('Ошибка:', error);
             let errorMessage = 'Не удалось добавить объявление';
@@ -225,10 +237,20 @@ const AddListingForm = ({onClose, onSuccess, user}) => {
                 errorMessage = error.message;
             }
 
-            message.error(errorMessage);
+            Modal.error({
+                title: 'Ошибка отправки',
+                content: errorMessage,
+            });
         } finally {
             setLoading(false);
         }
+    };
+
+    // Закрытие модального окна успеха
+    const handleSuccessModalClose = () => {
+        setShowSuccessModal(false);
+        if (onClose) onClose();
+        if (onSuccess) onSuccess();
     };
 
     // Определение, нужно ли поле "Этаж"
@@ -246,6 +268,7 @@ const AddListingForm = ({onClose, onSuccess, user}) => {
                     name="deal_type"
                     label="Тип сделки"
                     rules={[{required: true, message: 'Выберите тип сделки'}]}
+                    required
                 >
                     <Select placeholder="Выберите тип сделки">
                         {dealTypes.map(type => (
@@ -257,7 +280,11 @@ const AddListingForm = ({onClose, onSuccess, user}) => {
                 <Form.Item
                     name="price"
                     label="Цена (₽)"
-                    rules={[{validator: validatePrice}]}
+                    rules={[
+                        {required: true, message: 'Введите цену'},
+                        {validator: validatePrice}
+                    ]}
+                    required
                 >
                     <Input
                         placeholder="₽"
@@ -276,6 +303,7 @@ const AddListingForm = ({onClose, onSuccess, user}) => {
                             {required: true, message: 'Введите залог'},
                             {validator: validatePrice}
                         ]}
+                        required
                     >
                         <Input
                             placeholder="₽"
@@ -305,7 +333,6 @@ const AddListingForm = ({onClose, onSuccess, user}) => {
             </>
         );
     };
-
 
     // Рендер шагов формы
     const renderFormStep = () => {
@@ -558,7 +585,10 @@ const AddListingForm = ({onClose, onSuccess, user}) => {
                                 beforeUpload={(file) => {
                                     const isLt10M = file.size / 1024 / 1024 < 10;
                                     if (!isLt10M) {
-                                        message.error('Изображение должно быть меньше 10MB');
+                                        Modal.error({
+                                            title: 'Ошибка',
+                                            content: 'Изображение должно быть меньше 10MB',
+                                        });
                                     }
                                     return false;
                                 }}
@@ -601,7 +631,10 @@ const AddListingForm = ({onClose, onSuccess, user}) => {
                 }}
                 onFinish={currentStep === steps.length - 1 ? handleSubmit : nextStep}
             >
-                <div className={styles.formContent}>
+                <div
+                    className={styles.formContent}
+                    ref={formContentRef}
+                >
                     {renderFormStep()}
                 </div>
 
@@ -628,6 +661,61 @@ const AddListingForm = ({onClose, onSuccess, user}) => {
                     )}
                 </div>
             </Form>
+
+            {/* Модальное окно успешной отправки */}
+            <Modal
+                open={showSuccessModal}
+                onCancel={handleSuccessModalClose}
+                footer={null}
+                centered
+                closable={false}
+                className={styles.successModal}
+            >
+                <div className={styles.modalContent}>
+                    <div className={styles.modalIcon}>
+                        <CheckCircleOutlined/>
+                    </div>
+
+                    <h2 className={styles.modalTitle}>Объявление отправлено на модерацию!</h2>
+
+                    <div className={styles.modalCard}>
+                        <ClockCircleOutlined className={styles.clockIcon}/>
+                        <div>
+                            <h3>Ожидайте проверки</h3>
+                            <p>Наши модераторы проверяют ваше объявление. Обычно это занимает менее 24 часов.</p>
+                        </div>
+                    </div>
+
+                    <div className={styles.modalCard}>
+                        <div className={styles.badge}>1</div>
+                        <div>
+                            <h3>Что проверяется?</h3>
+                            <p>Достоверность информации, соответствие требованиям сервиса и качество фотографий.</p>
+                        </div>
+                    </div>
+
+                    <div className={styles.modalCard}>
+                        <div className={styles.badge}>2</div>
+                        <div>
+                            <h3>После проверки</h3>
+                            <p>В профиле у объявления будет статус "Опубликовано".</p>
+                        </div>
+                    </div>
+
+                    <div className={styles.modalFooter}>
+                        <Button
+                            type="primary"
+                            onClick={handleSuccessModalClose}
+                            className={styles.modalButton}
+                        >
+                            Понятно
+                        </Button>
+                        <p className={styles.supportText}>
+                            Вопросы? <Link to="/support">Обратитесь в поддержку</Link>
+                        </p>
+                    </div>
+                </div>
+            </Modal>
         </div>
     );
 };

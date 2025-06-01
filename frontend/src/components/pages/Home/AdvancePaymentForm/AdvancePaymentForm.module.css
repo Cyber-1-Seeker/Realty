@@ -1,0 +1,74 @@
+/* AdvancePaymentForm.css */
+.advance-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background: #f8f4e9;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    border: 1px solid #e8dcc9;
+}
+
+.form-title {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+    color: #8b6b4d;
+    text-align: center;
+    font-weight: 600;
+}
+
+.form-description {
+    color: #7a6b52;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+    line-height: 1.5;
+}
+
+.form-input {
+    padding: 14px 18px;
+    border: 1px solid #d8d1c5;
+    border-radius: 12px;
+    font-size: 1rem;
+    background: #fffcf5;
+    transition: all 0.3s;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #b3a58c;
+    box-shadow: 0 0 0 2px rgba(176, 159, 126, 0.2);
+}
+
+.button-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+}
+
+.submit-button {
+    background: #9c8e76;
+    color: white;
+    padding: 14px 30px;
+    border: none;
+    border-radius: 9999px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+    font-size: 1.1rem;
+}
+
+.submit-button:hover {
+    background: #8a7d67;
+}
+
+.submit-button:disabled {
+    background: #c5bcac;
+    cursor: not-allowed;
+}
+
+.honeypot-field {
+    display: none;
+}

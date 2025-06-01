@@ -1,6 +1,7 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticatedOrReadOnly, AllowAny
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, AllowAny, IsAuthenticated
+from rest_framework.views import APIView
 from django.utils.decorators import method_decorator
 from django_ratelimit.decorators import ratelimit
 from django.conf import settings
@@ -12,6 +13,7 @@ from .models import Application
 from .serializers import ApplicationSerializer
 from monitoring.models import DailyStats
 from accounts.permissions import CanViewApplications
+from accounts.models import CustomUser
 
 
 @method_decorator(
@@ -51,7 +53,7 @@ class ApplicationViewSet(viewsets.ModelViewSet):
         if settings.DEBUG:  # В разработке отправляем синхронно
             try:
                 httpx.post(
-                    "http://localhost:8080/new_application",
+                    settings.WEBHOOK_URL,
                     json=serializer.data,
                     headers={'X-Token': settings.WEBHOOK_TOKEN},
                     timeout=5
@@ -59,3 +61,20 @@ class ApplicationViewSet(viewsets.ModelViewSet):
             except Exception as e:
                 print(f"Ошибка отправки вебхука: {e}")
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+
+class NotifyUsersView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        # Получаем пользователей, которым нужно отправлять уведомления
+        # - Активные пользователи
+        # - С ролью moderator, manager или admin
+        # - С заполненным telegram_id
+        users = CustomUser.objects.filter(
+            is_active=True,
+            role__in=['moderator', 'manager', 'admin'],
+            telegram_id__isnull=False
+        ).exclude(telegram_id='').values('id', 'telegram_id', 'first_name', 'role')
+
+        return Response(list(users))

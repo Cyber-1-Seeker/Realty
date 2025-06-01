@@ -1,0 +1,111 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+  padding: 40px 20px;
+  background-color: #f8f9fa;
+}
+
+.icon {
+  font-size: 72px;
+  color: #1890ff;
+  margin-bottom: 20px;
+}
+
+.actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 30px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.infoCard {
+  background-color: white;
+  border-radius: 12px;
+  padding: 30px;
+  margin-top: 40px;
+  max-width: 600px;
+  width: 100%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e8e8e8;
+}
+
+.infoCard h3 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #262626;
+  font-size: 1.5rem;
+}
+
+.contactList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.contactList li {
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 1.1rem;
+  display: flex;
+}
+
+.contactList li:last-child {
+  border-bottom: none;
+}
+
+.contactList strong {
+  min-width: 120px;
+  display: inline-block;
+  color: #595959;
+}
+
+.progressInfo {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.progressBar {
+  height: 12px;
+  background-color: #f0f0f0;
+  border-radius: 6px;
+  overflow: hidden;
+  margin: 20px 0;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #1890ff, #52c41a);
+  border-radius: 6px;
+  animation: progressAnimation 2s ease-in-out;
+}
+
+@keyframes progressAnimation {
+  0% { width: 0%; }
+  100% { width: 65%; }
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .actions {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .actions button {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .contactList li {
+    flex-direction: column;
+  }
+
+  .contactList strong {
+    min-width: auto;
+    margin-bottom: 5px;
+  }
+}

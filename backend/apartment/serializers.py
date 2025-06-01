@@ -14,11 +14,13 @@ class ApartmentImageSerializer(serializers.ModelSerializer):
 class ApartmentSerializer(serializers.ModelSerializer):
     images = ApartmentImageSerializer(many=True, read_only=True)
     owner = serializers.SerializerMethodField()
+    status = serializers.CharField(read_only=True)
+    rejection_reason = serializers.CharField(read_only=True)
 
     class Meta:
         model = Apartment
         fields = '__all__'
-        read_only_fields = ["id", "created_at", "owner", "is_active"]
+        read_only_fields = ["id", "created_at", "owner", "is_active", "status", "rejection_reason"]
 
     def get_owner(self, obj):
         return {

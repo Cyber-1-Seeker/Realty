@@ -2,9 +2,8 @@ import asyncio
 from aiogram import Bot, Dispatcher
 from aiogram.enums import ParseMode
 from aiogram.client.default import DefaultBotProperties
-from config import BOT_TOKEN, ADMIN_CHAT_ID, WEBHOOK_TOKEN
+from config import BOT_TOKEN, WEBHOOK_TOKEN, API_TOKEN, API_URL
 from telegrambot.handlers import applications
-from telegrambot.utils.formatting import format_application  # Импортируем форматирование
 import aiohttp.web
 
 
@@ -17,19 +16,35 @@ async def handle_new_application(request):
     try:
         data = await request.json()
         bot = request.app['bot']
+        # Получаем список пользователей для уведомлений
+        users_to_notify = await applications.get_users_to_notify(API_URL, API_TOKEN)
+
+        if not users_to_notify:
+            print("Нет пользователей для уведомления")
+            return aiohttp.web.Response(text="Нет пользователей для уведомления", status=200)
 
         # Форматируем сообщение о заявке
-        message = "🚀 *Новая заявка!*\n" + format_application(data)
+        message = "🚀 *Новая заявка!*\n" + applications.format_application(data)
 
-        # Отправляем сообщение в админский чат
-        await bot.send_message(
-            chat_id=ADMIN_CHAT_ID,
-            text=message,
-            parse_mode=ParseMode.MARKDOWN
+        # Отправляем сообщение всем пользователям
+        success_count = 0
+        for user in users_to_notify:
+            try:
+                await bot.send_message(
+                    chat_id=user['telegram_id'],
+                    text=message,
+                    parse_mode=ParseMode.HTML
+                )
+                success_count += 1
+            except Exception as e:
+                print(f"Ошибка отправки пользователю {user['id']}: {e}")
+
+        return aiohttp.web.Response(
+            text=f"Уведомления отправлены {success_count}/{len(users_to_notify)} пользователям",
+            status=200
         )
-        return aiohttp.web.Response(text="Уведомление отправлено", status=200)
     except Exception as e:
-        return aiohttp.web.Response(text=f"Error: {e}", status=500)
+        return aiohttp.web.Response(text=f"Error: {str(e)}", status=500)
 
 
 async def main():
@@ -47,11 +62,8 @@ async def main():
 
     runner = aiohttp.web.AppRunner(app)
     await runner.setup()
-    site = aiohttp.web.TCPSite(runner, '0.0.0.0', 8080)
+    site = aiohttp.web.TCPSite(runner, '0.0.0.0', 8081)
     await site.start()
-
-    # Уведомление о запуске
-    await bot.send_message(ADMIN_CHAT_ID, "✅ Бот запущен и готов к работе")
 
     # Запуск поллинга и сервера
     try:

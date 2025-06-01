@@ -143,52 +143,52 @@
 }
 
 .modalOverlay {
-  position: fixed;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.6);
-  z-index: 9999;
-  padding: 20px;
-  box-sizing: border-box;
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 9999;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
 
 .modal {
-  background: white;
-  border-radius: 16px;
-  padding: 24px 30px;
-  width: 95%;
-  max-width: 450px;
-  max-height: 90vh;
-  overflow-y: auto;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+    background: white;
+    border-radius: 16px;
+    padding: 24px 30px;
+    width: 95%;
+    max-width: 450px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 
 .modal h3 {
-  margin-bottom: 10px;
-  font-size: 18px;
-  line-height: 1.3;
+    margin-bottom: 10px;
+    font-size: 18px;
+    line-height: 1.3;
     color: black;
 }
 
 
 .modal textarea {
-  width: 100%;
-  padding: 12px;
-  margin-top: 10px;
-  margin-bottom: 8px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  resize: vertical;
-  font-size: 15px;
-  min-height: 120px; /* выше */
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    margin-bottom: 8px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    resize: vertical;
+    font-size: 15px;
+    min-height: 120px; /* выше */
 }
 
 
@@ -229,6 +229,224 @@
     background-color: #bbb;
 }
 
+
+.activeNavButton {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+    border-color: white !important;
+}
+
+.successMessage {
+    color: #4CAF50;
+    margin-top: 10px;
+    text-align: center;
+    font-size: 14px;
+}
+
+/* Адаптируем существующие */
+.heroNav button {
+    background: none;
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.7);
+    border-radius: 8px;
+    padding: 10px 20px;
+    font: inherit;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.heroFormTitle {
+    background-color: #1e40af; /* Синий для аванса */
+}
+
+/* Стили для модального окна аванса */
+.advanceModal {
+    background: #f8f6f2;
+    border-radius: 16px;
+    padding: 30px;
+    width: 100%;
+    max-width: 450px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    border: 1px solid #e0d8cc;
+}
+
+.advanceModalHeader {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.advanceModalTitle {
+    color: #7a6b52;
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.advanceModalSubtitle {
+    color: #9c8e76;
+    font-size: 15px;
+}
+
+.advanceModalForm {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.advanceModalInput {
+    padding: 14px 16px;
+    border: 1px solid #d8d1c5;
+    border-radius: 10px;
+    background: white;
+    font-size: 15px;
+    transition: all 0.3s;
+}
+
+.advanceModalInput:focus {
+    border-color: #b3a58c;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(176, 159, 126, 0.2);
+}
+
+.advanceModalButton {
+    background: #9c8e76;
+    color: white;
+    border: none;
+    padding: 16px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 10px;
+}
+
+.advanceModalButton:hover {
+    background: #8a7d67;
+}
+
+.advanceModalButton:disabled {
+    background: #c5bcac;
+    cursor: not-allowed;
+}
+
+.advanceModalFooter {
+    margin-top: 20px;
+    font-size: 13px;
+    color: #9c8e76;
+    text-align: center;
+}
+
+.profileButton {
+    background: none;
+    border: none;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    transition: all 0.3s ease;
+}
+
+.profileButton:hover {
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+.profileIcon {
+    font-size: 18px;
+}
+
+
+/* Стили для модального окна консультации */
+.consultModal {
+    padding: 25px;
+    background: #fff;
+    border-radius: 12px;
+    max-width: 450px;
+    width: 100%;
+}
+
+.consultModal h3 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.consultModal textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    resize: vertical;
+    min-height: 120px;
+    font-size: 15px;
+}
+
+.errorInput {
+    border-color: #ff4d4f !important;
+}
+
+.errorText {
+    color: #ff4d4f;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.modalButtons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.submitButton {
+    background: #1890ff;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    flex: 1;
+    cursor: pointer;
+}
+
+.cancelButton {
+    background: #f0f0f0;
+    color: #333;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    flex: 1;
+    cursor: pointer;
+}
+
+.submitButton:hover {
+    background: #40a9ff;
+}
+
+.cancelButton:hover {
+    background: #d9d9d9;
+}
+
+
+/* Анимация успешной отправки */
+.advanceModalSuccess {
+    color: #5a8f5e;
+    text-align: center;
+    font-size: 15px;
+    margin-top: 15px;
+    animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
 @media (max-width: 1024px) {
     .heroContent {
         flex-direction: column;
@@ -256,14 +474,14 @@
 }
 
 .errorInput {
-  border: 2px solid red;
+    border: 2px solid red;
 }
 
 .errorText {
-  color: red;
-  font-size: 14px;
-  margin-top: 5px;
-  text-align: left;
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+    text-align: left;
 }
 
 

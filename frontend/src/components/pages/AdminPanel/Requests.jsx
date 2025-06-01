@@ -30,6 +30,7 @@ export default function Requests() {
     const [loading, setLoading] = useState(false);
     const [search, setSearch] = useState('');
     const [statusFilter, setStatusFilter] = useState('');
+    const [requestTypeFilter, setRequestTypeFilter] = useState('');
     const [dateRange, setDateRange] = useState([]);
     const screens = useBreakpoint();
 
@@ -80,7 +81,8 @@ export default function Requests() {
         const filtered = requests.filter(req => {
             const matchSearch =
                 req.name?.toLowerCase().includes(lowerSearch) ||
-                req.phone?.toLowerCase().includes(lowerSearch);
+                req.phone?.toLowerCase().includes(lowerSearch) ||
+                req.comment?.toLowerCase().includes(lowerSearch);
 
             const matchStatus = statusFilter ? req.status === statusFilter : true;
 
@@ -90,11 +92,20 @@ export default function Requests() {
                     dayjs(req.created_at).isBefore(dateRange[1].endOf('day'))
                     : true;
 
-            return matchSearch && matchStatus && matchDate;
+            const matchType =
+                requestTypeFilter === 'advance'
+                    ? req.comment?.includes('аванс')
+                    : requestTypeFilter === 'urgent'
+                        ? req.comment?.includes('Срочная продажа')
+                        : requestTypeFilter === 'other'
+                            ? !req.comment?.includes('аванс') && !req.comment?.includes('Срочная продажа')
+                            : true;
+
+            return matchSearch && matchStatus && matchDate && matchType;
         });
 
         setFilteredRequests(filtered);
-    }, [search, statusFilter, dateRange, requests]);
+    }, [search, statusFilter, requestTypeFilter, dateRange, requests]);
 
     const columns = [
         {title: '№', dataIndex: 'index', key: 'index', width: 50},
@@ -145,7 +156,7 @@ export default function Requests() {
             <h1 style={{fontSize: 24, fontWeight: 'bold', marginBottom: 16}}>ЗАЯВКИ</h1>
 
             <Row gutter={[16, 16]} style={{marginBottom: 16}}>
-                <Col xs={24} sm={12} md={8}>
+                <Col xs={24} sm={12} md={6}>
                     <Input
                         placeholder="Поиск по имени или телефону"
                         value={search}
@@ -153,7 +164,7 @@ export default function Requests() {
                         allowClear
                     />
                 </Col>
-                <Col xs={24} sm={12} md={8}>
+                <Col xs={24} sm={12} md={6}>
                     <Select
                         placeholder="Фильтр по статусу"
                         value={statusFilter || undefined}
@@ -166,7 +177,21 @@ export default function Requests() {
                         ))}
                     </Select>
                 </Col>
-                <Col xs={24} sm={24} md={8}>
+                <Col xs={24} sm={12} md={6}>
+                    <Select
+                        placeholder="Тип заявки"
+                        value={requestTypeFilter || undefined}
+                        onChange={(value) => setRequestTypeFilter(value)}
+                        allowClear
+                        style={{width: '100%'}}
+                    >
+                        <Option value="">Все заявки</Option>
+                        <Option value="advance">Запрос на аванс</Option>
+                        <Option value="urgent">Срочная продажа</Option>
+                        <Option value="other">Другие заявки</Option>
+                    </Select>
+                </Col>
+                <Col xs={24} sm={12} md={6}>
                     <RangePicker
                         style={{width: '100%'}}
                         value={dateRange}

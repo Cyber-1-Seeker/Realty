@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import RegisterView, LoginView, MeView, LogoutView, GetCSRFToken, VerifyPhoneView, UserViewSet, \
-    UserRoleViewSet, AdminPanelAccess, SelfDeleteAccount
+    UserRoleViewSet, AdminPanelAccess, SelfDeleteAccount, CheckPermissionsView
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
@@ -16,6 +16,7 @@ urlpatterns = [
     path('csrf/', GetCSRFToken.as_view(), name='csrf'),
     path('admin/check-access/', AdminPanelAccess.as_view()),
     path('users/me/delete/', SelfDeleteAccount.as_view(), name='self-delete-account'),
+    path('check-permissions/', CheckPermissionsView.as_view(), name='check-permissions'),
 ]
 
 urlpatterns += router.urls

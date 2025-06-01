@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'rest_framework',
+    'rest_framework.authtoken',
     'corsheaders',
 
     'apartment',
@@ -110,12 +111,16 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',  # Добавляем токен-аутентификацию для тг бота
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',  # Требуем аутентификацию по умолчанию
     ]
 }
 
 CACHES = {
     "default": {
-        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",  # или Redis если хочешь
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
         "LOCATION": "rate-limit-cache",
     }
 }
@@ -139,10 +144,10 @@ SESSION_COOKIE_SAMESITE = "Lax"
 
 # WEBHOOK
 WEBHOOK_TOKEN = os.getenv('WEBHOOK_TOKEN')
+WEBHOOK_URL = os.getenv('WEBHOOK_URL', 'http://localhost:8081/new_application')
 
 # TELEGRAM BOT
 BOT_TOKEN = os.getenv('BOT_TOKEN')
-ADMIN_CHAT_ID = int(os.getenv('ADMIN_CHAT_ID'))
 
 # === Безопасность по окружению ===
 
@@ -159,7 +164,6 @@ else:
 # === Ключ по умолчанию для моделей ===
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
 
 # === Сервис для подтверждения номера телефона ===
 EXOLVE_API_KEY = "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJRV05sMENiTXY1SHZSV29CVUpkWjVNQURXSFVDS0NWODRlNGMzbEQtVHA0In0.eyJleHAiOjIwNjM4Mjk4MDIsImlhdCI6MTc0ODQ2OTgwMiwianRpIjoiZjIxOTkxNzQtOTQyNS00ZmJkLWI4ZWEtMjIzZGM1YTE2MDgyIiwiaXNzIjoiaHR0cHM6Ly9zc28uZXhvbHZlLnJ1L3JlYWxtcy9FeG9sdmUiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiZTYyZGY2Y2ItM2Y5My00N2VhLTkzZGUtYjdlYzRlYmQyYmUxIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiOWI1YWU0YTEtZjQxYS00YjU2LWFmNjAtNTg5MDMyNWFkNGVjIiwic2Vzc2lvbl9zdGF0ZSI6ImQ4NzE5M2ExLTM0MDAtNGVkMS1iZjdiLTcyMGFhZjE2ZWJjNCIsImFjciI6IjEiLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiZGVmYXVsdC1yb2xlcy1leG9sdmUiLCJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJleG9sdmVfYXBwIHByb2ZpbGUgZW1haWwiLCJzaWQiOiJkODcxOTNhMS0zNDAwLTRlZDEtYmY3Yi03MjBhYWYxNmViYzQiLCJ1c2VyX3V1aWQiOiJjN2ZlODM0Yi0yYTM0LTQ2ODktYThmNC1lYzU0ZjI4Y2U3YmYiLCJjbGllbnRIb3N0IjoiMTcyLjE2LjE2MS4xOSIsImNsaWVudElkIjoiOWI1YWU0YTEtZjQxYS00YjU2LWFmNjAtNTg5MDMyNWFkNGVjIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJhcGlfa2V5Ijp0cnVlLCJhcGlmb25pY2Ffc2lkIjoiOWI1YWU0YTEtZjQxYS00YjU2LWFmNjAtNTg5MDMyNWFkNGVjIiwiYmlsbGluZ19udW1iZXIiOiIxMzI3ODM2IiwiYXBpZm9uaWNhX3Rva2VuIjoiYXV0ZGZlM2EyMWMtY2I0OS00NjgxLWI2NWEtNjgyNTU0MWFmNDg4IiwicHJlZmVycmVkX3VzZXJuYW1lIjoic2VydmljZS1hY2NvdW50LTliNWFlNGExLWY0MWEtNGI1Ni1hZjYwLTU4OTAzMjVhZDRlYyIsImN1c3RvbWVyX2lkIjoiMTMxMzcxIiwiY2xpZW50QWRkcmVzcyI6IjE3Mi4xNi4xNjEuMTkifQ.IGaDi6nK5tSXT0IxFDgh0T0kGp3jDOhiQ_1sQXYqxk48qPCLTK8iML9zWpmTScaa72gWEcV9sfKMfdGadMt2_CTqgmE49SNH5dpNK9eyat9e_4QGVE4Y-KhastqmNg8rZDLvhpMUHLR_OglVCVxvLoujcCTOT2GaWm06f_tvEJgsj31tx3HlfEfdsXf3T5fnfaq36z1AIkaJU_WO1wdGkBZ-KOXQeIaJ7cQYrKCbwuiMaFSTu7QiyaDKwvNURH6DvkcGCFl0lWoH9kG3v5eeR2xcRpaDc54JFg2CoTjI0YN136AO1CePbLK8OXiAVN7hUoS8vZp6X8Slr8JOvARyWQ"

@@ -14,6 +14,12 @@ def apartment_image_upload_path(instance, filename):
 
 
 class Apartment(models.Model):
+    STATUS_CHOICES = [
+        ('pending', 'На рассмотрении'),
+        ('rejected', 'Отклонено'),
+        ('approved', 'Принято'),
+    ]
+
     PROPERTY_TYPES = [
         ('apartment', 'Квартира'),
         ('apartments', 'Апартаменты'),
@@ -52,6 +58,12 @@ class Apartment(models.Model):
 
     # Основные параметры
     owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='apartments')
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default='pending'
+    )
+    rejection_reason = models.TextField(blank=True, null=True, verbose_name='Причина отклонения')
     property_type = models.CharField(max_length=20, choices=PROPERTY_TYPES, default='apartment')
     address = models.CharField(max_length=255)
     title = models.CharField(max_length=100, verbose_name='Заголовок объявления')
@@ -195,6 +207,12 @@ class Apartment(models.Model):
         verbose_name = 'Недвижимость'
         verbose_name_plural = 'Объекты недвижимости'
         ordering = ['-created_at']
+
+    def save(self, *args, **kwargs):
+        """Автоматически управляет is_active на основе статуса"""
+        if self.status in ['pending', 'rejected']:
+            self.is_active = False
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f'{self.title} - {self.address}'

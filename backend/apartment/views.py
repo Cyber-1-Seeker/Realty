@@ -90,14 +90,38 @@ class AdminApartmentViewSet(viewsets.ModelViewSet):
         instance.delete()
 
     @action(detail=True, methods=['patch'])
-    def set_active(self, request, pk=None):
+    def set_status(self, request, pk=None):
         try:
             apartment = Apartment.objects.get(pk=pk)
         except Apartment.DoesNotExist:
             return Response({'error': 'Not found'}, status=404)
 
-        if apartment.owner != request.user and request.user.role not in ['manager', 'admin', 'moderator']:
-            raise PermissionDenied("Вы не можете изменить статус этой квартиры.")
+        new_status = request.data.get('status')
+        rejection_reason = request.data.get('rejection_reason', None)
+
+        if new_status not in ['pending', 'rejected', 'approved']:
+            return Response({'error': 'Invalid status'}, status=400)
+
+        # Обновляем статус и причину
+        apartment.status = new_status
+        if new_status == 'rejected':
+            apartment.rejection_reason = rejection_reason
+        else:
+            apartment.rejection_reason = None
+
+        apartment.save()
+        return Response({'status': 'updated', 'current_status': apartment.status})
+
+    @action(detail=True, methods=['patch'])
+    def set_active(self, request, pk=None):
+        # Оставляем существующую логику, но с проверкой статуса
+        apartment = self.get_object()
+
+        if apartment.status != 'approved':
+            return Response(
+                {'error': 'Cannot activate non-approved apartment'},
+                status=400
+            )
 
         is_active = request.data.get('is_active')
         if isinstance(is_active, bool):

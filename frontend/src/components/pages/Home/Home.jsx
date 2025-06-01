@@ -1,4 +1,5 @@
-import React from 'react'
+import React, {useEffect} from 'react'
+import {useLocation} from 'react-router-dom' // Добавлено для работы с якорем
 import Hero from "./Hero/Hero.jsx";
 import WhyUs from '../Home/WhyUs/WhyUs'
 import ProcessSteps from '../Home/ProcessSteps/ProcessSteps'
@@ -11,16 +12,48 @@ import UrgentSell from "@/components/pages/Home/UrgentSell/UrgentSell.jsx";
 
 import styles from './Home.module.css';
 
-
 const Home = () => {
+    const location = useLocation(); // Добавлено для работы с якорем
+
+    // Обработка якоря при загрузке страницы
+    useEffect(() => {
+        if (location.hash === '#calculator') {
+            setTimeout(() => {
+                const calculatorElement = document.getElementById('calculator');
+                if (calculatorElement) {
+                    calculatorElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            }, 100);
+        }
+    }, [location]);
+
+        useEffect(() => {
+        if (location.hash === '#contacts') {
+            setTimeout(() => {
+                const contactsElement = document.getElementById('contacts');
+                if (contactsElement) {
+                    contactsElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            }, 100);
+        }
+    }, [location]);
+
     return (
         <div className={styles.pageWrapper}>
             <Hero/>
             <div className={styles.gradientTop}></div>
             <div className={styles.gradientBottom}></div>
+
             <section className="nextSection">
                 <UrgentSell/>
             </section>
+
             <div className={styles.gradientTop}></div>
             <div className={styles.gradientBottom}></div>
             <section className="nextSection">
@@ -33,7 +66,7 @@ const Home = () => {
             </section>
             <div className={styles.gradientTop}></div>
             <div className={styles.gradientBottom}></div>
-            <section className="nextSection">
+            <section className="nextSection" id="calculator">
                 <CallToAction/>
             </section>
             <section className="nextSection">
@@ -44,7 +77,7 @@ const Home = () => {
                 <ProcessSteps/>
             </section>
             <div className={styles.gradientTop}></div>
-            <MapSection/>
+            <MapSection id="contacts"/>
             <Testimonials/>
         </div>
     )

@@ -7,6 +7,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import viewsets
+from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAdminUser
 from datetime import date
 from .serializers import UserListSerializer
@@ -46,6 +47,7 @@ class VerifyPhoneView(APIView):
 
 
 class LoginView(APIView):
+
     def post(self, request):
         phone = request.data.get('phone_number')
         if not phone:
@@ -69,7 +71,7 @@ class MeView(APIView):
                 'email': request.user.email,
                 'phone_number': request.user.phone_number,
                 'first_name': request.user.first_name,
-                'id': request.user.id, # Добавил это
+                'id': request.user.id,  # Добавил это
             })
         return Response({'user': None}, status=status.HTTP_401_UNAUTHORIZED)
 
@@ -139,3 +141,36 @@ class SelfDeleteAccount(APIView):
         logout(request)
         user.delete()
         return Response({"message": "Аккаунт успешно удален"}, status=status.HTTP_204_NO_CONTENT)
+
+
+''' Для проверки тг пользователей на доступ к боту '''
+
+
+class CheckPermissionsView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        telegram_id = request.query_params.get('telegram_id')
+        print(request.query_params.get('telegram_id'))
+        if not telegram_id:
+            return Response({"error": "Telegram ID is required"}, status=400)
+
+        try:
+            user = CustomUser.objects.get(telegram_id=telegram_id)
+        except CustomUser.DoesNotExist:
+            return Response({
+                "has_permission": False,
+                "reason": "User not found"
+            })
+
+        # Проверяем права
+        allowed_roles = ['moderator', 'manager', 'admin']
+        has_permission = user.is_active and user.role in allowed_roles
+
+        return Response({
+            "has_permission": has_permission,
+            "user_id": user.id,
+            "role": user.role,
+            "first_name": user.first_name,
+            "email": user.email
+        })

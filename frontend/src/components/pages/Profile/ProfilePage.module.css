@@ -23,7 +23,6 @@
 }
 
 
-
 .profileContent {
     display: flex;
     flex-direction: column;
@@ -219,4 +218,37 @@
 
 .ant-table-tbody > tr:hover > td {
     background: #f8f9fa !important;
+}
+
+.statusInfoContainer {
+    padding: 15px 0;
+}
+
+.statusHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.statusHeader h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.statusDescription {
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.rejectionActions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
 }

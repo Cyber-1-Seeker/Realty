@@ -146,8 +146,7 @@ export default function AdminLayout() {
                     placement="left"
                     onClose={() => setDrawerVisible(false)}
                     open={drawerVisible}
-                    bodyStyle={{padding: 0}}
-                >
+                    styles={{body: {padding: 0}}}>
                     <Menu
                         mode="inline"
                         selectedKeys={[selectedKey]}
