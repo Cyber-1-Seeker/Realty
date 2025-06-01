@@ -7,6 +7,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import viewsets
+from rest_framework.permissions import AllowAny
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAdminUser
 from datetime import date
@@ -20,6 +21,9 @@ User = get_user_model()
 
 
 class RegisterView(APIView):
+    permission_classes = [AllowAny]
+    authentication_classes = []
+
     def post(self, request):
         serializer = PhoneConfirmationRequestSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
@@ -33,6 +37,9 @@ class RegisterView(APIView):
 
 
 class VerifyPhoneView(APIView):
+    permission_classes = [AllowAny]
+    authentication_classes = []
+
     def post(self, request):
         serializer = PhoneCodeVerificationSerializer(data=request.data)
         if serializer.is_valid():
@@ -47,6 +54,8 @@ class VerifyPhoneView(APIView):
 
 
 class LoginView(APIView):
+    permission_classes = [AllowAny]
+    authentication_classes = []
 
     def post(self, request):
         phone = request.data.get('phone_number')

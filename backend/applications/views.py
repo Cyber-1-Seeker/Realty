@@ -1,14 +1,13 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticatedOrReadOnly, AllowAny, IsAuthenticated
+from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
+from rest_framework.authentication import TokenAuthentication
 from django.utils.decorators import method_decorator
 from django_ratelimit.decorators import ratelimit
 from django.conf import settings
-
 from datetime import date
 import httpx
-
 from .models import Application
 from .serializers import ApplicationSerializer
 from monitoring.models import DailyStats
@@ -23,6 +22,8 @@ from accounts.models import CustomUser
 class ApplicationViewSet(viewsets.ModelViewSet):
     queryset = Application.objects.all().order_by('-created_at')
     serializer_class = ApplicationSerializer
+    # Явно включаем поддержку токен-авторизации
+    authentication_classes = [TokenAuthentication]
 
     def get_permissions(self):
         if self.action == 'create':
@@ -64,7 +65,7 @@ class ApplicationViewSet(viewsets.ModelViewSet):
 
 
 class NotifyUsersView(APIView):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
     def get(self, request):
         # Получаем пользователей, которым нужно отправлять уведомления
