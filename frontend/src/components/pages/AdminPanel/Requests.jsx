@@ -1,15 +1,5 @@
 import {useEffect, useState} from 'react';
-import {
-    Table,
-    Select,
-    Button,
-    Popconfirm,
-    message,
-    Input,
-    Row,
-    Col,
-    DatePicker
-} from 'antd';
+import {Table, Select, Button, Popconfirm, message, Input, Row, Col, DatePicker} from 'antd';
 import {API_AUTH} from "@/utils/api/axiosWithAuth.js";
 import {Grid} from 'antd';
 import dayjs from 'dayjs';
@@ -44,13 +34,16 @@ export default function Requests() {
             }));
             setRequests(dataWithIndex);
             setFilteredRequests(dataWithIndex);
-        } catch {
-            message.error('Ошибка при загрузке заявок');
+        } catch (error) {
+            if (error.response?.status === 401) {
+                message.error('Ошибка авторизации. Проверьте токен.');
+            } else {
+                message.error('Ошибка при загрузке заявок');
+            }
         } finally {
             setLoading(false);
         }
     };
-
     const updateStatus = async (id, status) => {
         try {
             await API_AUTH.patch(`/api/applications/applications/${id}/`, {status});

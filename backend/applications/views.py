@@ -2,7 +2,7 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
-from rest_framework.authentication import TokenAuthentication
+from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 from django.utils.decorators import method_decorator
 from django_ratelimit.decorators import ratelimit
 from django.conf import settings
@@ -22,35 +22,31 @@ from accounts.models import CustomUser
 class ApplicationViewSet(viewsets.ModelViewSet):
     queryset = Application.objects.all().order_by('-created_at')
     serializer_class = ApplicationSerializer
-    # Явно включаем поддержку токен-авторизации
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
 
     def get_permissions(self):
         if self.action == 'create':
-            return [AllowAny()]  # ✅ Любой может отправить заявку
-        return [CanViewApplications()]  # 🔒 Только админы могут смотреть/редактировать
+            return [AllowAny()]  # Любой может отправить заявку
+        return [CanViewApplications()]  # Только админы могут смотреть/редактировать
 
     def create(self, request, *args, **kwargs):
-        # 🛡️ Honeypot — антибот-фильтр
         if request.data.get('nickname'):
             return Response(
                 {"detail": "Спам обнаружен."},
                 status=status.HTTP_403_FORBIDDEN
             )
 
-        # 🚀 Создаём заявку
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
-        print(serializer)
 
-        # 📈 Обновляем статистику
         today = date.today()
         stat, _ = DailyStats.objects.get_or_create(date=today)
         stat.new_applications += 1
         stat.save()
 
         headers = self.get_success_headers(serializer.data)
-        if settings.DEBUG:  # В разработке отправляем синхронно
+        if settings.DEBUG:
             try:
                 httpx.post(
                     settings.WEBHOOK_URL,
@@ -64,13 +60,10 @@ class ApplicationViewSet(viewsets.ModelViewSet):
 
 
 class NotifyUsersView(APIView):
-    # permission_classes = [IsAuthenticated]
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [CanViewApplications]
 
     def get(self, request):
-        # Получаем пользователей, которым нужно отправлять уведомления
-        # - Активные пользователи
-        # - С ролью moderator, manager или admin
-        # - С заполненным telegram_id
         users = CustomUser.objects.filter(
             is_active=True,
             role__in=['moderator', 'manager', 'admin'],

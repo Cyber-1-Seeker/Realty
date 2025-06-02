@@ -154,7 +154,6 @@ export default function AdminTestimonials({onError}) {
         <div className="admin-container">
             <h1 className="admin-title">
                 Управление отзывами
-                <span className="admin-subtitle">Только активные отзывы отображаются на сайте</span>
             </h1>
 
             <div className="admin-card">

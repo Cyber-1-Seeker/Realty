@@ -81,6 +81,18 @@ DATABASES = {
     }
 }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'PostgreSQL 17',
+#         'USER': 'postgres',
+#         'PASSWORD': 'Sh1nda_SenSh1',
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     }
+# }
+
+
 # === Пароли ===
 
 AUTH_PASSWORD_VALIDATORS = [
