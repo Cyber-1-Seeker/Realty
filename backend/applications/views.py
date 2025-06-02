@@ -23,7 +23,6 @@ class ApplicationViewSet(viewsets.ModelViewSet):
     queryset = Application.objects.all().order_by('-created_at')
     serializer_class = ApplicationSerializer
     # Явно включаем поддержку токен-авторизации
-    authentication_classes = [TokenAuthentication]
 
     def get_permissions(self):
         if self.action == 'create':

@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "@pbe/react-yandex-maps": "^1.2.5"
+    "@pbe/react-yandex-maps": "^1.2.5",
+    "swiper": "^11.2.8"
   }
 }

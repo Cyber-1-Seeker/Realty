@@ -5,6 +5,7 @@ import {
     FileTextOutlined,
     HomeOutlined,
     BarChartOutlined,
+    CommentOutlined,
     UserOutlined,
     MenuOutlined,
     LoadingOutlined
@@ -15,6 +16,7 @@ import {API_AUTH} from "@/utils/api/axiosWithAuth.js";
 import Requests from './Requests';
 import Listings from './Listings';
 import Analytics from './Analytics';
+import AdminTestimonials from './AdminTestimonials.jsx'
 import Users from './Users';
 import Roles from './Roles.jsx';
 
@@ -122,6 +124,7 @@ export default function AdminLayout() {
             'requests': <Requests onError={showError}/>,
             'listings': <Listings onError={showError}/>,
             'analytics': <Analytics onError={showError}/>,
+            'testimonials': <AdminTestimonials onError={showError}/>,
             'users': <Users onError={showError}/>,
             'roles': <Roles onError={showError}/>
         };
@@ -133,6 +136,7 @@ export default function AdminLayout() {
         {key: 'requests', icon: <FileTextOutlined/>, label: 'Заявки'},
         {key: 'listings', icon: <HomeOutlined/>, label: 'Объявления'},
         {key: 'analytics', icon: <BarChartOutlined/>, label: 'Аналитика'},
+        {key: 'testimonials', icon: <CommentOutlined/>, label: 'Отзывы'},
         {key: 'users', icon: <UserOutlined/>, label: 'Пользователи'},
         {key: 'roles', icon: <UserOutlined/>, label: 'Роли'},
     ];
