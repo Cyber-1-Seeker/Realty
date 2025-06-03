@@ -134,7 +134,9 @@ const Navbar = ({isAuthenticated, user}) => {
                 className={`${classes.navbar} ${!isMobile && !showNavbar ? classes.hidden : classes.visible}`}
                 ref={navbarRef}
             >
-                <div className={classes.logo}>🏠 Realty</div>
+                <div className={classes.logo}><Link to="/" onClick={() => setMenuOpen(false)}>
+                    <a>🏠 Realty </a>
+                </Link></div>
 
                 <div className={classes.centerSection}>
                     {!isMobile && (

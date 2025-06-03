@@ -12,7 +12,7 @@ import UrgentSell from "@/components/pages/Home/UrgentSell/UrgentSell.jsx";
 
 import styles from './Home.module.css';
 
-const Home = () => {
+const Home = ({isAuthenticated}) => {
     const location = useLocation(); // Добавлено для работы с якорем
 
     // Обработка якоря при загрузке страницы
@@ -46,7 +46,7 @@ const Home = () => {
 
     return (
         <div className={styles.pageWrapper}>
-            <Hero/>
+            <Hero isAuthenticated={isAuthenticated}/>
             <div className={styles.gradientTop}></div>
             <div className={styles.gradientBottom}></div>
 

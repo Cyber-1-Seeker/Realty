@@ -152,12 +152,12 @@ export default function AdminTestimonials({onError}) {
 
     return (
         <div className="admin-container">
-            <h1 className="admin-title">
+            <h1 className="admin-title" style={{marginBottom: '5px'}}>
                 Управление отзывами
             </h1>
 
             <div className="admin-card">
-                <h3 className="admin-card-title">Добавить новый отзыв</h3>
+                <h3 className="admin-card-title" style={{marginBottom: '10px'}}>Добавить новый отзыв</h3>
                 <Row gutter={[16, 16]}>
                     <Col span={24}>
                         <Input

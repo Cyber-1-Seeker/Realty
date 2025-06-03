@@ -90,9 +90,13 @@ export default function Requests() {
                     ? req.comment?.includes('аванс')
                     : requestTypeFilter === 'urgent'
                         ? req.comment?.includes('Срочная продажа')
-                        : requestTypeFilter === 'other'
-                            ? !req.comment?.includes('аванс') && !req.comment?.includes('Срочная продажа')
-                            : true;
+                        : requestTypeFilter === 'order'
+                            ? req.comment?.includes('Запрос на оценку')
+                            : requestTypeFilter === 'other'
+                                ? !req.comment?.includes('аванс') &&
+                                !req.comment?.includes('Срочная продажа') &&
+                                !req.comment?.includes('Запрос на оценку')
+                                : true;
 
             return matchSearch && matchStatus && matchDate && matchType;
         });
@@ -181,6 +185,7 @@ export default function Requests() {
                         <Option value="">Все заявки</Option>
                         <Option value="advance">Запрос на аванс</Option>
                         <Option value="urgent">Срочная продажа</Option>
+                        <Option value="order">Запрос на оценку</Option>
                         <Option value="other">Другие заявки</Option>
                     </Select>
                 </Col>

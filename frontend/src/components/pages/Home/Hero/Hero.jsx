@@ -115,7 +115,6 @@ const Hero = ({isAuthenticated}) => {
                 </button>
                 <a href="#calculator">Калькулятор стоимости</a>
 
-                {/* Заменена кнопка "Купить" на "Профиль" */}
                 <button onClick={handleProfileClick}>
                     Профиль
                 </button>
