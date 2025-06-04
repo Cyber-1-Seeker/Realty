@@ -1,7 +1,7 @@
 .git
 .gitignore
-.env
-.env.prod
+.env.development
+.env.production
 *.md
 docker-compose.yml
 docker-compose.override.yml

@@ -17,7 +17,7 @@ API_HEADERS = {
 # Функция для проверки прав пользователя
 async def check_user_permissions(telegram_id):
     try:
-        url = f"{API_URL}/accounts/check-permissions/?telegram_id={telegram_id}"
+        url = f"{API_URL}/api/accounts/check-permissions/?telegram_id={telegram_id}"
         async with httpx.AsyncClient() as client:
             res = await client.get(url, headers=API_HEADERS)
 
@@ -41,7 +41,7 @@ async def list_applications(message: Message, page: int = 1):
 
     try:
         # Формируем правильный URL
-        url = f"{API_URL}/applications/applications/"
+        url = f"{API_URL}/api/applications/applications/"
         async with httpx.AsyncClient() as client:
             res = await client.get(url, headers=API_HEADERS)
 
@@ -122,7 +122,7 @@ async def open_application(callback: CallbackQuery):
 
     app_id = callback.data.split(":")[1]
     try:
-        url = f"{API_URL}/applications/applications/{app_id}/"
+        url = f"{API_URL}/api/applications/applications/{app_id}/"
         async with httpx.AsyncClient() as client:
             res = await client.get(url, headers=API_HEADERS)
 
@@ -170,7 +170,7 @@ async def switch_page(callback: CallbackQuery):
 
     try:
         # Формируем правильный URL
-        url = f"{API_URL}/applications/applications/"
+        url = f"{API_URL}/api/applications/applications/"
         async with httpx.AsyncClient() as client:
             res = await client.get(url, headers=API_HEADERS)
 
@@ -259,7 +259,7 @@ async def handle_status_change(callback: CallbackQuery):
 
     _, app_id, new_status = callback.data.split(":")
     try:
-        url = f"{API_URL}/applications/applications/{app_id}/"
+        url = f"{API_URL}/api/applications/applications/{app_id}/"
         async with httpx.AsyncClient() as client:
             # Меняем статус
             res = await client.patch(
@@ -298,7 +298,7 @@ async def handle_delete(callback: CallbackQuery):
 
     _, app_id = callback.data.split(":")
     try:
-        url = f"{API_URL}/applications/applications/{app_id}/"
+        url = f"{API_URL}/api/applications/applications/{app_id}/"
         async with httpx.AsyncClient() as client:
             res = await client.delete(url, headers=API_HEADERS)
 
@@ -322,7 +322,7 @@ async def get_users_to_notify(api_url, api_token):
     print("Работает")
     """Получаем список пользователей для уведомлений"""
     try:
-        url = f"{api_url}/applications/notify-users/"
+        url = f"{api_url}/api/applications/notify-users/"
         headers = {"Authorization": f"Token {api_token}"}
 
         async with httpx.AsyncClient() as client:

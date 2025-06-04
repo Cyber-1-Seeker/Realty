@@ -444,7 +444,7 @@ const AddListingForm = ({onClose, onSuccess, user}) => {
                                 {required: true, message: 'Введите количество комнат'},
                                 {pattern: /^\d+$/, message: 'Введите целое число'},
                                 {min: 0, message: 'Не может быть отрицательным'},
-                                {max: 10, message: 'Слишком большое количество комнат'}
+                                {max: 3, message: 'Слишком большое количество комнат'}
                             ]}
                         >
                             <Input type="number" min="0" placeholder="0 для студии"/>

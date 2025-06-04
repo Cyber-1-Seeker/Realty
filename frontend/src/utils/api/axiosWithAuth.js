@@ -1,9 +1,10 @@
 import axios from 'axios';
 import {getCSRFTokenFromCookie} from './csrf';
+import {API_URL} from "@/utils/config.js";
 
 // Авторизованный axios с CSRF и токеном
 export const API_AUTH = axios.create({
-    baseURL: 'http://localhost:8000',
+    baseURL: API_URL,
     withCredentials: true,
 });
 

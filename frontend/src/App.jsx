@@ -1,5 +1,6 @@
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import {useEffect, useState} from 'react'
+import {API_URL} from "@/utils/config.js";
 import Layout from './components/Layout/Layout'
 import About from './components/pages/About/About.jsx'
 import "./App.css"
@@ -16,9 +17,9 @@ function App() {
     const [user, setUser] = useState(null)
 
     useEffect(() => {
-        fetch('http://localhost:8000/api/accounts/csrf/', {credentials: 'include'})
+        fetch(`${API_URL}/api/accounts/csrf/`, {credentials: 'include'})
             .then(() => {
-                return fetch('http://localhost:8000/api/accounts/me/', {
+                return fetch(`${API_URL}/api/accounts/me/`, {
                     credentials: 'include'
                 })
             })
@@ -32,7 +33,6 @@ function App() {
                 setIsAuthenticated(false);
             });
     }, []);
-
 
     return (
         <BrowserRouter>
@@ -52,7 +52,7 @@ function App() {
                            element={<ListingsPage isAuthenticated={isAuthenticated} currentUser={user}/>}/>
                     <Route path="/listings/add" element={<AddListingForm
                         isAuthenticated={isAuthenticated}
-                        user={user}  // Добавляем передачу пользователя
+                        user={user}
                     />}/>
                     <Route path="/listings/:id" element={<ListingDetails/>}/>
                     <Route path="/profile" element={<ProfilePage/>}/>

@@ -135,7 +135,7 @@ const ProfilePage = () => {
             case 'pending':
                 return {
                     title: 'На рассмотрении',
-                    description: 'Ваше объявление ожидает проверки модератором. Обычно это занимает 1-2 рабочих дня.',
+                    description: 'Ваше объявление ожидает проверки модератором. Обычно это занимает до 1 часа',
                     color: 'orange',
                     icon: <ExclamationCircleOutlined/>
                 };

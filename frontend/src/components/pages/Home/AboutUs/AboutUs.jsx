@@ -1,15 +1,9 @@
-import React, {useState} from 'react';
+import React from 'react';
+import {Link} from 'react-router-dom';
 import {motion} from 'framer-motion';
 import styles from './AboutUs.module.css';
 
 const AboutUs = () => {
-    const [rooms, setRooms] = useState('');
-    const [area, setArea] = useState('');
-    const [city, setCity] = useState('');
-    const [price, setPrice] = useState(null);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-
-
     return (
         <>
             <motion.section
@@ -25,9 +19,11 @@ const AboutUs = () => {
                     <p>
                         Мы компания, занимающаяся <strong>тем то и тем то и тем то и тем то, в прочем, довольно много чем на самом деле </strong>
                     </p>
-                    <button className={styles.openButton} onClick={() => setIsModalOpen(true)}>
-                        Подробнее
-                    </button>
+                    <Link to="/about" >
+                        <button className={styles.openButton}>
+                            Подробнее
+                        </button>
+                    </Link>
                 </div>
             </motion.section>
         </>

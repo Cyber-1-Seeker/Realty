@@ -1,23 +1,76 @@
-"""
-Django settings for config project.
-"""
-
+import os
+import sys
 from pathlib import Path
 from dotenv import load_dotenv
-import os
 
-# === Базовая настройка ===
-
+# Определяем базовый путь
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
-load_dotenv(os.path.join(BASE_DIR, '.env'))
 
+# === Загрузка переменных окружения ===
+# Определяем режим работы по переменной APP_ENV
+app_env = os.getenv('APP_ENV', 'development')
+is_production = app_env == 'production'
+
+# Выбираем нужный .env файл
+env_file = '.env.production' if is_production else '.env'
+env_path = os.path.join(BASE_DIR, env_file)
+
+# Загружаем переменные
+load_dotenv(dotenv_path=env_path, override=True)
+
+# === Базовые настройки ===
 SECRET_KEY = os.getenv("SECRET_KEY", "insecure-secret")
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",") if os.getenv("ALLOWED_HOSTS") else []
+# Вывод информации о конфигурации
+print(f"Режим работы: {'PRODUCTION' if is_production else 'DEVELOPMENT'}")
+print(f"Используемый файл окружения: {env_path}")
+print(f"DEBUG: {DEBUG}")
 
-# === Приложения ===
+# Динамические ALLOWED_HOSTS
+allowed_hosts = os.getenv("ALLOWED_HOSTS", "")
+ALLOWED_HOSTS = allowed_hosts.split(",") if allowed_hosts else []
 
+if DEBUG:
+    ALLOWED_HOSTS.extend(['localhost', '127.0.0.1'])
+
+# === Конфигурация базы данных ===
+if 'test' in sys.argv:
+    # Используем SQLite для тестов (для скорости)
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'test_db.sqlite3',
+        }
+    }
+elif DEBUG:
+    # Разработка: используем Postgres из .env
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.getenv("POSTGRES_DB", "realty_dev"),
+            'USER': os.getenv("POSTGRES_USER", "postgres"),
+            'PASSWORD': os.getenv("POSTGRES_PASSWORD", ""),
+            'HOST': os.getenv("DB_HOST", "db"),
+            'PORT': '5432',
+        }
+    }
+else:
+    # Продакшен: Postgres с оптимизациями
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.getenv("POSTGRES_DB", "realty_prod"),
+            'USER': os.getenv("POSTGRES_USER", "prod_user"),
+            'PASSWORD': os.getenv("POSTGRES_PASSWORD", ""),
+            'HOST': os.getenv("DB_HOST", "db"),
+            'PORT': '5432',
+            'CONN_MAX_AGE': 60,  # Переиспользование соединений
+            'OPTIONS': {'sslmode': 'require'},
+        }
+    }
+
+# === Приложения и middleware ===
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -37,8 +90,6 @@ INSTALLED_APPS = [
     'testimonials',
 ]
 
-# === Middleware ===
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -51,9 +102,9 @@ MIDDLEWARE = [
     'monitoring.middleware.UserVisitMiddleware',
 ]
 
-# === URLs и шаблоны ===
-
+# === Пути и URL ===
 ROOT_URLCONF = 'config.urls'
+WSGI_APPLICATION = 'config.wsgi.application'
 
 TEMPLATES = [
     {
@@ -70,30 +121,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'config.wsgi.application'
-
-# === База данных ===
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv("POSTGRES_DB", "realty_db"),
-        'USER': os.getenv("POSTGRES_USER", "postgres"),
-        'PASSWORD': os.getenv("POSTGRES_PASSWORD", ""),
-        'HOST': os.getenv("DB_HOST", "db"),  # имя сервиса в docker-compose
-        'PORT': '5432',
-    }
-}
-
-# === Пароли ===
-
+# === Аутентификация и пароли ===
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -101,84 +129,117 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-# === Интернационализация ===
+AUTH_USER_MODEL = 'accounts.CustomUser'
 
-LANGUAGE_CODE = 'en-us'
+# === Интернационализация ===
+LANGUAGE_CODE = 'ru-ru'
 TIME_ZONE = 'Europe/Moscow'
 USE_I18N = True
 USE_TZ = True
 
-# === Файлы ===
+# === Статика и медиа ===
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Для collectstatic
 
-STATIC_URL = 'static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# === Пользовательская модель ===
-
-AUTH_USER_MODEL = 'accounts.CustomUser'
-
 # === DRF ===
-
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.TokenAuthentication',  # Добавляем токен-аутентификацию для тг бота
+        'rest_framework.authentication.TokenAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',  # Требуем аутентификацию по умолчанию
+        'rest_framework.permissions.IsAuthenticated',
     ]
 }
 
-CACHES = {
-    "default": {
-        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
-        "LOCATION": "rate-limit-cache",
-    }
-}
-
 # === CORS и CSRF ===
+CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "").split(",") if os.getenv("CORS_ALLOWED_ORIGINS") else []
+CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS", "").split(",") if os.getenv("CSRF_TRUSTED_ORIGINS") else []
 
+if DEBUG:
+    CORS_ALLOWED_ORIGINS.extend(["http://localhost:5173", "http://127.0.0.1:5173"])
+    CSRF_TRUSTED_ORIGINS.extend(["http://localhost:5173", "http://127.0.0.1:5173"])
+else:
+    CORS_ALLOWED_ORIGINS.extend([
+        "http://147.45.224.189",
+        "https://147.45.224.189",
+    ])
+    CSRF_TRUSTED_ORIGINS.extend([
+        "http://147.45.224.189",
+        "https://147.45.224.189",
+    ])
 
-CORS_ALLOWED_ORIGINS = ["http://localhost:5173"]
-CSRF_TRUSTED_ORIGINS = ["http://localhost:5173"]
 CORS_ALLOW_CREDENTIALS = True
 
-# === Cookie-настройки ===
-
-CSRF_COOKIE_NAME = "csrftoken"
-SESSION_COOKIE_NAME = "sessionid"
-
-CSRF_COOKIE_HTTPONLY = False
-SESSION_COOKIE_HTTPONLY = True
-
-CSRF_COOKIE_SAMESITE = "Lax"
-SESSION_COOKIE_SAMESITE = "Lax"
-
-# WEBHOOK
-WEBHOOK_TOKEN = os.getenv('WEBHOOK_TOKEN')
-WEBHOOK_URL = os.getenv('WEBHOOK_URL')
-
-# TELEGRAM BOT
-BOT_TOKEN = os.getenv('BOT_TOKEN')
-
-# === Безопасность по окружению ===
-
-# Только если DEBUG = False:
+# === Настройки безопасности ===
 if not DEBUG:
+    # Production security
     CSRF_COOKIE_SECURE = True
     SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SAMESITE = "None"
-    SESSION_COOKIE_SAMESITE = "None"
+    SECURE_HSTS_SECONDS = 3600
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SECURE_SSL_REDIRECT = True
 else:
-    CSRF_COOKIE_SAMESITE = "Lax"
-    SESSION_COOKIE_SAMESITE = "Lax"
+    # Development settings
+    CSRF_COOKIE_SECURE = False
+    SESSION_COOKIE_SECURE = False
 
-# === Ключ по умолчанию для моделей ===
+# === Логирование ===
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+        'file': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'backend', 'logs', 'django_errors.log'),
+            'formatter': 'verbose',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO',
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'file'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+            'propagate': False,
+        },
+    },
+}
 
+if not DEBUG:
+    # Дополнительные продакшен-логи
+    LOGGING['handlers']['file']['level'] = 'WARNING'
+    LOGGING['loggers']['django.request'] = {
+        'handlers': ['file'],
+        'level': 'ERROR',
+        'propagate': False,
+    }
+
+# === Прочие настройки ===
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# === Сервис для подтверждения номера телефона ===
-EXOLVE_API_KEY = "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJRV05sMENiTXY1SHZSV29CVUpkWjVNQURXSFVDS0NWODRlNGMzbEQtVHA0In0.eyJleHAiOjIwNjM4Mjk4MDIsImlhdCI6MTc0ODQ2OTgwMiwianRpIjoiZjIxOTkxNzQtOTQyNS00ZmJkLWI4ZWEtMjIzZGM1YTE2MDgyIiwiaXNzIjoiaHR0cHM6Ly9zc28uZXhvbHZlLnJ1L3JlYWxtcy9FeG9sdmUiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiZTYyZGY2Y2ItM2Y5My00N2VhLTkzZGUtYjdlYzRlYmQyYmUxIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiOWI1YWU0YTEtZjQxYS00YjU2LWFmNjAtNTg5MDMyNWFkNGVjIiwic2Vzc2lvbl9zdGF0ZSI6ImQ4NzE5M2ExLTM0MDAtNGVkMS1iZjdiLTcyMGFhZjE2ZWJjNCIsImFjciI6IjEiLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiZGVmYXVsdC1yb2xlcy1leG9sdmUiLCJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJleG9sdmVfYXBwIHByb2ZpbGUgZW1haWwiLCJzaWQiOiJkODcxOTNhMS0zNDAwLTRlZDEtYmY3Yi03MjBhYWYxNmViYzQiLCJ1c2VyX3V1aWQiOiJjN2ZlODM0Yi0yYTM0LTQ2ODktYThmNC1lYzU0ZjI4Y2U3YmYiLCJjbGllbnRIb3N0IjoiMTcyLjE2LjE2MS4xOSIsImNsaWVudElkIjoiOWI1YWU0YTEtZjQxYS00YjU2LWFmNjAtNTg5MDMyNWFkNGVjIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJhcGlfa2V5Ijp0cnVlLCJhcGlmb25pY2Ffc2lkIjoiOWI1YWU0YTEtZjQxYS00YjU2LWFmNjAtNTg5MDMyNWFkNGVjIiwiYmlsbGluZ19udW1iZXIiOiIxMzI3ODM2IiwiYXBpZm9uaWNhX3Rva2VuIjoiYXV0ZGZlM2EyMWMtY2I0OS00NjgxLWI2NWEtNjgyNTU0MWFmNDg4IiwicHJlZmVycmVkX3VzZXJuYW1lIjoic2VydmljZS1hY2NvdW50LTliNWFlNGExLWY0MWEtNGI1Ni1hZjYwLTU4OTAzMjVhZDRlYyIsImN1c3RvbWVyX2lkIjoiMTMxMzcxIiwiY2xpZW50QWRkcmVzcyI6IjE3Mi4xNi4xNjEuMTkifQ.IGaDi6nK5tSXT0IxFDgh0T0kGp3jDOhiQ_1sQXYqxk48qPCLTK8iML9zWpmTScaa72gWEcV9sfKMfdGadMt2_CTqgmE49SNH5dpNK9eyat9e_4QGVE4Y-KhastqmNg8rZDLvhpMUHLR_OglVCVxvLoujcCTOT2GaWm06f_tvEJgsj31tx3HlfEfdsXf3T5fnfaq36z1AIkaJU_WO1wdGkBZ-KOXQeIaJ7cQYrKCbwuiMaFSTu7QiyaDKwvNURH6DvkcGCFl0lWoH9kG3v5eeR2xcRpaDc54JFg2CoTjI0YN136AO1CePbLK8OXiAVN7hUoS8vZp6X8Slr8JOvARyWQ"
-EXOLVE_SENDER_NAME = "ВашSender"  # Имя отправителя, зарегистрированное в Exolve
-SMS_RATE_LIMIT = 10  # Максимум SMS в час
+
+# SMS и Telegram
+EXOLVE_API_KEY = os.getenv("EXOLVE_API_KEY", "")
+EXOLVE_SENDER_NAME = os.getenv("EXOLVE_SENDER_NAME", "RealtyBot")
+BOT_TOKEN = os.getenv('BOT_TOKEN', '')
+WEBHOOK_URL = os.getenv('WEBHOOK_URL', '')
+WEBHOOK_TOKEN = os.getenv('WEBHOOK_TOKEN', '')

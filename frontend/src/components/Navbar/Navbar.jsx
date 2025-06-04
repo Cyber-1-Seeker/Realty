@@ -12,7 +12,7 @@ const Navbar = ({isAuthenticated, user}) => {
     const [showNavbar, setShowNavbar] = useState(window.innerWidth <= 768)
     const [showAuthModal, setShowAuthModal] = useState(false)
     const navigate = useNavigate()
-    const location = useLocation() // Добавлено: получение текущего местоположения
+    const location = useLocation()
     const hideTimeoutRef = useRef(null)
     const navbarRef = useRef(null)
     const [scrolledDown, setScrolledDown] = useState(false)
@@ -27,15 +27,12 @@ const Navbar = ({isAuthenticated, user}) => {
     const handleCalculatorClick = () => {
         setMenuOpen(false);
 
-        // Если мы на главной странице
         if (location.pathname === '/') {
-            // Прокручиваем к калькулятору
             const calculatorElement = document.getElementById('calculator');
             if (calculatorElement) {
                 calculatorElement.scrollIntoView({behavior: 'smooth'});
             }
         } else {
-            // Переходим на главную страницу с якорем калькулятора
             navigate('/#calculator');
         }
     };
@@ -43,15 +40,12 @@ const Navbar = ({isAuthenticated, user}) => {
     const handleContactsClick = () => {
         setMenuOpen(false);
 
-        // Если мы на главной странице
         if (location.pathname === '/') {
-            // Прокручиваем к контактам
             const contactsElement = document.getElementById('contacts');
             if (contactsElement) {
                 contactsElement.scrollIntoView({behavior: 'smooth'});
             }
         } else {
-            // Переходим на главную страницу с якорем калькулятора
             navigate('/#contacts');
         }
     };
@@ -134,9 +128,12 @@ const Navbar = ({isAuthenticated, user}) => {
                 className={`${classes.navbar} ${!isMobile && !showNavbar ? classes.hidden : classes.visible}`}
                 ref={navbarRef}
             >
-                <div className={classes.logo}><Link to="/" onClick={() => setMenuOpen(false)}>
-                    <a>🏠 Realty </a>
-                </Link></div>
+                <div className={classes.logo}>
+                    {/* УБРАЛИ ВЛОЖЕННЫЙ <a> ВНУТРИ Link */}
+                    <Link to="/" onClick={() => setMenuOpen(false)}>
+                        🏠 Realty
+                    </Link>
+                </div>
 
                 <div className={classes.centerSection}>
                     {!isMobile && (
@@ -172,31 +169,27 @@ const Navbar = ({isAuthenticated, user}) => {
 
                             <li><Link to="/" onClick={() => setMenuOpen(false)}>Главная</Link></li>
 
-                            {/* Исправленная кнопка калькулятора */}
+                            {/* ИСПРАВЛЕНО: заменяем вложенные ссылки на кнопки */}
                             <li>
-                                <a
-                                    href="/#calculator"
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        handleCalculatorClick();
-                                    }}
+                                <button
+                                    className={classes.linkButton}
+                                    onClick={handleCalculatorClick}
                                 >
                                     Калькулятор
-                                </a>
+                                </button>
                             </li>
 
                             <li><Link to="/about" onClick={() => setMenuOpen(false)}>О нас</Link></li>
                             <li><Link to="/listings" onClick={() => setMenuOpen(false)}>База квартир</Link></li>
+
+                            {/* ИСПРАВЛЕНО: заменяем вложенные ссылки на кнопки */}
                             <li>
-                                <a
-                                    href="#contacts"
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        handleContactsClick();
-                                    }}
+                                <button
+                                    className={classes.linkButton}
+                                    onClick={handleContactsClick}
                                 >
                                     Контакты
-                                </a>
+                                </button>
                             </li>
 
                             {!isMobile && (

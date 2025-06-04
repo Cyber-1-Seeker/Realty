@@ -131,12 +131,15 @@ celerybeat.pid
 # Environments
 .env
 .venv
-.env.prod
+.env.production
+/frontend/.env.development
+/frontend/.env.production
 env/
 venv/
 ENV/
 env.bak/
 venv.bak/
+backend/logs/
 
 # Spyder project settings
 .spyderproject

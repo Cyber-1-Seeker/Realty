@@ -1,6 +1,10 @@
 import axios from 'axios';
+import { API_URL } from "@/utils/config.js";
 
-// Публичные запросы без авторизации и CSRF
 export const API_PUBLIC = axios.create({
-    baseURL: 'http://localhost:8000',
+    baseURL: API_URL,
+    withCredentials: true,
+    headers: {
+        'Content-Type': 'application/json',
+    }
 });

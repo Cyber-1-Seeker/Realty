@@ -2,7 +2,7 @@ services:
   db:
     image: postgres:15
     restart: always
-    env_file: .env.prod  # Используем production-переменные
+    env_file: .env.production  # Используем production-переменные
     environment:
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USER}
@@ -30,7 +30,7 @@ services:
              python manage.py migrate &&
              python manage.py collectstatic --noinput &&
              gunicorn config.wsgi:application --bind 0.0.0.0:8000 --workers 4"
-    env_file: .env.prod
+    env_file: .env.production
     depends_on:
       db:
         condition: service_healthy
@@ -60,7 +60,7 @@ services:
     build:
       context: .
       dockerfile: telegrambot/Dockerfile
-    env_file: .env.prod
+    env_file: .env.production
     depends_on:
       backend:
         condition: service_healthy
