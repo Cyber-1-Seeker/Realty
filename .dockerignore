@@ -1,0 +1,15 @@
+.git
+.gitignore
+.env
+.env.prod
+*.md
+docker-compose.yml
+docker-compose.override.yml
+venv/
+__pycache__/
+*.log
+*.pyc
+*.swp
+.DS_Store
+frontend/node_modules
+frontend/dist
