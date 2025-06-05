@@ -2,6 +2,7 @@ import os
 import sys
 from pathlib import Path
 from dotenv import load_dotenv
+import sys
 
 # Определяем базовый путь
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -193,33 +194,18 @@ else:
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
-    'formatters': {
-        'verbose': {
-            'format': '{levelname} {asctime} {module} {message}',
-            'style': '{',
-        },
-    },
     'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-            'formatter': 'verbose',
-        },
         'file': {
             'level': 'ERROR',
             'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'backend', 'logs', 'django_errors.log'),
-            'formatter': 'verbose',
+            'filename': os.path.join(BASE_DIR, 'logs', 'django_errors.log'),
         },
-    },
-    'root': {
-        'handlers': ['console'],
-        'level': 'INFO',
     },
     'loggers': {
         'django': {
-            'handlers': ['console', 'file'],
-            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
-            'propagate': False,
+            'handlers': ['file'],
+            'level': 'ERROR',
+            'propagate': True,
         },
     },
 }
@@ -235,7 +221,6 @@ if not DEBUG:
 
 # === Прочие настройки ===
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
 
 # SMS и Telegram
 EXOLVE_API_KEY = os.getenv("EXOLVE_API_KEY", "")

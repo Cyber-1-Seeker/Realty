@@ -31,15 +31,23 @@
 
 
 
-# Использование Node.js для разработки
+# Использует Node.js для разработки
 FROM node:18-bullseye
 
+# Устанавливаем рабочий каталог
 WORKDIR /app
 
+# Копируем только package.json и package-lock.json для оптимизации кэширования
 COPY package.json package-lock.json ./
+
+# Устанавливаем зависимости
 RUN npm install
 
+# Копируем остальные файлы проекта
 COPY . .
 
+# Открываем порт
 EXPOSE 5173
+
+# Запускаем Vite
 CMD ["npm", "run", "dev"]

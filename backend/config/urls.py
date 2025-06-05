@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from .views import health_check
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,4 +27,5 @@ urlpatterns = [
     path('api/applications/', include('applications.urls')),
     path('api/monitoring/', include('monitoring.urls')),
     path('api/testimonials/', include('testimonials.urls')),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path('health/', health_check, name='health_check'),
+    ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
