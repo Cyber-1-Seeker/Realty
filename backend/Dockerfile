@@ -1,36 +1,55 @@
-FROM python:3.12-slim as builder
+# Мульти-стадийная сборка
+FROM python:3.11-slim-bullseye as builder
+
+# Используем зеркало для обхода проблем с временем
+RUN sed -i 's/deb.debian.org/mirror.yandex.ru/g' /etc/apt/sources.list && \
+    apt-get update && apt-get install -y \
+    gcc \
+    libpq-dev \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-# Копируем зависимости
+# Копируем requirements.txt
 COPY requirements.txt .
 
-RUN pip install --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
+# Установка зависимостей с кэшированием
+RUN pip install --no-cache-dir --user -r requirements.txt
 
-# Копируем код бэкенда
+# Копирование исходного кода бэкенда
 COPY . .
 
-# Финальный образ
-FROM python:3.12-slim
+# Стадия выполнения
+FROM python:3.11-slim-bullseye as runner
+
+# Установка runtime зависимостей
+RUN sed -i 's/deb.debian.org/mirror.yandex.ru/g' /etc/apt/sources.list && \
+    apt-get update && apt-get install -y \
+    libpq5 \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-# Создаем директории для медиа и статики
-RUN mkdir -p /app/media /app/staticfiles
-
-COPY --from=builder /usr/local/lib/python3.12/site-packages /usr/local/lib/python3.12/site-packages
+# Копирование зависимостей и кода
+COPY --from=builder /root/.local /root/.local
 COPY --from=builder /app /app
 
-# Установка runtime зависимостей
-RUN apt-get update && \
-    apt-get install -y libpq5 --no-install-recommends && \
-    rm -rf /var/lib/apt/lists/*
+# Настройка окружения
+ENV PATH=/root/.local/bin:$PATH \
+    PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    DJANGO_SETTINGS_MODULE=config.settings
 
-# Настройки безопасности
-RUN adduser --disabled-password --gecos '' appuser && \
-    chown -R appuser:appuser /app
-USER appuser
+# Создание директорий для статики и медиа
+RUN mkdir -p /app/staticfiles /app/media
+
+# Копирование entrypoint (новый шаг)
+COPY backend/entrypoint.prod.sh /app/entrypoint.prod.sh
+
+# Настройка прав и здоровья
+RUN chmod +x /app/entrypoint.prod.sh
+HEALTHCHECK --interval=30s --timeout=3s \
+  CMD curl -f http://localhost:8000/health/ || exit 1
 
 EXPOSE 8000
-CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000"]
+ENTRYPOINT ["/app/entrypoint.prod.sh"]
