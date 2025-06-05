@@ -1,4 +1,4 @@
-# Мульти-стадийная сборка
+# Мульти-стадийная сборка для Django
 FROM python:3.11-slim-bullseye as builder
 
 # Используем зеркало для обхода проблем с временем
@@ -10,7 +10,7 @@ RUN sed -i 's/deb.debian.org/mirror.yandex.ru/g' /etc/apt/sources.list && \
 
 WORKDIR /app
 
-# Копируем requirements.txt
+# Копируем requirements.txt из корня проекта
 COPY requirements.txt .
 
 # Установка зависимостей с кэшированием
@@ -43,13 +43,13 @@ ENV PATH=/root/.local/bin:$PATH \
 # Создание директорий для статики и медиа
 RUN mkdir -p /app/staticfiles /app/media
 
-# Копирование entrypoint (новый шаг)
-COPY backend/entrypoint.prod.sh /app/entrypoint.prod.sh
+# Команда запуска
+CMD sh -c "python manage.py migrate --noinput && \
+           python manage.py collectstatic --noinput --clear && \
+           gunicorn --bind 0.0.0.0:8000 --workers 3 --access-logfile - config.wsgi:application"
 
-# Настройка прав и здоровья
-RUN chmod +x /app/entrypoint.prod.sh
+# Health check
 HEALTHCHECK --interval=30s --timeout=3s \
   CMD curl -f http://localhost:8000/health/ || exit 1
 
 EXPOSE 8000
-ENTRYPOINT ["/app/entrypoint.prod.sh"]

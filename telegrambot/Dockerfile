@@ -36,7 +36,9 @@ ENV PATH=/root/.local/bin:$PATH \
     PYTHONUNBUFFERED=1 \
     APP_ENV=production
 
+ENV PYTHONPATH=/app
+
 HEALTHCHECK --interval=1m --timeout=3s \
   CMD python -c "import requests; requests.get('http://backend:8000/health', timeout=2)" || exit 1
 
-CMD ["python", "bot.py"]
+CMD ["python", "/app/telegrambot/bot.py"]
