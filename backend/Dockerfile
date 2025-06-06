@@ -21,6 +21,9 @@ FROM python:3.11-slim-bullseye as runner
 # Установка runtime зависимостей
 RUN apt-get update && apt-get install -y libpq5 && rm -rf /var/lib/apt/lists/*
 
+# ЯВНАЯ УСТАНОВКА GUNICORN
+RUN pip install --no-cache-dir gunicorn==21.2.0
+
 WORKDIR /app
 
 # Копируем установленные зависимости
@@ -38,9 +41,6 @@ ENV PYTHONPATH=/app \
 
 # Создаем необходимые директории
 RUN mkdir -p /app/logs /app/staticfiles /app/media
-RUN mkdir -p /app/logs
-
-# Даем права на запись в директорию логов
 RUN chmod -R a+w /app/logs
 
 # Команда для запуска

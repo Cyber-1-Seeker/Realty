@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 import sys
 
 # Определяем базовый путь
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 # === Загрузка переменных окружения ===
 # Определяем режим работы по переменной APP_ENV
@@ -49,7 +49,7 @@ elif DEBUG:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.getenv("POSTGRES_DB", "realty_dev"),
+            'NAME': os.getenv("POSTGRES_DB", "realty_db"),
             'USER': os.getenv("POSTGRES_USER", "postgres"),
             'PASSWORD': os.getenv("POSTGRES_PASSWORD", ""),
             'HOST': os.getenv("DB_HOST", "db"),
