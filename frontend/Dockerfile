@@ -1,53 +1,19 @@
-## Стадия сборки
-#FROM node:18-bullseye as builder
-#
-#WORKDIR /app
-#
-## Копируем зависимости и устанавливаем их
-#COPY package.json package-lock.json ./
-#RUN npm ci --silent
-#
-## Копируем все файлы и собираем приложение
-#COPY . .
-#RUN npm run build
-#
-## Стадия выполнения
-#FROM nginx:1.25-alpine as runner
-#
-## Копирование собранного приложения
-#COPY --from=builder /app/dist /usr/share/nginx/html
-#
-## Копирование продакшен .env файла
-#COPY .env.production /usr/share/nginx/html/.env
-#
-## Копирование кастомной конфигурации Nginx
-#COPY nginx.conf /etc/nginx/conf.d/default.conf
-#
-## Health check
-#HEALTHCHECK --interval=30s --timeout=3s \
-#  CMD curl -f http://localhost/ || exit 1
-#
-#EXPOSE 80
+# frontend/Dockerfile
+FROM node:18 as builder
 
-
-
-# Использует Node.js для разработки
-FROM node:18-bullseye
-
-# Устанавливаем рабочий каталог
+# Копируем и устанавливаем зависимости
 WORKDIR /app
-
-# Копируем только package.json и package-lock.json для оптимизации кэширования
-COPY package.json package-lock.json ./
-
-# Устанавливаем зависимости
+COPY package*.json ./
 RUN npm install
 
-# Копируем остальные файлы проекта
+# Копируем исходный код И .env файлы
 COPY . .
 
-# Открываем порт
-EXPOSE 5173
+# Собираем приложение (Vite автоматически использует .env.production)
+RUN npm run build
 
-# Запускаем Vite
-CMD ["npm", "run", "dev"]
+# Финальный образ
+FROM nginx:alpine
+COPY --from=builder /app/dist /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
