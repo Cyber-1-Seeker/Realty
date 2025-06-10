@@ -3,6 +3,7 @@ import sys
 from pathlib import Path
 from dotenv import load_dotenv
 import sys
+import httpx
 
 # Определяем базовый путь
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -228,3 +229,20 @@ EXOLVE_SENDER_NAME = os.getenv("EXOLVE_SENDER_NAME", "RealtyBot")
 BOT_TOKEN = os.getenv('BOT_TOKEN', '')
 WEBHOOK_URL = os.getenv('WEBHOOK_URL', '')
 WEBHOOK_TOKEN = os.getenv('WEBHOOK_TOKEN', '')
+# try:
+#     response = httpx.post(
+#         settings.WEBHOOK_URL,
+#         json=serializer.data,
+#         headers={'X-Token': settings.WEBHOOK_TOKEN},
+#         timeout=5
+#     )
+#     response.raise_for_status()  # вызовет исключение для 4xx/5xx статусов
+#     print(f"Вебхук отправлен успешно: {response.status_code}")
+# except httpx.ConnectError as e:
+#     print(f"Ошибка подключения: {e}")
+# except httpx.TimeoutException:
+#     print("Таймаут при отправке вебхука")
+# except httpx.HTTPStatusError as e:
+#     print(f"Ошибка HTTP: {e.response.status_code}")
+# except Exception as e:
+#     print(f"Неизвестная ошибка: {e}")
