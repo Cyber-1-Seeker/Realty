@@ -14,16 +14,16 @@ services:
 
   backend:
     build:
-      context: ./backend  # Путь к вашему приложению
+      context: ./backend
       dockerfile: Dockerfile
     ports:
-      - "8000:8000"  # Прокси для локального доступа
+      - "8000:8000"
     volumes:
-      - ./backend:/app  # Синхронизация кода между хостом и контейнером
-      - ./logs:/app/logs  # Монтируем папку логов
-    entrypoint: [ "sh", "/app/entrypoint.dev.sh" ]  # Использование нового entrypoint для разработки
+      - ./backend:/app
+      - ./logs:/app/logs
+    entrypoint: [ "sh", "/app/entrypoint.dev.sh" ]
     env_file:
-      - ./backend/.env  # Путь относительно docker-compose.yml
+      - ./backend/.env
     depends_on:
       db:
         condition: service_healthy
@@ -48,13 +48,13 @@ services:
 
   telegrambot:
     build:
-      context: .  # Корневой контекст!
+      context: .
       dockerfile: telegrambot/Dockerfile
     volumes:
       - ./telegrambot:/app/telegrambot
     environment:
       - APP_ENV=development
-      - BOT_TOKEN=${BOT_TOKEN_DEV}
+      - BOT_TOKEN=${BOT_TOKEN_DEV}  # Убедитесь, что эта переменная установлена
       - API_URL=http://backend:8000
     ports:
       - "8081:8081"
