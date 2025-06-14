@@ -3,7 +3,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 # Определяем базовый путь - корень проекта
-BASE_DIR = Path(__file__).resolve().parent.parent  # Поднимаемся на 2 уровня вверх
+BASE_DIR = Path(__file__).resolve().parent  # Поднимаемся на уровень вверх
 
 # Определяем режим работы по переменной APP_ENV
 app_env = os.getenv('APP_ENV', 'development')

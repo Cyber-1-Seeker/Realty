@@ -1,4 +1,5 @@
 from django.core.cache import cache
+from django.db import IntegrityError
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from .models import CustomUser, PhoneConfirmation
@@ -128,10 +129,33 @@ class UserListSerializer(serializers.ModelSerializer):
         request = self.context.get('request')
 
         # Запрещаем изменять свой аккаунт
-        if request and instance.id == request.user.id:
-            raise serializers.ValidationError(
-                {"detail": "Вы не можете изменять свой аккаунт"}
-            )
+        # if request and instance.id == request.user.id:
+        #     raise serializers.ValidationError(
+        #         {"detail": "Вы не можете изменять свой аккаунт"}
+        #     )
+
+        # Обновляем ВСЕ доступные поля
+        for field, value in validated_data.items():
+            # Разрешаем обновление только определенных полей
+            if field in ['role', 'is_active', 'telegram_id']:
+                # Проверка прав для защищенных полей
+                if field in ['role', 'is_active']:
+                    if not (request and request.user.role == 'admin'):
+                        raise serializers.ValidationError({
+                            field: "Только администраторы могут изменять это поле"
+                        })
+
+                setattr(instance, field, value)
+
+        try:
+            instance.save()
+            return instance
+        except IntegrityError as e:
+            if 'telegram_id' in str(e):
+                raise serializers.ValidationError({
+                    "telegram_id": "Этот Telegram ID уже используется другим пользователем"
+                })
+            raise e
 
         # # Только админы могут менять роли
         # if 'role' in validated_data:
@@ -146,8 +170,3 @@ class UserListSerializer(serializers.ModelSerializer):
         #         raise serializers.ValidationError({
         #             "is_active": "Только администраторы могут деактивировать пользователей"
         #         })
-
-        instance.role = validated_data.get('role', instance.role)
-        instance.is_active = validated_data.get('is_active', instance.is_active)
-        instance.save()
-        return instance

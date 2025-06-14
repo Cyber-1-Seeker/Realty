@@ -45,27 +45,42 @@
 
 
 
-FROM python:3.11-slim-bullseye
+FROM python:3.11-slim-bullseye as builder
 
-# Установка зависимостей
+# Добавляем необходимые системные зависимости для сборки
 RUN apt-get update && apt-get install -y --no-install-recommends \
     gcc \
     libpq-dev \
+    libc6-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app/telegrambot
+COPY requirements.txt .
+
+# Устанавливаем зависимости
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir --user -r requirements.txt
+
+# Копируем остальной код
+COPY . .
+
+# Финальный образ
+FROM python:3.11-slim-bullseye
+
+# Устанавливаем runtime-зависимости
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libpq5 \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app/telegrambot
 
-# Копируем зависимости
-COPY requirements.txt .
-RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
+# Копируем установленные зависимости из builder-стадии
+COPY --from=builder /root/.local /root/.local
+COPY --from=builder /app/telegrambot /app/telegrambot
 
-# Копируем код бота
-COPY . /app
-
-ENV PYTHONPATH=/app \
-    PATH="/usr/local/bin:${PATH}" \
+# Настраиваем окружение
+ENV PATH=/root/.local/bin:$PATH \
+    PYTHONPATH=/app \
     PYTHONUNBUFFERED=1
 
-# Команда запуска
-CMD ["python", "/app/telegrambot/bot.py"]
+CMD ["python", "bot.py"]

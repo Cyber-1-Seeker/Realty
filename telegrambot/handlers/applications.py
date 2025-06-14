@@ -319,20 +319,29 @@ async def handle_delete(callback: CallbackQuery):
 
 
 async def get_users_to_notify(api_url, api_token):
-    print("Работает")
-    """Получаем список пользователей для уведомлений"""
+    print(f"Запрос пользователей по URL: {api_url}/api/accounts/role-users/")
+    print(f"Используемый токен: {api_token[:5]}...")
+
     try:
-        url = f"{api_url}/api/applications/notify-users/"
+        url = f"{api_url}/api/accounts/role-users/?role=manager"
         headers = {"Authorization": f"Token {api_token}"}
 
         async with httpx.AsyncClient() as client:
             response = await client.get(url, headers=headers)
+            print(f"Статус ответа: {response.status_code}")
+            print(f"Содержимое ответа: {response.text[:200]}...")
 
             if response.status_code == 200:
-                return response.json()
+                users = response.json()
+                # Фильтруем только пользователей с telegram_id
+                return [user for user in users if user.get('telegram_id')]
             else:
                 print(f"Ошибка при получении пользователей: {response.status_code}")
                 return []
+
+    except Exception as e:
+        print(f"Ошибка в get_users_to_notify: {str(e)}")
+        return []
 
     except Exception as e:
         print(f"Ошибка в get_users_to_notify: {e}")

@@ -75,9 +75,6 @@
 #     asyncio.run(main())
 
 
-
-
-
 import asyncio
 from aiogram import Bot, Dispatcher
 from aiogram.enums import ParseMode
@@ -132,6 +129,13 @@ async def handle_new_application(request):
         return aiohttp.web.Response(text=f"Error: {str(e)}", status=500)
 
 
+async def handle_new_application_get(request):
+    return aiohttp.web.Response(
+        text="Этот эндпоинт предназначен только для POST-запросов",
+        status=400
+    )
+
+
 async def main():
     bot = Bot(
         token=BOT_TOKEN,
@@ -147,6 +151,7 @@ async def main():
     # Регистрируем эндпоинты
     app.router.add_get('/health', handle_health_check)  # Добавлен healthcheck
     app.router.add_post('/new_application', handle_new_application)
+    app.router.add_get('/new_application', handle_new_application_get)
 
     runner = aiohttp.web.AppRunner(app)
     await runner.setup()

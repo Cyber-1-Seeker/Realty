@@ -16,6 +16,7 @@ export default function Roles({onError}) {
     const [loading, setLoading] = useState(false);
     const [search, setSearch] = useState('');
     const [selectedRole, setSelectedRole] = useState('');
+    const [editing, setEditing] = useState({});
 
     const fetchUsers = async () => {
         setLoading(true);
@@ -30,11 +31,35 @@ export default function Roles({onError}) {
         }
     };
 
-    const updateUser = async (id, data) => {
+    const handleChange = (id, field, value) => {
+        setEditing(prev => ({
+            ...prev,
+            [id]: {
+                ...prev[id],
+                [field]: value
+            }
+        }));
+    };
+
+    const saveChanges = async (id) => {
+        const changes = editing[id];
+        if (!changes) return;
+
         try {
-            await API_AUTH.patch(`/api/accounts/role-users/${id}/`, data);
-            message.success('Данные обновлены');
-            fetchUsers();
+            await API_AUTH.patch(`/api/accounts/role-users/${id}/`, changes);
+            message.success('Данные успешно обновлены');
+
+            setUsers(prevUsers =>
+                prevUsers.map(user =>
+                    user.id === id ? {...user, ...changes} : user
+                )
+            );
+
+            setEditing(prev => {
+                const newState = {...prev};
+                delete newState[id];
+                return newState;
+            });
         } catch (error) {
             onError(error);
         }
@@ -64,9 +89,9 @@ export default function Roles({onError}) {
             key: 'telegram_id',
             render: (value, record) => (
                 <Input
-                    value={value || ''}
+                    value={editing[record.id]?.telegram_id ?? value ?? ''}
                     placeholder="Не задан"
-                    onChange={e => updateUser(record.id, {telegram_id: e.target.value})}
+                    onChange={e => handleChange(record.id, 'telegram_id', e.target.value)}
                     style={{width: 150}}
                 />
             ),
@@ -76,8 +101,8 @@ export default function Roles({onError}) {
             key: 'role',
             render: (_, record) => (
                 <Select
-                    value={record.role}
-                    onChange={value => updateUser(record.id, {role: value})}
+                    value={editing[record.id]?.role ?? record.role}
+                    onChange={value => handleChange(record.id, 'role', value)}
                     style={{width: 150}}
                 >
                     {Object.entries(roleLabels).map(([value, label]) => (
@@ -86,6 +111,19 @@ export default function Roles({onError}) {
                 </Select>
             ),
         },
+        {
+            title: 'Действия',
+            key: 'actions',
+            render: (_, record) => (
+                <Button
+                    type="primary"
+                    onClick={() => saveChanges(record.id)}
+                    disabled={!editing[record.id]}
+                >
+                    Сохранить
+                </Button>
+            ),
+        }
     ];
 
     return (
