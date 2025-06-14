@@ -1,77 +1,59 @@
+version: '3.8'
+
 services:
   db:
     image: postgres:15
+    env_file: ./postgres/.env.production
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    env_file:
-      - .env.production
-    environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    restart: always
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - backend-network
 
   backend:
     build:
-      context: .  # Корневой контекст!
-      dockerfile: backend/Dockerfile
+      context: ./backend
+      dockerfile: Dockerfile.prod
     env_file:
-      - .env.production
-    environment:
-      - APP_ENV=production
-      - DJANGO_SETTINGS_MODULE=config.settings
-      - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
-      - DB_HOST=db
-    volumes:
-      - static_volume:/app/staticfiles
-      - media_volume:/app/media
+      - ./backend/.env.production
+    restart: always
     depends_on:
       db:
         condition: service_healthy
     networks:
       - backend-network
+      - frontend-network
+    volumes:
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
 
   frontend:
     build:
       context: ./frontend
-      dockerfile: Dockerfile
-    env_file:
-      - ./frontend/.env.production
+      dockerfile: Dockerfile.prod
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
     networks:
       - frontend-network
 
   telegrambot:
     build:
-      context: .  # Корневой контекст!
-      dockerfile: telegrambot/Dockerfile
+      context: ./telegrambot
+      dockerfile: Dockerfile.prod
     env_file:
-      - .env.production
-    environment:
-      - APP_ENV=production
-      - API_URL=http://backend:8000
+      - ./telegrambot/.env.production
+    restart: always
     depends_on:
       - backend
     networks:
-      - backend-network
-
-  nginx:
-    build:
-      context: ./nginx
-      dockerfile: Dockerfile
-    ports:
-      - "80:80"
-    volumes:
-      - static_volume:/app/staticfiles:ro
-      - media_volume:/app/media:ro
-    depends_on:
-      - backend
-      - frontend
-    networks:
-      - frontend-network
       - backend-network
 
 volumes:
@@ -80,5 +62,7 @@ volumes:
   media_volume:
 
 networks:
-  frontend-network:
   backend-network:
+    driver: bridge
+  frontend-network:
+    driver: bridge
