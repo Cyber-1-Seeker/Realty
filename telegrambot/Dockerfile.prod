@@ -1,13 +1,23 @@
-FROM python:3.11-slim-bullseye
+#Не хватает мощности в сервере, найдем альтернативу
 
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends gcc libpq-dev
+#FROM python:3.11-slim-bullseye
 
-WORKDIR /app
-COPY requirements.txt .
-RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
+#RUN apt-get update && \
+    #apt-get install -y --no-install-recommends gcc libpq-dev
 
-COPY . .
+#WORKDIR /app
+#COPY requirements.txt .
+#RUN pip install --no-cache-dir --upgrade pip && \
+    #pip install --no-cache-dir -r requirements.txt
 
-CMD ["python", "bot.py"]
+#COPY . .
+
+#CMD ["python", "bot.py"]
+
+
+
+
+FROM nginx:alpine
+COPY dist /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80

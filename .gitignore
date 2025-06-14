@@ -134,6 +134,7 @@ celerybeat.pid
 .env.production
 /frontend/.env.development
 /frontend/.env.production
+/telegrambot/.env.production
 env/
 venv/
 ENV/
