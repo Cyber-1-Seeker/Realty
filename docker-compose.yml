@@ -20,10 +20,14 @@ services:
       - "8000:8000"
     volumes:
       - ./backend:/app
+      - ./backend_static:/app/static  # Добавляем для статических файлов
+      - ./media:/app/media            # Добавляем для медиа-файлов
       - ./logs:/app/logs
     entrypoint: [ "sh", "/app/entrypoint.dev.sh" ]
     env_file:
       - ./backend/.env
+    environment:
+      - DOCKER_ENV=true
     depends_on:
       db:
         condition: service_healthy
@@ -52,7 +56,7 @@ services:
       dockerfile: telegrambot/Dockerfile
     volumes:
       - ./telegrambot:/app/telegrambot
-    env_file:  # ЗДЕСЬ ИЗМЕНЕНИЯ
+    env_file: # ЗДЕСЬ ИЗМЕНЕНИЯ
       - ./telegrambot/.env  # Путь к файлу .env внутри папки telegrambot
     ports:
       - "8081:8081"
