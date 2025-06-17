@@ -94,6 +94,8 @@ services:
 
   backend:
     image: sensh1/realty-app:backend-latest  # Используем готовый образ
+    environment:
+      - APP_ENV=production
     env_file:
       - ./backend/.env.production
     restart: always

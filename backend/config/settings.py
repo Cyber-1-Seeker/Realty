@@ -6,7 +6,7 @@ import sys
 import httpx
 
 # Определяем базовый путь
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent
 
 # === Загрузка переменных окружения ===
 # Определяем режим работы по переменной APP_ENV
