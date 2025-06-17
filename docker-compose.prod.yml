@@ -78,7 +78,9 @@
 services:
   db:
     image: postgres:15
-    env_file: ./postgres/.env.production
+    env_file:
+      - .env.production
+      - ./postgres/.env.production
     volumes:
       - postgres_data:/var/lib/postgresql/data
     restart: always
