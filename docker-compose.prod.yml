@@ -1,4 +1,79 @@
-version: '3.8'
+#services:
+#  db:
+#    image: postgres:15
+#    env_file: ./postgres/.env.production
+#    volumes:
+#      - postgres_data:/var/lib/postgresql/data
+#    restart: always
+#    healthcheck:
+#      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
+#      interval: 10s
+#      timeout: 5s
+#      retries: 5
+#    networks:
+#      - backend-network
+#
+#  backend:
+#    build:
+#      context: ./backend
+#      dockerfile: Dockerfile.prod
+#    env_file:
+#      - ./backend/.env.production
+#    restart: always
+#    depends_on:
+#      db:
+#        condition: service_healthy
+#    networks:
+#      - backend-network
+#      - frontend-network
+#    volumes:
+#      - static_volume:/app/staticfiles
+#      - media_volume:/app/media
+#
+#  frontend:
+#    build:
+#      context: ./frontend
+#      dockerfile: Dockerfile.prod
+#    restart: always
+#    ports:
+#      - "80:80"
+#    depends_on:
+#      - backend
+#    networks:
+#      - frontend-network
+#
+#  telegrambot:
+#    build:
+#      context: ./telegrambot
+#      dockerfile: Dockerfile.prod
+#    env_file:
+#      - ./telegrambot/.env.production
+#    restart: always
+#    depends_on:
+#      - backend
+#    networks:
+#      - backend-network
+#
+#volumes:
+#  postgres_data:
+#  static_volume:
+#  media_volume:
+#
+#networks:
+#  backend-network:
+#    driver: bridge
+#  frontend-network:
+#    driver: bridge
+
+
+
+
+
+
+
+
+
+
 
 services:
   db:
@@ -16,9 +91,7 @@ services:
       - backend-network
 
   backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile.prod
+    image: sensh1/realty-app:backend-latest  # Используем готовый образ
     env_file:
       - ./backend/.env.production
     restart: always
@@ -33,9 +106,7 @@ services:
       - media_volume:/app/media
 
   frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile.prod
+    image: sensh1/realty-app:frontend-latest  # Используем готовый образ
     restart: always
     ports:
       - "80:80"
@@ -45,9 +116,7 @@ services:
       - frontend-network
 
   telegrambot:
-    build:
-      context: ./telegrambot
-      dockerfile: Dockerfile.prod
+    image: sensh1/realty-app:telegrambot-latest  # Используем готовый образ
     env_file:
       - ./telegrambot/.env.production
     restart: always
