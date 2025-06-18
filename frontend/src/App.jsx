@@ -1,6 +1,6 @@
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import {useEffect, useState} from 'react';
-import {API_PUBLIC} from "@/utils/api/axiosPublic"; // Импортируем API_PUBLIC
+import {API_PUBLIC} from "@/utils/api/axiosPublic";
 import Layout from './components/Layout/Layout';
 import About from './components/pages/About/About.jsx';
 import "./App.css";
@@ -20,10 +20,10 @@ function App() {
         const checkAuth = async () => {
             try {
                 // 1. Получаем CSRF токен
-                await API_PUBLIC.get('/api/accounts/csrf/');
+                await API_PUBLIC.get('api/accounts/csrf/');
 
                 // 2. Проверяем аутентификацию пользователя
-                const response = await API_PUBLIC.get('/api/accounts/me/');
+                const response = await API_PUBLIC.get('api/accounts/me/');
                 setUser(response.data);
                 setIsAuthenticated(true);
             } catch (error) {
