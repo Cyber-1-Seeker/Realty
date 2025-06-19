@@ -11,6 +11,7 @@ import ProfilePage from "@/components/pages/Profile/ProfilePage.jsx";
 import AdminLayout from "@/components/pages/AdminPanel/AdminLayout.jsx";
 import ListingDetails from "@/components/pages/Listings/ListingDetails.jsx";
 import Support from "@/components/pages/Support/Support.jsx";
+import Debugger from "@/components/Debugger/Debugger.jsx";
 
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -31,6 +32,10 @@ function App() {
                 setIsAuthenticated(false);
             }
         };
+
+        if (import.meta.env.DEV) {
+            Debugger();
+        }
 
         checkAuth();
     }, []);
