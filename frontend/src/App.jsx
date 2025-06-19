@@ -11,7 +11,6 @@ import ProfilePage from "@/components/pages/Profile/ProfilePage.jsx";
 import AdminLayout from "@/components/pages/AdminPanel/AdminLayout.jsx";
 import ListingDetails from "@/components/pages/Listings/ListingDetails.jsx";
 import Support from "@/components/pages/Support/Support.jsx";
-import Debugger from "@/components/Debugger/Debugger.jsx";
 
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -20,22 +19,18 @@ function App() {
     useEffect(() => {
         const checkAuth = async () => {
             try {
-                // 1. Получаем CSRF токен
                 await API_PUBLIC.get('/api/accounts/csrf/');
-
-                // 2. Проверяем аутентификацию пользователя
                 const response = await API_PUBLIC.get('/api/accounts/me/');
+                console.log("Register URL:", API_PUBLIC.defaults.baseURL + '/api/accounts/register/');
+                console.log("App.js CSRF URL:", API_PUBLIC.defaults.baseURL + 'api/accounts/csrf/');
                 setUser(response.data);
                 setIsAuthenticated(true);
             } catch (error) {
+                console.error("Auth error:", error);
                 setUser(null);
                 setIsAuthenticated(false);
             }
         };
-
-        if (import.meta.env.DEV) {
-            Debugger();
-        }
 
         checkAuth();
     }, []);
