@@ -21,10 +21,10 @@ function App() {
         const checkAuth = async () => {
             try {
                 // 1. Получаем CSRF токен
-                await API_PUBLIC.get('api/accounts/csrf/');
+                await API_PUBLIC.get('/api/accounts/csrf/');
 
                 // 2. Проверяем аутентификацию пользователя
-                const response = await API_PUBLIC.get('api/accounts/me/');
+                const response = await API_PUBLIC.get('/api/accounts/me/');
                 setUser(response.data);
                 setIsAuthenticated(true);
             } catch (error) {
