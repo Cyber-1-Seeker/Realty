@@ -54,31 +54,31 @@ const Home = ({isAuthenticated}) => {
                 <UrgentSell/>
             </section>
 
-            <div className={styles.gradientTop}></div>
-            <div className={styles.gradientBottom}></div>
-            <section className="nextSection">
-                <AboutUs/>
-            </section>
-            <div className={styles.gradientTop}></div>
-            <div className={styles.gradientBottom}></div>
-            <section className="nextSection">
-                <Services/>
-            </section>
-            <div className={styles.gradientTop}></div>
-            <div className={styles.gradientBottom}></div>
-            <section className="nextSection" id="calculator">
-                <CallToAction/>
-            </section>
-            <section className="nextSection">
-                <WhyUs/>
-            </section>
+            {/*<div className={styles.gradientTop}></div>*/}
+            {/*<div className={styles.gradientBottom}></div>*/}
+            {/*<section className="nextSection">*/}
+            {/*    <AboutUs/>*/}
+            {/*</section>*/}
+            {/*<div className={styles.gradientTop}></div>*/}
+            {/*<div className={styles.gradientBottom}></div>*/}
+            {/*<section className="nextSection">*/}
+            {/*    <Services/>*/}
+            {/*</section>*/}
+            {/*<div className={styles.gradientTop}></div>*/}
+            {/*<div className={styles.gradientBottom}></div>*/}
+            {/*<section className="nextSection" id="calculator">*/}
+            {/*    <CallToAction/>*/}
+            {/*</section>*/}
+            {/*<section className="nextSection">*/}
+            {/*    <WhyUs/>*/}
+            {/*</section>*/}
 
-            <section className="nextSection">
-                <ProcessSteps/>
-            </section>
-            <div className={styles.gradientTop}></div>
-            <MapSection id="contacts"/>
-            <Testimonials/>
+            {/*<section className="nextSection">*/}
+            {/*    <ProcessSteps/>*/}
+            {/*</section>*/}
+            {/*<div className={styles.gradientTop}></div>*/}
+            {/*<MapSection id="contacts"/>*/}
+            {/*<Testimonials/>*/}
         </div>
     )
 }
