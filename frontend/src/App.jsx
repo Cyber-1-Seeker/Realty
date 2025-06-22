@@ -1,6 +1,5 @@
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import {useEffect, useState} from 'react'
-import {API_URL} from "@/utils/config.js";
 import Layout from './components/Layout/Layout'
 import About from './components/pages/About/About.jsx'
 import "./App.css"
@@ -11,6 +10,9 @@ import ProfilePage from "@/components/pages/Profile/ProfilePage.jsx";
 import AdminLayout from "@/components/pages/AdminPanel/AdminLayout.jsx";
 import ListingDetails from "@/components/pages/Listings/ListingDetails.jsx";
 import Support from "@/components/pages/Support/Support.jsx";
+
+// Используем напрямую переменную окружения
+const API_URL = import.meta.env.VITE_API_BASE_URL;
 
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false)

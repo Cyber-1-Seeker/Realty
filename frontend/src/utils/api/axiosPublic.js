@@ -1,5 +1,7 @@
 import axios from 'axios';
-import { API_URL } from "@/utils/config.js";
+
+// Используем напрямую из import.meta.env
+const API_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const API_PUBLIC = axios.create({
     baseURL: API_URL,
@@ -8,3 +10,8 @@ export const API_PUBLIC = axios.create({
         'Content-Type': 'application/json',
     }
 });
+
+// Логирование для отладки
+if (import.meta.env.MODE === 'development') {
+  console.log(`[API_PUBLIC] Base URL: ${API_URL}`);
+}

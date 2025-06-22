@@ -5,6 +5,7 @@ COPY package*.json ./
 ENV NODE_OPTIONS="--max-old-space-size=2048"
 RUN npm install
 COPY . .
+COPY .env.production .env.production
 RUN npm run build
 
 # Финальный образ

@@ -108,8 +108,7 @@ services:
     volumes:
       - static_volume:/app/staticfiles
       - media_volume:/app/media
-
-services:
+      -
   # Фронтенд (собирается из локального Dockerfile)
   frontend:
     build:
