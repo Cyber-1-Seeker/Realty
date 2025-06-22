@@ -109,15 +109,20 @@ services:
       - static_volume:/app/staticfiles
       - media_volume:/app/media
 
+services:
+  # Фронтенд (собирается из локального Dockerfile)
   frontend:
-    image: sensh1/realty-app:frontend-latest  # Используем готовый образ
-    restart: always
+    build:
+      context: ./frontend               # Путь к папке с фронтендом
+      dockerfile: Dockerfile.prod       # Используем production Dockerfile
     ports:
-      - "80:80"
-    depends_on:
-      - backend
-    networks:
-      - frontend-network
+      - "80:80"                        # Пробрасываем порт 80
+    restart: always                    # Автоперезапуск при падении
+    environment:
+      - VITE_API_BASE_URL=${VITE_API_BASE_URL}  # Переменные окружения
+    volumes:
+      - ./frontend:/app                 # Монтирование кода для разработки
+      - frontend-node_modules:/app/node_modules # Вынесение зависимостей
 
   telegrambot:
     image: sensh1/realty-app:telegrambot-latest  # Используем готовый образ
