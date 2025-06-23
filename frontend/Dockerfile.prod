@@ -7,11 +7,20 @@ COPY package*.json ./
 COPY .env.production ./
 
 # Установка зависимостей с очисткой кэша
-RUN npm install --legacy-peer-deps && npm cache clean --force
+RUN npm install
+RUN npm cache clean --force
+
+# Очистка vite-кеша перед копированием
+RUN rm -rf node_modules/.vite
 
 # Копируем остальные файлы
 COPY . .
 
-# Сборка проекта
+# Принудительная очистка кэша сборки
+RUN rm -rf .vite
+
+# Сборка проекта с увеличенной памятью
 ENV NODE_OPTIONS="--max-old-space-size=2048"
-RUN npm run build
+
+# Сборка проекта
+RUN npm run build -- --emptyOutDir
