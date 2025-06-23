@@ -10,7 +10,7 @@ import MapSection from "./MapSection/MapSection.jsx";
 import AboutUs from "@/components/pages/Home/AboutUs/AboutUs.jsx";
 import UrgentSell from "@/components/pages/Home/UrgentSell/UrgentSell.jsx";
 
-import styles from './Home.module.css';
+// import styles from './Home.module.css';
 
 const Home = ({isAuthenticated}) => {
     const location = useLocation(); // Добавлено для работы с якорем
