@@ -16,4 +16,13 @@ export default defineConfig({
         port: 5173,
         strictPort: true,
     },
+    build: {
+        rollupOptions: {
+            output: {
+                assetFileNames: 'assets/[name]-[hash][extname]'
+            }
+        },
+        emptyOutDir: true,
+        minify: false
+    }
 })
