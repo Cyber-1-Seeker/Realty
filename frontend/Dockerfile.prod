@@ -13,5 +13,5 @@ RUN npm install --legacy-peer-deps && npm cache clean --force
 COPY . .
 
 # Сборка проекта
-ENV NODE_OPTIONS="--max-old-space-size=4096"
+ENV NODE_OPTIONS="--max-old-space-size=2048"
 RUN npm run build
