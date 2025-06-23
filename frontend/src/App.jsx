@@ -48,7 +48,7 @@ function App() {
                         />
                     }
                 >
-                    <Route path="/" element={<Home isAuthenticated={isAuthenticated}/>}/>
+                    {/*<Route path="/" element={<Home isAuthenticated={isAuthenticated}/>}/>*/}
                     <Route path="/about" element={<About/>}/>
                     <Route path="/listings"
                            element={<ListingsPage isAuthenticated={isAuthenticated} currentUser={user}/>}/>
