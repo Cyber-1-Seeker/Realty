@@ -131,7 +131,7 @@ const Navbar = ({isAuthenticated, user}) => {
                 <div className={classes.logo}>
                     {/* УБРАЛИ ВЛОЖЕННЫЙ <a> ВНУТРИ Link */}
                     <Link to="/" onClick={() => setMenuOpen(false)}>
-                        🏠 Realty
+                        Realty
                     </Link>
                 </div>
 
