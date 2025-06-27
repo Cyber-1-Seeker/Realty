@@ -103,6 +103,11 @@ MIDDLEWARE = [
     'monitoring.middleware.UserVisitMiddleware',
 ]
 
+# Отключаем проблемные заголовки безопасности для HTTP
+if not DEBUG:
+    # Удаляем SecurityMiddleware для отключения автоматических заголовков безопасности
+    MIDDLEWARE = [mw for mw in MIDDLEWARE if mw != 'django.middleware.security.SecurityMiddleware']
+
 # === Пути и URL ===
 ROOT_URLCONF = 'config.urls'
 WSGI_APPLICATION = 'config.wsgi.application'
@@ -180,11 +185,17 @@ if not DEBUG:
     # Production security
     CSRF_COOKIE_SECURE = False
     SESSION_COOKIE_SECURE = False
-    SECURE_HSTS_SECONDS = 3600
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-    SECURE_HSTS_PRELOAD = True
+    SECURE_HSTS_SECONDS = 0  # Отключаем HSTS для HTTP
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = False
+    SECURE_HSTS_PRELOAD = False
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
     SECURE_SSL_REDIRECT = False
+    
+    # Отключаем заголовки безопасности для HTTP
+    SECURE_CONTENT_TYPE_NOSNIFF = False
+    SECURE_BROWSER_XSS_FILTER = False
+    SECURE_REFERRER_POLICY = None
+    X_FRAME_OPTIONS = 'SAMEORIGIN'
 else:
     # Development settings
     CSRF_COOKIE_SECURE = False
