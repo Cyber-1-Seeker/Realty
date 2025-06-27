@@ -59,6 +59,46 @@ React Router пытается обработать маршрут `/admin/` ка
 curl -I http://localhost/admin/
 ```
 
+## Проблема со статическими файлами Django
+
+### Симптомы
+```
+GET http://147.45.224.189/static/admin/css/base.css/ 403 (Forbidden)
+GET http://147.45.224.189/static/admin/css/dashboard.css/ net::ERR_ABORTED 403 (Forbidden)
+```
+
+### Причина
+Nginx не может получить доступ к статическим файлам Django из-за неправильных путей или прав доступа.
+
+### Решение
+1. **Исправлены пути в nginx конфигурации** - добавлены регулярные выражения `$1` для правильной обработки путей
+2. **Добавлены права доступа** - volumes монтируются с правами только для чтения `:ro`
+3. **Улучшен сбор статических файлов** - добавлен скрипт для принудительного сбора
+
+### Проверка
+```bash
+# Проверка статических файлов
+./check_static.sh
+
+# Исправление статических файлов
+./fix_static.sh
+```
+
+### Ручное исправление
+```bash
+# Сбор статических файлов
+docker exec -it $(docker ps -q --filter "ancestor=sensh1/realty-app:backend-latest") python manage.py collectstatic --noinput --clear
+
+# Проверка файлов в backend
+docker exec -it $(docker ps -q --filter "ancestor=sensh1/realty-app:backend-latest") ls -la /app/staticfiles/
+
+# Проверка файлов в frontend
+docker exec -it $(docker ps -q --filter "ancestor=sensh1/realty-app:frontend-latest") ls -la /app/staticfiles/
+
+# Тестирование через HTTP
+curl -I http://localhost/static/admin/css/base.css
+```
+
 ## Команды для проверки
 
 ### Проверка статуса контейнеров

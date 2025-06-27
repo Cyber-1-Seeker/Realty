@@ -51,8 +51,8 @@ services:
       - frontend-network
       - backend-network
     volumes:
-      - static_volume:/app/staticfiles
-      - media_volume:/app/media
+      - static_volume:/app/staticfiles:ro
+      - media_volume:/app/media:ro
 
   telegrambot:
     image: sensh1/realty-app:telegrambot-latest
