@@ -1,12 +1,32 @@
-# Только для разработки (без сборки)
-FROM node:18
+# Мульти-стадийная сборка для production
+FROM node:18 AS builder
 
 WORKDIR /app
+
+# Копируем package.json и package-lock.json
 COPY package*.json ./
-RUN npm install
+
+# Устанавливаем ВСЕ зависимости (включая dev для сборки)
+RUN npm ci
+
+# Копируем исходный код
 COPY . .
-EXPOSE 5173
-CMD ["npm", "run", "dev"]
+
+# Собираем приложение
+RUN npm run build
+
+# Финальный образ с nginx
+FROM nginx:alpine
+
+# Копируем собранное приложение
+COPY --from=builder /app/dist /usr/share/nginx/html
+
+# Копируем конфигурацию nginx
+COPY nginx.conf /etc/nginx/nginx.conf
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
 
 
 

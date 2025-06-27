@@ -68,7 +68,6 @@ else:
             'HOST': os.getenv("DB_HOST", "db"),
             'PORT': '5432',
             'CONN_MAX_AGE': 60,  # Переиспользование соединений
-            'OPTIONS': {'sslmode': 'require'},
         }
     }
 
@@ -179,33 +178,41 @@ CORS_ALLOW_CREDENTIALS = True
 # === Настройки безопасности ===
 if not DEBUG:
     # Production security
-    CSRF_COOKIE_SECURE = True
-    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = False
+    SESSION_COOKIE_SECURE = False
     SECURE_HSTS_SECONDS = 3600
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-    SECURE_SSL_REDIRECT = True
+    SECURE_SSL_REDIRECT = False
 else:
     # Development settings
     CSRF_COOKIE_SECURE = False
     SESSION_COOKIE_SECURE = False
 
 # === Логирование ===
+# Создаем директорию для логов если её нет
+logs_dir = os.path.join(BASE_DIR, 'logs')
+os.makedirs(logs_dir, exist_ok=True)
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'handlers': {
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+        },
         'file': {
             'level': 'ERROR',
             'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'logs', 'django_errors.log'),
+            'filename': os.path.join(logs_dir, 'django_errors.log'),
         },
     },
     'loggers': {
         'django': {
-            'handlers': ['file'],
-            'level': 'ERROR',
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
             'propagate': True,
         },
     },
@@ -215,7 +222,7 @@ if not DEBUG:
     # Дополнительные продакшен-логи
     LOGGING['handlers']['file']['level'] = 'WARNING'
     LOGGING['loggers']['django.request'] = {
-        'handlers': ['file'],
+        'handlers': ['console', 'file'],
         'level': 'ERROR',
         'propagate': False,
     }

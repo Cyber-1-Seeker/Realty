@@ -40,6 +40,7 @@ services:
     restart: always
     networks:
       - frontend-network
+      - backend-network
 
   telegrambot:
     image: sensh1/realty-app:telegrambot-latest

@@ -59,7 +59,7 @@ COPY requirements.txt .
 
 # Устанавливаем зависимости
 RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir --user -r requirements.txt
+    pip install --no-cache-dir -r requirements.txt
 
 # Копируем остальной код
 COPY . .
@@ -74,13 +74,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 WORKDIR /app/telegrambot
 
-# Копируем установленные зависимости из builder-стадии
-COPY --from=builder /root/.local /root/.local
+# Копируем установленные зависимости и код из builder-стадии
+COPY --from=builder /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
 COPY --from=builder /app/telegrambot /app/telegrambot
 
 # Настраиваем окружение
-ENV PATH=/root/.local/bin:$PATH \
-    PYTHONPATH=/app \
+ENV PYTHONPATH=/app \
     PYTHONUNBUFFERED=1
 
 CMD ["python", "bot.py"]
