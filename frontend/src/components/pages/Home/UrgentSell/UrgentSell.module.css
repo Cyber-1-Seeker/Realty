@@ -5,56 +5,138 @@
     background-color: #f3f1ec;
 }
 
-
 .servicesBox {
     background: url('/assets/Home/UrgentSell-bg.png') 90% center / cover;
-    min-height: 480px; /* увеличим высоту */
-    padding: 40px;
+    min-height: 700px;
+    padding: 80px 60px;
     border-radius: 24px;
     box-shadow: 0 10px 50px rgba(0, 0, 0, 0.06);
     max-width: 1400px;
     width: 100%;
-    background-color: rgba(168, 154, 109, 0.8); /* светло-бежевый */
-    background-blend-mode: overlay; /* накладывает цвет на изображение */
-    color: #333;
+    background-color: rgba(165, 154, 131, 0.8);
+    background-blend-mode: overlay;
+    color: #ffffff; /* Белый текст для лучшей читаемости */
     display: flex;
     filter: brightness(0.95) contrast(1.2);
-    transition: filter 0.3s ease; /* Плавное изменение */
+    transition: filter 0.3s ease;
     flex-direction: column;
-    justify-content: center; /* центрируем по вертикали */
-    align-items: flex-start; /* по левому краю */
+    justify-content: center;
+    align-items: center; /* Центрируем содержимое */
+    text-align: center; /* Центрируем текст */
+    position: relative;
+}
+
+/* Добавляем затемнение для лучшей читаемости текста */
+.servicesBox::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3); /* Полупрозрачное затемнение */
+    border-radius: 24px;
+    z-index: 1;
+}
+
+.servicesBox > * {
+    position: relative;
+    z-index: 2; /* Поднимаем контент над затемнением */
 }
 
 .servicesBox h2 {
-    font-size: 32px;
-    margin-bottom: 16px;
+    font-size: 42px;
+    color: #ffffff; /* Белый цвет для заголовка */
+    margin-bottom: 20px;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* Тень для лучшей читаемости */
 }
 
-.servicesBox p {
-    font-size: 18px;
-    margin-bottom: 24px;
+.servicesBox h3 {
+    font-size: 20px;
+    color: #ffffff; /* Белый цвет для подзаголовка */
+    margin-bottom: 20px; /* Увеличиваем отступ до кнопки */
+    font-weight: 400;
+    line-height: 1.5;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    max-width: 600px; /* Ограничиваем ширину текста */
 }
 
 .servicesBox button {
-    background-color: white;
-    color: #ff5722;
+    background: linear-gradient(135deg, #ff5722, #ff7043); /* Градиентная кнопка */
+    color: #ffffff;
     border: none;
-    padding: 12px 24px;
-    font-weight: bold;
-    font-size: 16px;
-    border-radius: 8px;
+    padding: 16px 32px; /* Увеличиваем отступы */
+    font-weight: 600;
+    font-size: 18px;
+    border-radius: 12px;
     cursor: pointer;
-    transition: background 0.3s ease;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 87, 34, 0.3);
+    min-width: 200px; /* Минимальная ширина кнопки */
 }
 
 .servicesBox button:hover {
-    background-color: #f2f2f2;
+    background: linear-gradient(135deg, #ff7043, #ff5722);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 87, 34, 0.4);
 }
 
-.servicesBox h2 {
-    font-size: 42px; /* крупнее */
-    color: #1e3a8a;
-    margin-bottom: 50px;
+.servicesBox button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 10px rgba(255, 87, 34, 0.3);
+}
+
+/* Мобильные устройства */
+@media (max-width: 768px) {
+    .servicesWrapper {
+        padding: 40px 15px;
+    }
+
+    .servicesBox {
+        padding: 60px 30px;
+        min-height: 400px;
+        text-align: center;
+        align-items: center;
+    }
+
+    .servicesBox h2 {
+        font-size: 28px;
+        margin-bottom: 20px;
+    }
+
+    .servicesBox h3 {
+        font-size: 16px;
+        margin-bottom: 30px;
+        padding: 0 10px;
+    }
+
+    .servicesBox button {
+        padding: 14px 28px;
+        font-size: 16px;
+        min-width: 180px;
+        margin: 0 auto; /* Центрируем кнопку */
+    }
+}
+
+/* Планшеты */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .servicesBox {
+        padding: 70px 50px;
+    }
+
+    .servicesBox h2 {
+        font-size: 36px;
+    }
+
+    .servicesBox h3 {
+        font-size: 18px;
+    }
+
+    .servicesBox button {
+        padding: 15px 30px;
+        font-size: 17px;
+    }
 }
 
 .cards {
@@ -73,35 +155,6 @@
 
 .card:hover {
     transform: translateY(-6px);
-}
-
-.servicesBox {
-    padding: 80px 60px; /* увеличили */
-    border-radius: 24px;
-    box-shadow: 0 10px 50px rgba(0, 0, 0, 0.06);
-    max-width: 1400px; /* шире */
-    width: 100%;
-    text-align: center;
-}
-
-.servicesBox h2 {
-    font-size: 42px; /* крупнее */
-    color: #1e3a8a;
-    margin-bottom: 50px;
-}
-
-.cards {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 40px; /* больше расстояние между карточками */
-}
-
-.card {
-    border-radius: 24px;
-    padding: 40px 30px; /* больше внутреннее пространство */
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-    text-align: center;
-    transition: transform 0.3s ease;
 }
 
 .icon {
