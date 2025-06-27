@@ -19,9 +19,9 @@ COPY . .
 # Финальный образ
 FROM python:3.11-slim-bullseye
 
-# Установка runtime зависимостей
+# Установка runtime зависимостей и curl для health check
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends libpq5 && \
+    apt-get install -y --no-install-recommends libpq5 curl && \
     rm -rf /var/lib/apt/lists/*
 
 # Установка Gunicorn

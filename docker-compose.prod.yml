@@ -31,6 +31,12 @@ services:
     volumes:
       - static_volume:/app/staticfiles
       - media_volume:/app/media
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
 
   # Используем готовый образ из DockerHub
   frontend:
@@ -38,9 +44,15 @@ services:
     ports:
       - "80:80"
     restart: always
+    depends_on:
+      backend:
+        condition: service_healthy
     networks:
       - frontend-network
       - backend-network
+    volumes:
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
 
   telegrambot:
     image: sensh1/realty-app:telegrambot-latest

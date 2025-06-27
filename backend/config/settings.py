@@ -5,8 +5,8 @@ from dotenv import load_dotenv
 import sys
 import httpx
 
-# Определяем базовый путь
-BASE_DIR = Path(__file__).resolve().parent
+# Определяем базовый путь - корень проекта backend
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 # === Загрузка переменных окружения ===
 # Определяем режим работы по переменной APP_ENV
@@ -35,6 +35,15 @@ ALLOWED_HOSTS = allowed_hosts.split(",") if allowed_hosts else []
 
 if DEBUG:
     ALLOWED_HOSTS.extend(['localhost', '127.0.0.1'])
+else:
+    # Продакшен хосты
+    ALLOWED_HOSTS.extend([
+        '147.45.224.189',
+        'localhost',
+        '127.0.0.1',
+        'backend',  # Docker service name
+        '*',  # Временно разрешаем все хосты для отладки
+    ])
 
 # === Конфигурация базы данных ===
 if 'test' in sys.argv:
@@ -172,13 +181,20 @@ else:
     CORS_ALLOWED_ORIGINS.extend([
         "http://147.45.224.189",
         "https://147.45.224.189",
+        "http://localhost",
+        "http://127.0.0.1",
+        "http://frontend",  # Docker service name
     ])
     CSRF_TRUSTED_ORIGINS.extend([
         "http://147.45.224.189",
         "https://147.45.224.189",
+        "http://localhost",
+        "http://127.0.0.1",
+        "http://frontend",  # Docker service name
     ])
 
 CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_ALL_ORIGINS = True  # Временно разрешаем все источники для отладки
 
 # === Настройки безопасности ===
 if not DEBUG:
