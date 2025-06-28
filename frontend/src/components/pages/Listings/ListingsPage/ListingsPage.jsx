@@ -10,6 +10,7 @@ import AddListingForm from "@/components/pages/Listings/ListingsPage/AddListingF
 import UrgentSellForm from "@/components/pages/Listings/ListingsPage/UrgentSellForm.jsx";
 import AuthModal from '@/components/AuthModal/AuthModal.jsx';
 import useAuthGuard from '@/hooks/useAuthGuard';
+import { API_URL } from '@/utils/config';
 
 const ListingsPage = ({isAuthenticated, currentUser}) => { // Добавляем currentUser в пропсы
     const [listings, setListings] = useState([]);
@@ -17,7 +18,6 @@ const ListingsPage = ({isAuthenticated, currentUser}) => { // Добавляем
     const [showAddForm, setShowAddForm] = useState(false);
     const [showUrgentForm, setShowUrgentForm] = useState(false);
     const [showAuthModal, setShowAuthModal] = useState(false);
-    const API_URL = 'http://127.0.0.1:8000';
     const CHUNK_SIZE = 12;
 
     useEffect(() => {
@@ -28,7 +28,7 @@ const ListingsPage = ({isAuthenticated, currentUser}) => { // Добавляем
         axios
             .get(`${API_URL}/api/apartment/apartments/`)
             .then((res) => setListings(res.data))
-            .catch((err) => console.error(err));
+            .catch((err) => console.error('Ошибка загрузки квартир:', err));
     };
 
     const guard = useAuthGuard(isAuthenticated, () => setShowAuthModal(true));

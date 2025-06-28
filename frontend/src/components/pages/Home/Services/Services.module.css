@@ -53,50 +53,86 @@
 }
 
 @media (max-width: 768px) {
+    .servicesWrapper {
+        padding: 40px 15px;
+    }
+
     .cards {
         grid-template-columns: 1fr;
-        gap: 30px; /* Увеличиваем отступ между карточками */
-        max-width: 500px;
+        gap: 20px;
+        max-width: 100%;
         margin: 0 auto;
     }
 
     .servicesBox {
-        padding: 40px 15px;
-        border-radius: 16px;
+        padding: 30px 20px;
+        border-radius: 20px;
+        margin: 0 10px;
     }
 
     .servicesBox h2 {
-        font-size: 28px;
-        margin-bottom: 30px;
+        font-size: 26px;
+        margin-bottom: 25px;
+        line-height: 1.3;
     }
 
     .card {
-        padding: 30px 20px; /* Увеличиваем внутренний отступ карточки */
+        padding: 25px 20px;
+        border-radius: 16px;
+        margin-bottom: 10px;
     }
 
     .icon {
-        width: 120px; /* Уменьшаем размер иконки */
-        height: 120px; /* Уменьшаем размер иконки */
-        margin-bottom: 15px; /* Уменьшаем отступ до текста */
+        width: 80px;
+        height: 80px;
+        margin-bottom: 15px;
     }
 
     .card h3 {
-        font-size: 22px; /* Увеличиваем размер заголовка */
-        margin-bottom: 10px; /* Уменьшаем отступ до параграфа */
+        font-size: 20px;
+        margin-bottom: 12px;
+        line-height: 1.3;
     }
 
     .card p {
-        font-size: 16px; /* Увеличиваем размер параграфа */
-        line-height: 1.5; /* Увеличиваем межстрочный интервал */
+        font-size: 15px;
+        line-height: 1.5;
+        color: #666;
     }
 }
 
 @media (max-width: 480px) {
     .servicesWrapper {
-        padding: 40px 10px;
+        padding: 30px 10px;
+    }
+
+    .servicesBox {
+        padding: 25px 15px;
+        margin: 0 5px;
     }
 
     .servicesBox h2 {
-        font-size: 24px;
+        font-size: 22px;
+        margin-bottom: 20px;
+    }
+
+    .card {
+        padding: 20px 15px;
+    }
+
+    .icon {
+        width: 70px;
+        height: 70px;
+        margin-bottom: 12px;
+    }
+
+    .card h3 {
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+
+    .card p {
+        font-size: 14px;
+        line-height: 1.4;
     }
 }
