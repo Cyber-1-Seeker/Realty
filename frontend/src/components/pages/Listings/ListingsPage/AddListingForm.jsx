@@ -228,10 +228,16 @@ const AddListingForm = ({onClose, onSuccess, user}) => {
             let errorMessage = 'Не удалось добавить объявление';
 
             if (error.response) {
-                if (error.response.data) {
-                    errorMessage = Object.values(error.response.data)
-                        .flat()
-                        .join(', ');
+                if (error.response.status === 413) {
+                    errorMessage = 'Размер файлов слишком большой. Пожалуйста, уменьшите размер изображений или загрузите меньше файлов.';
+                } else if (error.response.data) {
+                    if (typeof error.response.data === 'object') {
+                        errorMessage = Object.values(error.response.data)
+                            .flat()
+                            .join(', ');
+                    } else {
+                        errorMessage = error.response.data;
+                    }
                 }
             } else if (error.message) {
                 errorMessage = error.message;
@@ -583,14 +589,38 @@ const AddListingForm = ({onClose, onSuccess, user}) => {
                                 fileList={fileList}
                                 onChange={({fileList}) => setFileList(fileList)}
                                 beforeUpload={(file) => {
+                                    // Проверка размера файла (10MB)
                                     const isLt10M = file.size / 1024 / 1024 < 10;
                                     if (!isLt10M) {
                                         Modal.error({
                                             title: 'Ошибка',
                                             content: 'Изображение должно быть меньше 10MB',
                                         });
+                                        return false;
                                     }
-                                    return false;
+
+                                    // Проверка типа файла
+                                    const isImage = file.type.startsWith('image/');
+                                    if (!isImage) {
+                                        Modal.error({
+                                            title: 'Ошибка',
+                                            content: 'Можно загружать только изображения',
+                                        });
+                                        return false;
+                                    }
+
+                                    // Проверка общего размера всех файлов (50MB)
+                                    const totalSize = fileList.reduce((sum, f) => sum + (f.size || 0), 0) + file.size;
+                                    const isTotalSizeOk = totalSize / 1024 / 1024 < 50;
+                                    if (!isTotalSizeOk) {
+                                        Modal.error({
+                                            title: 'Ошибка',
+                                            content: 'Общий размер всех файлов не должен превышать 50MB',
+                                        });
+                                        return false;
+                                    }
+
+                                    return false; // Предотвращаем автоматическую загрузку
                                 }}
                                 multiple
                                 maxCount={20}

@@ -257,6 +257,11 @@ if not DEBUG:
 # === Прочие настройки ===
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Настройки загрузки файлов
+DATA_UPLOAD_MAX_MEMORY_SIZE = 50 * 1024 * 1024  # 50MB
+FILE_UPLOAD_MAX_MEMORY_SIZE = 50 * 1024 * 1024  # 50MB
+MAX_UPLOAD_SIZE = 50 * 1024 * 1024  # 50MB
+
 # SMS и Telegram
 EXOLVE_API_KEY = os.getenv("EXOLVE_API_KEY", "")
 EXOLVE_SENDER_NAME = os.getenv("EXOLVE_SENDER_NAME", "RealtyBot")
