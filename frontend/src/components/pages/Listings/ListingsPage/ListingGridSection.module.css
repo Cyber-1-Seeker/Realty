@@ -12,13 +12,15 @@
   border-radius: 1rem; /* rounded-2xl */
   overflow: hidden;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
-  transition: transform 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .card:hover {
   transform: scale(1.05);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
 }
 
 .imageWrapper {
@@ -28,12 +30,19 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+  position: relative;
 }
 
 .image {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.card:hover .image {
+  transform: scale(1.1);
 }
 
 .imagePlaceholder {
@@ -85,29 +94,192 @@
   font-size: 0.875rem;
   border: none;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: all 0.2s ease;
   margin-top: auto;
+  position: relative;
+  overflow: hidden;
+}
+
+.button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.button:hover::before {
+  left: 100%;
 }
 
 .button:hover {
   background-color: #2563eb;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
 
 /* Адаптивность */
 @media (max-width: 640px) {
   .grid {
     grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 20px 15px;
+    overflow-x: hidden;
+  }
+
+  .card {
+    animation: slideInUp 0.6s ease-out;
+    animation-fill-mode: both;
+    transform-origin: center bottom;
+  }
+
+  .card:nth-child(1) { animation-delay: 0.1s; }
+  .card:nth-child(2) { animation-delay: 0.2s; }
+  .card:nth-child(3) { animation-delay: 0.3s; }
+  .card:nth-child(4) { animation-delay: 0.4s; }
+  .card:nth-child(5) { animation-delay: 0.5s; }
+  .card:nth-child(6) { animation-delay: 0.6s; }
+
+  .card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Анимация перелистывания */
+  .card {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .card:not(:first-child) {
+    animation: slideInFromRight 0.5s ease-out;
+  }
+
+  .imageWrapper {
+    height: 160px;
+    overflow: hidden;
+  }
+
+  .content {
+    padding: 15px;
+  }
+
+  .address {
+    font-size: 1.1rem;
+  }
+
+  .price {
+    font-size: 1rem;
   }
 }
 
 @media (min-width: 641px) and (max-width: 1023px) {
   .grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
   }
+
+  .card {
+    animation: slideInUp 0.5s ease-out;
+    animation-fill-mode: both;
+  }
+
+  .card:nth-child(odd) { animation-delay: 0.1s; }
+  .card:nth-child(even) { animation-delay: 0.2s; }
 }
 
 @media (min-width: 1024px) {
   .grid {
     grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Анимации */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(100px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Дополнительные эффекты для мобильных */
+@media (max-width: 480px) {
+  .grid {
+    padding: 15px 10px;
+    gap: 15px;
+  }
+
+  .card {
+    border-radius: 0.75rem;
+    /* Улучшенная анимация для маленьких экранов */
+    animation: slideInFromBottom 0.4s ease-out;
+  }
+
+  .card:nth-child(1) { animation-delay: 0.05s; }
+  .card:nth-child(2) { animation-delay: 0.1s; }
+  .card:nth-child(3) { animation-delay: 0.15s; }
+  .card:nth-child(4) { animation-delay: 0.2s; }
+  .card:nth-child(5) { animation-delay: 0.25s; }
+  .card:nth-child(6) { animation-delay: 0.3s; }
+
+  .imageWrapper {
+    height: 140px;
+  }
+
+  .content {
+    padding: 12px;
+  }
+
+  .address {
+    font-size: 1rem;
+  }
+
+  .price {
+    font-size: 0.95rem;
+  }
+
+  .button {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+}
+
+/* Анимация для перелистывания */
+@keyframes slideInFromBottom {
+  from {
+    opacity: 0;
+    transform: translateY(50px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }

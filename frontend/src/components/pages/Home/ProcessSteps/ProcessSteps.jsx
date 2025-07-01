@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './ProcessSteps.module.css';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 
 // Импортируем иконки (замените пути на ваши SVG)
 import ApplicationIcon from '/icons/Home/steps.svg';
@@ -9,6 +9,23 @@ import ContractIcon from '/icons/Home/steps3.svg';
 import PaymentIcon from '/icons/Home/steps4.svg';
 
 const ProcessSteps = () => {
+    const [isMobile, setIsMobile] = useState(false);
+    const { scrollYProgress } = useScroll();
+    
+    // Параллакс эффект для мобильных
+    const y = useTransform(scrollYProgress, [0, 1], [0, -30]);
+
+    useEffect(() => {
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth <= 768);
+        };
+        
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
+
     const steps = [
         {
             icon: ApplicationIcon,
@@ -48,9 +65,32 @@ const ProcessSteps = () => {
                         <motion.div
                             key={index}
                             className={styles.stepCard}
-                            whileHover={{ y: -5 }}
-                            transition={{ duration: 0.3 }}
+                            initial={{ opacity: 0, x: isMobile ? 100 : 0, y: isMobile ? 0 : 50 }}
+                            whileInView={{ 
+                                opacity: 1, 
+                                x: 0, 
+                                y: 0,
+                                transition: { 
+                                    duration: 0.6, 
+                                    delay: index * 0.15,
+                                    ease: "easeOut"
+                                }
+                            }}
+                            viewport={{ once: true, amount: 0.3 }}
+                            whileHover={isMobile ? {} : { 
+                                y: -8,
+                                transition: { duration: 0.3 }
+                            }}
+                            style={isMobile ? { y } : {}}
                         >
+                            {/* Линия-соединитель для дорожной карты */}
+                            {isMobile && index < steps.length - 1 && (
+                                <div className={styles.connectorLine}>
+                                    <div className={styles.line}></div>
+                                    <div className={styles.arrow}></div>
+                                </div>
+                            )}
+                            
                             <div className={styles.iconWrapper}>
                                 <img
                                     src={step.icon}

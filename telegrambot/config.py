@@ -35,5 +35,9 @@ required_vars = {
 
 # Автоматическая коррекция URL для production
 if is_production and API_URL and API_URL.startswith('http://'):
-    API_URL = API_URL.replace('http://', 'https://', 1)
-    print(f"ВНИМАНИЕ: API_URL изменен на HTTPS: {API_URL}")
+    # Для внутреннего общения между контейнерами используем HTTP
+    if 'backend' in API_URL or 'localhost' in API_URL:
+        print(f"ВНИМАНИЕ: Используем HTTP для внутреннего общения: {API_URL}")
+    else:
+        API_URL = API_URL.replace('http://', 'https://', 1)
+        print(f"ВНИМАНИЕ: API_URL изменен на HTTPS: {API_URL}")

@@ -37,7 +37,26 @@ const ListingsPage = ({isAuthenticated, currentUser}) => { // Добавляем
     const hasMore = listings.length > visibleCount;
 
     const handleShowMore = () => {
-        setVisibleCount((prev) => prev + CHUNK_SIZE);
+        // Добавляем анимацию прокрутки к новым карточкам
+        setVisibleCount((prev) => {
+            const newCount = prev + CHUNK_SIZE;
+            
+            // Прокручиваем к новым карточкам через небольшую задержку
+            setTimeout(() => {
+                const newCards = document.querySelectorAll('.card');
+                if (newCards.length > prev) {
+                    const firstNewCard = newCards[prev];
+                    if (firstNewCard) {
+                        firstNewCard.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'center'
+                        });
+                    }
+                }
+            }, 100);
+            
+            return newCount;
+        });
     };
 
     const handleAddSuccess = () => {

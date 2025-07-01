@@ -90,32 +90,59 @@
 /* Мобильные устройства */
 @media (max-width: 768px) {
     .servicesWrapper {
-        padding: 40px 15px;
+        padding: 20px 15px;
     }
 
     .servicesBox {
-        padding: 60px 30px;
-        min-height: 400px;
+        padding: 40px 20px;
+        min-height: 300px;
         text-align: center;
         align-items: center;
     }
 
     .servicesBox h2 {
-        font-size: 28px;
-        margin-bottom: 20px;
+        font-size: 24px;
+        margin-bottom: 15px;
     }
 
     .servicesBox h3 {
-        font-size: 16px;
-        margin-bottom: 30px;
-        padding: 0 10px;
+        font-size: 15px;
+        margin-bottom: 20px;
+        padding: 0 5px;
     }
 
     .servicesBox button {
-        padding: 14px 28px;
-        font-size: 16px;
-        min-width: 180px;
-        margin: 0 auto; /* Центрируем кнопку */
+        padding: 12px 24px;
+        font-size: 15px;
+        min-width: 160px;
+        margin: 0 auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .servicesWrapper {
+        padding: 15px 10px;
+    }
+
+    .servicesBox {
+        padding: 30px 15px;
+        min-height: 250px;
+    }
+
+    .servicesBox h2 {
+        font-size: 20px;
+        margin-bottom: 12px;
+    }
+
+    .servicesBox h3 {
+        font-size: 14px;
+        margin-bottom: 15px;
+    }
+
+    .servicesBox button {
+        padding: 10px 20px;
+        font-size: 14px;
+        min-width: 140px;
     }
 }
 

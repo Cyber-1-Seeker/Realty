@@ -428,6 +428,80 @@
     background: #d9d9d9;
 }
 
+/* Мобильные стили для модального окна */
+@media (max-width: 768px) {
+    .modalOverlay {
+        padding: 10px;
+    }
+
+    .modal {
+        padding: 20px;
+        max-height: 80vh;
+    }
+
+    .consultModal {
+        padding: 20px;
+        max-width: 100%;
+    }
+
+    .consultModal h3 {
+        font-size: 16px;
+        margin-bottom: 15px;
+    }
+
+    .consultModal textarea {
+        min-height: 100px;
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .modalButtons {
+        margin-top: 15px;
+    }
+
+    .submitButton,
+    .cancelButton {
+        padding: 10px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .modalOverlay {
+        padding: 5px;
+    }
+
+    .modal {
+        padding: 15px;
+        max-height: 85vh;
+    }
+
+    .consultModal {
+        padding: 15px;
+    }
+
+    .consultModal h3 {
+        font-size: 15px;
+        margin-bottom: 12px;
+    }
+
+    .consultModal textarea {
+        min-height: 80px;
+        font-size: 13px;
+        padding: 8px;
+    }
+
+    .modalButtons {
+        margin-top: 12px;
+        gap: 8px;
+    }
+
+    .submitButton,
+    .cancelButton {
+        padding: 8px;
+        font-size: 13px;
+    }
+}
 
 /* Анимация успешной отправки */
 .advanceModalSuccess {
@@ -488,15 +562,17 @@
 @media (max-width: 600px) {
     .heroContent {
         flex-direction: column;
-        justify-content: center;
+        justify-content: flex-end;
         padding: 20px;
         text-align: center;
         gap: 30px;
+        min-height: 100vh;
+        padding-top: 40vh; /* Добавляем отступ сверху, чтобы показать фон */
     }
 
     .heroText {
         max-width: 100%;
-        order: 2;
+        order: 1;
     }
 
     .heroText h1 {
@@ -512,7 +588,7 @@
     }
 
     .heroForm {
-        order: 1;
+        order: 2;
         max-width: 100%;
         margin: 0 auto;
         transform: scale(0.95);
@@ -548,6 +624,27 @@
         height: auto;
         min-height: 100vh;
         padding-bottom: 40px;
+    }
+}
+
+@media (max-width: 480px) {
+    .heroContent {
+        padding-top: 35vh; /* Меньший отступ для очень маленьких экранов */
+        padding-bottom: 20px;
+    }
+
+    .heroText h1 {
+        font-size: 24px;
+        margin-bottom: 12px;
+    }
+
+    .heroText p {
+        font-size: 14px;
+        margin-bottom: 15px;
+    }
+
+    .heroForm {
+        transform: scale(0.9);
     }
 }
 

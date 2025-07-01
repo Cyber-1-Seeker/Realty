@@ -34,15 +34,14 @@ class UserVisitMiddleware(MiddlewareMixin):
                 }
             )
 
-            # Проверяем, был ли уже этот IP сегодня
-            ip_log_exists = DailyIPLog.objects.filter(
+            # Проверяем, был ли уже этот IP сегодня и создаём, если нет (атомарно)
+            ip_log, created = DailyIPLog.objects.get_or_create(
                 ip_address=ip,
                 date=today
-            ).exists()
+            )
 
             # Если IP новый - увеличиваем счетчик новых визитов
-            if not ip_log_exists:
-                DailyIPLog.objects.create(ip_address=ip, date=today)
+            if created:
                 stat.new_visits += 1
 
             # Увеличиваем общий счетчик визитов

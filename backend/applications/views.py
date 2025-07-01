@@ -51,7 +51,7 @@ class ApplicationViewSet(viewsets.ModelViewSet):
         stat.save()
 
         headers = self.get_success_headers(serializer.data)
-        if settings.DEBUG:
+        if settings.WEBHOOK_URL:
             try:
                 print(f"Попытка отправить вебхук на {settings.WEBHOOK_URL}")
                 response = httpx.post(

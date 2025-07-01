@@ -55,8 +55,12 @@ const Navbar = ({isAuthenticated, user}) => {
             const mobile = window.innerWidth <= 768
             setIsMobile(mobile)
             setMenuOpen(false)
-            if (!mobile) setShowNavbar(false)
-            else setShowNavbar(true)
+            // Всегда показываем навбар на мобильных устройствах, независимо от страницы
+            if (mobile) {
+                setShowNavbar(true)
+            } else {
+                setShowNavbar(false)
+            }
         }
 
         window.addEventListener('resize', handleResize)
@@ -74,6 +78,7 @@ const Navbar = ({isAuthenticated, user}) => {
             window.addEventListener('scroll', handleScroll)
             return () => window.removeEventListener('scroll', handleScroll)
         } else {
+            // На мобильных устройствах всегда показываем навбар
             setShowNavbar(true)
         }
     }, [isMobile])

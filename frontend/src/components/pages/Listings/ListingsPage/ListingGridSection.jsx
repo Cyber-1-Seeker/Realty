@@ -1,12 +1,47 @@
 import {Link} from 'react-router-dom';
+import {useEffect, useRef} from 'react';
 import styles from './ListingGridSection.module.css';
 
-
 const ListingGridSection = ({listings}) => {
+    const gridRef = useRef(null);
+
+    useEffect(() => {
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                }
+            });
+        }, observerOptions);
+
+        const cards = gridRef.current?.querySelectorAll(`.${styles.card}`);
+        cards?.forEach((card) => {
+            observer.observe(card);
+        });
+
+        return () => {
+            cards?.forEach((card) => {
+                observer.unobserve(card);
+            });
+        };
+    }, [listings]);
+
     return (
-        <div className={styles.grid}>
-            {listings.map((listing) => (
-                <div key={listing.id} className={styles.card}>
+        <div className={styles.grid} ref={gridRef}>
+            {listings.map((listing, index) => (
+                <div 
+                    key={listing.id} 
+                    className={styles.card}
+                    style={{
+                        animationDelay: `${index * 0.1}s`,
+                        animationPlayState: 'paused'
+                    }}
+                >
                     <div className={styles.imageWrapper}>
                         {listing.images && listing.images.length > 0 ? (
                             <img

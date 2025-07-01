@@ -1,0 +1,423 @@
+/* Мобильные стили для админ панели */
+@media (max-width: 768px) {
+    .adminContainer {
+        padding: 10px;
+    }
+
+    .adminHeader h1 {
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+
+    /* Стили для таблиц */
+    .ant-table {
+        font-size: 12px;
+    }
+
+    .ant-table-thead > tr > th {
+        padding: 8px 4px !important;
+        font-size: 11px !important;
+    }
+
+    .ant-table-tbody > tr > td {
+        padding: 8px 4px !important;
+        font-size: 11px !important;
+    }
+
+    /* Скрываем некоторые колонки на мобильных */
+    .ant-table-thead > tr > th:nth-child(4),
+    .ant-table-tbody > tr > td:nth-child(4) {
+        display: none;
+    }
+
+    /* Уменьшаем размеры изображений */
+    .ant-table-tbody img {
+        width: 60px !important;
+        height: 45px !important;
+    }
+
+    /* Стили для кнопок действий */
+    .ant-space {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .ant-btn {
+        font-size: 11px;
+        padding: 4px 8px;
+        height: auto;
+        min-height: 28px;
+    }
+
+    /* Стили для селекта фильтра */
+    .ant-select {
+        width: 100% !important;
+        margin-bottom: 10px;
+    }
+
+    /* Стили для модального окна */
+    .ant-modal-content {
+        margin: 10px;
+    }
+
+    .ant-modal-body {
+        padding: 15px;
+    }
+
+    .ant-input {
+        font-size: 14px;
+    }
+
+    /* Стили для responsive таблицы */
+    .responsiveTable {
+        overflow-x: auto;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .responsiveTable .ant-table-wrapper {
+        overflow-x: auto;
+    }
+
+    .responsiveTable .ant-table {
+        min-width: 800px;
+    }
+
+    /* Улучшенные стили для скроллбара */
+    .responsiveTable .ant-table-wrapper::-webkit-scrollbar {
+        height: 6px;
+    }
+
+    .responsiveTable .ant-table-wrapper::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 3px;
+    }
+
+    .responsiveTable .ant-table-wrapper::-webkit-scrollbar-thumb {
+        background: #c1c1c1;
+        border-radius: 3px;
+    }
+
+    .responsiveTable .ant-table-wrapper::-webkit-scrollbar-thumb:hover {
+        background: #a8a8a8;
+    }
+
+    /* Стили для пагинации */
+    .ant-pagination {
+        text-align: center;
+        margin-top: 15px;
+    }
+
+    .ant-pagination-item {
+        min-width: 28px;
+        height: 28px;
+        line-height: 26px;
+        font-size: 12px;
+    }
+
+    .ant-pagination-prev,
+    .ant-pagination-next {
+        min-width: 28px;
+        height: 28px;
+        line-height: 26px;
+    }
+
+    /* Стили для фиксированных колонок */
+    .ant-table-cell-fix-left,
+    .ant-table-cell-fix-right {
+        z-index: 2;
+    }
+
+    /* Улучшенные стили для статусов */
+    .ant-table-tbody .ant-table-cell {
+        vertical-align: top;
+    }
+}
+
+@media (max-width: 480px) {
+    .adminContainer {
+        padding: 5px;
+    }
+
+    .adminHeader h1 {
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+
+    .ant-table-thead > tr > th,
+    .ant-table-tbody > tr > td {
+        padding: 6px 2px !important;
+        font-size: 10px !important;
+    }
+
+    .ant-table-thead > tr > th:nth-child(3),
+    .ant-table-tbody > tr > td:nth-child(3) {
+        display: none;
+    }
+
+    .ant-table-tbody img {
+        width: 50px !important;
+        height: 37px !important;
+    }
+
+    .ant-btn {
+        font-size: 10px;
+        padding: 3px 6px;
+        min-height: 24px;
+    }
+
+    /* Дополнительные стили для очень маленьких экранов */
+    .responsiveTable .ant-table {
+        min-width: 600px;
+    }
+
+    .ant-table-thead > tr > th:nth-child(2),
+    .ant-table-tbody > tr > td:nth-child(2) {
+        max-width: 120px;
+    }
+
+    .ant-table-thead > tr > th:nth-child(5),
+    .ant-table-tbody > tr > td:nth-child(5) {
+        max-width: 80px;
+    }
+
+    /* Стили для модального окна на очень маленьких экранах */
+    .ant-modal {
+        margin: 10px;
+    }
+
+    .ant-modal-content {
+        margin: 0;
+    }
+
+    .ant-modal-header {
+        padding: 12px 16px;
+    }
+
+    .ant-modal-body {
+        padding: 12px 16px;
+    }
+
+    .ant-modal-footer {
+        padding: 12px 16px;
+    }
+}
+
+/* Стили для планшетов */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .adminContainer {
+        padding: 15px;
+    }
+
+    .responsiveTable .ant-table {
+        min-width: 900px;
+    }
+
+    .ant-table-thead > tr > th,
+    .ant-table-tbody > tr > td {
+        padding: 10px 6px !important;
+        font-size: 13px !important;
+    }
+
+    .ant-table-tbody img {
+        width: 80px !important;
+        height: 60px !important;
+    }
+}
+
+/* Общие стили для всех размеров экранов */
+.responsiveTable {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.responsiveTable .ant-table-thead > tr > th {
+    background: #fafafa;
+    font-weight: 600;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.responsiveTable .ant-table-tbody > tr:hover > td {
+    background: #f5f5f5;
+}
+
+.responsiveTable .ant-table-tbody > tr > td {
+    border-bottom: 1px solid #f0f0f0;
+}
+
+/* Стили для загрузки */
+.ant-spin-container {
+    min-height: 200px;
+}
+
+/* Стили для пустого состояния */
+.ant-table-empty {
+    padding: 40px 20px;
+}
+
+.ant-table-empty .ant-table-tbody > tr.ant-table-placeholder:hover > td {
+    background: white;
+}
+
+/* Дополнительные стили для горизонтального скролла таблицы */
+@media (max-width: 768px) {
+    .ant-table-wrapper {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .ant-table {
+        min-width: 600px;
+    }
+
+    /* Стили для скроллбара */
+    .ant-table-wrapper::-webkit-scrollbar {
+        height: 6px;
+    }
+
+    .ant-table-wrapper::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 3px;
+    }
+
+    .ant-table-wrapper::-webkit-scrollbar-thumb {
+        background: #c1c1c1;
+        border-radius: 3px;
+    }
+
+    .ant-table-wrapper::-webkit-scrollbar-thumb:hover {
+        background: #a8a8a8;
+    }
+}
+
+.mobileCardsList {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+.mobileCard {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(30, 58, 138, 0.07);
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  border: 1px solid #f0f0f0;
+}
+
+.mobileCardImageBox {
+  flex: 0 0 100px;
+  background: #f3f1ec;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100px;
+}
+
+.mobileCardImage {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.mobileCardNoImage {
+  width: 80px;
+  height: 80px;
+  background: #eaeaea;
+  color: #888;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  font-size: 13px;
+}
+
+.mobileCardContent {
+  flex: 1 1 auto;
+  padding: 12px 14px 12px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.mobileCardAddress {
+  font-weight: 600;
+  font-size: 15px;
+  margin-bottom: 2px;
+  color: #1e3a8a;
+}
+
+.mobileCardStatus {
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+
+.mobileCardOwner {
+  font-size: 13px;
+  color: #666;
+}
+
+.mobileCardDate {
+  font-size: 12px;
+  color: #aaa;
+  margin-bottom: 4px;
+}
+
+.mobileCardActions {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.mobileNoResults {
+  text-align: center;
+  color: #888;
+  font-size: 16px;
+  margin: 30px 0;
+}
+
+@media (max-width: 600px) {
+  .mobileCard {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .mobileCardImageBox {
+    justify-content: flex-start;
+    min-height: 80px;
+    padding: 8px 0 0 8px;
+  }
+  .mobileCardImage {
+    width: 70px;
+    height: 70px;
+  }
+  .mobileCardNoImage {
+    width: 60px;
+    height: 60px;
+    font-size: 11px;
+  }
+  .mobileCardContent {
+    padding: 10px 10px 10px 10px;
+    gap: 4px;
+  }
+  .mobileCardAddress {
+    font-size: 13px;
+  }
+  .mobileCardStatus {
+    font-size: 12px;
+  }
+  .mobileCardOwner {
+    font-size: 12px;
+  }
+  .mobileCardDate {
+    font-size: 11px;
+  }
+  .mobileCardActions {
+    gap: 6px;
+    margin-top: 4px;
+  }
+} 
