@@ -72,3 +72,22 @@
 .honeypot-field {
     display: none;
 }
+
+.privacy-note {
+    font-size: 0.85rem;
+    color: #7a6b52;
+    text-align: center;
+    margin-top: 15px;
+    line-height: 1.4;
+}
+
+.privacy-note a {
+    color: #9c8e76;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-bottom 0.3s;
+}
+
+.privacy-note a:hover {
+    border-bottom: 1px solid #9c8e76;
+}

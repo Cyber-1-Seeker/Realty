@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import {Link} from 'react-router-dom';
 import styles from './LoginRegisterForm.module.css';
 import {API_AUTH} from "@/utils/api/axiosWithAuth.js";
 
@@ -55,6 +56,10 @@ const LoginForm = ({switchToRegister}) => {
             <button type="submit" className={styles.button}>
                 Войти
             </button>
+            
+            <div className={styles.privacyNote}>
+                Нажимая на кнопку, вы соглашаетесь с <Link to="/privacy">политикой конфиденциальности</Link>
+            </div>
         </form>
     );
 };

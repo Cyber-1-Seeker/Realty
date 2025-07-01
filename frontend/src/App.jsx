@@ -10,6 +10,7 @@ import ProfilePage from "@/components/pages/Profile/ProfilePage.jsx";
 import AdminLayout from "@/components/pages/AdminPanel/AdminLayout.jsx";
 import ListingDetails from "@/components/pages/Listings/ListingDetails.jsx";
 import Support from "@/components/pages/Support/Support.jsx";
+import Privacy from "@/components/pages/Privacy/Privacy.jsx";
 
 // Используем напрямую переменную окружения
 const API_URL = import.meta.env.VITE_API_BASE_URL;
@@ -59,6 +60,7 @@ function App() {
                     <Route path="/listings/:id" element={<ListingDetails/>}/>
                     <Route path="/profile" element={<ProfilePage/>}/>
                     <Route path="/support" element={<Support/>}/>
+                    <Route path="/privacy" element={<Privacy/>}/>
                 </Route>
             </Routes>
         </BrowserRouter>

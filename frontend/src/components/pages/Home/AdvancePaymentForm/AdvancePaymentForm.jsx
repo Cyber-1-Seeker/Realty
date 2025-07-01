@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { API_PUBLIC } from '@/utils/api/axiosPublic.js';
 import { getCSRFTokenFromCookie } from "@/utils/api/csrf.js";
+import { Link } from 'react-router-dom';
 import styles from './AdvancePaymentForm.module.css'; // Импорт стилей как объекта
 
 const AdvancePaymentForm = ({ onClose }) => {
@@ -101,6 +102,10 @@ const AdvancePaymentForm = ({ onClose }) => {
                 >
                     {loading ? 'Отправка...' : 'Получить аванс'}
                 </button>
+            </div>
+            
+            <div className={styles['privacy-note']}>
+                Нажимая на кнопку, вы соглашаетесь с <Link to="/privacy">политикой конфиденциальности</Link>
             </div>
         </form>
     );

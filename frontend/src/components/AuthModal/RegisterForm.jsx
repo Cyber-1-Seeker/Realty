@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import {Link} from 'react-router-dom';
 import styles from './LoginRegisterForm.module.css';
 import {API_PUBLIC} from "@/utils/api/axiosPublic.js";
 import ConfirmPhoneForm from './ConfirmPhoneForm';
@@ -108,6 +109,10 @@ const RegisterForm = ({switchToLogin}) => {
             <button type="submit" className={styles.button}>
                 Получить код
             </button>
+            
+            <div className={styles.privacyNote}>
+                Нажимая на кнопку, вы соглашаетесь с <Link to="/privacy">политикой конфиденциальности</Link>
+            </div>
         </form>
     );
 };

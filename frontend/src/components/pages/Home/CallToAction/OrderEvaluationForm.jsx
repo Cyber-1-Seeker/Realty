@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {motion} from 'framer-motion';
+import {Link} from 'react-router-dom';
 import styles from './CallToAction.module.css';
 import {API_PUBLIC} from '@/utils/api/axiosPublic.js';
 import {getCSRFTokenFromCookie} from "@/utils/api/csrf.js";
@@ -203,6 +204,10 @@ const OrderEvaluationForm = ({onClose}) => {
                             </>
                         )}
                     </motion.button>
+                    
+                    <div className={styles.privacyNote}>
+                        Нажимая на кнопку, вы соглашаетесь с <Link to="/privacy">политикой конфиденциальности</Link>
+                    </div>
                 </form>
             )}
         </div>

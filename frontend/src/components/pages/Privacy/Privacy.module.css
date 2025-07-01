@@ -1,0 +1,203 @@
+.privacyContainer {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding: 2rem 0;
+}
+
+.content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  line-height: 1.6;
+}
+
+.content h1 {
+  color: #2c3e50;
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 2rem;
+  border-bottom: 3px solid #3498db;
+  padding-bottom: 1rem;
+}
+
+.section {
+  margin-bottom: 2.5rem;
+  padding: 1.5rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #3498db;
+}
+
+.section h2 {
+  color: #2c3e50;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.section h2::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  background: #3498db;
+  border-radius: 50%;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+.section h3 {
+  color: #34495e;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 1.5rem 0 1rem 0;
+  padding-left: 1rem;
+  border-left: 3px solid #e74c3c;
+}
+
+.section p {
+  color: #555;
+  margin-bottom: 1rem;
+  text-align: justify;
+}
+
+.section ul {
+  margin: 1rem 0;
+  padding-left: 1.5rem;
+}
+
+.section li {
+  color: #555;
+  margin-bottom: 0.5rem;
+  position: relative;
+  padding-left: 0.5rem;
+}
+
+.section li::before {
+  content: '•';
+  color: #3498db;
+  font-weight: bold;
+  position: absolute;
+  left: -1rem;
+}
+
+.section strong {
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+.contactInfo {
+  background: #ecf0f1;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 2px solid #bdc3c7;
+  margin-top: 1rem;
+}
+
+.contactInfo p {
+  margin-bottom: 0.5rem;
+  color: #2c3e50;
+}
+
+.contactInfo strong {
+  color: #e74c3c;
+}
+
+.lastUpdated {
+  text-align: center;
+  font-style: italic;
+  color: #7f8c8d;
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid #ecf0f1;
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+  .privacyContainer {
+    padding: 1rem 0;
+  }
+  
+  .content {
+    margin: 0 1rem;
+    padding: 1.5rem;
+  }
+  
+  .content h1 {
+    font-size: 2rem;
+  }
+  
+  .section {
+    padding: 1rem;
+    margin-bottom: 2rem;
+  }
+  
+  .section h2 {
+    font-size: 1.3rem;
+  }
+  
+  .section h3 {
+    font-size: 1.1rem;
+  }
+}
+
+/* Анимации при наведении */
+.section:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+/* Стили для ссылок */
+.section a {
+  color: #3498db;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-bottom 0.3s ease;
+}
+
+.section a:hover {
+  border-bottom: 1px solid #3498db;
+}
+
+/* Дополнительные стили для важной информации */
+.section .important {
+  background: #fff3cd;
+  border: 1px solid #ffeaa7;
+  border-radius: 6px;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+.section .important p {
+  color: #856404;
+  margin: 0;
+}
+
+/* Стили для нумерованных списков */
+.section ol {
+  counter-reset: item;
+  list-style: none;
+  padding-left: 0;
+}
+
+.section ol li {
+  counter-increment: item;
+  margin-bottom: 0.8rem;
+  padding-left: 2rem;
+  position: relative;
+}
+
+.section ol li::before {
+  content: counter(item) ".";
+  position: absolute;
+  left: 0;
+  color: #3498db;
+  font-weight: bold;
+  min-width: 1.5rem;
+} 

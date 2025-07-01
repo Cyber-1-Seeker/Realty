@@ -1,4 +1,5 @@
 import {useState, useEffect} from 'react';
+import {Link} from 'react-router-dom';
 import styles from './UrgentSellForm.module.css';
 import axios from 'axios';
 import {getCSRFTokenFromCookie} from '@/utils/api/csrf.js'; // если уже есть
@@ -97,6 +98,10 @@ const UrgentSellForm = ({onClose}) => {
             <button type="submit" disabled={loading}>
                 {loading ? 'Отправка...' : 'Отправить заявку'}
             </button>
+            
+            <div className={styles.privacyNote}>
+                Нажимая на кнопку, вы соглашаетесь с <Link to="/privacy">политикой конфиденциальности</Link>
+            </div>
         </form>
     );
 };

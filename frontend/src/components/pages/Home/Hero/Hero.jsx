@@ -173,7 +173,7 @@ const Hero = ({isAuthenticated}) => {
                         )}
                     </div>
                     <div className={classes.heroFormNote}>
-                        Нажимая на кнопку, вы соглашаетесь с <a href="#">политикой конфиденциальности</a>
+                        Нажимая на кнопку, вы соглашаетесь с <Link to="/privacy">политикой конфиденциальности</Link>
                     </div>
                 </div>
             </div>

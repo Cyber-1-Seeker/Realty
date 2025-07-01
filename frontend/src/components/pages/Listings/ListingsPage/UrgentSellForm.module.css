@@ -47,3 +47,22 @@
 .form button:hover {
   background: #dc2626;
 }
+
+.privacyNote {
+  font-size: 14px;
+  color: #6b7280;
+  text-align: center;
+  margin-top: 10px;
+  line-height: 1.4;
+}
+
+.privacyNote a {
+  color: #ef4444;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-bottom 0.3s;
+}
+
+.privacyNote a:hover {
+  border-bottom: 1px solid #ef4444;
+}
