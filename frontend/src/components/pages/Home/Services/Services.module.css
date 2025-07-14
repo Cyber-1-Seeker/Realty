@@ -95,10 +95,14 @@
         /* Добавляем горизонтальный скролл для мобильных */
         display: flex;
         overflow-x: auto;
+        overflow-y: hidden;
         scroll-snap-type: x mandatory;
         scrollbar-width: none; /* Firefox */
         -ms-overflow-style: none; /* IE and Edge */
         padding: 10px 0;
+        /* Скрываем частично видимые карточки */
+        mask-image: linear-gradient(to right, black 0%, black 85%, transparent 100%);
+        -webkit-mask-image: linear-gradient(to right, black 0%, black 85%, transparent 100%);
     }
 
     .cards::-webkit-scrollbar {
@@ -107,7 +111,7 @@
 
     .card {
         flex: 0 0 280px;
-        scroll-snap-align: center;
+        scroll-snap-align: start;
         margin-right: 20px;
         padding: 25px 20px;
         border-radius: 16px;
@@ -238,5 +242,41 @@
     .card:active::after {
         width: 300px;
         height: 300px;
+    }
+}
+
+/* Dots-индикатор */
+.dotsIndicator {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 20px;
+    padding: 10px 0;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #d1d5db;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.activeDot {
+    background-color: #1e40af;
+    transform: scale(1.2);
+}
+
+@media (max-width: 480px) {
+    .dotsIndicator {
+        margin-top: 15px;
+        gap: 6px;
+    }
+    
+    .dot {
+        width: 6px;
+        height: 6px;
     }
 }

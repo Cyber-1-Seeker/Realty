@@ -680,20 +680,14 @@ const AddListingForm = ({onClose, onSuccess, user}) => {
                             Далее
                         </Button>
                     ) : (
-                        <>
-                            <Button
-                                type="primary"
-                                htmlType="submit"
-                                className={styles.submitButton}
-                                loading={loading}
-                            >
-                                Опубликовать
-                            </Button>
-                            
-                            <div className={styles.privacyNote}>
-                                Нажимая на кнопку, вы соглашаетесь с <Link to="/privacy">политикой конфиденциальности</Link>
-                            </div>
-                        </>
+                        <Button
+                            type="primary"
+                            htmlType="submit"
+                            className={styles.submitButton}
+                            loading={loading}
+                        >
+                            Опубликовать
+                        </Button>
                     )}
                 </div>
             </Form>

@@ -27,6 +27,7 @@ const services = [
 
 const Services = () => {
   const [isMobile, setIsMobile] = useState(false);
+  const [currentSlide, setCurrentSlide] = useState(0);
   const { scrollYProgress } = useScroll();
   
   // Параллакс эффект для мобильных
@@ -42,6 +43,24 @@ const Services = () => {
     
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
+
+  // Отслеживание скролла для dots-индикатора
+  useEffect(() => {
+    if (!isMobile) return;
+    
+    const cardsContainer = document.querySelector(`.${styles.cards}`);
+    if (!cardsContainer) return;
+    
+    const handleScroll = () => {
+      const scrollLeft = cardsContainer.scrollLeft;
+      const cardWidth = 280 + 20; // ширина карточки + отступ
+      const newSlide = Math.round(scrollLeft / cardWidth);
+      setCurrentSlide(newSlide);
+    };
+    
+    cardsContainer.addEventListener('scroll', handleScroll);
+    return () => cardsContainer.removeEventListener('scroll', handleScroll);
+  }, [isMobile]);
 
   // Варианты анимации для одновременного появления
   const cardVariants = {
@@ -86,6 +105,18 @@ const Services = () => {
             </motion.div>
           ))}
         </div>
+        
+        {/* Dots-индикатор для мобильных */}
+        {isMobile && (
+          <div className={styles.dotsIndicator}>
+            {services.map((_, index) => (
+              <div
+                key={index}
+                className={`${styles.dot} ${index === currentSlide ? styles.activeDot : ''}`}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </motion.section>
   );

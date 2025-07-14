@@ -369,7 +369,7 @@ const CallToAction = () => {
                                     <div className={styles.resultHeader}>
                                         <svg width="36" height="36" viewBox="0 0 24 24" fill="none"
                                              xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M12 1V23M5 12H19" stroke="#1E40AF" strokeWidth="2"
+                                            <path d="M20 6L9 17L4 12" stroke="#1E40AF" strokeWidth="2"
                                                   strokeLinecap="round" strokeLinejoin="round"/>
                                         </svg>
                                         <div>
