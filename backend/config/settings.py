@@ -265,6 +265,7 @@ MAX_UPLOAD_SIZE = 50 * 1024 * 1024  # 50MB
 # SMS и Telegram
 EXOLVE_API_KEY = os.getenv("EXOLVE_API_KEY", "")
 EXOLVE_SENDER_NAME = os.getenv("EXOLVE_SENDER_NAME", "RealtyBot")
+EXOLVE_URL = os.getenv("EXOLVE_URL", "https://api.exolve.ru/v1/sms/send")
 BOT_TOKEN = os.getenv('BOT_TOKEN', '')
 WEBHOOK_URL = os.getenv('WEBHOOK_URL', '')
 WEBHOOK_TOKEN = os.getenv('WEBHOOK_TOKEN', '')

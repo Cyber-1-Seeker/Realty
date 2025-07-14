@@ -6,6 +6,7 @@ from .models import CustomUser, PhoneConfirmation
 import random
 import uuid
 import time
+from .utils import send_sms_exolve
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -72,14 +73,12 @@ class PhoneConfirmationRequestSerializer(serializers.Serializer):
             first_name=validated_data["first_name"],
         )
 
-        # Отправка SMS
-        import requests
-        requests.get("https://sms.ru/sms/send", params={
-            "api_id": "ТВОЙ_API_КЛЮЧ",
-            "to": phone,
-            "msg": f"Код подтверждения: {code}",
-            "json": 1
-        })
+        # Отправка SMS через Exolve
+        try:
+            send_sms_exolve(phone, f"Код подтверждения: {code}")
+        except Exception as e:
+            print(f"Ошибка отправки SMS: {e}")
+            raise ValidationError("Ошибка отправки SMS. Попробуйте позже.")
 
         # Ставим флаги в кеш
         cache.set(phone_minute_key, True, timeout=60)  # 1 минута
