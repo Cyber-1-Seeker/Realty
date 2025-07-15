@@ -339,3 +339,73 @@
         height: 300px;
     }
 }
+
+.embla {
+  position: relative;
+  width: 100%;
+  margin: 0 auto;
+  overflow: visible;
+}
+.emblaViewport {
+  overflow: hidden;
+  width: 100%;
+}
+.emblaContainer {
+  display: flex;
+  gap: 30px;
+}
+.emblaSlide {
+  flex: 0 0 280px;
+  min-width: 0;
+  scroll-snap-align: start;
+}
+.emblaArrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  background: #fff;
+  border: 1px solid #1e3a8a;
+  color: #1e3a8a;
+  font-size: 2rem;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(30,58,138,0.08);
+  opacity: 0.95;
+  transition: background 0.2s;
+  user-select: none;
+}
+.emblaPrev {
+  left: 0;
+}
+.emblaNext {
+  right: 0;
+}
+@media (max-width: 768px) {
+  .emblaViewport {
+    overflow: visible;
+  }
+  .emblaContainer {
+    align-items: stretch;
+  }
+  .emblaSlide {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    min-height: 320px;
+  }
+  .stepCard {
+    min-height: 320px;
+    height: auto;
+    padding-bottom: 30px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+}

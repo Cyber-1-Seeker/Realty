@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import styles from './Services.module.css';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion } from 'framer-motion';
+import useEmblaCarousel from 'embla-carousel-react';
 
 const services = [
   {
@@ -28,45 +29,43 @@ const services = [
 const Services = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
-  const { scrollYProgress } = useScroll();
-  
-  // Параллакс эффект для мобильных
-  const y = useTransform(scrollYProgress, [0, 1], [0, -50]);
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    loop: false,
+    align: 'start',
+    skipSnaps: false,
+    dragFree: false,
+    slidesToScroll: 1,
+    containScroll: 'trimSnaps',
+    speed: 8,
+  });
 
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth <= 768);
     };
-    
     checkMobile();
     window.addEventListener('resize', checkMobile);
-    
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Отслеживание скролла для dots-индикатора
-  useEffect(() => {
-    if (!isMobile) return;
-    
-    const cardsContainer = document.querySelector(`.${styles.cards}`);
-    if (!cardsContainer) return;
-    
-    const handleScroll = () => {
-      const scrollLeft = cardsContainer.scrollLeft;
-      const cardWidth = 280 + 20; // ширина карточки + отступ
-      const newSlide = Math.round(scrollLeft / cardWidth);
-      setCurrentSlide(newSlide);
-    };
-    
-    cardsContainer.addEventListener('scroll', handleScroll);
-    return () => cardsContainer.removeEventListener('scroll', handleScroll);
-  }, [isMobile]);
+  // Dots индикатор
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return;
+    setCurrentSlide(emblaApi.selectedScrollSnap());
+  }, [emblaApi]);
 
-  // Варианты анимации для одновременного появления
-  const cardVariants = {
-    hidden: { opacity: 0, y: isMobile ? 40 : 50 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } }
-  };
+  useEffect(() => {
+    if (!emblaApi) return;
+    emblaApi.on('select', onSelect);
+    onSelect();
+    return () => {
+      emblaApi.off('select', onSelect);
+    };
+  }, [emblaApi, onSelect]);
+
+  // Стрелки (по желанию)
+  const scrollPrev = useCallback(() => emblaApi && emblaApi.scrollPrev(), [emblaApi]);
+  const scrollNext = useCallback(() => emblaApi && emblaApi.scrollNext(), [emblaApi]);
 
   return (
     <motion.section
@@ -78,34 +77,59 @@ const Services = () => {
     >
       <div className={styles.servicesBox}>
         <h2>Наши услуги</h2>
-        <div className={styles.cards}>
-          {services.map((s, i) => (
-            <motion.div 
-              key={i} 
-              className={styles.card}
-              variants={cardVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.3 }}
-              whileHover={isMobile ? {} : { 
-                y: -8,
-                transition: { duration: 0.3 }
-              }}
-              style={isMobile ? { y } : {}}
-            >
-              <motion.img 
-                src={s.img} 
-                alt={s.title} 
-                className={styles.icon}
-                whileHover={isMobile ? { scale: 1.1 } : {}}
-                transition={{ duration: 0.3 }}
-              />
-              <h3>{s.title}</h3>
-              <p>{s.description}</p>
-            </motion.div>
-          ))}
-        </div>
-        
+        {isMobile ? (
+          <div className={styles.embla}>
+            <div className={styles.emblaViewport} ref={emblaRef}>
+              <div className={styles.emblaContainer}>
+                {services.map((s, i) => (
+                  <motion.div
+                    key={i}
+                    className={styles.card + ' ' + styles.emblaSlide}
+                    initial={{ opacity: 0, y: 40 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.3 }}
+                  >
+                    <motion.img
+                      src={s.img}
+                      alt={s.title}
+                      className={styles.icon}
+                      whileHover={{ scale: 1.1 }}
+                      transition={{ duration: 0.3 }}
+                    />
+                    <h3>{s.title}</h3>
+                    <p>{s.description}</p>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className={styles.cards}>
+            {services.map((s, i) => (
+              <motion.div
+                key={i}
+                className={styles.card}
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                whileHover={{
+                  y: -8,
+                  transition: { duration: 0.3 }
+                }}
+              >
+                <motion.img
+                  src={s.img}
+                  alt={s.title}
+                  className={styles.icon}
+                  whileHover={{ scale: 1.1 }}
+                  transition={{ duration: 0.3 }}
+                />
+                <h3>{s.title}</h3>
+                <p>{s.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        )}
         {/* Dots-индикатор для мобильных */}
         {isMobile && (
           <div className={styles.dotsIndicator}>
@@ -113,6 +137,7 @@ const Services = () => {
               <div
                 key={index}
                 className={`${styles.dot} ${index === currentSlide ? styles.activeDot : ''}`}
+                onClick={() => emblaApi && emblaApi.scrollTo(index)}
               />
             ))}
           </div>

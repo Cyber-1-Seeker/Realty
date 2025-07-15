@@ -1,10 +1,27 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion'; // 👈 добавить импорт
 import { YMaps, Map, Placemark } from '@pbe/react-yandex-maps';
 import styles from './MapSection.module.css';
 
+const isMobileDevice = () => {
+  if (typeof navigator === 'undefined') return false;
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+};
+
 const MapSection = () => {
   const coordinates = [55.751817, 37.599292];
+  const [isMapInteractive, setIsMapInteractive] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    // Проверяем user agent на мобильное устройство
+    const checkMobile = () => setIsMobile(isMobileDevice());
+    checkMobile();
+    // Можно добавить resize, если нужно, но user agent важнее
+  }, []);
+
+  // Для мобильных: интерактивность по кнопке, для десктопа всегда интерактивна
+  const mapBehaviors = isMobile ? (isMapInteractive ? ['default'] : []) : ['default'];
 
   return (
     <motion.section
@@ -23,13 +40,14 @@ const MapSection = () => {
         <p><strong>Telegram:</strong> <a href="https://t.me/youruser">@youruser</a></p>
       </div>
 
-      <div className={styles.mapContainer}>
+      <div className={styles.mapContainer} style={{ position: 'relative' }}>
         <YMaps>
           <Map
             defaultState={{ center: coordinates, zoom: 16 }}
             width="100%"
             height="400px"
             modules={['geoObject.addon.balloon', 'geoObject.addon.hint']}
+            options={{ behaviors: mapBehaviors }}
           >
             <Placemark
               geometry={coordinates}
@@ -46,6 +64,54 @@ const MapSection = () => {
             />
           </Map>
         </YMaps>
+        {isMobile && !isMapInteractive && (
+          <button
+            className={styles.activateMapBtn}
+            onClick={() => setIsMapInteractive(true)}
+            style={{
+              position: 'absolute',
+              bottom: 16,
+              right: 16,
+              zIndex: 2,
+              padding: '10px 18px',
+              borderRadius: '8px',
+              background: '#fff',
+              border: '1px solid #1e3a8a',
+              color: '#1e3a8a',
+              fontWeight: 600,
+              boxShadow: '0 2px 8px rgba(30,58,138,0.08)',
+              cursor: 'pointer',
+              opacity: 0.95,
+              transition: 'background 0.2s',
+            }}
+          >
+            Активировать карту
+          </button>
+        )}
+        {isMobile && isMapInteractive && (
+          <button
+            className={styles.activateMapBtn}
+            onClick={() => setIsMapInteractive(false)}
+            style={{
+              position: 'absolute',
+              bottom: 16,
+              right: 16,
+              zIndex: 2,
+              padding: '10px 18px',
+              borderRadius: '8px',
+              background: '#fff',
+              border: '1px solid #1e3a8a',
+              color: '#1e3a8a',
+              fontWeight: 600,
+              boxShadow: '0 2px 8px rgba(30,58,138,0.08)',
+              cursor: 'pointer',
+              opacity: 0.95,
+              transition: 'background 0.2s',
+            }}
+          >
+            Заблокировать карту
+          </button>
+        )}
       </div>
     </motion.section>
   );

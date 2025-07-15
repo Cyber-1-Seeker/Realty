@@ -14,11 +14,11 @@ import { API_URL } from '@/utils/config';
 
 const ListingsPage = ({isAuthenticated, currentUser}) => { // Добавляем currentUser в пропсы
     const [listings, setListings] = useState([]);
-    const [visibleCount, setVisibleCount] = useState(6);
+    // const [visibleCount, setVisibleCount] = useState(6); // Отключаем пагинацию
     const [showAddForm, setShowAddForm] = useState(false);
     const [showUrgentForm, setShowUrgentForm] = useState(false);
     const [showAuthModal, setShowAuthModal] = useState(false);
-    const CHUNK_SIZE = 12;
+    // const CHUNK_SIZE = 12;
 
     useEffect(() => {
         fetchListings();
@@ -33,31 +33,9 @@ const ListingsPage = ({isAuthenticated, currentUser}) => { // Добавляем
 
     const guard = useAuthGuard(isAuthenticated, () => setShowAuthModal(true));
 
-    const remainingListings = listings.slice(0, visibleCount);
-    const hasMore = listings.length > visibleCount;
-
-    const handleShowMore = () => {
-        // Добавляем анимацию прокрутки к новым карточкам
-        setVisibleCount((prev) => {
-            const newCount = prev + CHUNK_SIZE;
-            
-            // Прокручиваем к новым карточкам через небольшую задержку
-            setTimeout(() => {
-                const newCards = document.querySelectorAll('.card');
-                if (newCards.length > prev) {
-                    const firstNewCard = newCards[prev];
-                    if (firstNewCard) {
-                        firstNewCard.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'center'
-                        });
-                    }
-                }
-            }, 100);
-            
-            return newCount;
-        });
-    };
+    // const remainingListings = listings.slice(0, visibleCount);
+    // const hasMore = listings.length > visibleCount;
+    // const handleShowMore = () => { ... } // Отключаем функцию
 
     const handleAddSuccess = () => {
         setShowAddForm(false); // Просто закрываем форму
@@ -74,8 +52,9 @@ const ListingsPage = ({isAuthenticated, currentUser}) => { // Добавляем
             />
 
             <div className={styles.container}>
-                <ListingGridSection listings={remainingListings}/>
+                <ListingGridSection listings={listings}/>
 
+                {/*
                 {hasMore && (
                     <div className={styles.showMoreWrapper}>
                         <button className={styles.showMoreButton} onClick={handleShowMore}>
@@ -83,6 +62,7 @@ const ListingsPage = ({isAuthenticated, currentUser}) => { // Добавляем
                         </button>
                     </div>
                 )}
+                */}
             </div>
 
             {/* Модалки */}

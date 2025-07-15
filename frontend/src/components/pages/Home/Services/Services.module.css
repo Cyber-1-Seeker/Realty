@@ -88,25 +88,9 @@
     }
 
     .cards {
-        grid-template-columns: 1fr;
-        gap: 20px;
-        max-width: 100%;
-        margin: 0 auto;
-        /* Добавляем горизонтальный скролл для мобильных */
         display: flex;
-        overflow-x: auto;
-        overflow-y: hidden;
-        scroll-snap-type: x mandatory;
-        scrollbar-width: none; /* Firefox */
-        -ms-overflow-style: none; /* IE and Edge */
-        padding: 10px 0;
-        /* Скрываем частично видимые карточки */
-        mask-image: linear-gradient(to right, black 0%, black 85%, transparent 100%);
-        -webkit-mask-image: linear-gradient(to right, black 0%, black 85%, transparent 100%);
-    }
-
-    .cards::-webkit-scrollbar {
-        display: none; /* Chrome, Safari, Opera */
+        flex-direction: column;
+        gap: 20px;
     }
 
     .card {
@@ -279,4 +263,62 @@
         width: 6px;
         height: 6px;
     }
+}
+
+.embla {
+  position: relative;
+  width: 100%;
+  margin: 0 auto;
+  overflow: visible;
+}
+.emblaViewport {
+  overflow: hidden;
+  width: 100%;
+}
+.emblaContainer {
+  display: flex;
+  gap: 20px;
+}
+.emblaSlide {
+  flex: 0 0 280px;
+  min-width: 0;
+  scroll-snap-align: start;
+}
+.emblaArrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  background: #fff;
+  border: 1px solid #1e3a8a;
+  color: #1e3a8a;
+  font-size: 2rem;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(30,58,138,0.08);
+  opacity: 0.95;
+  transition: background 0.2s;
+  user-select: none;
+}
+.emblaPrev {
+  left: 0;
+}
+.emblaNext {
+  right: 0;
+}
+@media (max-width: 768px) {
+  .emblaSlide {
+    flex: 0 0 80vw;
+    max-width: 320px;
+  }
+  .emblaArrow {
+    width: 36px;
+    height: 36px;
+    font-size: 1.5rem;
+  }
 }
