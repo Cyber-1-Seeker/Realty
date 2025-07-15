@@ -1,3 +1,4 @@
+import re
 import requests
 from django.conf import settings
 
@@ -11,9 +12,19 @@ def send_sms_exolve(phone, message):
         'Authorization': f'Bearer {api_key}',
         'Content-Type': 'application/json',
     }
+    # Приводим номер к формату 79XXXXXXXXX
+    phone_digits = re.sub(r'\D', '', phone)
+    if phone_digits.startswith('8'):
+        phone_digits = '7' + phone_digits[1:]
+    if phone_digits.startswith('7') and len(phone_digits) == 11:
+        pass
+    elif phone_digits.startswith('9') and len(phone_digits) == 10:
+        phone_digits = '7' + phone_digits
+    else:
+        raise ValueError('Номер телефона должен быть в формате 79XXXXXXXXX')
     data = {
-        'number': sender,         # имя отправителя (альфа-имя)
-        'destination': phone,     # номер получателя (без +)
+        'number': sender,
+        'destination': phone_digits,
         'text': message,
     }
     response = requests.post(url, json=data, headers=headers, timeout=10)
