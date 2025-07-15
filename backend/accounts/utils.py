@@ -2,10 +2,7 @@ import requests
 from django.conf import settings
 
 def send_sms_exolve(phone, message):
-    """
-    Отправка SMS через Exolve МТС API.
-    """
-    url = getattr(settings, 'EXOLVE_URL', 'https://api.exolve.ru/v1/sms/send')
+    url = getattr(settings, 'EXOLVE_URL', 'https://api.exolve.ru/messaging/v1/SendSMS')
     api_key = getattr(settings, 'EXOLVE_API_KEY', None)
     sender = getattr(settings, 'EXOLVE_SENDER_NAME', 'RealtyBot')
     if not api_key:
@@ -15,10 +12,14 @@ def send_sms_exolve(phone, message):
         'Content-Type': 'application/json',
     }
     data = {
-        'to': phone,
+        'number': sender,         # имя отправителя (альфа-имя)
+        'destination': phone,     # номер получателя (без +)
         'text': message,
-        'from': sender,
     }
     response = requests.post(url, json=data, headers=headers, timeout=10)
-    response.raise_for_status()
+    try:
+        response.raise_for_status()
+    except requests.HTTPError:
+        print("Exolve response:", response.text)
+        raise
     return response.json() 
