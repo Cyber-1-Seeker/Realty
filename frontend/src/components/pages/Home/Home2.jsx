@@ -8,7 +8,8 @@ const Home2 = () => {
         <div
             className={styles.altBgWrapper}
             style={{
-                background: `url(${altBg}) center center/cover no-repeat`,
+                // background: `url(${altBg}) center center/cover no-repeat`,
+                backgroundColor: 'white',
                 minHeight: '100vh',
                 width: '100vw',
                 position: 'fixed',
@@ -33,6 +34,11 @@ const Home2 = () => {
 
                 {/* Hero-секция */}
                 <section className={styles.heroSection}>
+                    <div className={styles.bgDotRed}></div>
+                    <div className={styles.bgDotGreen}></div>
+                    <div className={styles.bgDotBlue}></div>
+                    <div className={styles.bgLineRight}></div>
+                    <div className={styles.bgLineLeft}></div>
                     <div className={styles.heroTextBlock}>
                         <span className={styles.heroSubtitle}>Платформа для поиска недвижимости</span>
                         <h1 className={styles.heroTitle}>Найдите дом своей мечты</h1>
