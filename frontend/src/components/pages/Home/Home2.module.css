@@ -404,3 +404,78 @@
     opacity: 0;
     animation: fadeInUp 0.7s ease 1.2s both;
 } 
+
+.dark {
+    background-color: #181a1b !important;
+}
+.dark .pageWrapper {
+    background: none;
+}
+.dark .header,
+.dark .heroSection {
+    background: transparent;
+}
+.dark .heroTitle, .dark .heroSubtitle, .dark .navMenu a, .dark .logo, .dark .filterCard label {
+    color: #f3f1ec !important;
+}
+.dark .filterCard {
+    background: #23272b;
+    border: 1.5px solid #333;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+}
+.dark .filterCard:hover, .dark .filterCard input:checked + label {
+    border: 1.5px solid #2563eb;
+}
+.dark .searchForm {
+    background: #23272b;
+    box-shadow: 0 4px 32px rgba(0,0,0,0.25);
+}
+.dark .input {
+    background: #23272b;
+    color: #f3f1ec;
+    border: 1.5px solid #333;
+}
+.dark .input:focus {
+    border: 1.5px solid #2563eb;
+}
+.dark .requestBtn {
+    background: #15803d;
+    color: #fff;
+}
+.dark .requestBtn:hover {
+    background: #22c55e;
+}
+.dark .contactBtn {
+    background: #2563eb;
+    color: #fff;
+}
+.dark .contactBtn:hover {
+    background: #1d4ed8;
+}
+.dark .bgDotRed {
+    background: radial-gradient(circle, #ff6b6b 60%, transparent 100%);
+}
+.dark .bgDotGreen {
+    background: radial-gradient(circle, #22e57e 60%, transparent 100%);
+}
+.dark .bgDotBlue {
+    background: radial-gradient(circle, #60a5fa 60%, transparent 100%);
+}
+.dark .bgLineRight {
+    background: linear-gradient(90deg, #60a5fa 60%, transparent 100%);
+}
+.dark .bgLineLeft {
+    background: linear-gradient(90deg, #ff6b6b 60%, transparent 100%);
+}
+.themeToggleBtn {
+    margin-left: 24px;
+    background: none;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    color: #2563eb;
+    transition: color 0.2s;
+}
+.dark .themeToggleBtn {
+    color: #f3f1ec;
+} 

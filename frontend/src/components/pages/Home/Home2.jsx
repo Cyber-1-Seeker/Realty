@@ -1,21 +1,37 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './Home2.module.css';
 import heroImg from '@/assets/Listings/Hero3.png';
 import altBg from '@/assets/Listings/alt-background.jpg'; // Путь к твоему фоновому изображению
 
 const Home2 = () => {
+    const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light');
+
+    const toggleTheme = () => {
+        const newTheme = theme === 'light' ? 'dark' : 'light';
+        setTheme(newTheme);
+        localStorage.setItem('theme', newTheme);
+    };
+
+    useEffect(() => {
+        const storedTheme = localStorage.getItem('theme');
+        if (storedTheme && storedTheme !== theme) {
+            setTheme(storedTheme);
+        }
+    }, []);
+
     return (
         <div
-            className={styles.altBgWrapper}
+            className={styles.altBgWrapper + (theme === 'dark' ? ' ' + styles.dark : '')}
             style={{
                 // background: `url(${altBg}) center center/cover no-repeat`,
-                backgroundColor: 'white',
+                backgroundColor: theme === 'dark' ? '#181a1b' : 'white',
                 minHeight: '100vh',
                 width: '100vw',
                 position: 'fixed',
                 inset: 0,
                 zIndex: 0,
-                overflowY: 'auto'
+                overflowY: 'auto',
+                overflowX: 'hidden',
             }}
         >
             <div className={styles.pageWrapper}>
@@ -30,6 +46,9 @@ const Home2 = () => {
                         <a href="/listings" className={styles.dropdown}>Property Listing</a>
                     </nav>
                     <button className={styles.contactBtn}>Contact us</button>
+                    <button className={styles.themeToggleBtn} onClick={toggleTheme} aria-label="Переключить тему">
+                        {theme === 'dark' ? '🌙' : '☀️'}
+                    </button>
                 </header>
 
                 {/* Hero-секция */}
