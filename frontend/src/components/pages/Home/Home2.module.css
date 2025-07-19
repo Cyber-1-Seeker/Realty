@@ -467,15 +467,91 @@
 .dark .bgLineLeft {
     background: linear-gradient(90deg, #ff6b6b 60%, transparent 100%);
 }
-.themeToggleBtn {
+.themeToggle {
     margin-left: 24px;
     background: none;
     border: none;
-    font-size: 2rem;
     cursor: pointer;
-    color: #2563eb;
-    transition: color 0.2s;
+    padding: 8px;
+    border-radius: 50%;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
-.dark .themeToggleBtn {
-    color: #f3f1ec;
+
+.themeToggle:hover {
+    background-color: rgba(37, 99, 235, 0.1);
+    transform: scale(1.05);
+}
+
+.themeToggle img {
+    width: 39px;
+    height: 39px;
+    transition: transform 0.3s ease;
+}
+
+.themeIcon {
+    transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Эффект "нажатия" для лунной иконки */
+.themeIcon:hover {
+    transform: scale(1.15, 1.05);
+}
+
+/* Поворот для солнечной иконки */
+.themeToggle:hover .themeIcon[src*="sun-icon"] {
+    transform: rotate(180deg) scale(1.1);
+}
+
+.dark .themeToggle:hover {
+    background-color: rgba(243, 241, 236, 0.1);
+} 
+
+.starsWrapper {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+}
+.star {
+    position: absolute;
+    width: 2.5px;
+    height: 2.5px;
+    border-radius: 50%;
+    background: #fffbe6;
+    opacity: 0;
+    transition: opacity 1s cubic-bezier(.77,0,.18,1);
+    animation: starTwinkle 2.5s infinite alternate;
+}
+.starsVisible .star {
+    opacity: 1;
+    transition: opacity 1.2s cubic-bezier(.77,0,.18,1);
+}
+@keyframes starAppear {
+    from { opacity: 0; transform: scale(0.2);}
+    to   { opacity: 1; transform: scale(1);}
+}
+@keyframes starTwinkle {
+    from { opacity: 1;}
+    to   { opacity: 0.5;}
+} 
+
+.altBgWrapper,
+.header,
+.heroSection,
+.filterCard,
+.searchForm,
+.input,
+.requestBtn,
+.contactBtn {
+    transition: background 1.2s cubic-bezier(.77,0,.18,1), color 1.2s cubic-bezier(.77,0,.18,1), border-color 1.2s cubic-bezier(.77,0,.18,1), box-shadow 1.2s cubic-bezier(.77,0,.18,1);
+}
+.bgDotRed,
+.bgDotGreen,
+.bgDotBlue,
+.bgLineRight,
+.bgLineLeft {
+    transition: background 1.2s cubic-bezier(.77,0,.18,1);
 } 

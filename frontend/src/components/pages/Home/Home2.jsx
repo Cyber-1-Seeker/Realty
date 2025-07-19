@@ -21,7 +21,9 @@ const Home2 = () => {
 
     return (
         <div
-            className={styles.altBgWrapper + (theme === 'dark' ? ' ' + styles.dark : '')}
+            className={
+                styles.altBgWrapper + (theme === 'dark' ? ' ' + styles.dark : '')
+            }
             style={{
                 // background: `url(${altBg}) center center/cover no-repeat`,
                 backgroundColor: theme === 'dark' ? '#181a1b' : 'white',
@@ -34,6 +36,19 @@ const Home2 = () => {
                 overflowX: 'hidden',
             }}
         >
+            <div className={styles.starsWrapper + (theme === 'dark' ? ' ' + styles.starsVisible : '')}>
+                {[...Array(30)].map((_, i) => (
+                    <div
+                        key={i}
+                        className={styles.star}
+                        style={{
+                            top: `${Math.random() * 80 + 5}%`,
+                            left: `${Math.random() * 90 + 2}%`,
+                            animationDelay: `${Math.random() * 2}s`
+                        }}
+                    />
+                ))}
+            </div>
             <div className={styles.pageWrapper}>
                 {/* Хедер */}
                 <header className={styles.header}>
@@ -46,8 +61,18 @@ const Home2 = () => {
                         <a href="/listings" className={styles.dropdown}>Property Listing</a>
                     </nav>
                     <button className={styles.contactBtn}>Contact us</button>
-                    <button className={styles.themeToggleBtn} onClick={toggleTheme} aria-label="Переключить тему">
-                        {theme === 'dark' ? '🌙' : '☀️'}
+                    <button 
+                      className={styles.themeToggle} 
+                      onClick={toggleTheme}
+                      aria-label={theme === 'light' ? 'Переключить на тёмную тему' : 'Переключить на светлую тему'}
+                    >
+                      <img 
+                        src={theme === 'light' ? '/icons/Home/sun-icon.png': '/icons/Home/moon-icon.png'} 
+                        alt={theme === 'light' ? 'Луна' : 'Солнце'}
+                        width={theme === 'light' ? '44' : '39'}
+                        height={theme === 'light' ? '44' : '39'}
+                        className={styles.themeIcon}
+                      />
                     </button>
                 </header>
 
