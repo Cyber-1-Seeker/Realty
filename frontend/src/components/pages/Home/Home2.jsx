@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from './Home2.module.css';
-import heroImg from '@/assets/Listings/Hero3.png';
+import heroImg from '@/assets/Listings/Hero4.png';
 import altBg from '@/assets/Listings/alt-background.jpg'; // Путь к твоему фоновому изображению
 
 const Home2 = () => {
