@@ -11,7 +11,7 @@ import AdminLayout from "@/components/pages/AdminPanel/AdminLayout.jsx";
 import ListingDetails from "@/components/pages/Listings/ListingDetails.jsx";
 import Support from "@/components/pages/Support/Support.jsx";
 import Privacy from "@/components/pages/Privacy/Privacy.jsx";
-import Home2 from "./components/pages/Home/Home2.jsx";
+import Home2 from "./components/pages/Home2/Home2.jsx";
 
 // Используем напрямую переменную окружения
 const API_URL = import.meta.env.VITE_API_BASE_URL;

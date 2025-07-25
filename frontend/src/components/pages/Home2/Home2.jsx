@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import styles from './Home2.module.css';
 import heroImg from '@/assets/Listings/Hero4.png';
-import altBg from '@/assets/Listings/alt-background.jpg'; // Путь к твоему фоновому изображению
+import altBg from '@/assets/Listings/alt-background.jpg';
+import DealTimelinePage from "@/components/pages/Home2/DealTimelinePage.jsx";
+import WhyChooseUs from "@/components/pages/Home2/WhyChooseUs.jsx";
+import AboutUsSection from "@/components/pages/Home2/AboutUsSection.jsx";
+import CalculatorLaunch from "@/components/pages/Home2/CalculatorLaunch.jsx";
 
 const Home2 = () => {
     const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light');
@@ -54,25 +58,25 @@ const Home2 = () => {
                 <header className={styles.header}>
                     <div className={styles.logo}><span>STRACK </span><b>ESTATE</b></div>
                     <nav className={styles.navMenu}>
-                        <a href="/">Home</a>
+                        <a href="/frontend/public">Home</a>
                         <a href="/about">About</a>
                         <a href="#" className={styles.dropdown}>Services</a>
                         <a href="#" className={styles.dropdown}>Pages</a>
                         <a href="/listings" className={styles.dropdown}>Property Listing</a>
                     </nav>
                     <button className={styles.contactBtn}>Contact us</button>
-                    <button 
-                      className={styles.themeToggle} 
-                      onClick={toggleTheme}
-                      aria-label={theme === 'light' ? 'Переключить на тёмную тему' : 'Переключить на светлую тему'}
+                    <button
+                        className={styles.themeToggle}
+                        onClick={toggleTheme}
+                        aria-label={theme === 'light' ? 'Переключить на тёмную тему' : 'Переключить на светлую тему'}
                     >
-                      <img 
-                        src={theme === 'light' ? '/icons/Home/sun-icon.png': '/icons/Home/moon-icon.png'} 
-                        alt={theme === 'light' ? 'Луна' : 'Солнце'}
-                        width={theme === 'light' ? '44' : '39'}
-                        height={theme === 'light' ? '44' : '39'}
-                        className={styles.themeIcon}
-                      />
+                        <img
+                            src={theme === 'light' ? '/icons/Home/sun-icon.png' : '/icons/Home/moon-icon.png'}
+                            alt={theme === 'light' ? 'Луна' : 'Солнце'}
+                            width={theme === 'light' ? '44' : '39'}
+                            height={theme === 'light' ? '44' : '39'}
+                            className={styles.themeIcon}
+                        />
                     </button>
                 </header>
 
@@ -87,9 +91,12 @@ const Home2 = () => {
                         <span className={styles.heroSubtitle}>Платформа для поиска недвижимости</span>
                         <h1 className={styles.heroTitle}>Найдите дом своей мечты</h1>
                         <div className={styles.filterCards}>
-                            <div className={styles.filterCard}><input type="checkbox" id="buy" /><label htmlFor="buy">Купить</label></div>
-                            <div className={styles.filterCard}><input type="checkbox" id="sell" /><label htmlFor="sell">Продать</label></div>
-                            <div className={styles.filterCard}><input type="checkbox" id="rent" /><label htmlFor="rent">Арендовать</label></div>
+                            <div className={styles.filterCard}><input type="checkbox" id="buy"/><label
+                                htmlFor="buy">Купить</label></div>
+                            <div className={styles.filterCard}><input type="checkbox" id="sell"/><label
+                                htmlFor="sell">Продать</label></div>
+                            <div className={styles.filterCard}><input type="checkbox" id="rent"/><label
+                                htmlFor="rent">Арендовать</label></div>
                         </div>
                         <section className={styles.searchBlock}>
                             <form className={styles.searchForm}>
@@ -103,7 +110,7 @@ const Home2 = () => {
                                     <option>Стандарт</option>
                                     <option>Премиум</option>
                                 </select>
-                                <input className={styles.input} type="text" placeholder="5 000–10 000 $" />
+                                <input className={styles.input} type="text" placeholder="5 000–10 000 $"/>
                                 <button className={styles.requestBtn} type="submit">Запросить информацию</button>
                             </form>
                         </section>
@@ -111,6 +118,18 @@ const Home2 = () => {
                     <div className={styles.heroImgBlock}>
                         <img src={heroImg} alt="Современный дом" className={styles.heroImg}/>
                     </div>
+                </section>
+                <section>
+                    <DealTimelinePage/>
+                </section>
+                <section>
+                    <AboutUsSection/>
+                </section>
+                <section>
+                    <WhyChooseUs/>
+                </section>
+                <section>
+                    <CalculatorLaunch/>
                 </section>
             </div>
         </div>
