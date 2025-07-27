@@ -1,27 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import styles from './Home2.module.css';
 import heroImg from '@/assets/Listings/Hero4.png';
-import altBg from '@/assets/Listings/alt-background.jpg';
 import DealTimelinePage from "@/components/pages/Home2/DealTimelinePage.jsx";
 import WhyChooseUs from "@/components/pages/Home2/WhyChooseUs.jsx";
 import AboutUsSection from "@/components/pages/Home2/AboutUsSection.jsx";
 import CalculatorLaunch from "@/components/pages/Home2/CalculatorLaunch.jsx";
+import {useTheme} from '@/context/ThemeContext';
+import StatisticsSection from "@/components/pages/Home2/StatisticsSection.jsx";
 
 const Home2 = () => {
-    const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light');
-
-    const toggleTheme = () => {
-        const newTheme = theme === 'light' ? 'dark' : 'light';
-        setTheme(newTheme);
-        localStorage.setItem('theme', newTheme);
-    };
-
-    useEffect(() => {
-        const storedTheme = localStorage.getItem('theme');
-        if (storedTheme && storedTheme !== theme) {
-            setTheme(storedTheme);
-        }
-    }, []);
+    const {theme, toggleTheme} = useTheme();
 
     return (
         <div
@@ -29,7 +17,6 @@ const Home2 = () => {
                 styles.altBgWrapper + (theme === 'dark' ? ' ' + styles.dark : '')
             }
             style={{
-                // background: `url(${altBg}) center center/cover no-repeat`,
                 backgroundColor: theme === 'dark' ? '#181a1b' : 'white',
                 minHeight: '100vh',
                 width: '100vw',
@@ -46,19 +33,19 @@ const Home2 = () => {
                         key={i}
                         className={styles.star}
                         style={{
-                            top: `${Math.random() * 80 + 5}%`,
+                            top: `${Math.random() * 80 + 5} %`,
                             left: `${Math.random() * 90 + 2}%`,
                             animationDelay: `${Math.random() * 2}s`
                         }}
                     />
                 ))}
             </div>
+
             <div className={styles.pageWrapper}>
-                {/* Хедер */}
                 <header className={styles.header}>
                     <div className={styles.logo}><span>STRACK </span><b>ESTATE</b></div>
                     <nav className={styles.navMenu}>
-                        <a href="/frontend/public">Home</a>
+                        <a href="/">Home</a>
                         <a href="/about">About</a>
                         <a href="#" className={styles.dropdown}>Services</a>
                         <a href="#" className={styles.dropdown}>Pages</a>
@@ -80,7 +67,6 @@ const Home2 = () => {
                     </button>
                 </header>
 
-                {/* Hero-секция */}
                 <section className={styles.heroSection}>
                     <div className={styles.bgDotRed}></div>
                     <div className={styles.bgDotGreen}></div>
@@ -93,6 +79,7 @@ const Home2 = () => {
                         <div className={styles.filterCards}>
                             <div className={styles.filterCard}><input type="checkbox" id="buy"/><label
                                 htmlFor="buy">Купить</label></div>
+
                             <div className={styles.filterCard}><input type="checkbox" id="sell"/><label
                                 htmlFor="sell">Продать</label></div>
                             <div className={styles.filterCard}><input type="checkbox" id="rent"/><label
@@ -119,21 +106,15 @@ const Home2 = () => {
                         <img src={heroImg} alt="Современный дом" className={styles.heroImg}/>
                     </div>
                 </section>
-                <section>
-                    <DealTimelinePage/>
-                </section>
-                <section>
-                    <AboutUsSection/>
-                </section>
-                <section>
-                    <WhyChooseUs/>
-                </section>
-                <section>
-                    <CalculatorLaunch/>
-                </section>
+
+                <section><DealTimelinePage/></section>
+                <StatisticsSection/>
+                <section><AboutUsSection/></section>
+                <section><WhyChooseUs/></section>
+                <section><CalculatorLaunch/></section>
             </div>
         </div>
     );
 };
 
-export default Home2; 
+export default Home2;
