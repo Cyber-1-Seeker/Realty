@@ -42,18 +42,21 @@
 }
 
 .button {
-  padding: 12px 28px;
-  background-color: #22c55e;
+  padding: 14px 32px;
+  background: linear-gradient(90deg, #22c55e 0%, #0154f7 100%);
   color: white;
   border: none;
   border-radius: 30px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: background 0.3s, transform 0.2s, box-shadow 0.2s;
+  font-size: 1.1rem;
+  box-shadow: 0 2px 12px #0154f722;
 }
-
 .button:hover {
-  background-color: #1da64b;
+  background: linear-gradient(90deg, #0154f7 0%, #22c55e 100%);
+  transform: scale(1.07);
+  box-shadow: 0 4px 24px #0154f733;
 }
 
 .card {
@@ -67,26 +70,89 @@
   padding: 40px;
   min-width: 300px;
   max-width: 450px;
+  animation: fadeInCard 1s cubic-bezier(.77,0,.18,1);
+}
+
+@keyframes fadeInCard {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .statBlock {
   text-align: center;
+  opacity: 0;
+  animation: fadeInStat 0.8s cubic-bezier(.77,0,.18,1) forwards;
+}
+.statBlock:nth-child(1) { animation-delay: 0.2s; }
+.statBlock:nth-child(2) { animation-delay: 0.4s; }
+.statBlock:nth-child(3) { animation-delay: 0.6s; }
+.statBlock:nth-child(4) { animation-delay: 0.8s; }
+
+@keyframes fadeInStat {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.statBlock {
+  transition: box-shadow 0.2s, transform 0.2s;
+  position: relative;
+  z-index: 1;
+}
+.statBlock:hover {
+  box-shadow: 0 8px 32px #0154f733;
+  transform: scale(1.07);
 }
 
 .icon {
   font-size: 36px;
   margin-bottom: 10px;
+  transition: transform 0.3s cubic-bezier(.77,0,.18,1), filter 0.3s;
+}
+.statBlock:hover .icon {
+  transform: translateY(-8px) scale(1.18);
+  filter: drop-shadow(0 2px 8px #22c55e66);
 }
 
 .number {
   font-size: 28px;
   font-weight: 700;
-  color: #0154f7;
+  background: linear-gradient(90deg, #0154f7 0%, #22c55e 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+  transition: text-shadow 0.2s;
+}
+.statBlock:hover .number {
+  text-shadow: 0 2px 16px #22c55e55;
 }
 
-.label {
-  font-size: 14px;
-  color: #666;
+/* Dotted lines between stat blocks */
+.card {
+  position: relative;
+}
+.card::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 2px;
+  height: 100%;
+  background: repeating-linear-gradient(
+    to bottom,
+    #0154f733,
+    #0154f733 8px,
+    transparent 8px,
+    transparent 16px
+  );
+  z-index: 0;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+@media (max-width: 480px) {
+  .card::before {
+    display: none;
+  }
 }
 
 /* Анимационные декоративные элементы */

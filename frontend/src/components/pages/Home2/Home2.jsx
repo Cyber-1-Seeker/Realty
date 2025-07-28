@@ -45,7 +45,7 @@ const Home2 = () => {
                 <header className={styles.header}>
                     <div className={styles.logo}><span>STRACK </span><b>ESTATE</b></div>
                     <nav className={styles.navMenu}>
-                        <a href="/">Home</a>
+                        <a href="/" className={styles.active}>Home</a>
                         <a href="/about">About</a>
                         <a href="#" className={styles.dropdown}>Services</a>
                         <a href="#" className={styles.dropdown}>Pages</a>
@@ -77,13 +77,18 @@ const Home2 = () => {
                         <span className={styles.heroSubtitle}>Платформа для поиска недвижимости</span>
                         <h1 className={styles.heroTitle}>Найдите дом своей мечты</h1>
                         <div className={styles.filterCards}>
-                            <div className={styles.filterCard}><input type="checkbox" id="buy"/><label
-                                htmlFor="buy">Купить</label></div>
-
-                            <div className={styles.filterCard}><input type="checkbox" id="sell"/><label
-                                htmlFor="sell">Продать</label></div>
-                            <div className={styles.filterCard}><input type="checkbox" id="rent"/><label
-                                htmlFor="rent">Арендовать</label></div>
+                            <div className={styles.filterCard}>
+                                <input type="checkbox" id="buy"/>
+                                <label htmlFor="buy">Купить</label>
+                            </div>
+                            <div className={styles.filterCard}>
+                                <input type="checkbox" id="sell"/>
+                                <label htmlFor="sell">Продать</label>
+                            </div>
+                            <div className={styles.filterCard}>
+                                <input type="checkbox" id="rent"/>
+                                <label htmlFor="rent">Арендовать</label>
+                            </div>
                         </div>
                         <section className={styles.searchBlock}>
                             <form className={styles.searchForm}>

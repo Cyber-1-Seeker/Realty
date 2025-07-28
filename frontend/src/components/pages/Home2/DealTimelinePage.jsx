@@ -49,6 +49,8 @@ const DealTimelinePage = () => {
                     <div
                         key={step.id}
                         className={`${styles.timelineItem} ${idx % 2 === 0 ? styles.left : styles.right}`}
+                        onClick={() => {}}
+                        tabIndex={0}
                     >
                         <div className={styles.contentBox}>
                             <div className={styles.headerBox}>

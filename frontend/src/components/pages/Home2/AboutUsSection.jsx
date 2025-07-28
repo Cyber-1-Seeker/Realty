@@ -18,6 +18,12 @@ const features = [
   },
 ];
 
+const facts = [
+  { value: '10+', label: 'лет на рынке' },
+  { value: '500+', label: 'довольных клиентов' },
+  { value: '100%', label: 'юридическая чистота' },
+];
+
 const AboutUsSection = () => {
   return (
     <section className={styles.section}>

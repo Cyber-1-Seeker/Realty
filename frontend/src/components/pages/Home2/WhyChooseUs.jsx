@@ -32,6 +32,7 @@ const WhyChooseUs = () => {
     return (
         <section className={styles.section}>
             <h2 className={styles.heading}>Почему выбирают нас</h2>
+            <div className={styles.subheading}>Наши преимущества</div>
             <div className={styles.grid}>
                 {features.map((item) => (
                     <div key={item.id} className={styles.card}>
