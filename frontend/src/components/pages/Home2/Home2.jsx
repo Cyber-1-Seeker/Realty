@@ -7,6 +7,9 @@ import AboutUsSection from "@/components/pages/Home2/AboutUsSection.jsx";
 import CalculatorLaunch from "@/components/pages/Home2/CalculatorLaunch.jsx";
 import {useTheme} from '@/context/ThemeContext';
 import StatisticsSection from "@/components/pages/Home2/StatisticsSection.jsx";
+import MapSection from "@/components/pages/Home2/MapSection.jsx";
+import Testimonials from "@/components/pages/Home/Testimonials/Testimonials.jsx";
+import Home2Footer from "@/components/pages/Home2/Home2Footer.jsx";
 
 const Home2 = () => {
     const {theme, toggleTheme} = useTheme();
@@ -113,10 +116,14 @@ const Home2 = () => {
                 </section>
 
                 <section><DealTimelinePage/></section>
-                <StatisticsSection/>
+                <section><StatisticsSection/></section>
                 <section><AboutUsSection/></section>
                 <section><WhyChooseUs/></section>
                 <section><CalculatorLaunch/></section>
+                <section><MapSection/></section>
+                <section><Testimonials/></section>
+                {/* Красивый футер */}
+                <section><Home2Footer /></section>
             </div>
         </div>
     );

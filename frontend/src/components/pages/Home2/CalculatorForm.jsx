@@ -89,7 +89,7 @@ const CalculatorForm = () => {
                 whileHover={{scale: 1.05}}
                 whileTap={{scale: 0.95}}
             >
-                Открыть калькулятор
+                Рассчитать стоимость
             </motion.button>
 
             {isModalOpen && (

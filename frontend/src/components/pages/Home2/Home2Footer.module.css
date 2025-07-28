@@ -1,0 +1,301 @@
+.footer {
+    position: relative;
+    background: linear-gradient(135deg, #1a2b5a 0%, #2c63ff 50%, #3b82f6 100%);
+    color: white;
+    padding: 80px 0 0 0;
+    margin-top: 100px;
+    overflow: hidden;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    position: relative;
+    z-index: 2;
+}
+
+.content {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1.5fr;
+    gap: 60px;
+    margin-bottom: 60px;
+}
+
+/* Секция с логотипом */
+.logoSection {
+    max-width: 350px;
+}
+
+.logo {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+}
+
+.logo span {
+    color: #60a5fa;
+}
+
+.logo strong {
+    color: white;
+}
+
+.description {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 30px;
+}
+
+.socialLinks {
+    display: flex;
+    gap: 15px;
+}
+
+.socialLink {
+    width: 44px;
+    height: 44px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.socialLink:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* Секции со ссылками */
+.linksSection h4,
+.contactSection h4 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 25px;
+    color: white;
+}
+
+.linksSection ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.linksSection li {
+    margin-bottom: 12px;
+}
+
+.linksSection a {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.linksSection a:hover {
+    color: #60a5fa;
+    padding-left: 8px;
+}
+
+.linksSection a::before {
+    content: '';
+    position: absolute;
+    left: -8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 4px;
+    background: #60a5fa;
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.linksSection a:hover::before {
+    opacity: 1;
+}
+
+/* Контактная информация */
+.contactInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.contactItem {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1rem;
+}
+
+.contactItem svg {
+    flex-shrink: 0;
+    color: #60a5fa;
+}
+
+/* Разделитель */
+.divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.3) 50%, transparent 100%);
+    margin: 40px 0;
+}
+
+/* Нижняя часть */
+.bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.copyright p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.95rem;
+}
+
+.legalLinks {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.legalLink {
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: color 0.3s ease;
+}
+
+.legalLink:hover {
+    color: #60a5fa;
+}
+
+.separator {
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: 300;
+}
+
+/* Декоративные элементы */
+.decorativeElements {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.bgDot1,
+.bgDot2,
+.bgDot3 {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+}
+
+.bgDot1 {
+    width: 200px;
+    height: 200px;
+    top: 20%;
+    right: 10%;
+    animation: float 6s ease-in-out infinite;
+}
+
+.bgDot2 {
+    width: 150px;
+    height: 150px;
+    bottom: 30%;
+    left: 5%;
+    animation: float 8s ease-in-out infinite reverse;
+}
+
+.bgDot3 {
+    width: 100px;
+    height: 100px;
+    top: 60%;
+    right: 30%;
+    animation: float 10s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+/* Адаптивность */
+@media (max-width: 1024px) {
+    .content {
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+    }
+    
+    .footer {
+        padding: 60px 0 0 0;
+        margin-top: 80px;
+    }
+}
+
+@media (max-width: 768px) {
+    .content {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+    
+    .bottom {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+    }
+    
+    .legalLinks {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .footer {
+        padding: 50px 0 0 0;
+        margin-top: 60px;
+    }
+    
+    .container {
+        padding: 0 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo {
+        font-size: 1.7rem;
+    }
+    
+    .socialLinks {
+        justify-content: flex-start;
+    }
+    
+    .socialLink {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .footer {
+        padding: 40px 0 0 0;
+        margin-top: 50px;
+    }
+} 
