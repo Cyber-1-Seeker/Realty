@@ -4,7 +4,7 @@ import styles from './CallToAction.module.css';
 import OrderEvaluationForm from "@/components/pages/Home/CallToAction/OrderEvaluationForm.jsx";
 import ModalForm from '@/components/pages/Listings/ListingsPage/ModalForm.jsx';
 
-const CallToAction = () => {
+const CallToAction = ({ onClose }) => {
     const [roomType, setRoomType] = useState('');
     const [area, setArea] = useState('');
     const [buildingType, setBuildingType] = useState('');
@@ -148,6 +148,9 @@ const CallToAction = () => {
                                 setIsModalOpen(false);
                                 setPrice(null);
                                 setError('');
+                                if (onClose) {
+                                    onClose();
+                                }
                             }}
                         >
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
