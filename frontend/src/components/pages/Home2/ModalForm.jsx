@@ -2,12 +2,12 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import styles from './CalculatorLaunch.module.css';
 
-const ModalForm = ({ isOpen, onClose, children }) => {
+const ModalForm = ({ isOpen, onClose, children, theme }) => {
     if (!isOpen) return null;
     return (
-        <div className={styles.modalOverlay} onClick={onClose}>
+        <div className={styles.modalOverlay + (theme === 'dark' ? ' ' + styles.dark : '')} onClick={onClose}>
             <motion.div
-                className={styles.modal}
+                className={styles.modal + (theme === 'dark' ? ' ' + styles.dark : '')}
                 onClick={(e) => e.stopPropagation()}
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}

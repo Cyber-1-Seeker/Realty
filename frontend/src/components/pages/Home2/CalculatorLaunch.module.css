@@ -588,6 +588,222 @@
     background: #94a3b8;
 }
 
+/* =========================== */
+/*       ТЕМНАЯ ТЕМА           */
+/* =========================== */
+
+/* Основная секция */
+.section.dark {
+    background: radial-gradient(circle at center, rgba(35, 75, 139, 0.15) 0%, rgba(15, 23, 42, 0.9) 30%, #0f172a 60%, #111827 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.section.dark::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 450px;
+    height: 450px;
+    background: radial-gradient(circle, rgba(96, 165, 250, 0.08) 0%, rgba(96, 165, 250, 0.04) 40%, transparent 70%);
+    border-radius: 50%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.dark .wrapper {
+    background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+    border: 1px solid rgba(55, 65, 81, 0.8);
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.3);
+}
+
+.dark .heading {
+    color: #f9fafb;
+}
+
+.dark .subtext {
+    color: #d1d5db;
+}
+
+/* Кнопка запуска */
+.dark .button {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    box-shadow: 0 6px 16px rgba(59, 130, 246, 0.3);
+}
+
+.dark .button:hover {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+}
+
+/* Модальное окно */
+.dark .modalOverlay {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.dark .modal {
+    background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+    border: 1px solid rgba(55, 65, 81, 0.8);
+    box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.5);
+}
+
+.dark .closeButton {
+    background: #374151;
+    border: 1px solid rgba(75, 85, 99, 0.8);
+    color: #d1d5db;
+}
+
+.dark .closeButton:hover {
+    background: #4b5563;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.dark .modalIcon {
+    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+    border: 1px solid rgba(30, 64, 175, 0.8);
+}
+
+.dark .modalHeader h3 {
+    color: #f9fafb;
+}
+
+.dark .subtitle {
+    color: #9ca3af;
+}
+
+/* Форма */
+.dark .form {
+    background: #1f2937;
+    border: 1px solid rgba(55, 65, 81, 0.7);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+}
+
+.dark .formGroup label {
+    color: #e5e7eb;
+}
+
+.dark .input,
+.dark .select {
+    background: linear-gradient(135deg, #374151 0%, #4b5563 100%);
+    border: 1px solid rgba(75, 85, 99, 0.5);
+    color: #f9fafb;
+}
+
+.dark .input:focus,
+.dark .select:focus {
+    border-color: #60a5fa;
+    background: #374151;
+    box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.2);
+}
+
+.dark .input::placeholder {
+    color: #9ca3af;
+}
+
+.dark .selectArrow {
+    color: #9ca3af;
+}
+
+/* Чекбокс */
+.dark .checkboxLabel {
+    color: #d1d5db;
+}
+
+.dark .checkboxLabel:before {
+    border: 2px solid #6b7280;
+    background: #374151;
+}
+
+.dark .checkboxInput:checked + .checkboxLabel:before {
+    background: #3b82f6;
+    border-color: #3b82f6;
+}
+
+/* Ошибки */
+.dark .error {
+    background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 100%);
+    border: 1px solid #dc2626;
+    color: #fecaca;
+}
+
+/* Кнопка отправки */
+.dark .submitButton {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    box-shadow: 0 6px 12px -2px rgba(59, 130, 246, 0.4);
+}
+
+.dark .submitButton:hover {
+    box-shadow: 0 10px 20px -3px rgba(59, 130, 246, 0.5);
+}
+
+/* Результат */
+.dark .result {
+    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+    border: 1px solid #3b82f6;
+}
+
+.dark .resultHeader h4 {
+    color: #f9fafb;
+}
+
+.dark .price {
+    color: #60a5fa;
+}
+
+.dark .disclaimer {
+    background: rgba(31, 41, 55, 0.8);
+    border: 1px solid rgba(75, 85, 99, 0.8);
+    color: #d1d5db;
+}
+
+.dark .primaryButton {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    box-shadow: 0 6px 12px -2px rgba(59, 130, 246, 0.4);
+}
+
+.dark .primaryButton:hover {
+    box-shadow: 0 10px 20px -3px rgba(59, 130, 246, 0.5);
+}
+
+.dark .secondaryButton {
+    background: #374151;
+    color: #60a5fa;
+    border: 1px solid #4b5563;
+}
+
+.dark .secondaryButton:hover {
+    background: #4b5563;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Дополнительные стили */
+.dark .successMessage h4 {
+    color: #34d399;
+}
+
+.dark .successMessage p {
+    color: #d1d5db;
+}
+
+.dark .privacyNote {
+    color: #9ca3af;
+}
+
+.dark .privacyNote a {
+    color: #60a5fa;
+}
+
+.dark .privacyNote a:hover {
+    border-bottom: 1px solid #60a5fa;
+}
+
+/* Калькулятор иконка */
+.dark .calculatorSvg {
+    filter: drop-shadow(0 10px 20px rgba(59, 130, 246, 0.3));
+}
+
 /* Дополнительные стили для формы заказа оценки */
 .successMessage {
     text-align: center;
@@ -652,4 +868,14 @@
     width: 100%;
     height: 100%;
     filter: drop-shadow(0 10px 20px rgba(44, 99, 255, 0.2));
+}
+
+/* SVG иконка в форме калькулятора */
+.calculatorSvgIcon path {
+    stroke: #1E40AF;
+    transition: stroke 0.3s ease;
+}
+
+.dark .calculatorSvgIcon path {
+    stroke: #60a5fa;
 }

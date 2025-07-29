@@ -62,4 +62,63 @@
     margin: 20px 0;
 }
 
+/* =========================== */
+/*       ТЕМНАЯ ТЕМА           */
+/* =========================== */
+
+.mapSection.dark {
+    background: radial-gradient(circle at center, rgba(35, 75, 139, 0.15) 0%, rgba(15, 23, 42, 0.9) 30%, #0f172a 60%, #111827 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.mapSection.dark::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(96, 165, 250, 0.09) 0%, rgba(96, 165, 250, 0.04) 40%, transparent 70%);
+    border-radius: 50%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.dark .mapSection::before {
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(15, 23, 42, 0));
+}
+
+.dark .contactBox {
+    background: linear-gradient(145deg, #1f2937, #111827);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.15);
+}
+
+.dark .contactBox h3 {
+    color: #60a5fa;
+}
+
+.dark .contactBox p {
+    color: #cbd5e1;
+}
+
+.dark .contactBox a {
+    color: #60a5fa;
+}
+
+.dark .contactBox a:hover {
+    color: #34d399;
+}
+
+.dark .mapContainer {
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.dark .map {
+    filter: invert(0.9) hue-rotate(180deg) brightness(0.8) contrast(1.1);
+}
+
 

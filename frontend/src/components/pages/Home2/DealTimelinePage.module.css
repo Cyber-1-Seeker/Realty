@@ -1,5 +1,5 @@
 .wrapper {
-    background: linear-gradient(to right, #f3f7fa, #eaf0f6);
+    background: transparent;
     padding: 60px 20px;
     font-family: 'Segoe UI', sans-serif;
     color: #1a2b5a;
@@ -10,6 +10,8 @@
     font-size: 2.75rem;
     color: #2c63ff;
     margin-bottom: 60px;
+    position: relative;
+    z-index: 1;
 }
 
 .timeline {
@@ -17,6 +19,7 @@
     max-width: 1200px;
     margin: 0 auto;
     padding: 40px 0;
+    z-index: 1;
 }
 
 .verticalLine {
@@ -135,5 +138,75 @@
     .circle {
         left: 24px;
         transform: translateY(-50%);
+    }
+}
+
+/* =========================== */
+/*       ТЕМНАЯ ТЕМА           */
+/* =========================== */
+
+.dark .wrapper {
+    background: rgba(24, 26, 27, 0.85);
+    color: #f1f5f9;
+    position: relative;
+    overflow: hidden;
+}
+
+.dark .wrapper::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(96, 165, 250, 0.15) 0%, rgba(96, 165, 250, 0.05) 40%, transparent 70%);
+    border-radius: 50%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.dark .header {
+    color: #60a5fa;
+}
+
+.dark .verticalLine {
+    background: linear-gradient(to bottom, #60a5fa 0%, #34d399 100%);
+}
+
+.dark .contentBox {
+    background: linear-gradient(145deg, #1f2937, #111827);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.dark .contentBox:hover {
+    box-shadow: 0 12px 32px rgba(96, 165, 250, 0.3);
+    border-color: #60a5fa;
+}
+
+.dark .progress {
+    background-color: #34d399;
+    color: #111827;
+}
+
+.dark .circle {
+    background-color: #60a5fa;
+    color: #111827;
+    box-shadow: 0 0 0 6px #0f172a;
+}
+
+.dark .contentBox h2 {
+    color: #f1f5f9;
+}
+
+.dark .contentBox p {
+    color: #cbd5e1;
+}
+
+/* Мобильные стили для темной темы */
+@media screen and (max-width: 768px) {
+    .dark .circle {
+        box-shadow: 0 0 0 6px #0f172a;
     }
 }

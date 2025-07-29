@@ -11,11 +11,11 @@ const stats = [
   { icon: '💚', number: 1576, label: 'Довольных клиентов' }
 ];
 
-const StatisticsSection = () => {
+const StatisticsSection = ({ theme }) => {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.3 });
 
   return (
-    <section className={styles.section} ref={ref}>
+    <section className={styles.section + (theme === 'dark' ? ' ' + styles.dark : '')} ref={ref}>
       <div className={styles.decorLeft} />
       <div className={styles.decorRight} />
       <div className={styles.contentWrapper}>

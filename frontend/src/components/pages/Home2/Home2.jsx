@@ -1,4 +1,5 @@
 import React from 'react';
+import { useInView } from 'react-intersection-observer';
 import styles from './Home2.module.css';
 import heroImg from '@/assets/Listings/Hero4.png';
 import DealTimelinePage from "@/components/pages/Home2/DealTimelinePage.jsx";
@@ -13,6 +14,15 @@ import Home2Footer from "@/components/pages/Home2/Home2Footer.jsx";
 
 const Home2 = () => {
     const {theme, toggleTheme} = useTheme();
+    
+    // Хуки для анимации при скролле
+    const { ref: dealRef, inView: dealInView } = useInView({ triggerOnce: true, threshold: 0.2 });
+    const { ref: aboutRef, inView: aboutInView } = useInView({ triggerOnce: true, threshold: 0.2 });
+    const { ref: whyRef, inView: whyInView } = useInView({ triggerOnce: true, threshold: 0.2 });
+    const { ref: calcRef, inView: calcInView } = useInView({ triggerOnce: true, threshold: 0.2 });
+    const { ref: mapRef, inView: mapInView } = useInView({ triggerOnce: true, threshold: 0.2 });
+    const { ref: testimonialRef, inView: testimonialInView } = useInView({ triggerOnce: true, threshold: 0.2 });
+    const { ref: footerRef, inView: footerInView } = useInView({ triggerOnce: true, threshold: 0.2 });
 
     return (
         <div
@@ -30,47 +40,35 @@ const Home2 = () => {
                 overflowX: 'hidden',
             }}
         >
-            <div className={styles.starsWrapper + (theme === 'dark' ? ' ' + styles.starsVisible : '')}>
-                {[...Array(30)].map((_, i) => (
-                    <div
-                        key={i}
-                        className={styles.star}
-                        style={{
-                            top: `${Math.random() * 80 + 5} %`,
-                            left: `${Math.random() * 90 + 2}%`,
-                            animationDelay: `${Math.random() * 2}s`
-                        }}
-                    />
-                ))}
-            </div>
+
 
             <div className={styles.pageWrapper}>
-                <header className={styles.header}>
-                    <div className={styles.logo}><span>STRACK </span><b>ESTATE</b></div>
-                    <nav className={styles.navMenu}>
-                        <a href="/" className={styles.active}>Home</a>
-                        <a href="/about">About</a>
-                        <a href="#" className={styles.dropdown}>Services</a>
-                        <a href="#" className={styles.dropdown}>Pages</a>
-                        <a href="/listings" className={styles.dropdown}>Property Listing</a>
-                    </nav>
-                    <button className={styles.contactBtn}>Contact us</button>
-                    <button
-                        className={styles.themeToggle}
-                        onClick={toggleTheme}
-                        aria-label={theme === 'light' ? 'Переключить на тёмную тему' : 'Переключить на светлую тему'}
-                    >
-                        <img
-                            src={theme === 'light' ? '/icons/Home/sun-icon.png' : '/icons/Home/moon-icon.png'}
-                            alt={theme === 'light' ? 'Луна' : 'Солнце'}
-                            width={theme === 'light' ? '44' : '39'}
-                            height={theme === 'light' ? '44' : '39'}
-                            className={styles.themeIcon}
-                        />
-                    </button>
-                </header>
+                <div className={styles.headerHeroContainer}>
+                    <header className={styles.header}>
+                        <div className={styles.logo}><span>STRACK </span><b>ESTATE</b></div>
+                        <nav className={styles.navMenu}>
+                            <a href="/" className={styles.active}>Главная</a>
+                            <a href="/about">О нас</a>
+                            <a href="/listings" className={styles.dropdown}>База квартир</a>
+                            <a href="/profile">Профиль</a>
+                        </nav>
+                        <button className={styles.contactBtn}>Связаться с нами</button>
+                        <button
+                            className={styles.themeToggle}
+                            onClick={toggleTheme}
+                            aria-label={theme === 'light' ? 'Переключить на тёмную тему' : 'Переключить на светлую тему'}
+                        >
+                            <img
+                                src={theme === 'light' ? '/icons/Home/sun-icon.png' : '/icons/Home/moon-icon.png'}
+                                alt={theme === 'light' ? 'Луна' : 'Солнце'}
+                                width={theme === 'light' ? '44' : '39'}
+                                height={theme === 'light' ? '44' : '39'}
+                                className={styles.themeIcon}
+                            />
+                        </button>
+                    </header>
 
-                <section className={styles.heroSection}>
+                    <section className={styles.heroSection}>
                     <div className={styles.bgDotRed}></div>
                     <div className={styles.bgDotGreen}></div>
                     <div className={styles.bgDotBlue}></div>
@@ -80,50 +78,56 @@ const Home2 = () => {
                         <span className={styles.heroSubtitle}>Платформа для поиска недвижимости</span>
                         <h1 className={styles.heroTitle}>Найдите дом своей мечты</h1>
                         <div className={styles.filterCards}>
-                            <div className={styles.filterCard}>
-                                <input type="checkbox" id="buy"/>
-                                <label htmlFor="buy">Купить</label>
+                            <div className={styles.filterCard + ' ' + styles.checked}>
+                                <span className={styles.checkIcon}>✓</span>
+                                <span>Купить</span>
                             </div>
-                            <div className={styles.filterCard}>
-                                <input type="checkbox" id="sell"/>
-                                <label htmlFor="sell">Продать</label>
+                            <div className={styles.filterCard + ' ' + styles.checked}>
+                                <span className={styles.checkIcon}>✓</span>
+                                <span>Продать</span>
                             </div>
-                            <div className={styles.filterCard}>
-                                <input type="checkbox" id="rent"/>
-                                <label htmlFor="rent">Арендовать</label>
+                            <div className={styles.filterCard + ' ' + styles.checked}>
+                                <span className={styles.checkIcon}>✓</span>
+                                <span>Арендовать</span>
                             </div>
                         </div>
                         <section className={styles.searchBlock}>
                             <form className={styles.searchForm}>
-                                <select className={styles.input} defaultValue="Москва">
-                                    <option>Москва</option>
-                                    <option>Санкт-Петербург</option>
-                                    <option>Казань</option>
-                                </select>
-                                <select className={styles.input} defaultValue="Делюкс">
-                                    <option>Делюкс</option>
-                                    <option>Стандарт</option>
-                                    <option>Премиум</option>
-                                </select>
-                                <input className={styles.input} type="text" placeholder="5 000–10 000 $"/>
-                                <button className={styles.requestBtn} type="submit">Запросить информацию</button>
+                                <input className={styles.input} type="text" placeholder="Ваше имя" required/>
+                                <input className={styles.input} type="tel" placeholder="Номер телефона" required/>
+                                <button className={styles.requestBtn} type="submit">Отправить заявку</button>
                             </form>
                         </section>
                     </div>
                     <div className={styles.heroImgBlock}>
                         <img src={heroImg} alt="Современный дом" className={styles.heroImg}/>
                     </div>
-                </section>
+                    </section>
+                </div>
 
-                <section><DealTimelinePage/></section>
-                <section><StatisticsSection/></section>
-                <section><AboutUsSection/></section>
-                <section><WhyChooseUs/></section>
-                <section><CalculatorLaunch/></section>
-                <section><MapSection/></section>
-                <section><Testimonials/></section>
+                <section ref={dealRef} className={`${styles.animSection} ${dealInView ? styles.visible : ''}`}>
+                    <DealTimelinePage theme={theme}/>
+                </section>
+                <section><StatisticsSection theme={theme}/></section>
+                <section ref={aboutRef} className={`${styles.animSection} ${aboutInView ? styles.visible : ''}`}>
+                    <AboutUsSection theme={theme}/>
+                </section>
+                <section ref={whyRef} className={`${styles.animSection} ${whyInView ? styles.visible : ''}`}>
+                    <WhyChooseUs theme={theme}/>
+                </section>
+                <section ref={calcRef} className={`${styles.animSection} ${calcInView ? styles.visible : ''}`}>
+                    <CalculatorLaunch theme={theme}/>
+                </section>
+                <section ref={mapRef} className={`${styles.animSection} ${mapInView ? styles.visible : ''}`}>
+                    <MapSection theme={theme}/>
+                </section>
+                <section ref={testimonialRef} className={`${styles.animSection} ${testimonialInView ? styles.visible : ''}`}>
+                    <Testimonials theme={theme}/>
+                </section>
                 {/* Красивый футер */}
-                <section><Home2Footer /></section>
+                <section ref={footerRef} className={`${styles.animSection} ${footerInView ? styles.visible : ''}`}>
+                    <Home2Footer theme={theme}/>
+                </section>
             </div>
         </div>
     );

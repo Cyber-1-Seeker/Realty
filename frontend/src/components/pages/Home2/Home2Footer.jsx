@@ -2,9 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styles from './Home2Footer.module.css';
 
-const Home2Footer = () => {
+const Home2Footer = ({ theme }) => {
     return (
-        <footer className={styles.footer}>
+        <footer className={styles.footer + (theme === 'dark' ? ' ' + styles.dark : '')}>
             <div className={styles.container}>
                 {/* Основной контент футера */}
                 <div className={styles.content}>

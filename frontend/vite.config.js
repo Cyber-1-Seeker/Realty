@@ -12,7 +12,7 @@ export default defineConfig({
         },
     },
     server: {
-        host: '0.0.0.0', //'localhost',
+        host: '0.0.0.0',
         port: 5173,
         strictPort: true,
     },
@@ -24,5 +24,10 @@ export default defineConfig({
         },
         emptyOutDir: true,
         minify: false
+    },
+    // Конфигурация для SPA роутинга
+    preview: {
+        port: 5173,
+        host: '0.0.0.0',
     }
 })

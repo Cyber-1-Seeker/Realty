@@ -8,7 +8,7 @@ const isMobileDevice = () => {
   return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 };
 
-const MapSection = () => {
+const MapSection = ({ theme }) => {
   const coordinates = [55.751817, 37.599292];
   const [isMapInteractive, setIsMapInteractive] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -26,7 +26,7 @@ const MapSection = () => {
   return (
     <motion.section
       id="contacts"
-      className={styles.mapSection}
+      className={styles.mapSection + (theme === 'dark' ? ' ' + styles.dark : '')}
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}

@@ -98,10 +98,7 @@
   position: relative;
   z-index: 1;
 }
-.statBlock:hover {
-  box-shadow: 0 8px 32px #0154f733;
-  transform: scale(1.07);
-}
+
 
 .icon {
   font-size: 36px;
@@ -122,6 +119,13 @@
   background-clip: text;
   text-fill-color: transparent;
   transition: text-shadow 0.2s;
+}
+
+.label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #666;
+  margin-top: 8px;
 }
 .statBlock:hover .number {
   text-shadow: 0 2px 16px #22c55e55;
@@ -201,4 +205,79 @@
   .card {
     grid-template-columns: 1fr;
   }
+}
+
+/* =========================== */
+/*       ТЕМНАЯ ТЕМА           */
+/* =========================== */
+
+.section.dark {
+  background: linear-gradient(135deg, #0a0f1c 0%, #1a1f35 30%, #0d1421 70%, #151a2e 100%);
+}
+
+.dark .text {
+  color: #e2e8f0;
+}
+
+.dark .card {
+  background: linear-gradient(145deg, #1f2937, #111827);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+}
+
+
+
+.dark .label {
+  background: linear-gradient(90deg, #60a5fa 0%, #34d399 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 600;
+}
+
+.dark .icon {
+  color: #60a5fa;
+}
+
+.dark .statBlock:hover .icon {
+  filter: drop-shadow(0 2px 8px rgba(52, 211, 153, 0.8));
+}
+
+.dark .number {
+  background: linear-gradient(90deg, #60a5fa 0%, #34d399 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.dark .statBlock:hover .number {
+  text-shadow: 0 2px 16px rgba(52, 211, 153, 0.6);
+}
+
+.dark .card::before {
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(96, 165, 250, 0.4),
+    rgba(96, 165, 250, 0.4) 8px,
+    transparent 8px,
+    transparent 16px
+  );
+}
+
+.dark .button {
+  background: linear-gradient(90deg, #34d399 0%, #60a5fa 100%);
+  box-shadow: 0 2px 12px rgba(96, 165, 250, 0.3);
+}
+
+.dark .button:hover {
+  background: linear-gradient(90deg, #60a5fa 0%, #34d399 100%);
+  box-shadow: 0 4px 24px rgba(96, 165, 250, 0.4);
+}
+
+.dark .decorLeft {
+  background: #34d399;
+}
+
+.dark .decorRight {
+  background: rgba(96, 165, 250, 0.4);
 }

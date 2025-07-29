@@ -180,15 +180,19 @@ if DEBUG:
 else:
     CORS_ALLOWED_ORIGINS.extend([
         "http://147.45.224.189",
+        "http://147.45.224.189:80",
         "https://147.45.224.189",
         "http://localhost",
+        "http://localhost:80",
         "http://127.0.0.1",
         "http://frontend",  # Docker service name
     ])
     CSRF_TRUSTED_ORIGINS.extend([
         "http://147.45.224.189",
+        "http://147.45.224.189:80", 
         "https://147.45.224.189",
         "http://localhost",
+        "http://localhost:80",
         "http://127.0.0.1",
         "http://frontend",  # Docker service name
     ])

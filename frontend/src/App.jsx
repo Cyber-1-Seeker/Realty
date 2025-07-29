@@ -21,16 +21,11 @@ function App() {
     const [user, setUser] = useState(null);
 
     useEffect(() => {
-        fetch(`${API_URL}/api/
-        accounts / csrf /`, {credentials: 'include'}
-        )
+        fetch(`${API_URL}/api/accounts/csrf/`, {credentials: 'include'})
             .then(() => {
-                return fetch(`${API_URL}/api/
-            accounts / me /`, {
-                        credentials: 'include'
-                    }
-                )
-                    ;
+                return fetch(`${API_URL}/api/accounts/me/`, {
+                    credentials: 'include'
+                });
             })
             .then(res => res.ok ? res.json() : Promise.reject())
             .then(data => {

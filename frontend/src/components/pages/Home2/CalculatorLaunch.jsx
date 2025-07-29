@@ -2,9 +2,9 @@ import React from 'react';
 import CalculatorForm from './CalculatorForm.jsx';
 import styles from './CalculatorLaunch.module.css';
 
-const CalculatorLaunch = () => {
+const CalculatorLaunch = ({ theme }) => {
   return (
-    <section className={styles.section}>
+    <section className={styles.section + (theme === 'dark' ? ' ' + styles.dark : '')}>
       <div className={styles.wrapper}>
         <div className={styles.contentCenter}>
           {/* Красивая иконка калькулятора */}
@@ -53,7 +53,7 @@ const CalculatorLaunch = () => {
             Узнайте рыночную стоимость вашей недвижимости в Москве с точностью до 96%
           </p>
           
-          <CalculatorForm />
+          <CalculatorForm theme={theme} />
         </div>
       </div>
     </section>

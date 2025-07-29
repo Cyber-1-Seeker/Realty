@@ -24,9 +24,9 @@ const facts = [
   { value: '100%', label: 'юридическая чистота' },
 ];
 
-const AboutUsSection = () => {
+const AboutUsSection = ({ theme }) => {
   return (
-    <section className={styles.section}>
+    <section className={styles.section + (theme === 'dark' ? ' ' + styles.dark : '')}>
       <div className={styles.container}>
         <div className={styles.imageBox}>
           <img src={aboutImage} alt="Интерьер уютной гостиной" />

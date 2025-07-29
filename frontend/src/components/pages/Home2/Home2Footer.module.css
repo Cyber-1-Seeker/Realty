@@ -298,4 +298,107 @@
         padding: 40px 0 0 0;
         margin-top: 50px;
     }
+}
+
+/* =========================== */
+/*       ТЕМНАЯ ТЕМА           */
+/* =========================== */
+
+.footer.dark {
+    background: radial-gradient(circle at center, rgba(35, 75, 139, 0.15) 0%, rgba(15, 23, 42, 0.9) 30%, #0f172a 60%, #111827 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.footer.dark::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(96, 165, 250, 0.06) 0%, rgba(96, 165, 250, 0.03) 40%, transparent 70%);
+    border-radius: 50%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.dark .logo span {
+    color: #60a5fa;
+}
+
+.dark .logo strong {
+    color: #f1f5f9;
+}
+
+.dark .description {
+    color: rgba(241, 245, 249, 0.8);
+}
+
+.dark .socialLink {
+    background: rgba(241, 245, 249, 0.1);
+    border: 1px solid rgba(241, 245, 249, 0.2);
+    color: #f1f5f9;
+}
+
+.dark .socialLink:hover {
+    background: rgba(241, 245, 249, 0.2);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+.dark .linksSection h4,
+.dark .contactSection h4 {
+    color: #f1f5f9;
+}
+
+.dark .linksSection a {
+    color: rgba(241, 245, 249, 0.8);
+}
+
+.dark .linksSection a:hover {
+    color: #60a5fa;
+}
+
+.dark .linksSection a::before {
+    background: #60a5fa;
+}
+
+.dark .contactItem {
+    color: rgba(241, 245, 249, 0.8);
+}
+
+.dark .contactItem svg {
+    color: #60a5fa;
+}
+
+.dark .divider {
+    background: linear-gradient(90deg, transparent 0%, rgba(241, 245, 249, 0.3) 50%, transparent 100%);
+}
+
+.dark .bottom {
+    border-top: 1px solid rgba(241, 245, 249, 0.1);
+}
+
+.dark .copyright p {
+    color: rgba(241, 245, 249, 0.7);
+}
+
+.dark .legalLink {
+    color: rgba(241, 245, 249, 0.7);
+}
+
+.dark .legalLink:hover {
+    color: #60a5fa;
+}
+
+.dark .separator {
+    color: rgba(241, 245, 249, 0.5);
+}
+
+/* Декоративные элементы в темной теме */
+.dark .bgDot1,
+.dark .bgDot2,
+.dark .bgDot3 {
+    background: radial-gradient(circle, rgba(96, 165, 250, 0.1) 0%, transparent 70%);
 } 

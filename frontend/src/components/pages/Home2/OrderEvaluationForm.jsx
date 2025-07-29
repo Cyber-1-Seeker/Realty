@@ -5,7 +5,7 @@ import styles from './CalculatorLaunch.module.css';
 import {API_PUBLIC} from '@/utils/api/axiosPublic.js';
 import {getCSRFTokenFromCookie} from "@/utils/api/csrf.js";
 
-const OrderEvaluationForm = ({onClose}) => {
+const OrderEvaluationForm = ({onClose, theme}) => {
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
     const [nickname, setNickname] = useState(''); // Honeypot поле
@@ -69,7 +69,7 @@ const OrderEvaluationForm = ({onClose}) => {
     };
 
     return (
-        <div className={styles.modalContent}>
+        <div className={styles.modalContent + (theme === 'dark' ? ' ' + styles.dark : '')}>
             <div className={styles.modalHeader}>
                 <div className={styles.modalIcon}>
                     <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -28,9 +28,9 @@ const features = [
     },
 ];
 
-const WhyChooseUs = () => {
+const WhyChooseUs = ({ theme }) => {
     return (
-        <section className={styles.section}>
+        <section className={styles.section + (theme === 'dark' ? ' ' + styles.dark : '')}>
             <h2 className={styles.heading}>Почему выбирают нас</h2>
             <div className={styles.subheading}>Наши преимущества</div>
             <div className={styles.grid}>

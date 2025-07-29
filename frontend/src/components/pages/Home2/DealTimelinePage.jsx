@@ -40,9 +40,9 @@ const steps = [
     },
 ];
 
-const DealTimelinePage = () => {
+const DealTimelinePage = ({ theme }) => {
     return (
-        <div className={styles.wrapper}>
+        <div className={styles.wrapper + (theme === 'dark' ? ' ' + styles.dark : '')}>
             <h1 className={styles.header}>Как проходит сделка</h1>
             <div className={styles.timeline}>
                 {steps.map((step, idx) => (
