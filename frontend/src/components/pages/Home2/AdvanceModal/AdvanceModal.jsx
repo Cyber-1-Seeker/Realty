@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import ReactDOM from 'react-dom';
 import {motion, AnimatePresence} from 'framer-motion';
 import styles from './AdvanceModal.module.css';
-import AdvancePaymentForm from './AdvancePaymentForm';
+import AdvancePaymentForm from './AdvancePaymentForm.jsx';
 
 const AdvanceModal = ({theme}) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
