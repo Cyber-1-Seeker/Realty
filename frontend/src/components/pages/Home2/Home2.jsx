@@ -2,16 +2,16 @@ import React from 'react';
 import {useInView} from 'react-intersection-observer';
 import styles from './Home2.module.css';
 import heroImg from '@/assets/Listings/Hero4.png';
-import DealTimelinePage from "@/components/pages/Home2/DealTimeline/DealTimelinePage.jsx";
-import WhyChooseUs from "@/components/pages/Home2/WhyChooseUs/WhyChooseUs.jsx";
-import AboutUsSection from "@/components/pages/Home2/AboutUsSection/AboutUsSection.jsx";
-import CalculatorLaunch from "@/components/pages/Home2/CalculatorLaunch/CalculatorLaunch.jsx";
-import {useTheme} from '@/context/ThemeContext.jsx';
-import StatisticsSection from "@/components/pages/Home2/StatisticsSection/StatisticsSection.jsx";
-import MapSection from "@/components/pages/Home2/MapSection/MapSection.jsx";
+import DealTimelinePage from "@/components/pages/Home2/DealTimelinePage.jsx";
+import WhyChooseUs from "@/components/pages/Home2/WhyChooseUs.jsx";
+import AboutUsSection from "@/components/pages/Home2/AboutUsSection.jsx";
+import CalculatorLaunch from "@/components/pages/Home2/CalculatorLaunch.jsx";
+import {useTheme} from '@/context/ThemeContext';
+import StatisticsSection from "@/components/pages/Home2/StatisticsSection.jsx";
+import MapSection from "@/components/pages/Home2/MapSection.jsx";
 import Testimonials from "@/components/pages/Home/Testimonials/Testimonials.jsx";
-import Home2Footer from "@/components/pages/Home2/Footer/Home2Footer.jsx";
-import AdvanceModal from "@/components/pages/Home2/AdvanceModal/AdvanceModal.jsx";
+import Home2Footer from "@/components/pages/Home2/Home2Footer.jsx";
+import AdvanceModal from "@/components/pages/Home2/AdvanceModal.jsx";
 const Home2 = () => {
     const {theme, toggleTheme} = useTheme();
 
@@ -47,7 +47,7 @@ const Home2 = () => {
                     <header className={styles.header}>
                         <div className={styles.logo}><span>STRACK </span><b>ESTATE</b></div>
                         <nav className={styles.navMenu}>
-                            <a href="/frontend/public" className={styles.active}>Главная</a>
+                            <a href="/" className={styles.active}>Главная</a>
                             <a href="/about">О нас</a>
                             <a href="/listings" className={styles.dropdown}>База квартир</a>
                             <AdvanceModal theme={theme}/>
