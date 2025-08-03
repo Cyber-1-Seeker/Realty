@@ -1,0 +1,275 @@
+.header {
+    position: sticky;
+    top: 0;
+    background: rgba(255,255,255,0.95);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    transition: background 0.3s, box-shadow 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 32px 48px 24px 48px;
+    background: transparent;
+    position: relative;
+    z-index: 20;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.logo {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #111827;
+    letter-spacing: 2px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.logo span {
+    color: #6b7280;
+}
+
+.logo b {
+    color: #2563eb;
+    font-weight: 900;
+}
+
+.navMenu {
+    display: flex;
+    gap: 32px;
+    position: relative;
+    z-index: 21;
+    margin-right: 22px;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.navMenu a {
+    color: #222;
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: 500;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.navMenu a:hover {
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Цветные градиенты для каждой кнопки */
+.navMenu a[href="/"]:hover {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    box-shadow: 0 4px 16px rgba(59, 130, 246, 0.3);
+}
+
+.navMenu a[href="/about"]:hover {
+    background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+    box-shadow: 0 4px 16px rgba(220, 38, 38, 0.3);
+}
+
+.navMenu a[href="/listings"]:hover {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    box-shadow: 0 4px 16px rgba(5, 150, 105, 0.3);
+}
+
+.navMenu a[href="/profile"]:hover {
+    background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
+    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
+}
+
+.navMenu a.active {
+    color: #2563eb;
+    border-bottom: 2.5px solid #2563eb;
+    font-weight: 700;
+    background: linear-gradient(90deg, #e3e9f7 0%, #b3c6f7 100%);
+    border-radius: 6px 6px 0 0;
+    padding-bottom: 2px;
+    transition: background 0.2s, color 0.2s;
+}
+
+.dropdown {
+    position: relative;
+    cursor: pointer;
+}
+
+.contactBtn {
+    background: #2563eb;
+    color: #fff;
+    border: none;
+    border-radius: 24px;
+    padding: 12px 32px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    box-shadow: 0 2px 12px rgba(37,99,235,0.08);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 21;
+}
+
+.contactBtn:hover {
+    background: #1d4ed8;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(29, 78, 216, 0.3);
+}
+
+.themeToggle {
+    margin-left: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 21;
+}
+
+.themeToggle:hover {
+    background-color: rgba(37, 99, 235, 0.1);
+    transform: scale(1.05) translateY(-2px);
+}
+
+.themeToggle img {
+    width: 39px;
+    height: 39px;
+    transition: transform 0.3s ease;
+}
+
+.themeIcon {
+    transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Эффект "нажатия" для лунной иконки */
+.themeIcon:hover {
+    transform: scale(1.15, 1.05);
+}
+
+/* Поворот для солнечной иконки */
+.themeToggle:hover .themeIcon[src*="sun-icon"] {
+    transform: rotate(180deg) scale(1.1);
+}
+
+/* Темная тема */
+.dark .header {
+    background: rgba(24, 26, 27, 0.95);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dark .logo {
+    color: #f3f1ec;
+}
+
+.dark .navMenu a {
+    color: #f3f1ec;
+}
+
+.dark .navMenu a:hover {
+    color: white;
+}
+
+.dark .navMenu a.active {
+    color: #4999fc !important;
+}
+
+.dark .contactBtn {
+    background: #2563eb;
+    color: #fff;
+}
+
+.dark .contactBtn:hover {
+    background: #1d4ed8;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(29, 78, 216, 0.3);
+}
+
+.dark .themeToggle:hover {
+    background-color: rgba(243, 241, 236, 0.1);
+    transform: scale(1.05) translateY(-2px);
+}
+
+/* Адаптивность */
+@media (max-width: 1024px) {
+    .header {
+        padding: 16px 24px;
+    }
+    
+    .navMenu {
+        gap: 24px;
+    }
+    
+    .navMenu a {
+        font-size: 14px;
+    }
+    
+    .contactBtn {
+        padding: 10px 20px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 768px) {
+    .header {
+        padding: 12px 16px;
+        flex-wrap: wrap;
+    }
+    
+    .navMenu {
+        gap: 16px;
+        order: 3;
+        width: 100%;
+        justify-content: center;
+        margin-top: 12px;
+    }
+    
+    .navMenu a {
+        font-size: 13px;
+    }
+    
+    .contactBtn {
+        padding: 8px 16px;
+        font-size: 12px;
+    }
+    
+    .logo {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .header {
+        padding: 8px 12px;
+        flex-direction: column;
+        gap: 16px;
+    }
+    
+    .navMenu {
+        gap: 12px;
+        order: 3;
+        width: 100%;
+        justify-content: center;
+        margin-top: 12px;
+    }
+    
+    .navMenu a {
+        font-size: 12px;
+    }
+    
+    .contactBtn {
+        padding: 6px 12px;
+        font-size: 11px;
+    }
+    
+    .logo {
+        font-size: 18px;
+    }
+} 
