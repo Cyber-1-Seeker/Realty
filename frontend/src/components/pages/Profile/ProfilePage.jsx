@@ -399,6 +399,8 @@ const ProfilePage = () => {
                     </Button>
                 ]}
                 centered
+                className={`${styles.statusModal} ${theme === 'dark' ? styles.dark : ''}`}
+                wrapClassName={`${styles.statusModalWrap} ${theme === 'dark' ? styles.dark : ''}`}
             >
                 {currentApartment && (
                     <div className={styles.statusInfoContainer}>

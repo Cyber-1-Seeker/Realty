@@ -489,6 +489,7 @@
     margin-bottom: 20px;
     padding-bottom: 15px;
     border-bottom: 1px solid #eee;
+    transition: border-color 0.3s ease;
 }
 
 .statusHeader h3 {
@@ -496,17 +497,195 @@
     font-size: 18px;
     color: #333;
     font-weight: 500;
+    transition: color 0.3s ease;
 }
 
 .statusDescription {
     color: #666;
     line-height: 1.6;
     margin-bottom: 20px;
+    transition: color 0.3s ease;
 }
 
 .rejectionActions {
     padding-top: 15px;
     border-top: 1px solid #eee;
+    transition: border-color 0.3s ease;
+}
+
+/* Темная тема для модального окна статуса */
+.dark .statusHeader {
+    border-bottom-color: #374151;
+}
+
+.dark .statusHeader h3 {
+    color: #f3f4f6;
+}
+
+.dark .statusDescription {
+    color: #9ca3af;
+}
+
+.dark .rejectionActions {
+    border-top-color: #374151;
+}
+
+/* Стили для Ant Design Modal в темной теме */
+.dark :global(.ant-modal-content) {
+    background-color: #1f2937 !important;
+    border: 1px solid #374151 !important;
+}
+
+.dark :global(.ant-modal-header) {
+    background-color: #1f2937 !important;
+    border-bottom-color: #374151 !important;
+}
+
+.dark :global(.ant-modal-title) {
+    color: #f3f4f6 !important;
+}
+
+.dark :global(.ant-modal-body) {
+    background-color: #1f2937 !important;
+    color: #f3f4f6 !important;
+}
+
+.dark :global(.ant-modal-footer) {
+    background-color: #1f2937 !important;
+    border-top-color: #374151 !important;
+}
+
+.dark :global(.ant-modal-close) {
+    color: #9ca3af !important;
+}
+
+.dark :global(.ant-modal-close:hover) {
+    color: #f3f4f6 !important;
+}
+
+.dark :global(.ant-btn) {
+    border-color: #374151 !important;
+}
+
+.dark :global(.ant-btn-default) {
+    background-color: #374151 !important;
+    color: #f3f4f6 !important;
+}
+
+.dark :global(.ant-btn-default:hover) {
+    background-color: #4b5563 !important;
+    border-color: #4b5563 !important;
+}
+
+.dark :global(.ant-btn-primary) {
+    background-color: #3b82f6 !important;
+    border-color: #3b82f6 !important;
+}
+
+.dark :global(.ant-btn-primary:hover) {
+    background-color: #2563eb !important;
+    border-color: #2563eb !important;
+}
+
+/* Стили для Tag компонентов в темной теме */
+.dark :global(.ant-tag) {
+    border-color: #374151 !important;
+}
+
+.dark :global(.ant-tag-orange) {
+    background-color: #92400e !important;
+    border-color: #92400e !important;
+    color: #fef3c7 !important;
+}
+
+.dark :global(.ant-tag-red) {
+    background-color: #991b1b !important;
+    border-color: #991b1b !important;
+    color: #fecaca !important;
+}
+
+.dark :global(.ant-tag-green) {
+    background-color: #065f46 !important;
+    border-color: #065f46 !important;
+    color: #d1fae5 !important;
+}
+
+.dark :global(.ant-tag-blue) {
+    background-color: #1e40af !important;
+    border-color: #1e40af !important;
+    color: #dbeafe !important;
+}
+
+.dark :global(.ant-tag-gray) {
+    background-color: #374151 !important;
+    border-color: #374151 !important;
+    color: #d1d5db !important;
+}
+
+/* Специальные стили для модального окна статуса */
+.statusModal {
+    /* Базовые стили */
+}
+
+.statusModalWrap {
+    /* Базовые стили для обертки */
+}
+
+/* Темная тема для модального окна статуса */
+.dark.statusModal :global(.ant-modal-content) {
+    background-color: #1f2937 !important;
+    border: 1px solid #374151 !important;
+}
+
+.dark.statusModal :global(.ant-modal-header) {
+    background-color: #1f2937 !important;
+    border-bottom-color: #374151 !important;
+}
+
+.dark.statusModal :global(.ant-modal-title) {
+    color: #f3f4f6 !important;
+}
+
+.dark.statusModal :global(.ant-modal-body) {
+    background-color: #1f2937 !important;
+    color: #f3f4f6 !important;
+}
+
+.dark.statusModal :global(.ant-modal-footer) {
+    background-color: #1f2937 !important;
+    border-top-color: #374151 !important;
+}
+
+.dark.statusModal :global(.ant-modal-close) {
+    color: #9ca3af !important;
+}
+
+.dark.statusModal :global(.ant-modal-close:hover) {
+    color: #f3f4f6 !important;
+}
+
+.dark.statusModal :global(.ant-btn) {
+    border-color: #374151 !important;
+}
+
+.dark.statusModal :global(.ant-btn-default) {
+    background-color: #374151 !important;
+    color: #f3f4f6 !important;
+}
+
+.dark.statusModal :global(.ant-btn-default:hover) {
+    background-color: #4b5563 !important;
+    border-color: #4b5563 !important;
+}
+
+/* Стили для обертки модального окна статуса */
+.dark.statusModalWrap :global(.ant-modal-wrap) {
+    background-color: rgba(0, 0, 0, 0.75) !important;
+}
+
+.dark.statusModalWrap :global(.ant-modal-mask) {
+    background-color: rgba(0, 0, 0, 0.75) !important;
+    backdrop-filter: blur(4px);
 }
 
 /* Адаптивность для хедера */

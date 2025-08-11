@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {useInView} from 'react-intersection-observer';
+import { useOutletContext } from 'react-router-dom';
 import styles from './Home2.module.css';
 import heroImg from '@/assets/Listings/Hero4.png';
 import DealTimelinePage from "@/components/pages/Home2/DealTimelinePage.jsx";
@@ -9,12 +10,14 @@ import CalculatorLaunch from "@/components/pages/Home2/CalculatorLaunch.jsx";
 import {useTheme} from '@/context/ThemeContext';
 import StatisticsSection from "@/components/pages/Home2/StatisticsSection.jsx";
 import MapSection from "@/components/pages/Home2/MapSection.jsx";
-import Testimonials from "@/components/pages/Home/Testimonials/Testimonials.jsx";
+import Testimonials from "@/components/pages/Home2/Testimonials/Testimonials.jsx";
 import Home2Footer from "@/components/pages/Home2/Home2Footer.jsx";
+import Home2Header from "@/components/pages/Home2/Home2Header.jsx";
 import { API_PUBLIC } from '@/utils/api/axiosPublic.js';
 import { getCSRFTokenFromCookie } from "@/utils/api/csrf.js";
 import ModalForm from '@/components/pages/Listings/ListingsPage/ModalForm.jsx';
 const Home2 = () => {
+    const { isAuthenticated = false } = useOutletContext() || {};
     const {theme, toggleTheme} = useTheme();
     const [formData, setFormData] = useState({
         name: '',
@@ -120,7 +123,7 @@ const Home2 = () => {
 
             <div className={styles.pageWrapper}>
                 <div className={styles.headerHeroContainer}>
-                    {/* Header removed - using global header */}
+                    <Home2Header isAuthenticated={isAuthenticated} />
 
                     <section className={styles.heroSection}>
                         <div className={styles.bgDotRed}></div>

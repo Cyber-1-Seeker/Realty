@@ -10,7 +10,7 @@
 }
 .pageWrapper {
     position: relative;
-    z-index: 1;
+    z-index: 10; /* Высокий z-index для наложения поверх хедера */
     background: none;
 }
 
@@ -18,7 +18,9 @@
     height: 100vh;
     display: flex;
     flex-direction: column;
-    padding-top: 140px; /* Increased space for global header */
+    padding-top: 140px; /* Возвращаем отступ для хедера */
+    position: relative;
+    z-index: 10; /* Высокий z-index для наложения поверх хедера */
 }
 
 /* home2 header removed */
@@ -40,7 +42,7 @@
     overflow: visible;
     flex: 1;
     min-height: 0;
-    z-index: 1;
+    z-index: 10; /* Высокий z-index, чтобы накладываться поверх хедера */
 }
 .heroTextBlock {
     flex: 1;
@@ -565,7 +567,7 @@
 .bgDotRed {
     position: absolute;
     left: -120px;
-    top: 60px;
+    top: 60px; /* Оставляем как было */
     width: 140px;
     height: 140px;
     background: radial-gradient(circle, #ff3b3b 60%, transparent 100%);
@@ -587,7 +589,7 @@
 .bgDotBlue {
     position: absolute;
     left: 50%;
-    top: -60px;
+    top: -70px; /* Поднимаем на 10px выше */
     width: 80px;
     height: 80px;
     background: radial-gradient(circle, #2563eb 60%, transparent 100%);
@@ -598,7 +600,7 @@
 .bgLineRight {
     position: absolute;
     right: -60px;
-    top: 120px;
+    top: 120px; /* Оставляем как было */
     width: 220px;
     height: 8px;
     background: linear-gradient(90deg, #2563eb 60%, transparent 100%);
@@ -1042,3 +1044,5 @@
     background: linear-gradient(135deg, #059669 0%, #047857 100%);
     box-shadow: 0 4px 16px rgba(5, 150, 105, 0.3);
 }
+
+/* Глобальный хедер скрыт в Layout для страницы Home2 */

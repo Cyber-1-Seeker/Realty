@@ -1,0 +1,280 @@
+.home2Header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: transparent;
+    backdrop-filter: none;
+    border-bottom: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 32px 48px 24px 48px;
+    z-index: 100;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.home2Header.dark {
+    background: transparent;
+    backdrop-filter: none;
+    border-bottom: none;
+}
+
+.logo {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #111827;
+    letter-spacing: 2px;
+    text-shadow: 0 2px 4px rgba(255, 255, 255, 0.8);
+}
+
+.logo span {
+    color: #111827;
+    text-shadow: 0 2px 4px rgba(255, 255, 255, 0.8);
+}
+
+.logo b {
+    color: #2563eb;
+    font-weight: 900;
+    text-shadow: 0 2px 4px rgba(255, 255, 255, 0.8);
+}
+
+.navMenu {
+    display: flex;
+    gap: 32px;
+    position: relative;
+    z-index: 101;
+    margin-right: 22px;
+    align-items: center;
+}
+
+.navMenu a {
+    color: #111827;
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: 500;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+.navMenu a:hover {
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+}
+
+.navMenu a[href="/home2"]:hover {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+}
+
+.navMenu a[href="/about"]:hover {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+}
+
+.navMenu a[href="/listings"]:hover {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+}
+
+.navMenu a[href="/profile"]:hover {
+    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+}
+
+.navMenu a.active {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    color: white;
+    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3);
+}
+
+.navMenu a[href="/home2"].active {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    color: white;
+}
+
+.navMenu a[href="/about"].active {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    color: white;
+}
+
+.navMenu a[href="/listings"].active {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+    color: white;
+}
+
+.navMenu a[href="/profile"].active {
+    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+    color: white;
+}
+
+.dropdown {
+    position: relative;
+}
+
+.contactBtn {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 12px 24px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.contactBtn:hover {
+    background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
+}
+
+.themeToggle {
+    margin-left: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 101;
+}
+
+.themeToggle:hover {
+    background-color: rgba(37, 99, 235, 0.1);
+    transform: scale(1.05) translateY(-2px);
+}
+
+.themeToggle img {
+    width: 39px;
+    height: 39px;
+    transition: transform 0.3s ease;
+}
+
+.themeIcon {
+    transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.themeIcon:hover {
+    transform: scale(1.15, 1.05);
+}
+
+.themeToggle:hover .themeIcon[src*="sun-icon"] {
+    transform: rotate(180deg) scale(1.1);
+}
+
+/* Темная тема */
+.dark .logo,
+.dark .logo span {
+    color: #f3f4f6;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.dark .logo b {
+    color: #60a5fa;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.dark .navMenu a {
+    color: #f3f4f6;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.dark .navMenu a:hover {
+    color: white;
+}
+
+.dark .contactBtn {
+    background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+    box-shadow: 0 4px 12px rgba(96, 165, 250, 0.3);
+}
+
+.dark .contactBtn:hover {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    box-shadow: 0 6px 16px rgba(96, 165, 250, 0.4);
+}
+
+.dark .themeToggle:hover {
+    background-color: rgba(243, 241, 236, 0.1);
+}
+
+/* Адаптивность */
+@media (max-width: 1024px) {
+    .home2Header {
+        padding: 24px 32px 20px 32px;
+    }
+    
+    .navMenu {
+        gap: 24px;
+        margin-right: 16px;
+    }
+    
+    .navMenu a {
+        font-size: 1.1rem;
+        padding: 6px 10px;
+    }
+    
+    .contactBtn {
+        padding: 10px 20px;
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .home2Header {
+        padding: 20px 16px 16px 16px;
+        flex-direction: column;
+        gap: 16px;
+    }
+    
+    .navMenu {
+        gap: 16px;
+        margin-right: 0;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .navMenu a {
+        font-size: 1rem;
+        padding: 6px 8px;
+    }
+    
+    .contactBtn {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+    }
+    
+    .logo {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .home2Header {
+        padding: 16px 12px 12px 12px;
+    }
+    
+    .navMenu {
+        gap: 12px;
+    }
+    
+    .navMenu a {
+        font-size: 0.9rem;
+        padding: 4px 6px;
+    }
+    
+    .contactBtn {
+        padding: 6px 12px;
+        font-size: 0.85rem;
+    }
+    
+    .logo {
+        font-size: 1.25rem;
+    }
+}

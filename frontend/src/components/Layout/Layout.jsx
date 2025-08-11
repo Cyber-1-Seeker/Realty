@@ -13,9 +13,9 @@ const Layout = ({ isAuthenticated, user }) => {
 
   return (
     <div className={`${styles.layout} ${theme === 'dark' ? styles.dark : ''}`}>
-      <Header isAuthenticated={isAuthenticated} />
+      {!isHome2Page && <Header isAuthenticated={isAuthenticated} />}
       <main className={styles.main}>
-        <Outlet/>
+        <Outlet context={{ isAuthenticated, user }} />
       </main>
       {!isHome2Page && <Home2Footer/>}
     </div>
