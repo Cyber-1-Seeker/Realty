@@ -3,6 +3,7 @@ import {Link, useNavigate, useLocation} from 'react-router-dom'
 import classes from './Navbar.module.css'
 import {motion, AnimatePresence} from 'framer-motion'
 import {FaTelegramPlane, FaWhatsapp, FaUserCircle} from 'react-icons/fa'
+import {useTheme} from '@/context/ThemeContext'
 import AuthModal from '../AuthModal/AuthModal'
 import useAuthGuard from '@/hooks/useAuthGuard'
 
@@ -11,6 +12,7 @@ const Navbar = ({isAuthenticated, user}) => {
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
     const [showNavbar, setShowNavbar] = useState(window.innerWidth <= 768)
     const [showAuthModal, setShowAuthModal] = useState(false)
+    const {theme, toggleTheme} = useTheme()
     const navigate = useNavigate()
     const location = useLocation()
     const hideTimeoutRef = useRef(null)
@@ -49,6 +51,33 @@ const Navbar = ({isAuthenticated, user}) => {
             navigate('/#contacts');
         }
     };
+
+    // Закрытие меню при клике на оверлей
+    const handleOverlayClick = () => {
+        setMenuOpen(false)
+    }
+
+    // Закрытие меню при нажатии Escape
+    useEffect(() => {
+        const handleEscape = (e) => {
+            if (e.key === 'Escape') {
+                setMenuOpen(false)
+            }
+        }
+
+        if (menuOpen) {
+            document.addEventListener('keydown', handleEscape)
+            // Блокируем скролл body при открытом меню
+            document.body.style.overflow = 'hidden'
+        } else {
+            document.body.style.overflow = 'unset'
+        }
+
+        return () => {
+            document.removeEventListener('keydown', handleEscape)
+            document.body.style.overflow = 'unset'
+        }
+    }, [menuOpen])
 
     useEffect(() => {
         const handleResize = () => {
@@ -126,15 +155,29 @@ const Navbar = ({isAuthenticated, user}) => {
         }
     }, [isMobile, scrolledDown]);
 
-
     return (
         <>
             <nav
-                className={`${classes.navbar} ${!isMobile && !showNavbar ? classes.hidden : classes.visible}`}
+                className={`${classes.navbar} ${!isMobile && !showNavbar ? classes.hidden : classes.visible} ${theme === 'dark' ? classes.dark : ''}`}
                 ref={navbarRef}
             >
+                {/* Кнопка переключения темы - слева на мобильных */}
+                {isMobile && (
+                    <button 
+                        className={classes.mobileThemeToggle} 
+                        onClick={toggleTheme}
+                        aria-label={theme === 'light' ? 'Переключить на тёмную тему' : 'Переключить на светлую тему'}
+                    >
+                        <img
+                            src={theme === 'light' ? '/icons/Home/moon-icon.png' : '/icons/Home/sun-icon.png'}
+                            alt={theme === 'light' ? 'Луна' : 'Солнце'}
+                            width="24"
+                            height="24"
+                        />
+                    </button>
+                )}
+
                 <div className={classes.logo}>
-                    {/* УБРАЛИ ВЛОЖЕННЫЙ <a> ВНУТРИ Link */}
                     <Link to="/" onClick={() => setMenuOpen(false)}>
                         Realty
                     </Link>
@@ -151,72 +194,123 @@ const Navbar = ({isAuthenticated, user}) => {
                     )}
                 </div>
 
+                {/* Бургер-кнопка - справа на мобильных */}
                 {isMobile && (
-                    <button className={classes.burger} onClick={() => setMenuOpen(!menuOpen)}>
-                        ☰
+                    <button 
+                        className={`${classes.burger} ${menuOpen ? classes.open : ''}`} 
+                        onClick={() => setMenuOpen(!menuOpen)}
+                        aria-label="Открыть меню"
+                    >
+                        <span></span>
+                        <span></span>
+                        <span></span>
                     </button>
                 )}
 
-                <AnimatePresence>
-                    {(menuOpen || !isMobile) && (
-                        <motion.ul
-                            className={`${classes.navLinks} ${isMobile && menuOpen ? classes.open : ''}`}
-                            initial={{opacity: 0, y: -10}}
-                            animate={{opacity: 1, y: 0}}
-                            exit={{opacity: 0, y: -10}}
-                            transition={{duration: 0.3, ease: "easeInOut"}}
+                {/* Десктопное меню */}
+                {!isMobile && (
+                    <motion.ul
+                        className={classes.navLinks}
+                        initial={{opacity: 0, y: -10}}
+                        animate={{opacity: 1, y: 0}}
+                        exit={{opacity: 0, y: -10}}
+                        transition={{duration: 0.3, ease: "easeInOut"}}
+                    >
+                        <li><Link to="/">Главная</Link></li>
+                        <li>
+                            <button
+                                className={classes.linkButton}
+                                onClick={handleCalculatorClick}
+                            >
+                                Калькулятор
+                            </button>
+                        </li>
+                        <li><Link to="/about">О нас</Link></li>
+                        <li><Link to="/listings">База квартир</Link></li>
+                        <li>
+                            <button
+                                className={classes.linkButton}
+                                onClick={handleContactsClick}
+                            >
+                                Контакты
+                            </button>
+                        </li>
+                        <li className={classes.profileDesktop} onClick={handleProfileClick}>
+                            <FaUserCircle className={classes.icon} size={24}/>
+                        </li>
+                    </motion.ul>
+                )}
+            </nav>
+
+            {/* Мобильное боковое меню */}
+            <AnimatePresence>
+                {isMobile && menuOpen && (
+                    <>
+                        {/* Оверлей */}
+                        <motion.div
+                            className={classes.overlay}
+                            initial={{opacity: 0}}
+                            animate={{opacity: 1}}
+                            exit={{opacity: 0}}
+                            transition={{duration: 0.3}}
+                            onClick={handleOverlayClick}
+                        />
+                        
+                        {/* Боковое меню */}
+                        <motion.div
+                            className={classes.mobileMenu}
+                            initial={{x: -280}}
+                            animate={{x: 0}}
+                            exit={{x: -280}}
+                            transition={{duration: 0.3, ease: "easeOut"}}
                         >
-                            {isMobile && (
+                            <div className={classes.mobileMenuHeader}>
+                                <h3>Меню</h3>
+                            </div>
+                            
+                            <ul className={classes.mobileNavLinks}>
                                 <li className={classes.profileMobile} onClick={handleProfileClick}>
                                     <FaUserCircle className={classes.icon} size={24}/>
+                                    <span>Профиль</span>
                                 </li>
-                            )}
-
-                            <li><Link to="/" onClick={() => setMenuOpen(false)}>Главная</Link></li>
-
-                            {/* ИСПРАВЛЕНО: заменяем вложенные ссылки на кнопки */}
-                            <li>
-                                <button
-                                    className={classes.linkButton}
-                                    onClick={handleCalculatorClick}
-                                >
-                                    Калькулятор
-                                </button>
-                            </li>
-
-                            <li><Link to="/about" onClick={() => setMenuOpen(false)}>О нас</Link></li>
-                            <li><Link to="/listings" onClick={() => setMenuOpen(false)}>База квартир</Link></li>
-
-                            {/* ИСПРАВЛЕНО: заменяем вложенные ссылки на кнопки */}
-                            <li>
-                                <button
-                                    className={classes.linkButton}
-                                    onClick={handleContactsClick}
-                                >
-                                    Контакты
-                                </button>
-                            </li>
-
-                            {!isMobile && (
-                                <li className={classes.profileDesktop} onClick={handleProfileClick}>
-                                    <FaUserCircle className={classes.icon} size={24}/>
+                                
+                                <li><Link to="/" onClick={() => setMenuOpen(false)}>Главная</Link></li>
+                                
+                                <li>
+                                    <button
+                                        className={classes.linkButton}
+                                        onClick={handleCalculatorClick}
+                                    >
+                                        Калькулятор
+                                    </button>
                                 </li>
-                            )}
-
-                            {isMobile && (
-                                <>
-                                    <li><a href="tel:+79999999999">+7 (999) 999 99-99</a></li>
-                                    <li><a href="mailto:info@realty.ru">info@realty.ru</a></li>
-                                    <li className={classes.iconsMobile}>
-                                        <a href="#"><FaTelegramPlane className={classes.icon}/></a>
-                                        <a href="#"><FaWhatsapp className={classes.icon}/></a>
-                                    </li>
-                                </>
-                            )}
-                        </motion.ul>
-                    )}
-                </AnimatePresence>
-            </nav>
+                                
+                                <li><Link to="/about" onClick={() => setMenuOpen(false)}>О нас</Link></li>
+                                <li><Link to="/listings" onClick={() => setMenuOpen(false)}>База квартир</Link></li>
+                                
+                                <li>
+                                    <button
+                                        className={classes.linkButton}
+                                        onClick={handleContactsClick}
+                                    >
+                                        Контакты
+                                    </button>
+                                </li>
+                                
+                                <li className={classes.mobileContacts}>
+                                    <a href="tel:+79999999999">+7 (999) 999 99-99</a>
+                                    <a href="mailto:info@realty.ru">info@realty.ru</a>
+                                </li>
+                                
+                                <li className={classes.iconsMobile}>
+                                    <a href="#"><FaTelegramPlane className={classes.icon}/></a>
+                                    <a href="#"><FaWhatsapp className={classes.icon}/></a>
+                                </li>
+                            </ul>
+                        </motion.div>
+                    </>
+                )}
+            </AnimatePresence>
 
             {showAuthModal && <AuthModal onClose={() => setShowAuthModal(false)}/>}
         </>

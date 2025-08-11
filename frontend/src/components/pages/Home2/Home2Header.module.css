@@ -254,6 +254,70 @@
     box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
 }
 
+/* Мобильная кнопка переключения темы */
+.mobileThemeToggleBtn {
+    display: none;
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    z-index: 102;
+    position: relative;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+    align-items: center;
+    justify-content: center;
+}
+
+/* Темная тема для мобильной кнопки переключения темы */
+.dark .mobileThemeToggleBtn {
+    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%) !important;
+    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4) !important;
+}
+
+.mobileThemeToggleBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
+    background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+}
+
+/* Темная тема для hover эффекта мобильной кнопки переключения темы */
+.dark .mobileThemeToggleBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(124, 58, 237, 0.5);
+    background: linear-gradient(135deg, #6d28d9 0%, #5b21b6 100%) !important;
+}
+
+.mobileThemeToggleBtn:active {
+    transform: translateY(0);
+}
+
+/* Темная тема для активного состояния мобильной кнопки переключения темы */
+.dark .mobileThemeToggleBtn:active {
+    transform: translateY(0);
+}
+
+/* Оверлей для мобильного меню */
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 99;
+    backdrop-filter: blur(2px);
+}
+
+/* Темная тема для оверлея */
+.dark .overlay {
+    background: rgba(0, 0, 0, 0.7) !important;
+    backdrop-filter: blur(4px) !important;
+}
+
 /* Адаптивность */
 @media (max-width: 1024px) {
     .home2Header {
@@ -281,27 +345,179 @@
         padding: 20px 16px 16px 16px;
         flex-direction: column;
         gap: 16px;
+        position: relative;
+    }
+
+    .mobileThemeToggleBtn {
+        display: flex;
+        position: absolute;
+        left: 24px;
+        top: 50%;
+        margin-top: -20px;
+    }
+
+    .burger {
+        display: block;
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        border: none;
+        border-radius: 12px;
+        color: white;
+        cursor: pointer;
+        z-index: 102;
+        position: absolute;
+        right: 24px;
+        top: 50%;
+        margin-top: -20px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    }
+    
+    /* Темная тема для бургер-кнопки */
+    .dark .burger {
+        background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%) !important;
+        box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4) !important;
+    }
+    
+    .burger:hover {
+        margin-top: -22px;
+        box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+        background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    }
+    
+    /* Темная тема для hover эффекта бургер-кнопки */
+    .dark .burger:hover {
+        margin-top: -22px;
+        box-shadow: 0 6px 16px rgba(124, 58, 237, 0.5);
+        background: linear-gradient(135deg, #6d28d9 0%, #5b21b6 100%) !important;
+    }
+    
+    .burger:active {
+        margin-top: -18px;
+    }
+    
+    /* Темная тема для активного состояния бургер-кнопки */
+    .dark .burger:active {
+        margin-top: -18px;
+    }
+    
+    .burger::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 20px;
+        height: 2px;
+        background: white;
+        box-shadow: 
+            0 -6px 0 white,
+            0 6px 0 white;
+        transition: all 0.3s ease;
+    }
+    
+    .burger.open::before {
+        transform: translate(-50%, -50%) rotate(45deg);
+        box-shadow: 
+            0 0 0 transparent,
+            0 0 0 transparent;
+    }
+    
+    .burger.open::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(-45deg);
+        width: 20px;
+        height: 2px;
+        background: white;
     }
 
     .navMenu {
-        gap: 16px;
-        margin-right: 0;
-        flex-wrap: wrap;
-        justify-content: center;
+        position: fixed;
+        top: 0;
+        left: -280px;
+        width: 280px;
+        height: 100vh;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        flex-direction: column;
+        gap: 0;
+        margin: 0;
+        padding: 80px 20px 20px 20px;
+        box-shadow: 4px 0 12px rgba(0, 0, 0, 0.1);
+        transform: translateX(0);
+        opacity: 1;
+        visibility: visible;
+        transition: all 0.3s ease;
+        z-index: 100;
+        border-radius: 0 12px 12px 0;
     }
-
+    
+    /* Темная тема для мобильного меню */
+    .dark .navMenu {
+        background: rgba(0, 0, 0, 0.95) !important;
+        color: #ffffff !important;
+        box-shadow: 4px 0 12px rgba(0, 0, 0, 0.8) !important;
+        border-right: 1px solid rgba(255, 255, 255, 0.2) !important;
+    }
+    
+    /* Темная тема для мобильного меню - альтернативный селектор */
+    .navMenu.dark {
+        background: rgba(0, 0, 0, 0.95) !important;
+        color: #ffffff !important;
+        box-shadow: 4px 0 12px rgba(0, 0, 0, 0.8) !important;
+        border-right: 1px solid rgba(255, 255, 255, 0.2) !important;
+    }
+    
+    .navMenu.open {
+        transform: translateX(280px);
+        opacity: 1;
+        visibility: visible;
+    }
+    
     .navMenu a {
-        font-size: 1rem;
-        padding: 6px 8px;
+        width: 100%;
+        padding: 12px 16px;
+        text-align: center;
+        border-radius: 8px;
+        margin: 4px 0;
+        font-size: 1.1rem;
+        font-weight: 500;
+        line-height: 1.5;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        white-space: nowrap;
+    }
+    
+    /* Темная тема для ссылок в мобильном меню */
+    .dark .navMenu a {
+        color: #ffffff !important;
+        background: rgba(255, 255, 255, 0.1) !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    }
+    
+    /* Темная тема для ссылок в мобильном меню - альтернативный селектор */
+    .navMenu a.dark {
+        color: #ffffff !important;
+        background: rgba(255, 255, 255, 0.1) !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
     }
 
     .contactBtn {
-        padding: 8px 16px;
-        font-size: 0.9rem;
+        display: none;
     }
 
     .logo {
         font-size: 1.5rem;
+    }
+    
+    .overlay {
+        display: block;
     }
 }
 
