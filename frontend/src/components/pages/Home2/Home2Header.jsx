@@ -27,7 +27,7 @@ const Home2Header = ({ isAuthenticated = false }) => {
 
     return (
         <>
-            <header className={`${styles.home2Header} ${theme === 'dark' ? styles.dark : ''}`}>
+            <header className={`${styles.home2Header} ${styles.home2HeaderUnique} ${theme === 'dark' ? styles.dark : ''}`}>
                 <div className={styles.logo}><span>STRACK </span><b>ESTATE</b></div>
                 <nav className={styles.navMenu}>
                     <Link 

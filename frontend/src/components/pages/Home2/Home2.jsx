@@ -16,7 +16,7 @@ import Home2Header from "@/components/pages/Home2/Home2Header.jsx";
 import { API_PUBLIC } from '@/utils/api/axiosPublic.js';
 import { getCSRFTokenFromCookie } from "@/utils/api/csrf.js";
 import ModalForm from '@/components/pages/Listings/ListingsPage/ModalForm.jsx';
-const Home2 = () => {
+function Home2() {
     const { isAuthenticated = false } = useOutletContext() || {};
     const {theme, toggleTheme} = useTheme();
     const [formData, setFormData] = useState({
@@ -297,6 +297,6 @@ const Home2 = () => {
             </ModalForm>
         </div>
     );
-};
+}
 
 export default Home2;

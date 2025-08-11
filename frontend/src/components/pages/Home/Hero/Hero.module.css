@@ -16,145 +16,17 @@
     z-index: 0;
 }
 
-/* Хедер интегрированный в hero */
-.header {
-    position: relative;
-    z-index: 2;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 40px;
-    background: transparent;
-    width: 100%;
-    box-sizing: border-box;
-}
+/* Убираем все стили хедера и навигации, так как они конфликтуют с основным Header */
 
-.logo {
-    font-size: 24px;
-    font-weight: bold;
-    color: #ffffff;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-}
+/* Убираем базовые стили навигации, так как они конфликтуют с основным Header */
 
-.logo span {
-    color: #e5e7eb;
-}
+/* Убираем цветные градиенты, так как они конфликтуют с основным Header */
 
-.logo b {
-    color: #ffffff;
-    font-weight: 900;
-}
+/* Убираем конфликтующие стили для активного состояния навигации */
 
-.navMenu {
-    display: flex;
-    align-items: center;
-    gap: 32px;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
+/* Убираем стили для dropdown, так как они конфликтуют с основным Header */
 
-.navMenu a {
-    text-decoration: none;
-    color: #ffffff;
-    font-weight: 500;
-    font-size: 16px;
-    transition: all 0.3s ease;
-    position: relative;
-    padding: 8px 12px;
-    border-radius: 8px;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-}
-
-.navMenu a:hover {
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-}
-
-/* Цветные градиенты для каждой кнопки */
-.navMenu a[href="/"]:hover {
-    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-    box-shadow: 0 4px 16px rgba(59, 130, 246, 0.3);
-}
-
-.navMenu a[href="/about"]:hover {
-    background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
-    box-shadow: 0 4px 16px rgba(220, 38, 38, 0.3);
-}
-
-.navMenu a[href="/listings"]:hover {
-    background: linear-gradient(135deg, #059669 0%, #047857 100%);
-    box-shadow: 0 4px 16px rgba(5, 150, 105, 0.3);
-}
-
-.navMenu a[href="/profile"]:hover {
-    background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
-    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
-}
-
-.navMenu a.active {
-    color: #ffffff;
-    border-bottom: 2.5px solid #ffffff;
-    font-weight: 700;
-    background: linear-gradient(90deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.2) 100%);
-    border-radius: 6px 6px 0 0;
-    padding-bottom: 2px;
-    transition: background 0.2s, color 0.2s;
-}
-
-.dropdown {
-    position: relative;
-    cursor: pointer;
-}
-
-.contactBtn {
-    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-    color: white;
-    border: none;
-    padding: 12px 24px;
-    border-radius: 12px;
-    font-weight: 600;
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
-    font-family: inherit;
-}
-
-.contactBtn:hover {
-    background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.3);
-}
-
-.themeToggle {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 8px;
-    border-radius: 8px;
-    transition: background-color 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: inherit;
-}
-
-.themeToggle:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
-.themeIcon {
-    transition: transform 0.3s ease;
-}
-
-.themeToggle:hover .themeIcon {
-    transform: scale(1.1);
-}
+/* Убираем стили для кнопок, так как они конфликтуют с основным Header */
 
 .heroNav {
     position: relative;
@@ -922,81 +794,6 @@
     }
 }
 
-/* Адаптивность для хедера */
-@media (max-width: 1024px) {
-    .header {
-        padding: 16px 24px;
-    }
-    
-    .navMenu {
-        gap: 24px;
-    }
-    
-    .navMenu a {
-        font-size: 14px;
-    }
-    
-    .contactBtn {
-        padding: 10px 20px;
-        font-size: 13px;
-    }
-}
-
-@media (max-width: 768px) {
-    .header {
-        padding: 12px 16px;
-        flex-wrap: wrap;
-    }
-    
-    .navMenu {
-        gap: 16px;
-        order: 3;
-        width: 100%;
-        justify-content: center;
-        margin-top: 12px;
-    }
-    
-    .navMenu a {
-        font-size: 13px;
-    }
-    
-    .contactBtn {
-        padding: 8px 16px;
-        font-size: 12px;
-    }
-    
-    .logo {
-        font-size: 20px;
-    }
-}
-
-@media (max-width: 480px) {
-    .header {
-        padding: 8px 12px;
-        flex-direction: column;
-        gap: 16px;
-    }
-    
-    .navMenu {
-        gap: 12px;
-        order: 3;
-        width: 100%;
-        justify-content: center;
-        margin-top: 12px;
-    }
-    
-    .navMenu a {
-        font-size: 12px;
-    }
-    
-    .contactBtn {
-        padding: 6px 12px;
-        font-size: 11px;
-    }
-    
-    .logo {
-        font-size: 18px;
-    }
-}
+/* Убираем все медиа-запросы для навигации, так как они конфликтуют с основным Header */
 
 

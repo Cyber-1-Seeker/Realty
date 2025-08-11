@@ -12,7 +12,7 @@ const Header = ({ isAuthenticated = false }) => {
     const navigate = useNavigate();
     const [showAuthModal, setShowAuthModal] = useState(false);
     
-    const isActive = (paths) => paths.some(p => pathname === p || pathname.startsWith(p + '/'));
+    const isActive = (paths) => paths.some(p => pathname === p);
 
     const guard = useAuthGuard(isAuthenticated, () => setShowAuthModal(true));
 
@@ -49,13 +49,13 @@ const Header = ({ isAuthenticated = false }) => {
                         База квартир
                     </Link>
                     <AdvanceModal theme={theme}/>
-                    <a 
-                        href="#"
+                    <Link 
+                        to="/profile"
                         onClick={handleProfileClick}
                         className={`${isActive(['/profile']) ? styles.active : ''} ${theme === 'dark' ? styles.dark : ''}`}
                     >
                         Профиль
-                    </a>
+                    </Link>
                 </nav>
                 <button className={styles.contactBtn}>Связаться с нами</button>
                 <button
