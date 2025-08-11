@@ -16,6 +16,146 @@
     z-index: 0;
 }
 
+/* Хедер интегрированный в hero */
+.header {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    background: transparent;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.logo span {
+    color: #e5e7eb;
+}
+
+.logo b {
+    color: #ffffff;
+    font-weight: 900;
+}
+
+.navMenu {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.navMenu a {
+    text-decoration: none;
+    color: #ffffff;
+    font-weight: 500;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    position: relative;
+    padding: 8px 12px;
+    border-radius: 8px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.navMenu a:hover {
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Цветные градиенты для каждой кнопки */
+.navMenu a[href="/"]:hover {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    box-shadow: 0 4px 16px rgba(59, 130, 246, 0.3);
+}
+
+.navMenu a[href="/about"]:hover {
+    background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+    box-shadow: 0 4px 16px rgba(220, 38, 38, 0.3);
+}
+
+.navMenu a[href="/listings"]:hover {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    box-shadow: 0 4px 16px rgba(5, 150, 105, 0.3);
+}
+
+.navMenu a[href="/profile"]:hover {
+    background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
+    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
+}
+
+.navMenu a.active {
+    color: #ffffff;
+    border-bottom: 2.5px solid #ffffff;
+    font-weight: 700;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.2) 100%);
+    border-radius: 6px 6px 0 0;
+    padding-bottom: 2px;
+    transition: background 0.2s, color 0.2s;
+}
+
+.dropdown {
+    position: relative;
+    cursor: pointer;
+}
+
+.contactBtn {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+    font-family: inherit;
+}
+
+.contactBtn:hover {
+    background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.3);
+}
+
+.themeToggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: inherit;
+}
+
+.themeToggle:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.themeIcon {
+    transition: transform 0.3s ease;
+}
+
+.themeToggle:hover .themeIcon {
+    transform: scale(1.1);
+}
+
 .heroNav {
     position: relative;
     z-index: 2;
@@ -103,38 +243,38 @@
 .heroFormBody input {
     width: 100%;
     padding: 12px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
     font-size: 16px;
-    background-color: #f9f9f9;
 }
 
 .heroForm button {
-    background-color: #1e3a8a;
+    width: 100%;
+    padding: 12px;
+    background-color: #2563eb;
     color: white;
     border: none;
-    padding: 14px;
-    width: 100%;
     border-radius: 8px;
     font-size: 16px;
+    font-weight: bold;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
 .heroForm button:hover {
-    background-color: #16347a;
+    background-color: #1d4ed8;
 }
 
 .heroFormNote {
+    padding: 10px 25px 25px 25px;
     font-size: 12px;
+    color: #666;
     text-align: center;
-    padding: 10px 20px 20px 20px;
-    color: #555;
 }
 
 .heroFormNote a {
-    color: #007bff;
+    color: #2563eb;
     text-decoration: none;
 }
 
@@ -144,234 +284,228 @@
 
 .modalOverlay {
     position: fixed;
-    inset: 0;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
     display: flex;
-    align-items: center;
     justify-content: center;
-    background: rgba(0, 0, 0, 0.6);
-    z-index: 9999;
-    padding: 20px;
-    box-sizing: border-box;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
 }
-
 
 .modal {
     background: white;
-    border-radius: 16px;
-    padding: 24px 30px;
-    width: 95%;
-    max-width: 450px;
-    max-height: 90vh;
+    padding: 30px;
+    border-radius: 12px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
     overflow-y: auto;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
-
 
 .modal h3 {
-    margin-bottom: 10px;
-    font-size: 18px;
-    line-height: 1.3;
-    color: black;
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 24px;
+    text-align: center;
 }
-
 
 .modal textarea {
     width: 100%;
     padding: 12px;
-    margin-top: 10px;
-    margin-bottom: 8px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
     resize: vertical;
-    font-size: 15px;
-    min-height: 120px; /* выше */
+    min-height: 100px;
+    margin-bottom: 20px;
+    box-sizing: border-box;
 }
-
 
 .modalButtons {
     display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
+    gap: 10px;
+    justify-content: center;
 }
 
 .submitButton {
-    background-color: #4CAF50;
+    padding: 12px 24px;
+    background-color: #2563eb;
     color: white;
     border: none;
-    padding: 10px 18px;
     border-radius: 8px;
-    font-size: 15px;
+    font-size: 16px;
+    font-weight: bold;
     cursor: pointer;
-    flex: 1;
-    margin-right: 10px;
+    transition: background-color 0.3s ease;
 }
 
 .cancelButton {
-    background-color: #ddd;
-    color: black;
+    padding: 12px 24px;
+    background-color: #6b7280;
+    color: white;
     border: none;
-    padding: 10px 18px;
     border-radius: 8px;
-    font-size: 15px;
+    font-size: 16px;
+    font-weight: bold;
     cursor: pointer;
-    flex: 1;
+    transition: background-color 0.3s ease;
 }
 
 .submitButton:hover {
-    background-color: #45a049;
+    background-color: #1d4ed8;
 }
 
 .cancelButton:hover {
-    background-color: #bbb;
+    background-color: #4b5563;
 }
 
-
 .activeNavButton {
-    background-color: rgba(255, 255, 255, 0.2) !important;
-    border-color: white !important;
+    background-color: #2563eb !important;
+    color: white !important;
 }
 
 .successMessage {
-    color: #4CAF50;
-    margin-top: 10px;
+    color: #059669;
     text-align: center;
-    font-size: 14px;
+    margin-top: 10px;
+    font-weight: bold;
+    padding: 10px;
+    background-color: #d1fae5;
+    border-radius: 8px;
 }
 
-/* Адаптируем существующие */
 .heroNav button {
-    background: none;
+    background-color: #2563eb;
     color: white;
-    border: 2px solid rgba(255, 255, 255, 0.7);
-    border-radius: 8px;
+    border: none;
     padding: 10px 20px;
-    font: inherit;
+    border-radius: 8px;
+    font-weight: bold;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: background-color 0.3s ease;
 }
 
 .heroFormTitle {
-    background-color: #1e40af; /* Синий для аванса */
+    background-color: #2f2f2f;
 }
 
-/* Стили для модального окна аванса */
 .advanceModal {
-    background: #f8f6f2;
-    border-radius: 16px;
+    background: white;
     padding: 30px;
-    width: 100%;
-    max-width: 450px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-    border: 1px solid #e0d8cc;
+    border-radius: 12px;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
 .advanceModalHeader {
     text-align: center;
-    margin-bottom: 25px;
+    margin-bottom: 30px;
 }
 
 .advanceModalTitle {
-    color: #7a6b52;
     font-size: 24px;
-    font-weight: 600;
-    margin-bottom: 8px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
 }
 
 .advanceModalSubtitle {
-    color: #9c8e76;
-    font-size: 15px;
+    color: #666;
+    font-size: 16px;
 }
 
 .advanceModalForm {
     display: flex;
     flex-direction: column;
-    gap: 18px;
+    gap: 15px;
 }
 
 .advanceModalInput {
-    padding: 14px 16px;
-    border: 1px solid #d8d1c5;
-    border-radius: 10px;
-    background: white;
-    font-size: 15px;
-    transition: all 0.3s;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
 }
 
 .advanceModalInput:focus {
-    border-color: #b3a58c;
     outline: none;
-    box-shadow: 0 0 0 2px rgba(176, 159, 126, 0.2);
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 .advanceModalButton {
-    background: #9c8e76;
+    padding: 12px;
+    background-color: #2563eb;
     color: white;
     border: none;
-    padding: 16px;
-    border-radius: 10px;
+    border-radius: 8px;
     font-size: 16px;
-    font-weight: 500;
+    font-weight: bold;
     cursor: pointer;
-    transition: all 0.3s;
-    margin-top: 10px;
+    transition: background-color 0.3s ease;
 }
 
 .advanceModalButton:hover {
-    background: #8a7d67;
+    background-color: #1d4ed8;
 }
 
 .advanceModalButton:disabled {
-    background: #c5bcac;
+    background-color: #9ca3af;
     cursor: not-allowed;
 }
 
 .advanceModalFooter {
     margin-top: 20px;
-    font-size: 13px;
-    color: #9c8e76;
     text-align: center;
+    font-size: 12px;
+    color: #666;
 }
 
 .profileButton {
-    background: none;
+    background-color: #2563eb;
+    color: white;
     border: none;
-    color: inherit;
-    font: inherit;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
     cursor: pointer;
+    transition: background-color 0.3s ease;
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 8px 16px;
-    transition: all 0.3s ease;
 }
 
 .profileButton:hover {
-    color: #fff;
-    transform: translateY(-2px);
+    background-color: #1d4ed8;
 }
 
 .profileIcon {
     font-size: 18px;
 }
 
-
-/* Стили для модального окна консультации */
 .consultModal {
-    padding: 25px;
-    background: #fff;
+    background: white;
+    padding: 30px;
     border-radius: 12px;
-    max-width: 450px;
-    width: 100%;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
 .consultModal h3 {
-    color: #333;
-    text-align: center;
+    margin-top: 0;
     margin-bottom: 20px;
+    color: #333;
+    font-size: 24px;
+    text-align: center;
 }
 
 .consultModal textarea {
@@ -379,101 +513,100 @@
     padding: 12px;
     border: 1px solid #ddd;
     border-radius: 8px;
+    font-size: 16px;
     resize: vertical;
-    min-height: 120px;
-    font-size: 15px;
+    min-height: 100px;
+    margin-bottom: 20px;
+    box-sizing: border-box;
 }
 
 .errorInput {
-    border-color: #ff4d4f !important;
+    border: 2px solid red;
 }
 
 .errorText {
-    color: #ff4d4f;
+    color: red;
     font-size: 14px;
     margin-top: 5px;
+    text-align: left;
 }
 
 .modalButtons {
     display: flex;
     gap: 10px;
-    margin-top: 20px;
+    justify-content: center;
 }
 
 .submitButton {
-    background: #1890ff;
+    padding: 12px 24px;
+    background-color: #2563eb;
     color: white;
     border: none;
-    padding: 12px;
     border-radius: 8px;
-    flex: 1;
+    font-size: 16px;
+    font-weight: bold;
     cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 .cancelButton {
-    background: #f0f0f0;
-    color: #333;
+    padding: 12px 24px;
+    background-color: #6b7280;
+    color: white;
     border: none;
-    padding: 12px;
     border-radius: 8px;
-    flex: 1;
+    font-size: 16px;
+    font-weight: bold;
     cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 .submitButton:hover {
-    background: #40a9ff;
+    background-color: #1d4ed8;
 }
 
 .cancelButton:hover {
-    background: #d9d9d9;
+    background-color: #4b5563;
 }
 
-/* Мобильные стили для модального окна */
 @media (max-width: 768px) {
     .modalOverlay {
-        padding: 10px;
+        padding: 20px;
     }
 
     .modal {
         padding: 20px;
-        max-height: 80vh;
     }
 
     .consultModal {
         padding: 20px;
-        max-width: 100%;
     }
 
     .consultModal h3 {
-        font-size: 16px;
-        margin-bottom: 15px;
+        font-size: 20px;
     }
 
     .consultModal textarea {
-        min-height: 100px;
-        font-size: 14px;
-        padding: 10px;
+        min-height: 80px;
     }
 
     .modalButtons {
-        margin-top: 15px;
+        flex-direction: column;
     }
 
     .submitButton,
     .cancelButton {
-        padding: 10px;
-        font-size: 14px;
+        width: 100%;
     }
 }
 
 @media (max-width: 480px) {
     .modalOverlay {
-        padding: 5px;
+        padding: 10px;
     }
 
     .modal {
         padding: 15px;
-        max-height: 85vh;
     }
 
     .consultModal {
@@ -481,43 +614,43 @@
     }
 
     .consultModal h3 {
-        font-size: 15px;
-        margin-bottom: 12px;
+        font-size: 18px;
     }
 
     .consultModal textarea {
-        min-height: 80px;
-        font-size: 13px;
-        padding: 8px;
+        min-height: 60px;
     }
 
     .modalButtons {
-        margin-top: 12px;
-        gap: 8px;
+        flex-direction: column;
     }
 
     .submitButton,
     .cancelButton {
-        padding: 8px;
-        font-size: 13px;
+        width: 100%;
+        padding: 10px;
+        font-size: 14px;
     }
 }
 
-/* Анимация успешной отправки */
 .advanceModalSuccess {
-    color: #5a8f5e;
     text-align: center;
-    font-size: 15px;
-    margin-top: 15px;
-    animation: fadeIn 0.3s;
+    color: #059669;
+    font-weight: bold;
+    padding: 20px;
+    background-color: #d1fae5;
+    border-radius: 8px;
+    margin-top: 20px;
 }
 
 @keyframes fadeIn {
     from {
         opacity: 0;
+        transform: translateY(-20px);
     }
     to {
         opacity: 1;
+        transform: translateY(0);
     }
 }
 
@@ -557,7 +690,6 @@
     margin-top: 5px;
     text-align: left;
 }
-
 
 @media (max-width: 600px) {
     .heroContent {
@@ -629,70 +761,241 @@
 
 @media (max-width: 480px) {
     .heroContent {
-        padding-top: 35vh; /* Меньший отступ для очень маленьких экранов */
-        padding-bottom: 20px;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: 20px;
+        text-align: center;
+        gap: 30px;
+        min-height: 100vh;
+        padding-top: 40vh; /* Добавляем отступ сверху, чтобы показать фон */
+    }
+
+    .heroText {
+        max-width: 100%;
+        order: 1;
     }
 
     .heroText h1 {
-        font-size: 24px;
-        margin-bottom: 12px;
-    }
-
-    .heroText p {
-        font-size: 14px;
+        font-size: 28px;
+        line-height: 1.2;
         margin-bottom: 15px;
     }
 
+    .heroText p {
+        font-size: 16px;
+        line-height: 1.4;
+        margin-bottom: 20px;
+    }
+
     .heroForm {
-        transform: scale(0.9);
+        order: 2;
+        max-width: 100%;
+        margin: 0 auto;
+        transform: scale(0.95);
+    }
+
+    .heroFormBody input,
+    .heroFormBody textarea {
+        font-size: 16px; /* Предотвращает зум на iOS */
+        padding: 15px;
+        margin-bottom: 12px;
+    }
+
+    .heroFormNote {
+        font-size: 11px;
+        padding: 8px 15px 15px 15px;
+    }
+
+    .heroNav {
+        flex-direction: column;
+        gap: 15px;
+        padding: 15px 20px;
+        font-size: 16px;
+    }
+
+    .heroNav a {
+        padding: 12px 16px;
+        font-size: 14px;
+        width: 100%;
+        text-align: center;
+    }
+
+    .heroSection {
+        height: auto;
+        min-height: 100vh;
+        padding-bottom: 40px;
     }
 }
 
 @media (min-width: 601px) and (max-width: 1023px) {
     .heroContent {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        padding: 30px;
-        gap: 40px;
-        height: 100%;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: 20px;
+        text-align: center;
+        gap: 30px;
+        min-height: 100vh;
+        padding-top: 40vh; /* Добавляем отступ сверху, чтобы показать фон */
     }
 
     .heroText {
-        max-width: 48%;
+        max-width: 100%;
+        order: 1;
     }
 
     .heroText h1 {
         font-size: 28px;
+        line-height: 1.2;
+        margin-bottom: 15px;
     }
 
     .heroText p {
         font-size: 16px;
+        line-height: 1.4;
+        margin-bottom: 20px;
     }
 
     .heroForm {
-        max-width: 45%;
-        width: 100%;
+        order: 2;
+        max-width: 100%;
+        margin: 0 auto;
+        transform: scale(0.95);
     }
 
     .heroFormTitle {
         font-size: 18px;
-        padding: 18px;
+        padding: 15px;
     }
 
     .heroFormBody input,
-    .heroForm button {
-        font-size: 16px;
+    .heroFormBody textarea {
+        font-size: 16px; /* Предотвращает зум на iOS */
+        padding: 15px;
+        margin-bottom: 12px;
     }
 
     .heroFormNote {
-        font-size: 12px;
+        font-size: 11px;
+        padding: 8px 15px 15px 15px;
+    }
+
+    .heroNav {
+        flex-direction: column;
+        gap: 15px;
+        padding: 15px 20px;
+        font-size: 16px;
+    }
+
+    .heroNav a {
+        padding: 12px 16px;
+        font-size: 14px;
+        width: 100%;
+        text-align: center;
+    }
+
+    .heroSection {
+        height: auto;
+        min-height: 100vh;
+        padding-bottom: 40px;
     }
 }
 
 @media (max-width: 768px) {
     .heroNav {
-        display: none;
+        flex-direction: column;
+        gap: 15px;
+        padding: 15px 20px;
+        font-size: 16px;
+    }
+
+    .heroNav a {
+        padding: 12px 16px;
+        font-size: 14px;
+        width: 100%;
+        text-align: center;
+    }
+
+    .heroSection {
+        height: auto;
+        min-height: 100vh;
+        padding-bottom: 40px;
+    }
+}
+
+/* Адаптивность для хедера */
+@media (max-width: 1024px) {
+    .header {
+        padding: 16px 24px;
+    }
+    
+    .navMenu {
+        gap: 24px;
+    }
+    
+    .navMenu a {
+        font-size: 14px;
+    }
+    
+    .contactBtn {
+        padding: 10px 20px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 768px) {
+    .header {
+        padding: 12px 16px;
+        flex-wrap: wrap;
+    }
+    
+    .navMenu {
+        gap: 16px;
+        order: 3;
+        width: 100%;
+        justify-content: center;
+        margin-top: 12px;
+    }
+    
+    .navMenu a {
+        font-size: 13px;
+    }
+    
+    .contactBtn {
+        padding: 8px 16px;
+        font-size: 12px;
+    }
+    
+    .logo {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .header {
+        padding: 8px 12px;
+        flex-direction: column;
+        gap: 16px;
+    }
+    
+    .navMenu {
+        gap: 12px;
+        order: 3;
+        width: 100%;
+        justify-content: center;
+        margin-top: 12px;
+    }
+    
+    .navMenu a {
+        font-size: 12px;
+    }
+    
+    .contactBtn {
+        padding: 6px 12px;
+        font-size: 11px;
+    }
+    
+    .logo {
+        font-size: 18px;
     }
 }
 

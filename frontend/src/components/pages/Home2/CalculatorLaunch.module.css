@@ -78,65 +78,7 @@
 }
 
 /* Модальное окно */
-.modalOverlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    backdrop-filter: blur(5px);
-}
-
-.modal {
-    background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
-    border-radius: 24px;
-    width: 95%;
-    max-width: 540px;
-    max-height: 90vh;
-    box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.25), 0 0 40px rgba(30, 64, 175, 0.15);
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    border: 1px solid rgba(219, 234, 254, 0.8);
-}
-
-.modalContent {
-    overflow-y: auto;
-    max-height: calc(90vh - 40px);
-    padding: 40px;
-    scroll-behavior: smooth;
-}
-
-.closeButton {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background: #f9fafb;
-    border: none;
-    width: 44px;
-    height: 44px;
-    border-radius: 14px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 10;
-    transition: all 0.2s ease;
-    border: 1px solid rgba(229, 231, 235, 0.8);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-}
-
-.closeButton:hover {
-    background: #f3f4f6;
-    transform: rotate(90deg) scale(1.1);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
+/* Стили модального окна перенесены в общий компонент ModalForm */
 
 .modalHeader {
     text-align: center;
@@ -164,6 +106,12 @@
     color: #1e293b;
     font-weight: 800;
     letter-spacing: -0.5px;
+}
+
+.dark.modalHeader h3,
+.dark .modalHeader h3 {
+    color: #60a5fa !important;
+    text-shadow: 0 2px 8px rgba(59, 130, 246, 0.4) !important;
 }
 
 .subtitle {
@@ -452,26 +400,11 @@
     color: white;
     box-shadow: 0 6px 12px -2px rgba(30, 64, 175, 0.3);
     position: relative;
-    overflow: hidden;
-}
-
-.primaryButton::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.primaryButton:hover::before {
-    opacity: 1;
+    transition: all 0.3s ease;
 }
 
 .primaryButton:hover {
+    background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
     transform: translateY(-3px);
     box-shadow: 0 10px 20px -3px rgba(30, 64, 175, 0.4);
 }
@@ -638,94 +571,101 @@
     box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
 }
 
-/* Модальное окно */
-.dark .modalOverlay {
-    background-color: rgba(0, 0, 0, 0.8);
+/* Модальное окно в темной теме */
+.dark .modalContent {
+    background: rgba(2, 6, 23, 0.95) !important;
+    border: 1px solid rgba(59, 130, 246, 0.4) !important;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7), 0 0 40px rgba(59, 130, 246, 0.2) !important;
 }
 
-.dark .modal {
-    background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
-    border: 1px solid rgba(55, 65, 81, 0.8);
-    box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.5);
-}
-
-.dark .closeButton {
-    background: #374151;
-    border: 1px solid rgba(75, 85, 99, 0.8);
-    color: #d1d5db;
-}
-
-.dark .closeButton:hover {
-    background: #4b5563;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+.dark .modalContent::before {
+    background: radial-gradient(circle at center, rgba(59, 130, 246, 0.12) 0%, transparent 70%);
 }
 
 .dark .modalIcon {
-    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
-    border: 1px solid rgba(30, 64, 175, 0.8);
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid rgba(59, 130, 246, 0.4);
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
+}
+
+.dark .modalIcon svg {
+    color: #60a5fa;
 }
 
 .dark .modalHeader h3 {
-    color: #f9fafb;
+    color: #60a5fa;
+    text-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
+    font-weight: 800;
+    letter-spacing: -0.5px;
 }
 
 .dark .subtitle {
-    color: #9ca3af;
+    color: #93c5fd;
+    text-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+    opacity: 0.9;
 }
 
 /* Форма */
+.modalContent .dark .form,
 .dark .form {
-    background: #1f2937;
-    border: 1px solid rgba(55, 65, 81, 0.7);
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.9) !important;
+    border: 1px solid rgba(59, 130, 246, 0.3) !important;
+    box-shadow: 0 8px 32px rgba(59, 130, 246, 0.15) !important;
+    backdrop-filter: blur(10px);
 }
 
 .dark .formGroup label {
-    color: #e5e7eb;
+    color: #f1f5f9;
 }
 
+.modalContent .dark .input,
+.modalContent .dark .select,
 .dark .input,
 .dark .select {
-    background: linear-gradient(135deg, #374151 0%, #4b5563 100%);
-    border: 1px solid rgba(75, 85, 99, 0.5);
-    color: #f9fafb;
+    background: rgba(0, 0, 0, 0.9) !important;
+    border: 2px solid rgba(59, 130, 246, 0.4) !important;
+    color: #f1f5f9 !important;
+    box-shadow: 0 4px 16px rgba(59, 130, 246, 0.2), 0 0 8px rgba(59, 130, 246, 0.1) !important;
 }
 
 .dark .input:focus,
 .dark .select:focus {
     border-color: #60a5fa;
-    background: #374151;
-    box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.2);
+    background: rgba(0, 0, 0, 1);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.3), 0 8px 24px rgba(59, 130, 246, 0.25), 0 0 16px rgba(59, 130, 246, 0.2);
 }
 
 .dark .input::placeholder {
-    color: #9ca3af;
+    color: #6b7280;
 }
 
 .dark .selectArrow {
-    color: #9ca3af;
+    color: #60a5fa;
 }
 
 /* Чекбокс */
 .dark .checkboxLabel {
-    color: #d1d5db;
+    color: #f1f5f9;
 }
 
 .dark .checkboxLabel:before {
-    border: 2px solid #6b7280;
-    background: #374151;
+    border: 2px solid rgba(59, 130, 246, 0.4);
+    background: rgba(0, 0, 0, 0.9);
+    box-shadow: 0 4px 16px rgba(59, 130, 246, 0.2), 0 0 8px rgba(59, 130, 246, 0.1);
 }
 
 .dark .checkboxInput:checked + .checkboxLabel:before {
     background: #3b82f6;
     border-color: #3b82f6;
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.3), 0 8px 24px rgba(59, 130, 246, 0.25);
 }
 
 /* Ошибки */
 .dark .error {
-    background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 100%);
-    border: 1px solid #dc2626;
-    color: #fecaca;
+    background: linear-gradient(135deg, rgba(220, 38, 38, 0.1) 0%, rgba(185, 28, 28, 0.1) 100%);
+    border: 2px solid rgba(248, 113, 113, 0.3);
+    color: #fca5a5;
+    box-shadow: 0 4px 16px rgba(220, 38, 38, 0.2);
 }
 
 /* Кнопка отправки */

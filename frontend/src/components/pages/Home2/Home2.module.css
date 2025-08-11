@@ -18,103 +18,11 @@
     height: 100vh;
     display: flex;
     flex-direction: column;
+    padding-top: 140px; /* Increased space for global header */
 }
 
-.header {
-    position: sticky;
-    top: 0;
-    background: rgba(255,255,255,0.95);
-    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-    transition: background 0.3s, box-shadow 0.3s;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 32px 48px 24px 48px;
-    background: transparent;
-    position: relative;
-    z-index: 20;
-}
-.logo {
-    font-size: 2rem;
-    font-weight: 700;
-    color: #111827;
-    letter-spacing: 2px;
-}
-.logo b {
-    color: #2563eb;
-    font-weight: 900;
-}
-.navMenu {
-    display: flex;
-    gap: 32px;
-    position: relative;
-    z-index: 21;
-    margin-right: 22px;
-    align-items: center;
-}
-.navMenu a {
-    color: #222;
-    text-decoration: none;
-    font-size: 1.2rem;
-    font-weight: 500;
-    padding: 8px 12px;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-}
-.navMenu a:hover {
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-}
-
-/* Цветные градиенты для каждой кнопки */
-.navMenu a[href="/"]:hover {
-    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-    box-shadow: 0 4px 16px rgba(59, 130, 246, 0.3);
-}
-
-.navMenu a[href="/about"]:hover {
-    background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
-    box-shadow: 0 4px 16px rgba(220, 38, 38, 0.3);
-}
-
-.navMenu a[href="/listings"]:hover {
-    background: linear-gradient(135deg, #059669 0%, #047857 100%);
-    box-shadow: 0 4px 16px rgba(5, 150, 105, 0.3);
-}
-
-.navMenu a[href="/profile"]:hover {
-    background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
-    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
-}
-.navMenu a.active {
-    color: #2563eb;
-    border-bottom: 2.5px solid #2563eb;
-    font-weight: 700;
-    background: linear-gradient(90deg, #e3e9f7 0%, #b3c6f7 100%);
-    border-radius: 6px 6px 0 0;
-    padding-bottom: 2px;
-    transition: background 0.2s, color 0.2s;
-}
-.contactBtn {
-    background: #2563eb;
-    color: #fff;
-    border: none;
-    border-radius: 24px;
-    padding: 12px 32px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    box-shadow: 0 2px 12px rgba(37,99,235,0.08);
-    cursor: pointer;
-    transition: all 0.3s ease;
-    position: relative;
-    z-index: 21;
-}
-.contactBtn:hover {
-    background: #1d4ed8;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 16px rgba(29, 78, 216, 0.3);
-}
+/* home2 header removed */
+/* home2 header elements removed */
 
 .heroSection {
     display: flex;
@@ -125,7 +33,7 @@
     border-radius: 32px;
     /*box-shadow: 0 8px 32px rgba(0,0,0,0.07);*/
     max-width: 1440px;
-    margin: 9px auto 0 auto;
+    margin: 0 auto;
     padding: 40px 100px 60px 100px;
     gap: 32px;
     position: relative;
@@ -273,14 +181,10 @@
     }
 }
 @media (max-width: 700px) {
-    .header {
-        flex-direction: column;
+    /* home2 header removed */
+    /* .navMenu {
         gap: 16px;
-        padding: 16px 4px 8px 4px;
-    }
-    .navMenu {
-        gap: 16px;
-    }
+    } */
     .heroTitle {
         font-size: 2rem;
     }
@@ -347,6 +251,282 @@
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
+}
+
+.requestBtn {
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    color: white;
+    border: none;
+    border-radius: 16px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.requestBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(59, 130, 246, 0.3);
+}
+
+.requestBtn:disabled {
+    background: #e5e7eb;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.error {
+    color: #dc2626;
+    font-size: 0.875rem;
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 12px;
+    background: rgba(220, 38, 38, 0.1);
+    border-radius: 8px;
+}
+
+.successModal {
+    padding: 32px;
+    text-align: center;
+}
+
+.successIcon {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.successModal h3 {
+    font-size: 1.5rem;
+    color: #22c55e;
+    margin-bottom: 12px;
+}
+
+.successModal p {
+    color: #4b5563;
+    font-size: 1rem;
+}
+
+.commentModal {
+    padding: 32px;
+    max-width: 500px;
+    width: 100%;
+    border-radius: 16px;
+    transition: all 0.3s ease;
+}
+
+/* Темная тема */
+.commentModal.dark {
+    background: rgba(2, 6, 23, 0.95);
+    border: 1px solid rgba(59, 130, 246, 0.4);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7), 0 0 40px rgba(59, 130, 246, 0.2);
+    color: #f1f5f9;
+}
+
+/* Светлая тема */
+.commentModal.light {
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1), 0 0 20px rgba(59, 130, 246, 0.1);
+    color: #1e293b;
+}
+
+.commentModal h3 {
+    margin: 0 0 20px 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+.dark .commentModal h3 {
+    color: #f1f5f9;
+}
+
+.light .commentModal h3 {
+    color: #111827;
+}
+
+.commentInput {
+    width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    font-size: 1rem;
+    resize: vertical;
+    min-height: 100px;
+    margin-bottom: 16px;
+    outline: none;
+    transition: all 0.2s;
+}
+
+/* Темная тема для input */
+.dark .commentInput {
+    background: rgba(0, 0, 0, 0.7);
+    border: 1.5px solid rgba(59, 130, 246, 0.4);
+    color: #f1f5f9;
+}
+
+/* Светлая тема для input */
+.light .commentInput {
+    background: rgba(241, 245, 249, 0.9);
+    border: 1.5px solid rgba(59, 130, 246, 0.3);
+    color: #1e293b;
+}
+
+.commentInput:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2), 0 0 20px rgba(59, 130, 246, 0.2);
+}
+
+.commentInput.errorInput {
+    border-color: #ef4444;
+    box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2), 0 0 20px rgba(239, 68, 68, 0.2);
+}
+
+.errorText {
+    color: #ef4444;
+    font-size: 0.875rem;
+    margin-bottom: 16px;
+    padding: 8px 12px;
+    background: rgba(239, 68, 68, 0.1);
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.modalButtons {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 24px;
+}
+
+.submitButton {
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    color: #ffffff;
+    border: none;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 120px;
+    justify-content: center;
+}
+
+/* Темная тема для кнопки отправить */
+.dark .submitButton {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.dark .submitButton:hover {
+    background: linear-gradient(135deg, #60a5fa 0%, #2563eb 100%);
+    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+    transform: translateY(-2px);
+}
+
+/* Светлая тема для кнопки отправить */
+.light .submitButton {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+}
+
+.light .submitButton:hover {
+    background: linear-gradient(135deg, #60a5fa 0%, #2563eb 100%);
+    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+    transform: translateY(-2px);
+}
+
+.submitButton:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+/* Отключенное состояние для обеих тем */
+.submitButton:disabled {
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.dark .submitButton:disabled {
+    background: rgba(148, 163, 184, 0.2);
+    color: rgba(241, 245, 249, 0.5);
+}
+
+.light .submitButton:disabled {
+    background: rgba(148, 163, 184, 0.1);
+    color: rgba(30, 41, 59, 0.5);
+}
+
+/* Кнопка отмены */
+.cancelButton {
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    min-width: 100px;
+    text-align: center;
+}
+
+/* Темная тема для кнопки отмены */
+.dark .cancelButton {
+    background: rgba(15, 23, 42, 0.6);
+    color: #f1f5f9;
+    border: 1.5px solid rgba(241, 245, 249, 0.2);
+}
+
+.dark .cancelButton:hover {
+    background: rgba(30, 41, 59, 0.8);
+    border-color: rgba(241, 245, 249, 0.3);
+    transform: translateY(-2px);
+}
+
+/* Светлая тема для кнопки отмены */
+.light .cancelButton {
+    background: rgba(241, 245, 249, 0.9);
+    color: #1e293b;
+    border: 1.5px solid rgba(148, 163, 184, 0.2);
+}
+
+.light .cancelButton:hover {
+    background: rgba(241, 245, 249, 1);
+    border-color: rgba(148, 163, 184, 0.3);
+    transform: translateY(-2px);
+}
+
+.cancelButton:active {
+    transform: translateY(0);
+}
+
+.spinner {
+    animation: spin 0.75s linear infinite;
+    margin-right: 8px;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .requestBtn {
@@ -509,15 +689,11 @@
 .dark .pageWrapper {
     background: none;
 }
-.dark .header,
 .dark .heroSection {
     background: transparent;
 }
-.dark .heroTitle, .dark .heroSubtitle, .dark .navMenu a, .dark .logo, .dark .filterCard label {
+.dark .heroTitle, .dark .heroSubtitle, .dark .filterCard label {
     color: #f3f1ec !important;
-}
-.dark .navMenu a.active {
-    color: #4999fc !important;
 }
 .dark .filterCard {
     background: #23272b;
@@ -572,15 +748,7 @@
 .dark .requestBtn:hover {
     background: #22c55e;
 }
-.dark .contactBtn {
-    background: #2563eb;
-    color: #fff;
-}
-.dark .contactBtn:hover {
-    background: #1d4ed8;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 16px rgba(29, 78, 216, 0.3);
-}
+/* home2 contactBtn removed */
 .dark .bgDotRed {
     background: radial-gradient(circle, #ff6b6b 60%, transparent 100%);
 }
@@ -675,13 +843,11 @@
 } 
 
 .altBgWrapper,
-.header,
 .heroSection,
 .filterCard,
 .searchForm,
 .input,
-.requestBtn,
-.contactBtn {
+.requestBtn {
     transition: background 1.2s cubic-bezier(.77,0,.18,1), color 1.2s cubic-bezier(.77,0,.18,1), border-color 1.2s cubic-bezier(.77,0,.18,1), box-shadow 1.2s cubic-bezier(.77,0,.18,1);
 }
 .bgDotRed,
@@ -712,3 +878,167 @@
     display: flex;
     align-items: center;
 } 
+
+/* Стили для модального окна комментария */
+.commentModal {
+    padding: 32px;
+    background: white;
+    border-radius: 32px;
+    box-shadow: 0 32px 80px rgba(0, 0, 0, 0.3);
+}
+
+
+
+.commentTextarea {
+    width: 100%;
+    padding: 16px;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-family: inherit;
+    resize: vertical;
+    min-height: 120px;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+    background: #fff;
+}
+
+.commentTextarea:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.errorInput {
+    border-color: #ef4444 !important;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1) !important;
+}
+
+.errorText {
+    color: #ef4444;
+    font-size: 0.875rem;
+    margin-top: 8px;
+    margin-bottom: 16px;
+}
+
+.modalButtons {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.submitButton {
+    flex: 1;
+    padding: 14px 24px;
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+}
+
+.submitButton:hover:not(:disabled) {
+    background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3);
+}
+
+.submitButton:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.cancelButton {
+    padding: 14px 24px;
+    background: #f3f4f6;
+    color: #374151;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.cancelButton:hover {
+    background: #e5e7eb;
+    border-color: #d1d5db;
+}
+
+/* Стили для сообщения об успехе */
+.successMessage {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 12px;
+    text-align: center;
+    margin-top: 16px;
+    font-weight: 500;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+    animation: fadeInUp 0.3s ease;
+}
+
+/* Темная тема для модального окна */
+.dark .commentModal {
+    background: rgba(17, 24, 39, 0.95);
+    border: 1px solid rgba(251, 191, 36, 0.2);
+    box-shadow: 0 32px 80px rgba(0, 0, 0, 0.5);
+}
+
+.dark .commentModal h3 {
+    color: #f3f4f6;
+}
+
+.dark .commentTextarea {
+    background: rgba(31, 41, 55, 0.9);
+    border: 2px solid rgba(75, 85, 99, 0.6);
+    color: #f3f4f6;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.dark .commentTextarea:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.dark .errorInput {
+    border-color: #ef4444 !important;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2) !important;
+}
+
+.dark .errorText {
+    color: #fca5a5;
+}
+
+.dark .submitButton {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3);
+}
+
+.dark .submitButton:hover:not(:disabled) {
+    background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+}
+
+.dark .cancelButton {
+    background: rgba(31, 41, 55, 0.9);
+    color: #e5e7eb;
+    border: 2px solid rgba(75, 85, 99, 0.6);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.dark .cancelButton:hover {
+    background: rgba(55, 65, 81, 0.9);
+    border-color: rgba(107, 114, 128, 0.6);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.dark .successMessage {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    box-shadow: 0 4px 16px rgba(5, 150, 105, 0.3);
+}

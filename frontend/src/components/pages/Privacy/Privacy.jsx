@@ -1,10 +1,13 @@
 import React from 'react';
+import { useTheme } from '@/context/ThemeContext';
 import classes from './Privacy.module.css';
 
 const Privacy = () => {
+  const { theme } = useTheme();
+  
   return (
-    <div className={classes.privacyContainer}>
-      <div className={classes.content}>
+    <div className={`${classes.privacyContainer} ${theme === 'dark' ? classes.dark : ''}`}>
+      <div className={`${classes.content} ${theme === 'dark' ? classes.dark : ''}`}>
         <h1>Политика конфиденциальности</h1>
         
         <section className={classes.section}>

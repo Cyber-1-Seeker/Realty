@@ -3,27 +3,21 @@ import { Outlet, useLocation } from 'react-router-dom'
 import Header from '../Header/Header'
 import Footer from '../Footer/Footer'
 import styles from './Layout.module.css'
+import Home2Footer from "@/components/pages/Home2/Home2Footer.jsx";
+import { useTheme } from '@/context/ThemeContext';
 
 const Layout = ({ isAuthenticated, user }) => {
   const location = useLocation();
-  
-  // Определяем активную страницу на основе текущего пути
-  const getActivePage = () => {
-    const path = location.pathname;
-    if (path === '/' || path === '/home2') return 'home';
-    if (path === '/about') return 'about';
-    if (path === '/listings' || path.startsWith('/listings/')) return 'listings';
-    if (path === '/profile') return 'profile';
-    return 'home';
-  };
+  const isHome2Page = location.pathname === '/home2';
+  const { theme } = useTheme();
 
   return (
-    <div className={styles.layout}>
-      <Header activePage={getActivePage()} />
+    <div className={`${styles.layout} ${theme === 'dark' ? styles.dark : ''}`}>
+      <Header isAuthenticated={isAuthenticated} />
       <main className={styles.main}>
         <Outlet/>
       </main>
-      <Footer/>
+      {!isHome2Page && <Home2Footer/>}
     </div>
   )
 }

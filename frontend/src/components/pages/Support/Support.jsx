@@ -3,17 +3,20 @@ import { Link } from 'react-router-dom';
 import { Button, Result } from 'antd';
 import { ToolOutlined } from '@ant-design/icons';
 import styles from './Support.module.css';
+import { useTheme } from '@/context/ThemeContext';
 
 const Support = () => {
+  const { theme } = useTheme();
+  
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} ${theme === 'dark' ? styles.dark : ''}`}>
       <Result
         icon={<ToolOutlined className={styles.icon} />}
         title="Страница поддержки в разработке"
         subTitle="Мы активно работаем над созданием удобной системы поддержки для вас!"
         extra={
           <div className={styles.actions}>
-            <Link to="/">
+            <Link to="/home2">
               <Button type="primary" size="large">
                 Вернуться на главную
               </Button>

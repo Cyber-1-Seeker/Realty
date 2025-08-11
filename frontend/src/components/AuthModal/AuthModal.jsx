@@ -3,7 +3,7 @@ import styles from './AuthModal.module.css';
 import LoginForm from './LoginForm';
 import RegisterForm from './RegisterForm';
 
-const AuthModal = ({ onClose }) => {
+const AuthModal = ({ onClose, onAuthSuccess }) => {
   const [isLogin, setIsLogin] = useState(true);
 
   const handleSwitch = () => {
@@ -14,7 +14,7 @@ const AuthModal = ({ onClose }) => {
     <div className={styles.overlay}>
       <div className={styles.modal}>
         <button className={styles.closeButton} onClick={onClose}>✖</button>
-        {isLogin ? <LoginForm /> : <RegisterForm />}
+        {isLogin ? <LoginForm onSuccess={onAuthSuccess} /> : <RegisterForm onSuccess={onAuthSuccess} />}
         <div className={styles.switchText}>
           {isLogin ? 'Нет аккаунта?' : 'Уже есть аккаунт?'}
           <button className={styles.switchButton} onClick={handleSwitch}>

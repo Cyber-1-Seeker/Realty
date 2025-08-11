@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {useParams} from 'react-router-dom';
 import {API_PUBLIC} from '@/utils/api/axiosPublic.js';
+import { useTheme } from '@/context/ThemeContext';
 import {
     HomeOutlined,
     BankOutlined,
@@ -29,6 +30,7 @@ import {Image, Tag, Button, Divider, Card, Row, Col, Skeleton, Empty, Modal} fro
 import styles from './ListingDetails.module.css';
 
 const ListingDetails = () => {
+    const { theme } = useTheme();
     const {id} = useParams();
     const [apartment, setApartment] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -206,7 +208,7 @@ const ListingDetails = () => {
     }
 
     return (
-        <div className={styles.pageContainer}>
+        <div className={`${styles.pageContainer} ${theme === 'dark' ? styles.dark : ''}`}>
             <div className={styles.container}>
                 {/* Заголовок и цена */}
                 <div className={styles.header}>

@@ -13,7 +13,7 @@
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
-    z-index: 1000;
+    z-index: 100000;
 }
 
 .navLink:hover {
@@ -32,13 +32,15 @@
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 99999;
+  z-index: 999999;
   background: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
   align-items: center;
   backdrop-filter: blur(8px);
   padding: 20px;
+  width: 100vw;
+  height: 100vh;
 }
 
 .modal {
@@ -48,6 +50,7 @@
   overflow-y: auto;
   border-radius: 32px;
   box-shadow: 0 32px 80px rgba(0, 0, 0, 0.3);
+  z-index: 999999;
 }
 
 .closeButton {

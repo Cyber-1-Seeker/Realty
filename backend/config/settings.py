@@ -55,15 +55,11 @@ if 'test' in sys.argv:
         }
     }
 elif DEBUG:
-    # Разработка: используем Postgres из .env
+    # Разработка: используем SQLite
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.getenv("POSTGRES_DB", "realty_db"),
-            'USER': os.getenv("POSTGRES_USER", "postgres"),
-            'PASSWORD': os.getenv("POSTGRES_PASSWORD", ""),
-            'HOST': os.getenv("DB_HOST", "db"),
-            'PORT': '5432',
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
 else:
@@ -109,8 +105,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'monitoring.middleware.UserVisitMiddleware',
 ]
+
+if not DEBUG:
+    MIDDLEWARE.append('monitoring.middleware.UserVisitMiddleware')
 
 # Отключаем проблемные заголовки безопасности для HTTP
 if not DEBUG:
@@ -175,24 +173,26 @@ CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "").split(",") if os.ge
 CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS", "").split(",") if os.getenv("CSRF_TRUSTED_ORIGINS") else []
 
 if DEBUG:
-    CORS_ALLOWED_ORIGINS.extend(["http://localhost:5173", "http://127.0.0.1:5173"])
-    CSRF_TRUSTED_ORIGINS.extend(["http://localhost:5173", "http://127.0.0.1:5173"])
+    CORS_ALLOW_ALL_ORIGINS = True
+    CORS_ALLOW_CREDENTIALS = True
+    CSRF_TRUSTED_ORIGINS.extend([
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+        "http://localhost:8000",
+        "http://127.0.0.1:8000"
+    ])
 else:
     CORS_ALLOWED_ORIGINS.extend([
         "http://147.45.224.189",
-        "http://147.45.224.189:80",
         "https://147.45.224.189",
         "http://localhost",
-        "http://localhost:80",
         "http://127.0.0.1",
         "http://frontend",  # Docker service name
     ])
     CSRF_TRUSTED_ORIGINS.extend([
         "http://147.45.224.189",
-        "http://147.45.224.189:80", 
         "https://147.45.224.189",
         "http://localhost",
-        "http://localhost:80",
         "http://127.0.0.1",
         "http://frontend",  # Docker service name
     ])

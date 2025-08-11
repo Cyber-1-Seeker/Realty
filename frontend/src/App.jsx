@@ -20,22 +20,30 @@ function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [user, setUser] = useState(null);
 
-    useEffect(() => {
-        fetch(`${API_URL}/api/accounts/csrf/`, {credentials: 'include'})
-            .then(() => {
-                return fetch(`${API_URL}/api/accounts/me/`, {
-                    credentials: 'include'
-                });
-            })
-            .then(res => res.ok ? res.json() : Promise.reject())
-            .then(data => {
+    const checkAuth = async () => {
+        try {
+            await fetch(`${API_URL}/api/accounts/csrf/`, {credentials: 'include'});
+            const response = await fetch(`${API_URL}/api/accounts/me/`, {
+                credentials: 'include'
+            });
+            
+            if (response.ok) {
+                const data = await response.json();
                 setUser(data);
                 setIsAuthenticated(true);
-            })
-            .catch(() => {
-                setUser(null);
-                setIsAuthenticated(false);
-            });
+                return true;
+            } else {
+                throw new Error('Not authenticated');
+            }
+        } catch (error) {
+            setUser(null);
+            setIsAuthenticated(false);
+            return false;
+        }
+    };
+
+    useEffect(() => {
+        checkAuth();
     }, []);
 
     return (

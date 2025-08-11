@@ -1,5 +1,6 @@
 import {useState, useEffect, useRef} from 'react';
-import {Form, Input, Button, Select, Switch, Upload, Steps, Modal} from 'antd';
+import {Form, Input, Button, Select, Switch, Upload, Steps, ConfigProvider, theme, Tooltip} from 'antd';
+import { useTheme } from '@/context/ThemeContext';
 import {Link} from 'react-router-dom'
 import {
     PlusOutlined,
@@ -9,7 +10,8 @@ import {
     FileTextOutlined,
     CameraOutlined,
     CheckCircleOutlined,
-    ClockCircleOutlined
+    ClockCircleOutlined,
+    QuestionCircleOutlined
 } from '@ant-design/icons';
 import styles from './AddListingForm.module.css';
 import {API_AUTH} from "@/utils/api/axiosWithAuth.js";
@@ -18,7 +20,44 @@ const {Option} = Select;
 const {Step} = Steps;
 const {TextArea} = Input;
 
-const AddListingForm = ({onClose, onSuccess, user}) => {
+const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
+
+    // Переименовываем onClose в parentOnClose для ясности
+    // Используем переданную тему или получаем из контекста
+    const { theme: contextTheme } = useTheme();
+    const currentTheme = theme || contextTheme;
+
+    // Функция для создания лейбла с тултипом
+    const createLabelWithTooltip = (label, tooltipText) => (
+        <span>
+            {label}{' '}
+            <Tooltip
+                title={tooltipText}
+                color={currentTheme === 'dark' ? '#1f2937' : undefined}
+                styles={{
+                    root: {
+                        fontSize: '14px',
+                        maxWidth: '300px',
+                        zIndex: 1100000
+                    },
+                    body: {
+                        padding: '8px 12px',
+                        color: currentTheme === 'dark' ? '#f3f4f6' : undefined,
+                    }
+                }}
+                getPopupContainer={() => document.body} // Рендерим в корне документа
+            >
+                <QuestionCircleOutlined style={{ 
+                    color: currentTheme === 'dark' ? '#60a5fa' : '#1890ff',
+                    cursor: 'help',
+                    fontSize: '16px',
+                    marginLeft: '4px',
+                    transition: 'all 0.3s ease',
+                    opacity: 0.8
+                }} />
+            </Tooltip>
+        </span>
+    );
     const [form] = Form.useForm();
     const [currentStep, setCurrentStep] = useState(0);
     const [fileList, setFileList] = useState([]);
@@ -134,7 +173,9 @@ const AddListingForm = ({onClose, onSuccess, user}) => {
 
     // Валидатор для цены
     const validatePrice = (_, value) => {
-        if (!value) return Promise.reject('Введите цену');
+        if (!value || value.trim() === '') {
+            return Promise.reject('Введите цену');
+        }
 
         const cleanedValue = String(value)
             .replace(/[^\d,.]/g, '')
@@ -150,7 +191,7 @@ const AddListingForm = ({onClose, onSuccess, user}) => {
             return Promise.reject('Цена должна быть положительной');
         }
 
-        if (price > 1e27) {
+        if (price > 1e9) {
             return Promise.reject('Цена слишком большая');
         }
 
@@ -222,6 +263,7 @@ const AddListingForm = ({onClose, onSuccess, user}) => {
                 headers: {'Content-Type': 'multipart/form-data'}
             });
 
+            // Показываем окно успеха
             setShowSuccessModal(true);
         } catch (error) {
             console.error('Ошибка:', error);
@@ -254,8 +296,8 @@ const AddListingForm = ({onClose, onSuccess, user}) => {
 
     // Закрытие модального окна успеха
     const handleSuccessModalClose = () => {
-        setShowSuccessModal(false);
-        if (onClose) onClose();
+        // Закрываем модальное окно и вызываем колбэки
+        if (parentOnClose) parentOnClose();
         if (onSuccess) onSuccess();
     };
 
@@ -283,15 +325,14 @@ const AddListingForm = ({onClose, onSuccess, user}) => {
                     </Select>
                 </Form.Item>
 
-                <Form.Item
-                    name="price"
-                    label="Цена (₽)"
-                    rules={[
-                        {required: true, message: 'Введите цену'},
-                        {validator: validatePrice}
-                    ]}
-                    required
-                >
+                                        <Form.Item
+                            name="price"
+                            label="Цена (₽)"
+                            rules={[
+                                {validator: validatePrice}
+                            ]}
+                            required
+                        >
                     <Input
                         placeholder="₽"
                         onChange={(e) => {
@@ -363,7 +404,10 @@ const AddListingForm = ({onClose, onSuccess, user}) => {
 
                         <Form.Item
                             name="address"
-                            label="Адрес"
+                            label={createLabelWithTooltip(
+                                "Адрес",
+                                "Укажите полный адрес объекта: город, улица, номер дома. Например: Москва, ул. Ленина, д. 10"
+                            )}
                             rules={[
                                 {required: true, message: 'Введите адрес'},
                                 {max: 255, message: 'Максимальная длина адреса 255 символов'}
@@ -374,7 +418,10 @@ const AddListingForm = ({onClose, onSuccess, user}) => {
 
                         <Form.Item
                             name="title"
-                            label="Заголовок объявления"
+                            label={createLabelWithTooltip(
+                                "Заголовок объявления",
+                                'Краткое описание объекта. Укажите основные характеристики, которые привлекут внимание: количество комнат, площадь, особенности. Например: "Светлая 2-комн. квартира с видом на парк"'
+                            )}
                             rules={[
                                 {required: true, message: 'Введите заголовок'},
                                 {max: 100, message: 'Максимум 100 символов'}
@@ -385,7 +432,10 @@ const AddListingForm = ({onClose, onSuccess, user}) => {
 
                         <Form.Item
                             name="total_area"
-                            label="Общая площадь (м²)"
+                            label={createLabelWithTooltip(
+                                "Общая площадь (м²)",
+                                'Укажите общую площадь помещения в квадратных метрах, включая все комнаты, коридоры, санузлы и балконы (если они есть). Используйте точку или запятую для дробных значений.'
+                            )}
                             rules={[
                                 {required: true, message: 'Введите площадь'},
                                 {validator: validateArea}
@@ -398,12 +448,12 @@ const AddListingForm = ({onClose, onSuccess, user}) => {
                             <>
                                 <Form.Item
                                     name="floor"
-                                    label="Этаж"
-                                    tooltip={
+                                                                        label={createLabelWithTooltip(
+                                        "Этаж",
                                         propertyType === 'house' || propertyType === 'townhouse'
                                             ? 'Для домов и таунхаусов можно указать основной этаж'
                                             : 'На каком этаже расположен объект'
-                                    }
+                                    )}
                                     rules={[
                                         {pattern: /^\d+$/, message: 'Введите целое число'},
                                         {
@@ -418,12 +468,12 @@ const AddListingForm = ({onClose, onSuccess, user}) => {
 
                                 <Form.Item
                                     name="total_floors"
-                                    label="Этажность здания"
-                                    tooltip={
+                                                                        label={createLabelWithTooltip(
+                                        "Этажность здания",
                                         propertyType === 'house' || propertyType === 'townhouse'
                                             ? 'Общее количество этажей в здании'
                                             : 'Сколько всего этажей в доме'
-                                    }
+                                    )}
                                     rules={[
                                         {pattern: /^\d+$/, message: 'Введите целое число'},
                                         {
@@ -495,12 +545,34 @@ const AddListingForm = ({onClose, onSuccess, user}) => {
                         <Form.Item
                             name="balcony"
                             label="Балкон/лоджия"
+
                             rules={[
-                                {pattern: /^\d+$/, message: 'Введите целое число'},
-                                {max: 4, message: 'Слишком большое количество'},
+                                {
+                                    validator: async (_, value) => {
+                                        if (value === undefined || value === '') {
+                                            return Promise.resolve();
+                                        }
+                                        const numValue = parseInt(value);
+                                        if (isNaN(numValue)) {
+                                            return Promise.reject('Введите целое число');
+                                        }
+                                        if (numValue < 0) {
+                                            return Promise.reject('Значение не может быть отрицательным');
+                                        }
+                                        if (numValue > 4) {
+                                            return Promise.reject('Слишком большое количество');
+                                        }
+                                        return Promise.resolve();
+                                    }
+                                }
                             ]}
                         >
-                            <Input type="number" min="0" placeholder="Количество"/>
+                            <Input 
+                                type="number" 
+                                min="0" 
+                                max="4"
+                                placeholder="Количество"
+                            />
                         </Form.Item>
 
                         <Form.Item
@@ -642,8 +714,90 @@ const AddListingForm = ({onClose, onSuccess, user}) => {
         }
     };
 
-    return (
-        <div className={styles.container}>
+    // Настройки темы для Ant Design
+    const darkThemeConfig = {
+        algorithm: theme.darkAlgorithm,
+        token: {
+            colorBgContainer: '#111827',
+            colorBgElevated: '#111827',
+            colorBorder: '#374151',
+            colorText: '#f3f4f6',
+            colorTextPlaceholder: '#9ca3af',
+            colorPrimary: '#3b82f6',
+            colorBgTextHover: '#1f2937',
+            colorBgTextActive: '#374151',
+            borderRadius: 6,
+            controlHeight: 40,
+            controlHeightLG: 48,
+            controlHeightSM: 32,
+            colorTextDescription: '#e5e7eb', // Для счетчика символов
+        },
+        components: {
+            Select: {
+                colorBgContainer: '#111827',
+                colorBorder: '#374151',
+                colorText: '#f3f4f6',
+                colorTextPlaceholder: '#9ca3af',
+                colorBgElevated: '#111827',
+                controlItemBgHover: '#1f2937',
+                controlItemBgActive: '#374151',
+                colorPrimary: '#3b82f6',
+            },
+            Input: {
+                colorTextDescription: '#e5e7eb', // Для счетчика символов в Input.TextArea
+            },
+        },
+    };
+
+    const renderSuccessContent = () => (
+        <div className={styles.modalContent}>
+            <div className={styles.modalIcon}>
+                <CheckCircleOutlined/>
+            </div>
+
+            <h2 className={styles.modalTitle}>Объявление отправлено на модерацию!</h2>
+
+            <div className={styles.modalCard}>
+                <ClockCircleOutlined className={styles.clockIcon}/>
+                <div>
+                    <h3>Ожидайте проверки</h3>
+                    <p>Наши модераторы проверяют ваше объявление. Обычно это занимает менее 24 часов.</p>
+                </div>
+            </div>
+
+            <div className={styles.modalCard}>
+                <div className={styles.badge}>1</div>
+                <div>
+                    <h3>Что проверяется?</h3>
+                    <p>Достоверность информации, соответствие требованиям сервиса и качество фотографий.</p>
+                </div>
+            </div>
+
+            <div className={styles.modalCard}>
+                <div className={styles.badge}>2</div>
+                <div>
+                    <h3>После проверки</h3>
+                    <p>В профиле у объявления будет статус "Опубликовано".</p>
+                </div>
+            </div>
+
+            <div className={styles.modalFooter}>
+                <Button
+                    type="primary"
+                    onClick={handleSuccessModalClose}
+                    className={styles.modalButton}
+                >
+                    Понятно
+                </Button>
+                <p className={styles.supportText}>
+                    Вопросы? <Link to="/support">Обратитесь в поддержку</Link>
+                </p>
+            </div>
+        </div>
+    );
+
+    const renderFormContent = () => (
+        <>
             <Steps current={currentStep} className={styles.steps}>
                 {steps.map((step, index) => (
                     <Step key={index} title={step.title} icon={step.icon}/>
@@ -691,62 +845,17 @@ const AddListingForm = ({onClose, onSuccess, user}) => {
                     )}
                 </div>
             </Form>
+        </>
+    );
 
-            {/* Модальное окно успешной отправки */}
-            <Modal
-                open={showSuccessModal}
-                onCancel={handleSuccessModalClose}
-                footer={null}
-                centered
-                closable={false}
-                className={styles.successModal}
-            >
-                <div className={styles.modalContent}>
-                    <div className={styles.modalIcon}>
-                        <CheckCircleOutlined/>
-                    </div>
-
-                    <h2 className={styles.modalTitle}>Объявление отправлено на модерацию!</h2>
-
-                    <div className={styles.modalCard}>
-                        <ClockCircleOutlined className={styles.clockIcon}/>
-                        <div>
-                            <h3>Ожидайте проверки</h3>
-                            <p>Наши модераторы проверяют ваше объявление. Обычно это занимает менее 24 часов.</p>
-                        </div>
-                    </div>
-
-                    <div className={styles.modalCard}>
-                        <div className={styles.badge}>1</div>
-                        <div>
-                            <h3>Что проверяется?</h3>
-                            <p>Достоверность информации, соответствие требованиям сервиса и качество фотографий.</p>
-                        </div>
-                    </div>
-
-                    <div className={styles.modalCard}>
-                        <div className={styles.badge}>2</div>
-                        <div>
-                            <h3>После проверки</h3>
-                            <p>В профиле у объявления будет статус "Опубликовано".</p>
-                        </div>
-                    </div>
-
-                    <div className={styles.modalFooter}>
-                        <Button
-                            type="primary"
-                            onClick={handleSuccessModalClose}
-                            className={styles.modalButton}
-                        >
-                            Понятно
-                        </Button>
-                        <p className={styles.supportText}>
-                            Вопросы? <Link to="/support">Обратитесь в поддержку</Link>
-                        </p>
-                    </div>
-                </div>
-            </Modal>
-        </div>
+    return (
+        <ConfigProvider
+            theme={currentTheme === 'dark' ? darkThemeConfig : undefined}
+        >
+            <div className={`${styles.container} ${currentTheme === 'dark' ? styles.dark : ''}`}>
+                {showSuccessModal ? renderSuccessContent() : renderFormContent()}
+            </div>
+        </ConfigProvider>
     );
 };
 

@@ -2,6 +2,7 @@ import {useEffect, useState} from 'react';
 import axios from 'axios';
 import Hero from './ListingsHero.jsx';
 import styles from './ListingsPage.module.css';
+import { useTheme } from '@/context/ThemeContext';
 
 import backgroundImage from '@/assets/Listings/Hero2.jpg';
 import ListingGridSection from "@/components/pages/Listings/ListingsPage/ListingGridSection.jsx";
@@ -13,6 +14,7 @@ import useAuthGuard from '@/hooks/useAuthGuard';
 import { API_URL } from '@/utils/config';
 
 const ListingsPage = ({isAuthenticated, currentUser}) => { // Добавляем currentUser в пропсы
+    const { theme } = useTheme();
     const [listings, setListings] = useState([]);
     // const [visibleCount, setVisibleCount] = useState(6); // Отключаем пагинацию
     const [showAddForm, setShowAddForm] = useState(false);
@@ -42,7 +44,7 @@ const ListingsPage = ({isAuthenticated, currentUser}) => { // Добавляем
     };
 
     return (
-        <div>
+        <div className={theme === 'dark' ? styles.dark : ''}>
             <Hero
                 title="Доступные квартиры"
                 subtitle="Найдите идеальное жилье для себя"

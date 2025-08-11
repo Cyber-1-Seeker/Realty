@@ -2,7 +2,7 @@ import React, {useState, useRef, useEffect} from 'react';
 import {motion} from 'framer-motion';
 import styles from './CalculatorLaunch.module.css';
 import OrderEvaluationForm from './OrderEvaluationForm.jsx';
-import ModalForm from './ModalForm.jsx';
+import ModalForm from '@/components/pages/Listings/ListingsPage/ModalForm.jsx';
 
 const CalculatorForm = ({ theme }) => {
     const [roomType, setRoomType] = useState('');
@@ -92,50 +92,29 @@ const CalculatorForm = ({ theme }) => {
                 Рассчитать стоимость
             </motion.button>
 
-            {isModalOpen && (
-                <motion.div
-                    className={styles.modalOverlay + (theme === 'dark' ? ' ' + styles.dark : '')}
-                    onClick={() => setIsModalOpen(false)}
-                    initial={{opacity: 0}}
-                    animate={{opacity: 1}}
-                    exit={{opacity: 0}}
-                >
-                    <motion.div
-                        className={styles.modal}
-                        onClick={(e) => e.stopPropagation()}
-                        initial={{scale: 0.95, opacity: 0}}
-                        animate={{scale: 1, opacity: 1}}
-                        exit={{scale: 0.95, opacity: 0}}
-                        transition={{type: "spring", damping: 25, stiffness: 300}}
-                    >
-                        <button
-                            className={styles.closeButton}
-                            onClick={() => {
-                                setIsModalOpen(false);
-                                setPrice(null);
-                                setError('');
-                            }}
-                        >
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                 xmlns="http://www.w3.org/2000/svg">
-                                <path d="M18 6L6 18M6 6L18 18" stroke="#4B5563" strokeWidth="2" strokeLinecap="round"
-                                      strokeLinejoin="round"/>
-                            </svg>
-                        </button>
-                        <div className={styles.modalHeader}>
-                            <div className={styles.modalIcon}>
+            <ModalForm
+                isOpen={isModalOpen}
+                onClose={() => {
+                    setIsModalOpen(false);
+                    setPrice(null);
+                    setError('');
+                }}
+                theme={theme}
+            >
+                        <div className={`${styles.modalHeader} ${theme === 'dark' ? styles.dark : ''}`}>
+                            <div className={`${styles.modalIcon} ${theme === 'dark' ? styles.dark : ''}`}>
                                 <svg width="48" height="48" viewBox="0 0 24 24" fill="none"
                                      xmlns="http://www.w3.org/2000/svg" className={styles.calculatorSvgIcon}>
                                     <path
                                         d="M9 7H15M9 11H15M9 15H13M5 3H19C20.1046 3 21 3.89543 21 5V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V5C3 3.89543 3.89543 3 5 3Z"
-                                        stroke="#1E40AF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                        stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                                 </svg>
                             </div>
                             <h3>Калькулятор стоимости квартиры</h3>
                             <p className={styles.subtitle}>Рассчитайте стоимость недвижимости в Москве</p>
                         </div>
-                        <div className={styles.modalContent} ref={modalContentRef}>
-                            <form className={styles.form} onSubmit={handleCalculate}>
+                        <div className={`${styles.modalContent} ${theme === 'dark' ? styles.dark : ''}`} ref={modalContentRef}>
+                            <form className={`${styles.form} ${theme === 'dark' ? styles.dark : ''}`} onSubmit={handleCalculate}>
                                 <div className={styles.formGroup}>
                                     <label>
                                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -153,7 +132,7 @@ const CalculatorForm = ({ theme }) => {
                                         <select
                                             value={roomType}
                                             onChange={(e) => setRoomType(e.target.value)}
-                                            className={styles.select}
+                                            className={`${styles.select} ${theme === 'dark' ? styles.dark : ''}`}
                                         >
                                             <option value="">Выберите тип</option>
                                             <option value="studio">Студия</option>
@@ -193,7 +172,7 @@ const CalculatorForm = ({ theme }) => {
                                         placeholder="Например: 45.5"
                                         value={area}
                                         onChange={(e) => setArea(e.target.value)}
-                                        className={styles.input}
+                                        className={`${styles.input} ${theme === 'dark' ? styles.dark : ''}`}
                                     />
                                 </div>
                                 <div className={styles.formColumns}>
@@ -228,7 +207,7 @@ const CalculatorForm = ({ theme }) => {
                                             <select
                                                 value={buildingType}
                                                 onChange={(e) => setBuildingType(e.target.value)}
-                                                className={styles.select}
+                                                className={`${styles.select} ${theme === 'dark' ? styles.dark : ''}`}
                                             >
                                                 <option value="">Выберите тип</option>
                                                 <option value="new">Новостройка</option>
@@ -257,7 +236,7 @@ const CalculatorForm = ({ theme }) => {
                                             <select
                                                 value={renovation}
                                                 onChange={(e) => setRenovation(e.target.value)}
-                                                className={styles.select}
+                                                className={`${styles.select} ${theme === 'dark' ? styles.dark : ''}`}
                                             >
                                                 <option value="">Выберите состояние</option>
                                                 <option value="none">Без ремонта</option>
@@ -280,7 +259,7 @@ const CalculatorForm = ({ theme }) => {
                                         onChange={(e) => setHasBalcony(e.target.checked)}
                                         className={styles.checkboxInput}
                                     />
-                                    <label htmlFor="balcony" className={styles.checkboxLabel}>
+                                    <label htmlFor="balcony" className={`${styles.checkboxLabel} ${theme === 'dark' ? styles.dark : ''}`}>
                                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
                                              xmlns="http://www.w3.org/2000/svg">
                                             <path
@@ -317,7 +296,7 @@ const CalculatorForm = ({ theme }) => {
                             </form>
                             {price && (
                                 <motion.div
-                                    className={styles.result}
+                                    className={`${styles.result} ${theme === 'dark' ? styles.dark : ''}`}
                                     initial={{opacity: 0, height: 0}}
                                     animate={{opacity: 1, height: "auto"}}
                                     transition={{duration: 0.3}}
@@ -364,9 +343,7 @@ const CalculatorForm = ({ theme }) => {
                                 </motion.div>
                             )}
                         </div>
-                    </motion.div>
-                </motion.div>
-            )}
+            </ModalForm>
             <ModalForm
                 isOpen={showOrderModal}
                 onClose={() => setOrderModal(false)}

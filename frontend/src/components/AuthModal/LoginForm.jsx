@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom';
 import styles from './LoginRegisterForm.module.css';
 import {API_AUTH} from "@/utils/api/axiosWithAuth.js";
 
-const LoginForm = ({switchToRegister}) => {
+const LoginForm = ({ onSuccess }) => {
     const [phone, setPhone] = useState('');
     const [error, setError] = useState('');
 
@@ -22,7 +22,7 @@ const LoginForm = ({switchToRegister}) => {
             });
 
             if (response.status === 200) {
-                window.location.reload(); // Успешный вход — обновляем сессию
+                onSuccess?.(); // Вызываем колбэк успешной авторизации
             }
         } catch (err) {
             const data = err?.response?.data;

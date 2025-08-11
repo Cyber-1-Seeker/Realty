@@ -1,7 +1,329 @@
 .container {
     width: 100%;
-    max-width: 700px;
     background-color: #fafafa;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+/* Темная тема */
+.dark {
+    background-color: #111827;
+    color: #f3f4f6;
+}
+
+.dark .steps {
+    background-color: #1f2937;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.dark .form {
+    background: #1f2937;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.dark :global(.ant-form-item-label > label) {
+    color: #f3f4f6 !important;
+}
+
+.dark :global(.ant-tooltip) {
+    z-index: 1000002 !important;
+}
+
+.dark :global(.ant-tooltip-inner) {
+    background-color: #1f2937 !important;
+    border: 1px solid #374151 !important;
+    color: #f3f4f6 !important;
+}
+
+.dark :global(.ant-tooltip-arrow-content::before) {
+    background: #1f2937 !important;
+    border: 1px solid #374151 !important;
+}
+
+.dark :global(.ant-form-item-explain),
+.dark :global(.ant-form-item-extra) {
+    color: #9ca3af !important;
+}
+
+/* Специальные стили для счетчика символов в темной теме */
+.dark :global(.ant-input-textarea-show-count::after),
+.dark :global(.ant-input-textarea) :global(.ant-input-textarea-show-count::after) {
+    color: #e5e7eb !important; /* Значительно светлее */
+}
+
+.dark :global(.ant-input-textarea-show-count:focus-within::after),
+.dark :global(.ant-input-textarea:focus-within) :global(.ant-input-textarea-show-count::after) {
+    color: #93c5fd !important; /* Яркий голубой */
+    text-shadow: 0 0 8px rgba(147, 197, 253, 0.3); /* Добавляем легкое свечение */
+}
+
+.dark :global(.ant-input),
+.dark :global(.ant-input-number),
+.dark :global(.ant-select-selector),
+.dark :global(.ant-input-number-input) {
+    background-color: #111827 !important;
+    border-color: #374151 !important;
+    color: #f3f4f6 !important;
+}
+
+.dark :global(.ant-input:hover),
+.dark :global(.ant-input-number:hover),
+.dark :global(.ant-select-selector:hover) {
+    border-color: #60a5fa !important;
+}
+
+.dark :global(.ant-input:focus),
+.dark :global(.ant-input-number:focus),
+.dark :global(.ant-select-selector:focus) {
+    border-color: #60a5fa !important;
+    box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.2) !important;
+}
+
+/* Убедимся, что выпадающий список всегда поверх модального окна */
+:global(.ant-select-dropdown) {
+    z-index: 1000000 !important;
+}
+
+/* Дополнительные стили для темной темы, если потребуется переопределить что-то конкретное */
+.dark :global(.ant-select-dropdown),
+.dark :global(.ant-select-item),
+.dark :global(.ant-select-selector) {
+    transition: all 0.2s ease !important;
+}
+
+.dark :global(.ant-select-item-option-active:not(.ant-select-item-option-disabled)) {
+    background-color: #374151 !important;
+}
+
+.dark :global(.ant-select-item-option-selected:not(.ant-select-item-option-disabled)) {
+    background-color: rgba(59, 130, 246, 0.2) !important;
+    color: #60a5fa !important;
+}
+
+.dark :global(.ant-select-selection-placeholder) {
+    color: #9ca3af !important;
+}
+
+.dark :global(.ant-input::placeholder) {
+    color: #9ca3af !important;
+}
+
+.dark :global(.ant-select-arrow) {
+    color: #9ca3af !important;
+}
+
+.dark :global(.ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) .ant-select-selector) {
+    border-color: #3b82f6 !important;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2) !important;
+}
+
+.dark :global(.ant-select:not(.ant-select-disabled):hover .ant-select-selector) {
+    border-color: #3b82f6 !important;
+}
+
+.dark :global(.ant-select) {
+    color: #f3f4f6 !important;
+}
+
+.dark :global(.ant-select-selection-search-input) {
+    background: transparent !important;
+    color: #f3f4f6 !important;
+}
+
+.dark :global(.ant-select-selection-item) {
+    color: #f3f4f6 !important;
+}
+
+/* Убедимся, что выпадающий список всегда поверх модального окна */
+:global(.ant-select-dropdown) {
+    z-index: 1000000 !important;
+}
+
+.dark :global(.ant-upload.ant-upload-select-picture-card) {
+    background-color: #111827;
+    border-color: #374151;
+}
+
+.dark :global(.ant-upload.ant-upload-select-picture-card:hover) {
+    border-color: #60a5fa;
+}
+
+.dark :global(.ant-steps-item-title) {
+    color: #f3f4f6 !important;
+}
+
+.dark :global(.ant-steps-item-description) {
+    color: #9ca3af !important;
+}
+
+.dark :global(.ant-steps-item-wait .ant-steps-item-icon) {
+    background-color: #1f2937 !important;
+    border-color: #4b5563 !important;
+}
+
+.dark :global(.ant-steps-item-wait .ant-steps-item-icon > .ant-steps-icon) {
+    color: #9ca3af !important;
+}
+
+.dark :global(.ant-steps-item-process .ant-steps-item-icon) {
+    background-color: #3b82f6 !important;
+    border-color: #3b82f6 !important;
+}
+
+.dark :global(.ant-steps-item-process .ant-steps-item-icon > .ant-steps-icon) {
+    color: #ffffff !important;
+}
+
+.dark :global(.ant-steps-item-finish .ant-steps-item-icon) {
+    background-color: #1f2937 !important;
+    border-color: #3b82f6 !important;
+}
+
+.dark :global(.ant-steps-item-finish .ant-steps-item-icon > .ant-steps-icon) {
+    color: #3b82f6 !important;
+}
+
+.dark :global(.ant-steps-item-process > .ant-steps-item-container > .ant-steps-item-content > .ant-steps-item-title) {
+    color: #3b82f6 !important;
+    text-shadow: 0 0 8px rgba(59, 130, 246, 0.4);
+}
+
+.dark :global(.ant-steps-item-process .ant-steps-item-icon) {
+    background: transparent !important;
+    border-color: #3b82f6 !important;
+}
+
+.dark :global(.ant-steps-item-process .ant-steps-item-icon > .ant-steps-icon) {
+    color: #3b82f6 !important;
+}
+
+.dark :global(.ant-steps-item-finish > .ant-steps-item-container > .ant-steps-item-content > .ant-steps-item-title) {
+    color: #60a5fa !important;
+}
+
+.dark :global(.ant-steps-item-wait > .ant-steps-item-container > .ant-steps-item-content > .ant-steps-item-title) {
+    color: #9ca3af !important;
+}
+
+.dark :global(.ant-steps-item-tail::after) {
+    background-color: #374151 !important;
+}
+
+.dark :global(.ant-steps-item-finish .ant-steps-item-tail::after) {
+    background-color: #3b82f6 !important;
+}
+
+.dark .formActions {
+    border-top-color: #374151;
+}
+
+.dark .prevButton {
+    background-color: #374151;
+    border-color: #374151;
+    color: #f3f4f6;
+}
+
+.dark .prevButton:hover {
+    background-color: #4b5563;
+    border-color: #4b5563;
+}
+
+.dark .nextButton {
+    background-color: #3b82f6;
+    border-color: #3b82f6;
+}
+
+.dark .nextButton:hover {
+    background-color: #2563eb;
+    border-color: #2563eb;
+}
+
+.dark .submitButton {
+    background-color: #059669;
+    border-color: #059669;
+}
+
+.dark .submitButton:hover {
+    background-color: #047857;
+    border-color: #047857;
+}
+
+.dark :global(.ant-switch) {
+    background-color: #374151;
+}
+
+.dark :global(.ant-switch-checked) {
+    background-color: #3b82f6 !important;
+}
+
+/* Стили для модального окна в темной теме */
+.dark .modalContent {
+    background-color: #1f2937;
+    color: #f3f4f6;
+}
+
+.dark .modalTitle {
+    color: #f3f4f6;
+}
+
+.dark .modalCard {
+    background-color: #111827;
+    border-left-color: #059669;
+}
+
+.dark .modalCard h3 {
+    color: #f3f4f6;
+}
+
+.dark .modalCard p {
+    color: #9ca3af;
+}
+
+.dark .clockIcon {
+    color: #60a5fa;
+}
+
+.dark .badge {
+    background-color: #3b82f6;
+}
+
+.dark .modalFooter {
+    border-top-color: #374151;
+}
+
+.dark .modalButton {
+    background-color: #3b82f6;
+    border-color: #3b82f6;
+}
+
+.dark .modalButton:hover {
+    background-color: #2563eb;
+    border-color: #2563eb;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.dark .supportText {
+    color: #9ca3af;
+}
+
+.dark .supportText a {
+    color: #60a5fa;
+}
+
+.dark .supportText a:hover {
+    color: #93c5fd;
+}
+
+.dark .privacyNote {
+    color: #9ca3af;
+}
+
+.dark .privacyNote a {
+    color: #60a5fa;
+}
+
+.dark .privacyNote a:hover {
+    border-bottom-color: #60a5fa;
 }
 
 .steps {
@@ -127,13 +449,106 @@
     }
 }
 
-/* Стили для модального окна успеха */
-.successModal .ant-modal-content {
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-    animation: fadeIn 0.4s ease-out;
+/* Базовые стили для контейнера формы */
+
+
+.successState .modalContent {
+    padding: 30px 20px;
+    text-align: center;
 }
+
+.successState .modalIcon {
+    font-size: 60px;
+    color: #52c41a;
+    margin-bottom: 20px;
+    animation: pulse 1.5s infinite;
+}
+
+.successState .modalTitle {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #f3f4f6;
+    margin-bottom: 25px;
+}
+
+.successState .modalCard {
+    display: flex;
+    align-items: flex-start;
+    text-align: left;
+    background: #111827;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 15px;
+    border-left: 4px solid #3b82f6;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.successState .modalCard h3 {
+    color: #f3f4f6;
+    margin-bottom: 6px;
+}
+
+.successState .modalCard p {
+    color: #9ca3af;
+    margin: 0;
+}
+
+.successState .clockIcon {
+    color: #60a5fa;
+    margin-right: 15px;
+}
+
+.successState .badge {
+    background: #3b82f6;
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    margin-right: 15px;
+}
+
+.successState .modalFooter {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #374151;
+}
+
+.successState .modalButton {
+    width: 100%;
+    height: 46px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    border-radius: 10px;
+    background: #3b82f6;
+    border-color: #3b82f6;
+}
+
+.successState .modalButton:hover {
+    background: #2563eb;
+    border-color: #2563eb;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.successState .supportText {
+    margin-top: 15px;
+    color: #9ca3af;
+}
+
+.successState .supportText a {
+    color: #60a5fa;
+    text-decoration: none;
+}
+
+.successState .supportText a:hover {
+    color: #93c5fd;
+    text-decoration: underline;
+}
+
+
 
 @keyframes fadeIn {
     from {

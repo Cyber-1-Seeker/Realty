@@ -109,19 +109,6 @@ const Hero = ({isAuthenticated}) => {
         <section className={classes.heroSection}>
             <div className={classes.heroOverlay}></div>
 
-            <nav className={classes.heroNav}>
-                <button onClick={() => setShowAdvanceModal(true)}>
-                    Получить аванс
-                </button>
-                <a href="#calculator">Калькулятор стоимости</a>
-
-                <button onClick={handleProfileClick}>
-                    Профиль
-                </button>
-
-                <Link to="/listings">База квартир</Link>
-                <a href="/#contacts">Контакты</a>
-            </nav>
 
             <div className={classes.heroContent}>
                 <div className={classes.heroText}>

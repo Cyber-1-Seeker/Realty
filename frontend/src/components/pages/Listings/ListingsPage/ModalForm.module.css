@@ -9,17 +9,17 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
-    backdrop-filter: blur(5px);
+    z-index: 1000000;
+    backdrop-filter: blur(8px);
 }
 
 .modal {
     background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
-    border-radius: 24px;
+    border-radius: 32px;
     width: 95%;
     max-width: 540px;
     max-height: 90vh;
-    box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.25), 0 0 40px rgba(30, 64, 175, 0.15);
+    box-shadow: 0 32px 80px rgba(0, 0, 0, 0.3);
     position: relative;
     overflow: hidden;
     display: flex;
@@ -38,22 +38,52 @@
     position: absolute;
     top: 20px;
     right: 20px;
-    background: #f9fafb;
+    background: rgba(255, 255, 255, 0.9);
     border: none;
-    width: 44px;
-    height: 44px;
-    border-radius: 14px;
+    width: 48px;
+    height: 48px;
+    border-radius: 16px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 10;
-    transition: all 0.2s ease;
-    border: 1px solid rgba(229, 231, 235, 0.8);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    color: #64748b;
+    border: 2px solid rgba(203, 213, 225, 0.5);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
 }
 
 .closeButton:hover {
-    background: #f3f4f6;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background: rgba(248, 250, 252, 0.95);
+    transform: rotate(90deg) scale(1.1);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    color: #ef4444;
+    border-color: rgba(239, 68, 68, 0.3);
+}
+
+/* Темная тема */
+.dark .overlay {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.dark .modal {
+    background: rgba(17, 24, 39, 0.95);
+    border: 1px solid rgba(251, 191, 36, 0.2);
+    box-shadow: 0 32px 80px rgba(0, 0, 0, 0.5);
+}
+
+.dark .closeButton {
+    background: rgba(31, 41, 55, 0.9);
+    color: #cbd5e1;
+    border: 2px solid rgba(251, 191, 36, 0.3);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.dark .closeButton:hover {
+    background: rgba(17, 24, 39, 0.95);
+    color: #f87171;
+    border-color: rgba(248, 113, 113, 0.4);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
 }

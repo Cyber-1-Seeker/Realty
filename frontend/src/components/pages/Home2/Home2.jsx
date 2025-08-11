@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {useInView} from 'react-intersection-observer';
 import styles from './Home2.module.css';
 import heroImg from '@/assets/Listings/Hero4.png';
@@ -11,9 +11,85 @@ import StatisticsSection from "@/components/pages/Home2/StatisticsSection.jsx";
 import MapSection from "@/components/pages/Home2/MapSection.jsx";
 import Testimonials from "@/components/pages/Home/Testimonials/Testimonials.jsx";
 import Home2Footer from "@/components/pages/Home2/Home2Footer.jsx";
-import AdvanceModal from "@/components/pages/Home2/AdvanceModal.jsx";
+import { API_PUBLIC } from '@/utils/api/axiosPublic.js';
+import { getCSRFTokenFromCookie } from "@/utils/api/csrf.js";
+import ModalForm from '@/components/pages/Listings/ListingsPage/ModalForm.jsx';
 const Home2 = () => {
     const {theme, toggleTheme} = useTheme();
+    const [formData, setFormData] = useState({
+        name: '',
+        phone: '',
+        comment: '',
+    });
+    const [loading, setLoading] = useState(false);
+    const [showCommentModal, setShowCommentModal] = useState(false);
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
+    const [error, setError] = useState('');
+    const [commentError, setCommentError] = useState(false);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        
+        if (!formData.name.trim() || !formData.phone.trim()) {
+            setError('Пожалуйста, заполните все поля');
+            return;
+        }
+
+        // Открываем модальное окно для ввода комментария
+        setShowCommentModal(true);
+    };
+
+    const handleCommentSubmit = async () => {
+        if (!formData.comment.trim()) {
+            setCommentError(true);
+            return;
+        }
+        setCommentError(false);
+        setError('');
+
+        setLoading(true);
+        try {
+            const response = await API_PUBLIC.post(
+                '/api/applications/applications/',
+                {
+                    name: formData.name.trim(),
+                    phone: formData.phone.trim(),
+                    comment: formData.comment.trim(),
+                },
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCSRFTokenFromCookie(),
+                    },
+                    withCredentials: true,
+                }
+            );
+
+            if (response.status === 201) {
+                setShowCommentModal(false);
+                setShowSuccessModal(true);
+                setFormData({ name: '', phone: '', comment: '' });
+                setTimeout(() => {
+                    setShowSuccessModal(false);
+                }, 2000);
+            } else {
+                setError('Ошибка при отправке заявки. Попробуйте еще раз.');
+            }
+        } catch (error) {
+            console.error('Ошибка при отправке заявки:', error);
+            setError('Ошибка при отправке заявки. Попробуйте еще раз.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
+        if (name === 'comment') {
+            setCommentError(false);
+        }
+    };
 
     // Хуки для анимации при скролле
     const {ref: dealRef, inView: dealInView} = useInView({triggerOnce: true, threshold: 0.2});
@@ -44,30 +120,7 @@ const Home2 = () => {
 
             <div className={styles.pageWrapper}>
                 <div className={styles.headerHeroContainer}>
-                    <header className={styles.header}>
-                        <div className={styles.logo}><span>STRACK </span><b>ESTATE</b></div>
-                        <nav className={styles.navMenu}>
-                            <a href="/" className={styles.active}>Главная</a>
-                            <a href="/about">О нас</a>
-                            <a href="/listings" className={styles.dropdown}>База квартир</a>
-                            <AdvanceModal theme={theme}/>
-                            <a href="/profile">Профиль</a>
-                        </nav>
-                        <button className={styles.contactBtn}>Связаться с нами</button>
-                        <button
-                            className={styles.themeToggle}
-                            onClick={toggleTheme}
-                            aria-label={theme === 'light' ? 'Переключить на тёмную тему' : 'Переключить на светлую тему'}
-                        >
-                            <img
-                                src={theme === 'light' ? '/icons/Home/sun-icon.png' : '/icons/Home/moon-icon.png'}
-                                alt={theme === 'light' ? 'Луна' : 'Солнце'}
-                                width={theme === 'light' ? '44' : '39'}
-                                height={theme === 'light' ? '44' : '39'}
-                                className={styles.themeIcon}
-                            />
-                        </button>
-                    </header>
+                    {/* Header removed - using global header */}
 
                     <section className={styles.heroSection}>
                         <div className={styles.bgDotRed}></div>
@@ -93,11 +146,38 @@ const Home2 = () => {
                                 </div>
                             </div>
                             <section className={styles.searchBlock}>
-                                <form className={styles.searchForm}>
-                                    <input className={styles.input} type="text" placeholder="Ваше имя" required/>
-                                    <input className={styles.input} type="tel" placeholder="Номер телефона" required/>
-                                    <button className={styles.requestBtn} type="submit">Отправить заявку</button>
+                                <form className={styles.searchForm} onSubmit={handleSubmit}>
+                                    <input
+                                        className={styles.input}
+                                        type="text"
+                                        name="name"
+                                        placeholder="Ваше имя"
+                                        value={formData.name}
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                    <input
+                                        className={styles.input}
+                                        type="tel"
+                                        name="phone"
+                                        placeholder="Номер телефона"
+                                        value={formData.phone}
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                    <button
+                                        className={styles.requestBtn}
+                                        type="submit"
+                                        disabled={loading}
+                                    >
+                                        {loading ? 'Отправка...' : 'Отправить заявку'}
+                                    </button>
                                 </form>
+                                {error && (
+                                    <div className={styles.error}>
+                                        {error}
+                                    </div>
+                                )}
                             </section>
                         </div>
                         <div className={styles.heroImgBlock}>
@@ -131,6 +211,87 @@ const Home2 = () => {
                     <Home2Footer theme={theme}/>
                 </section>
             </div>
+
+            {/* Модальное окно для комментария */}
+            <ModalForm isOpen={showCommentModal} onClose={() => setShowCommentModal(false)}>
+                <div className={`${styles.commentModal} ${theme === 'dark' ? styles.dark : styles.light}`}>
+                    <h3>Уточните тему заявки</h3>
+                    <textarea
+                        className={`${styles.commentInput} ${commentError ? styles.errorInput : ''}`}
+                        placeholder="Опишите, какая у вас ситуация"
+                        name="comment"
+                        value={formData.comment}
+                        onChange={handleChange}
+                        rows={4}
+                        maxLength={200}
+                    />
+                    {(commentError || error) && (
+                        <div className={styles.errorText}>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M12 8V12M12 16H12.01M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z"
+                                    stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                            </svg>
+                            {commentError ? 'Комментарий обязателен' : error}
+                        </div>
+                    )}
+
+                    <div className={styles.modalButtons}>
+                        <button
+                            onClick={handleCommentSubmit}
+                            className={styles.submitButton}
+                            disabled={loading}
+                        >
+                            {loading ? (
+                                <>
+                                    <svg className={styles.spinner} width="20" height="20" viewBox="0 0 24 24"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,19a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z"
+                                            opacity=".25"/>
+                                        <path
+                                            d="M10.14,1.16a11,11,0,0,0-9,8.92A1.59,1.59,0,0,0,2.46,12,1.52,1.52,0,0,0,4.11,10.7a8,8,0,0,1,6.66-6.61A1.42,1.42,0,0,0,12,2.69h0A1.57,1.57,0,0,0,10.14,1.16Z">
+                                            <animateTransform attributeName="transform" type="rotate" dur="0.75s"
+                                                            values="0 12 12;360 12 12" repeatCount="indefinite"/>
+                                        </path>
+                                    </svg>
+                                    Отправка...
+                                </>
+                            ) : (
+                                <>
+                                    Отправить
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M9 5L16 12L9 19" stroke="currentColor" strokeWidth="2"
+                                              strokeLinecap="round" strokeLinejoin="round"/>
+                                    </svg>
+                                </>
+                            )}
+                        </button>
+                        <button
+                            onClick={() => setShowCommentModal(false)}
+                            className={styles.cancelButton}
+                        >
+                            Отмена
+                        </button>
+                    </div>
+                </div>
+            </ModalForm>
+
+            {/* Модальное окно успешной отправки */}
+            <ModalForm isOpen={showSuccessModal} onClose={() => setShowSuccessModal(false)}>
+                <div className={styles.successModal}>
+                    <div className={styles.successIcon}>
+                        <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M9 12L11 14L15 10M21 16V8C21 6.89543 20.1046 6 19 6H5C3.89543 6 3 6.89543 3 8V16C3 17.1046 3.89543 18 5 18H19C20.1046 18 21 17.1046 21 16Z"
+                                stroke="#22c55e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3>Заявка отправлена!</h3>
+                    <p>Наш специалист свяжется с вами в ближайшее время</p>
+                </div>
+            </ModalForm>
         </div>
     );
 };

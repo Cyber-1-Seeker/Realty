@@ -14,6 +14,7 @@ import {
     PlusOutlined,
     InfoCircleOutlined
 } from '@ant-design/icons';
+import { useTheme } from '@/context/ThemeContext';
 import styles from './ProfilePage.module.css';
 
 import ModalForm from "@/components/pages/Listings/ListingsPage/ModalForm.jsx";
@@ -22,6 +23,7 @@ import AddListingForm from "@/components/pages/Listings/ListingsPage/AddListingF
 const {confirm} = Modal;
 
 const ProfilePage = () => {
+    const { theme } = useTheme();
     const [user, setUser] = useState(null);
     const [apartments, setApartments] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -286,7 +288,8 @@ const ProfilePage = () => {
     }
 
     return (
-        <div className={styles.profileContainer}>
+        <div className={`${styles.profileContainer} ${theme === 'dark' ? styles.dark : ''}`}>
+
             <div className={styles.profileHeader}>
                 <h1>Профиль пользователя</h1>
             </div>

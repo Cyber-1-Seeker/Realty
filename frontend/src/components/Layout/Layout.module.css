@@ -2,7 +2,11 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-color: #f3f1ec;
+  background-color: white;
+}
+
+.layout.dark {
+  background-color: #111827;
 }
 
 .main {

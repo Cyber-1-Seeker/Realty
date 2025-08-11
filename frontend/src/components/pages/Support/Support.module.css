@@ -6,12 +6,24 @@
   min-height: 80vh;
   padding: 40px 20px;
   background-color: #f8f9fa;
+  transition: all 0.3s ease;
+}
+
+/* Темная тема */
+.dark {
+  background-color: #111827;
+  color: #f3f4f6;
 }
 
 .icon {
   font-size: 72px;
   color: #1890ff;
   margin-bottom: 20px;
+  transition: color 0.3s ease;
+}
+
+.dark .icon {
+  color: #60a5fa;
 }
 
 .actions {
@@ -31,6 +43,13 @@
   width: 100%;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   border: 1px solid #e8e8e8;
+  transition: all 0.3s ease;
+}
+
+.dark .infoCard {
+  background-color: #1f2937;
+  border-color: #374151;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .infoCard h3 {
@@ -38,6 +57,11 @@
   margin-bottom: 25px;
   color: #262626;
   font-size: 1.5rem;
+  transition: color 0.3s ease;
+}
+
+.dark .infoCard h3 {
+  color: #f3f4f6;
 }
 
 .contactList {
@@ -51,6 +75,12 @@
   border-bottom: 1px solid #f0f0f0;
   font-size: 1.1rem;
   display: flex;
+  transition: border-color 0.3s ease, color 0.3s ease;
+}
+
+.dark .contactList li {
+  border-bottom-color: #374151;
+  color: #d1d5db;
 }
 
 .contactList li:last-child {
@@ -61,11 +91,20 @@
   min-width: 120px;
   display: inline-block;
   color: #595959;
+  transition: color 0.3s ease;
+}
+
+.dark .contactList strong {
+  color: #9ca3af;
 }
 
 .progressInfo {
   margin-top: 30px;
   text-align: center;
+}
+
+.dark .progressInfo p {
+  color: #9ca3af;
 }
 
 .progressBar {
@@ -74,6 +113,11 @@
   border-radius: 6px;
   overflow: hidden;
   margin: 20px 0;
+  transition: background-color 0.3s ease;
+}
+
+.dark .progressBar {
+  background-color: #374151;
 }
 
 .progressFill {
@@ -86,6 +130,15 @@
 @keyframes progressAnimation {
   0% { width: 0%; }
   100% { width: 65%; }
+}
+
+/* Стили для Ant Design Result в темной теме */
+.dark :global(.ant-result-title) {
+  color: #f3f4f6 !important;
+}
+
+.dark :global(.ant-result-subtitle) {
+  color: #9ca3af !important;
 }
 
 /* Адаптивность */

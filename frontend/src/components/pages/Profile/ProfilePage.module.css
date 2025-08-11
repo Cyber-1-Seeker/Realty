@@ -1,20 +1,155 @@
 .profileContainer {
     max-width: 1200px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #f3f1ec;
+    margin: 0 auto;
+    padding: 0;
+    /*background: #f3f1ec;*/
+    background: white;
     min-height: 100vh;
+    position: relative;
+}
+
+/* Хедер интегрированный в hero */
+.header {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    background: transparent;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333333;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.logo span {
+    color: #666666;
+}
+
+.logo b {
+    color: #333333;
+    font-weight: 900;
+}
+
+.navMenu {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.navMenu a {
+    text-decoration: none;
+    color: #333333;
+    font-weight: 500;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    position: relative;
+    padding: 8px 12px;
+    border-radius: 8px;
+}
+
+.navMenu a:hover {
+    color: #2563eb;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.2);
+}
+
+/* Цветные градиенты для каждой кнопки */
+.navMenu a[href="/"]:hover {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    box-shadow: 0 4px 16px rgba(59, 130, 246, 0.3);
+}
+
+.navMenu a[href="/about"]:hover {
+    background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+    box-shadow: 0 4px 16px rgba(220, 38, 38, 0.3);
+}
+
+.navMenu a[href="/listings"]:hover {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    box-shadow: 0 4px 16px rgba(5, 150, 105, 0.3);
+}
+
+.navMenu a[href="/profile"]:hover {
+    background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
+    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
+}
+
+.navMenu a.active {
+    color: #2563eb;
+    border-bottom: 2.5px solid #2563eb;
+    font-weight: 700;
+    background: rgba(37, 99, 235, 0.1);
+    border-radius: 6px 6px 0 0;
+    padding-bottom: 2px;
+    transition: background 0.2s, color 0.2s;
+}
+
+.contactBtn {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+    font-family: inherit;
+}
+
+.contactBtn:hover {
+    background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.3);
+}
+
+.themeToggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: inherit;
+}
+
+.themeToggle:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.themeIcon {
+    transition: transform 0.3s ease;
+}
+
+.themeToggle:hover .themeIcon {
+    transform: scale(1.1);
 }
 
 .profileHeader {
     text-align: center;
-    margin-bottom: 30px;
+    margin: 40px 0 30px 0;
     padding: 0 20px;
 }
 
 .profileHeader h1 {
     font-size: 32px;
-    color: #333;
+    color: #333333;
     margin: 0;
     font-weight: 600;
     position: relative;
@@ -22,11 +157,11 @@
     padding-bottom: 15px;
 }
 
-
 .profileContent {
     display: flex;
     flex-direction: column;
     gap: 30px;
+    padding: 0 20px 20px 20px;
 }
 
 .userInfoCard {
@@ -98,31 +233,23 @@
 
 .infoValue {
     font-size: 16px;
-    font-weight: 500;
     color: #333;
+    font-weight: 500;
 }
 
 .accountActions {
     display: flex;
     gap: 15px;
-    justify-content: flex-end;
-    padding-top: 20px;
-    border-top: 1px solid #eee;
-    margin-top: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 .logoutButton {
-    height: 40px;
-    padding: 0 20px;
-    font-weight: 500;
+    min-width: 150px;
 }
 
 .deleteAccountButton {
-    height: 40px;
-    padding: 0 20px;
-    font-weight: 500;
-    border-color: #ff4d4f;
-    color: #ff4d4f;
+    min-width: 150px;
 }
 
 .apartmentsSection {
@@ -130,15 +257,18 @@
     border-radius: 12px;
     padding: 30px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border-top: 4px solid #52c41a;
 }
 
 .apartmentsHeader {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     padding-bottom: 15px;
     border-bottom: 1px solid #eee;
+    flex-wrap: wrap;
+    gap: 15px;
 }
 
 .apartmentsSection h2 {
@@ -148,53 +278,53 @@
     font-weight: 500;
 }
 
+.addButton {
+    min-width: 180px;
+}
+
 .apartmentsTable {
-    margin-top: 20px;
-    background: #fff;
+    background: white;
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .noImagePlaceholder {
     width: 100px;
     height: 75px;
-    background: #f0f0f0;
-    color: #888;
+    background: #f5f5f5;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+    color: #999;
+    font-size: 12px;
     border-radius: 4px;
+    border: 1px dashed #ddd;
 }
 
 .noApartments {
     text-align: center;
-    padding: 40px;
-    background: #f8f9fa;
-    border-radius: 8px;
-    border: 1px dashed #d9d9d9;
+    padding: 40px 20px;
+    color: #666;
 }
 
 .noApartments p {
     margin-bottom: 20px;
     font-size: 16px;
-    color: #666;
 }
 
 .loadingContainer {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    background-color: #f3f1ec;
+    min-height: 400px;
+    /*background: #f3f1ec;*/
+    background: white;
 }
 
 .imagePreviewMask {
-    display: flex;
-    align-items: center;
-    justify-content: center;
     background: rgba(0, 0, 0, 0.5);
-    transition: all 0.3s;
+    border-radius: 4px;
+    transition: background 0.3s ease;
 }
 
 .imagePreviewMask:hover {
@@ -202,67 +332,237 @@
 }
 
 .actionButton {
-    padding: 4px 0;
-    height: auto;
-    font-size: 14px;
+    padding: 4px 8px;
+    font-size: 12px;
 }
 
-.ant-table-thead > tr > th {
-    background: #f4f3f1 !important;
-    font-weight: 500 !important;
+/* Тёмная тема */
+.profileContainer.dark {
+    background: #111827;
 }
 
-.ant-table-tbody > tr > td {
-    border-bottom: 1px solid #f0f0f0 !important;
+.dark .profileHeader h1 {
+    color: #ffffff;
 }
 
-.ant-table-tbody > tr:hover > td {
-    background: #f8f9fa !important;
+.dark .userInfoCard {
+    background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    box-shadow: 0 12px 32px rgba(59, 130, 246, 0.2), 0 0 0 1px rgba(96, 165, 250, 0.1);
+    border-top: 4px solid #60a5fa;
+}
+
+.dark .userInfoHeader h2 {
+    color: #ffffff;
+}
+
+.dark .infoItem {
+    background: #374151;
+    border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+.dark .infoItem:hover {
+    background: #4b5563;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+}
+
+.dark .infoIcon {
+    color: #60a5fa;
+    background: rgba(96, 165, 250, 0.2);
+}
+
+.dark .infoLabel {
+    color: #9ca3af;
+}
+
+.dark .infoValue {
+    color: #f3f4f6;
+}
+
+.dark .apartmentsSection {
+    background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    box-shadow: 0 12px 32px rgba(59, 130, 246, 0.2), 0 0 0 1px rgba(96, 165, 250, 0.1);
+    border-top: 4px solid #34d399;
+}
+
+.dark .apartmentsSection h2 {
+    color: #ffffff;
+}
+
+.dark .apartmentsTable {
+    background: #374151;
+    border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+.dark .noImagePlaceholder {
+    background: #4b5563;
+    border: 1px dashed #6b7280;
+    color: #9ca3af;
+}
+
+.dark .noApartments {
+    color: #9ca3af;
+}
+
+.dark .loadingContainer {
+    background: #111827;
+}
+
+/* Стили для таблицы в светлой теме */
+:global(.ant-table-thead > tr > th) {
+    background: #fafafa !important;
+    font-weight: 600;
+    color: #333;
+}
+
+:global(.ant-table-tbody > tr > td) {
+    padding: 12px 16px;
+    background: #ffffff;
+    color: #333;
+}
+
+:global(.ant-table-tbody > tr:hover > td) {
+    background: #f5f5f5 !important;
+}
+
+/* Стили для таблицы в темной теме */
+.dark :global(.ant-table-thead > tr > th) {
+    background: #1f2937 !important;
+    color: #f3f4f6;
+    border-bottom: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+.dark :global(.ant-table-tbody > tr > td) {
+    background: #111827;
+    color: #f3f4f6;
+    border-bottom: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+.dark :global(.ant-table-tbody > tr:hover > td) {
+    background: #1f2937 !important;
+}
+
+.dark :global(.ant-table) {
+    background: transparent;
+    color: #f3f4f6;
+}
+
+.dark :global(.ant-table-cell-row-hover) {
+    background: #1f2937 !important;
+}
+
+.dark :global(.ant-pagination-item),
+.dark :global(.ant-pagination-prev),
+.dark :global(.ant-pagination-next) {
+    background: #1f2937;
+    border-color: rgba(59, 130, 246, 0.2);
+}
+
+.dark :global(.ant-pagination-item a),
+.dark :global(.ant-pagination-prev a),
+.dark :global(.ant-pagination-next a) {
+    color: #f3f4f6;
+}
+
+.dark :global(.ant-pagination-item-active) {
+    background: #3b82f6;
+    border-color: #3b82f6;
+}
+
+.dark :global(.ant-pagination-item-active a) {
+    color: #ffffff;
+}
+
+.dark :global(.ant-table-placeholder:hover > td) {
+    background: #111827 !important;
 }
 
 .statusInfoContainer {
-    padding: 15px 0;
+    padding: 20px 0;
 }
 
 .statusHeader {
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    margin-bottom: 15px;
+    align-items: center;
+    margin-bottom: 20px;
     padding-bottom: 15px;
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid #eee;
 }
 
 .statusHeader h3 {
     margin: 0;
     font-size: 18px;
+    color: #333;
     font-weight: 500;
 }
 
 .statusDescription {
-    padding: 15px;
-    background: #f8f9fa;
-    border-radius: 8px;
-    margin-bottom: 20px;
+    color: #666;
     line-height: 1.6;
+    margin-bottom: 20px;
 }
 
 .rejectionActions {
-    display: flex;
-    gap: 10px;
-    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
 }
 
-/* Мобильные стили */
+/* Адаптивность для хедера */
+@media (max-width: 1024px) {
+    .header {
+        padding: 16px 24px;
+    }
+
+    .navMenu {
+        gap: 24px;
+    }
+
+    .navMenu a {
+        font-size: 14px;
+    }
+
+    .contactBtn {
+        padding: 10px 20px;
+        font-size: 13px;
+    }
+}
+
 @media (max-width: 768px) {
+    .header {
+        padding: 12px 16px;
+        flex-wrap: wrap;
+    }
+
+    .navMenu {
+        gap: 16px;
+        order: 3;
+        width: 100%;
+        justify-content: center;
+        margin-top: 12px;
+    }
+
+    .navMenu a {
+        font-size: 13px;
+    }
+
+    .contactBtn {
+        padding: 8px 16px;
+        font-size: 12px;
+    }
+
+    .logo {
+        font-size: 20px;
+    }
+
     .profileContainer {
-        padding: 15px;
-        margin: 10px auto;
+        margin: 0;
+        padding: 0;
     }
 
     .profileHeader h1 {
         font-size: 24px;
-        padding-bottom: 10px;
     }
 
     .userInfoCard,
@@ -272,30 +572,26 @@
 
     .accountActions {
         flex-direction: column;
-        gap: 10px;
-        align-items: stretch;
+        align-items: center;
     }
 
     .logoutButton,
     .deleteAccountButton {
         width: 100%;
-        height: 44px;
-        font-size: 14px;
+        max-width: 200px;
     }
 
     .apartmentsHeader {
         flex-direction: column;
-        gap: 15px;
         align-items: flex-start;
     }
 
     .apartmentsHeader h2 {
-        font-size: 20px;
+        margin-bottom: 10px;
     }
 
     .infoItem {
         flex-direction: column;
-        gap: 10px;
         text-align: center;
     }
 
@@ -305,13 +601,40 @@
 }
 
 @media (max-width: 480px) {
+    .header {
+        padding: 8px 12px;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .navMenu {
+        gap: 12px;
+        order: 3;
+        width: 100%;
+        justify-content: center;
+        margin-top: 12px;
+    }
+
+    .navMenu a {
+        font-size: 12px;
+    }
+
+    .contactBtn {
+        padding: 6px 12px;
+        font-size: 11px;
+    }
+
+    .logo {
+        font-size: 18px;
+    }
+
     .profileContainer {
-        padding: 10px;
-        margin: 5px auto;
+        margin: 0;
+        padding: 0;
     }
 
     .profileHeader {
-        padding: 0 10px;
+        margin: 20px 0;
     }
 
     .profileHeader h1 {
@@ -325,8 +648,8 @@
 
     .logoutButton,
     .deleteAccountButton {
-        height: 40px;
-        font-size: 13px;
+        font-size: 14px;
+        padding: 8px 16px;
     }
 
     .apartmentsHeader h2 {

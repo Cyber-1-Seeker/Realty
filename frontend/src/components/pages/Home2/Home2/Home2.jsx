@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {useInView} from 'react-intersection-observer';
 import styles from './Home2.module.css';
 import heroImg from '@/assets/Listings/Hero4.png';
@@ -11,10 +11,16 @@ import StatisticsSection from "@/components/pages/Home2/StatisticsSection/Statis
 import MapSection from "@/components/pages/Home2/MapSection/MapSection.jsx";
 import Testimonials from "@/components/pages/Home/Testimonials/Testimonials.jsx";
 import Home2Footer from "@/components/pages/Home2/Footer/Home2Footer.jsx";
-import AdvanceModal from "@/components/pages/Home2/AdvanceModal.jsx";
+import OrderEvaluationForm from "@/components/pages/Home2/OrderEvaluationForm.jsx";
 
 const Home2 = () => {
     const {theme, toggleTheme} = useTheme();
+    const [showOrderForm, setShowOrderForm] = useState(false);
+
+    // Отладочная информация
+    useEffect(() => {
+        console.log('showOrderForm изменился:', showOrderForm);
+    }, [showOrderForm]);
 
     // Хуки для анимации при скролле
     const {ref: dealRef, inView: dealInView} = useInView({triggerOnce: true, threshold: 0.2});
@@ -29,6 +35,8 @@ const Home2 = () => {
         <div className={styles.altBgWrapper + (theme === 'dark' ? ' ' + styles.dark : '')}>
             <div className={styles.pageWrapper}>
                 <div className={styles.headerHeroContainer}>
+                    {/* Header removed - using global header */}
+
                     <section className={styles.heroSection}>
                         <div className={styles.bgDotRed}></div>
                         <div className={styles.bgDotGreen}></div>
@@ -53,11 +61,22 @@ const Home2 = () => {
                                 </div>
                             </div>
                             <section className={styles.searchBlock}>
-                                <form className={styles.searchForm}>
-                                    <input className={styles.input} type="text" placeholder="Ваше имя" required/>
-                                    <input className={styles.input} type="tel" placeholder="Номер телефона" required/>
-                                    <button className={styles.requestBtn} type="submit">Отправить заявку</button>
-                                </form>
+                                <div className={styles.searchForm}>
+                                    <input className={styles.input} type="text" placeholder="Ваше имя" />
+                                    <input className={styles.input} type="tel" placeholder="Номер телефона" />
+                                    <button 
+                                        className={styles.requestBtn} 
+                                        type="button"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            e.stopPropagation();
+                                            console.log('Кнопка нажата, showOrderForm:', showOrderForm);
+                                            setShowOrderForm(true);
+                                        }}
+                                    >
+                                        Отправить заявку
+                                    </button>
+                                </div>
                             </section>
                         </div>
                         <div className={styles.heroImgBlock}>
@@ -91,6 +110,19 @@ const Home2 = () => {
                     <Home2Footer theme={theme}/>
                 </section>
             </div>
+            
+            {/* Модальное окно для заказа оценки */}
+            {showOrderForm && (
+                <div className={styles.modalOverlay} onClick={() => setShowOrderForm(false)}>
+                    <div onClick={(e) => e.stopPropagation()}>
+                        <OrderEvaluationForm 
+                            onClose={() => setShowOrderForm(false)} 
+                            theme={theme} 
+                        />
+                    </div>
+                </div>
+            )}
+            {console.log('showOrderForm состояние:', showOrderForm)}
         </div>
     );
 };

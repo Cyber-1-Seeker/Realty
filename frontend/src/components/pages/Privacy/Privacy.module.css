@@ -4,6 +4,11 @@
   padding: 2rem 0;
 }
 
+/* Темная тема для контейнера */
+.privacyContainer.dark {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+}
+
 .content {
   max-width: 800px;
   margin: 0 auto;
@@ -12,6 +17,91 @@
   border-radius: 12px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   line-height: 1.6;
+}
+
+/* Темная тема для контента */
+.content.dark {
+  background: #1f2937;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Темная тема для заголовков и текста */
+.dark h1 {
+  color: #f3f4f6 !important;
+  border-bottom-color: #3b82f6 !important;
+}
+
+.dark .section {
+  background: #111827;
+  border-left-color: #3b82f6;
+}
+
+.dark .section h2 {
+  color: #f3f4f6;
+}
+
+.dark .section h2::before {
+  background: #3b82f6;
+}
+
+.dark .section h3 {
+  color: #e5e7eb;
+  border-left-color: #3b82f6;
+}
+
+.dark .section p {
+  color: #d1d5db;
+}
+
+.dark .section li {
+  color: #d1d5db;
+}
+
+.dark .section li::before {
+  color: #3b82f6;
+}
+
+.dark .section strong {
+  color: #f3f4f6;
+}
+
+.dark .contactInfo {
+  background: #111827;
+  border-color: #374151;
+}
+
+.dark .contactInfo p {
+  color: #e5e7eb;
+}
+
+.dark .contactInfo strong {
+  color: #60a5fa;
+}
+
+.dark .lastUpdated {
+  color: #9ca3af;
+  border-top-color: #374151;
+}
+
+.dark .section a {
+  color: #60a5fa;
+}
+
+.dark .section a:hover {
+  border-bottom-color: #60a5fa;
+}
+
+.dark .section .important {
+  background: #1f2937;
+  border-color: #374151;
+}
+
+.dark .section .important p {
+  color: #e5e7eb;
+}
+
+.dark .section ol li::before {
+  color: #60a5fa;
 }
 
 .content h1 {

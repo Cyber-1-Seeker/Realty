@@ -1,5 +1,5 @@
 .container {
-  padding: 40px 20px;
+  padding: 40px 20px 0;
   max-width: 1280px;
   margin: 0 auto;
 }
@@ -191,7 +191,7 @@
 /* Мобильные стили */
 @media (max-width: 768px) {
   .container {
-    padding: 20px 15px;
+    padding: 20px 15px 0;
   }
 
   .showMoreWrapper {
@@ -208,16 +208,70 @@
     gap: 20px;
     padding: 0 15px;
   }
+}
+
+/* Тёмная тема */
+.dark {
+  background: #111827;
+  min-height: 100vh;
+}
+
+.dark .container {
+  background: #111827;
+}
+
+.dark .card {
+  background-color: #1f2937;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+.dark .card:hover {
+  box-shadow: 0 12px 32px rgba(59, 130, 246, 0.2);
+}
+
+.dark .imageWrapper {
+  background-color: #374151;
+}
+
+.dark .imagePlaceholder {
+  color: #9ca3af;
+}
+
+.dark .address {
+  color: #ffffff;
+}
+
+.dark .price {
+  color: #34d399;
+}
+
+.dark .floor {
+  color: #9ca3af;
+}
+
+.dark .block {
+  background: #1f2937;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.dark .block h2 {
+  color: #ffffff;
+}
+
+.dark .block p {
+  color: #d1d5db;}
 
   .block {
     padding: 25px;
     flex: 1 1 100%;
   }
-}
+
 
 @media (max-width: 480px) {
   .container {
-    padding: 15px 10px;
+    padding: 15px 10px 0;
   }
 
   .showMoreButton {
