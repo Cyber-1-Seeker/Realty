@@ -1601,7 +1601,7 @@
 /* Final vertical stacked form on mobile */
 @media (max-width: 700px) {
     .searchBlock {
-        bottom: 360px !important; /* ближе к дому; увеличь/уменьши это значение при необходимости */
+        bottom: 220px !important; /* ближе к дому; увеличь/уменьши это значение при необходимости */
         width: min(86vw, 380px) !important;
         max-width: 380px !important;
     }
@@ -1618,7 +1618,7 @@
 }
 @media (max-width: 480px) {
     .searchBlock {
-        bottom: 130px !important; /* ближе к дому на очень маленьких экранах */
+        bottom: 150px !important; /* ближе к дому на очень маленьких экранах */
         width: min(86vw, 340px) !important;
         max-width: 340px !important;
     }
@@ -1690,6 +1690,23 @@
 }
 @media (max-width: 480px) {
     .dropdownForm { margin-top: 8px !important; }
+} 
+
+/* Remove extra top spacing above hero on mobile */
+@media (max-width: 700px) {
+    .headerHeroContainer { padding-top: 12px !important; }
+    .heroSection { margin-top: 0 !important; }
+}
+@media (max-width: 480px) {
+    .headerHeroContainer { padding-top: 14px !important; }
+}
+
+/* Reduce bottom padding of hero on mobile to shorten the section */
+@media (max-width: 700px) {
+    .heroSection { padding-bottom: 40px !important; }
+}
+@media (max-width: 480px) {
+    .heroSection { padding-bottom: 32px !important; }
 } 
 
 
