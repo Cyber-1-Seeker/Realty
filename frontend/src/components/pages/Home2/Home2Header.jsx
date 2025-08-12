@@ -13,7 +13,7 @@ const Home2Header = ({ isAuthenticated = false }) => {
     const { pathname } = useLocation();
     const navigate = useNavigate();
     const [showAuthModal, setShowAuthModal] = useState(false);
-    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 950);
     const [menuOpen, setMenuOpen] = useState(false);
     const [showAdvanceModal, setShowAdvanceModal] = useState(false);
     
@@ -24,7 +24,7 @@ const Home2Header = ({ isAuthenticated = false }) => {
     // Обработка изменения размера экрана
     useEffect(() => {
         const handleResize = () => {
-            const mobile = window.innerWidth <= 768;
+            const mobile = window.innerWidth <= 950;
             setIsMobile(mobile);
             if (!mobile) {
                 setMenuOpen(false);
@@ -39,6 +39,27 @@ const Home2Header = ({ isAuthenticated = false }) => {
     const handleOverlayClick = () => {
         setMenuOpen(false);
     };
+
+    // Закрытие меню по Escape и блокировка скролла при открытом меню (как в глобальном хедере)
+    useEffect(() => {
+        const handleEscape = (e) => {
+            if (e.key === 'Escape') {
+                setMenuOpen(false);
+            }
+        };
+
+        if (menuOpen) {
+            document.addEventListener('keydown', handleEscape);
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'unset';
+        }
+
+        return () => {
+            document.removeEventListener('keydown', handleEscape);
+            document.body.style.overflow = 'unset';
+        };
+    }, [menuOpen]);
 
     // Закрытие меню при переходе на другую страницу
     const handleNavClick = () => {
@@ -181,9 +202,9 @@ const Home2Header = ({ isAuthenticated = false }) => {
                         {/* Боковое меню */}
                         <motion.div
                             className={`${styles.navMenu} ${theme === 'dark' ? styles.dark : ''}`}
-                            initial={{x: -280}}
+                            initial={{x: '-100%'}}
                             animate={{x: 0}}
-                            exit={{x: -280}}
+                            exit={{x: '-100%'}}
                             transition={{duration: 0.3, ease: "easeOut"}}
                         >
                             <div className={styles.mobileMenuHeader}>

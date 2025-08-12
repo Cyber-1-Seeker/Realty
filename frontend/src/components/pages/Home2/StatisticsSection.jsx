@@ -2,6 +2,7 @@
 import React from 'react';
 import styles from './StatisticsSection.module.css';
 import CountUp from 'react-countup';
+import { Link } from 'react-router-dom';
 import { useInView } from 'react-intersection-observer';
 
 const stats = [
@@ -28,7 +29,7 @@ const StatisticsSection = ({ theme }) => {
           <p className={styles.text}>
             Над проектами трудятся профессиональные команды, и цифры говорят сами за себя.
           </p>
-          <button className={styles.button}>Подробнее</button>
+          <Link to="/about" className={styles.button}>Подробнее</Link>
         </div>
 
         <div className={styles.card}>

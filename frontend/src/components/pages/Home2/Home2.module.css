@@ -159,13 +159,20 @@
 }
 @media (max-width: 1400px) {
     .heroSection {
-        max-width: 1100px;
+        /* Было: max-width: 1100px; */
+        max-width: min(1200px, 92vw);
         padding: 48px 32px;
+        margin: 0 auto; /* центрируем контейнер */
     }
     .heroImg {
-        width: 520px;
-        margin-right: -40px;
-        margin-top: -80px;
+        /* Плавное масштабирование */
+        width: clamp(500px, 52vw, 750px);
+        /* Убираем толкание вправо отрицательным отступом */
+        margin-right: 0;
+        /* Лёгкий сдвиг влево без влияния на поток */
+        margin-left: -12px; /* подстрой по вкусу: больше по модулю — левее */
+        /* Плавный подъём вверх */
+        margin-top: clamp(-460px, -24vw, -240px);
     }
 }
 @media (max-width: 1100px) {
@@ -1708,5 +1715,124 @@
 @media (max-width: 480px) {
     .heroSection { padding-bottom: 32px !important; }
 } 
+
+/* Tablet layout: smooth between 701px and 1100px */
+@media (min-width: 701px) and (max-width: 1100px) {
+    .heroSection {
+        max-width: 96vw;
+        padding: 32px 20px;
+        margin: 8px auto;
+        border-radius: 24px;
+        gap: 20px;
+        display: flex;
+        flex-direction: column; /* как на <700 */
+        align-items: center;
+        text-align: center;
+    }
+
+    .heroTextBlock { order: 1; align-items: center; text-align: center; }
+    .filterCards { order: 2; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; width: 100%; max-width: 760px; margin: 0 auto; }
+    .filterCard { padding: 12px 18px; font-size: 1.05rem; border-radius: 16px; }
+
+    .heroImgBlock { order: 3; width: 100%; display: flex; justify-content: center; margin: 0; }
+    .heroImg { width: clamp(460px, 48vw, 620px); margin: 0 !important; transform: none !important; border-radius: 36px 12px 12px 12px; }
+
+    .searchBlock { order: 4; position: static !important; left: auto !important; right: auto !important; top: auto !important; bottom: auto !important; transform: none !important; width: 100%; margin-top: 20px; display: flex; justify-content: center; }
+    .searchForm { width: 100%; max-width: 560px; padding: 22px 20px; display: flex; flex-direction: column; gap: 14px; border-radius: 16px; }
+    .input { padding: 12px 16px; font-size: 1rem; border-radius: 12px; }
+    .requestBtn { padding: 12px 16px; font-size: 1rem; border-radius: 12px; }
+
+    .heroSubtitle { font-size: 1.7rem; margin-bottom: 12px; }
+    .heroTitle { font-size: 2.6rem; margin-bottom: 18px; }
+} 
+
+/* Extend mobile layout up to 950px (mirror of <=700 rules) */
+@media (min-width: 701px) and (max-width: 950px) {
+  .heroSection { gap: 16px !important; padding: 20px 16px !important; padding-bottom: 36px !important; }
+  .heroSubtitle { font-size: 1.35rem !important; margin-bottom: 8px !important; }
+  .heroTitle { font-size: 2rem !important; margin-bottom: 12px !important; }
+  .filterCards { gap: 12px !important; max-width: 680px !important; }
+  .filterCard { padding: 10px 16px !important; font-size: 0.95rem !important; }
+  .heroImg { max-width: 560px !important; }
+  .searchForm { max-width: 500px !important; padding: 18px 16px !important; gap: 12px !important; }
+  .input { padding: 12px 14px !important; font-size: 0.95rem !important; }
+  .requestBtn { padding: 12px 14px !important; font-size: 0.95rem !important; }
+}
+
+@media (min-width: 701px) and (max-width: 950px) {
+  /* Порядок: текст (1) → фильтры (2) → дом (3) → форма (4) */
+  .heroTextBlock { order: 1 !important; }
+  .filterCards { order: 2 !important; }
+  .heroImgBlock { order: 3 !important; }
+  .searchBlock { order: 4 !important; position: static !important; transform: none !important; }
+}
+
+@media (min-width: 951px) and (max-width: 1100px) {
+  /* Порядок: текст (1) → фильтры (2) → дом (3) → форма (4) */
+  .heroTextBlock { order: 1 !important; }
+  .filterCards { order: 2 !important; }
+  .heroImgBlock { order: 3 !important; }
+  .searchBlock { order: 4 !important; position: static !important; transform: none !important; }
+}
+
+@media (min-width: 951px) and (max-width: 1100px) {
+  .headerHeroContainer { height: auto !important; min-height: 115vh !important; }
+  .heroSection { padding-bottom: 120px !important; }
+} 
+
+/* FINAL: make 701–1100 behave like <700 (overlay form) */
+@media (min-width: 701px) and (max-width: 1100px) {
+  .headerHeroContainer { height: auto !important; min-height: auto !important; }
+  .heroSection {
+    padding-bottom: 150px !important; /* запас под оверлей формы */
+  }
+  /* Управляемое смещение изображения в этом диапазоне */
+  .heroImg {
+    transform: translate3d(0, -195px, 0) !important; /* Y: поднимай/опускай; X: сдвиг влево/вправо */
+  }
+  .searchBlock {
+    position: absolute !important;
+    left: 50% !important;
+    right: auto !important;
+    top: auto !important;
+    bottom: -600px !important; /* подстрой это значение под высоту дома */
+    transform: translateX(-50%) !important;
+    width: calc(100% - 24px) !important;
+    max-width: 560px !important;
+    margin: 0 !important;
+    z-index: 20 !important;
+    display: flex !important;
+    justify-content: center !important;
+  }
+  .searchForm { flex-direction: column !important; gap: 16px !important; padding: 22px 18px !important; border-radius: 16px !important; }
+} 
+
+@media (min-width: 701px) and (max-width: 950px) {
+  /* Больше изображение (~1.3x) и корректные слои */
+  .heroImg {
+    width: min(100%, clamp(1800px, 95vw, 930px)) !important; /* было max-width: 560px */
+    height: auto !important;
+    position: relative !important;
+    z-index: 0 !important; /* ниже фильтров и формы */
+  }
+  .filterCards { position: relative !important; z-index: 3 !important; }
+  .searchBlock { z-index: 20 !important; }
+} 
+
+/* FINAL tweaks: 701–950 image up by 40px, form down by 40px */
+@media (min-width: 701px) and (max-width: 950px) {
+  .heroImg { transform: translateY(-235px) !important; }
+  .searchBlock { bottom: -640px !important; }
+} 
+
+/* FINAL cleanup: remove extra top/bottom spacing for hero (701–1100) */
+@media (min-width: 701px) and (max-width: 950px) {
+  .headerHeroContainer { padding-top: 12px !important; }
+  .heroSection { margin-top: 0 !important; padding-bottom: 40px !important; }
+}
+@media (min-width: 951px) and (max-width: 1100px) {
+  /* Базовый отступ, уменьшили на 50px от предыдущего значения */
+  .headerHeroContainer { padding-top: 140px; }
+}
 
 

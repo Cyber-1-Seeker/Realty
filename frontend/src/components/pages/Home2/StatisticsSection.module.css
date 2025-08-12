@@ -52,6 +52,7 @@
   transition: background 0.3s, transform 0.2s, box-shadow 0.2s;
   font-size: 1.1rem;
   box-shadow: 0 2px 12px #0154f722;
+  text-decoration: none;
 }
 .button:hover {
   background: linear-gradient(90deg, #0154f7 0%, #22c55e 100%);

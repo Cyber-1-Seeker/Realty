@@ -451,7 +451,7 @@
     .navMenu {
         position: fixed;
         top: 0;
-        left: -280px;
+        left: 0;
         width: 280px;
         height: 100vh;
         background: rgba(255, 255, 255, 0.95);
@@ -486,7 +486,7 @@
     }
     
     .navMenu.open {
-        transform: translateX(280px);
+        transform: translateX(0);
         opacity: 1;
         visibility: visible;
     }
@@ -592,6 +592,11 @@
     }
 }
 
+/* Wide-mobile (burger) up to 1400px) — отключено по требованию, используем только до 768px */
+@media (max-width: 1400px) {
+    /* Ничего не меняем здесь. Бургер включается только для <=768px по текущим правилам ниже. */
+}
+
 @media (max-width: 480px) {
     .home2Header {
         padding: 12px 12px 8px 12px;
@@ -680,4 +685,77 @@
 
 @media (max-width: 480px) {
     /* Убираем специальные стили для navLink */
+}
+
+/* Mobile header for <=950px to match JS breakpoint */
+@media (max-width: 950px) {
+  .home2Header {
+    padding: 20px 16px 16px 16px;
+    flex-direction: row;
+    gap: 0;
+    position: relative;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .mobileThemeToggleBtn {
+    display: flex;
+    position: relative;
+    left: auto;
+    top: auto;
+    margin: 0;
+    width: 44px;
+    height: 44px;
+    order: 1;
+  }
+
+  .logo { font-size: 1.6rem; order: 2; flex: 1; text-align: center; }
+
+  .burger {
+    display: block;
+    width: 44px;
+    height: 44px;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    cursor: pointer;
+    z-index: 102;
+    position: relative;
+    right: auto;
+    top: auto;
+    margin: 0;
+    order: 3;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+  }
+  .dark .burger { background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%) !important; box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4) !important; }
+  .burger:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4); background: linear-gradient(135deg, #059669 0%, #047857 100%); }
+  .dark .burger:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(124, 58, 237, 0.5); background: linear-gradient(135deg, #6d28d9 0%, #5b21b6 100%) !important; }
+  .burger:active { transform: translateY(0); }
+  .dark .burger:active { transform: translateY(0); }
+  .burger::before {
+    content: '';
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 22px; height: 2px; background: white;
+    box-shadow: 0 -7px 0 white, 0 7px 0 white; transition: all 0.3s ease;
+  }
+  .burger.open::before { transform: translate(-50%, -50%) rotate(45deg); box-shadow: 0 0 0 transparent, 0 0 0 transparent; }
+  .burger.open::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-45deg); width: 22px; height: 2px; background: white; }
+
+  .navMenu {
+    position: fixed; top: 0; left: 0; width: 300px; height: 100vh;
+    background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px);
+    flex-direction: column; gap: 0; margin: 0; padding: 80px 20px 20px 20px;
+    box-shadow: 4px 0 12px rgba(0, 0, 0, 0.1); transform: translateX(0);
+    opacity: 1; visibility: visible; transition: all 0.3s ease; z-index: 100; border-radius: 0 12px 12px 0;
+  }
+  .dark .navMenu, .navMenu.dark { background: rgba(0, 0, 0, 0.95) !important; color: #ffffff !important; box-shadow: 4px 0 12px rgba(0, 0, 0, 0.8) !important; border-right: 1px solid rgba(255, 255, 255, 0.2) !important; }
+  .navMenu.open { transform: translateX(0); opacity: 1; visibility: visible; }
+  .navMenu a { width: 100%; padding: 14px 16px; text-align: center; border-radius: 10px; margin: 6px 0; font-size: 1.1rem; font-weight: 500; line-height: 1.5; min-height: 48px; display: flex; align-items: center; justify-content: center; white-space: nowrap; }
+
+  .overlay { display: block; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.5); z-index: 99; backdrop-filter: blur(2px); }
+  .dark .overlay { background: rgba(0, 0, 0, 0.7) !important; backdrop-filter: blur(4px) !important; }
+
+  .contactBtn { display: none; }
 }

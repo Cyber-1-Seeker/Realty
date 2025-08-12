@@ -204,6 +204,7 @@
     cursor: pointer;
     transition: background 0.3s ease, transform 0.2s ease;
     box-shadow: 0 2px 12px #2c63ff22;
+    text-decoration: none;
 }
 
 .button:hover {

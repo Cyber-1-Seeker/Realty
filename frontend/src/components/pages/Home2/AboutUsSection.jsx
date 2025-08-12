@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './AboutUsSection.module.css';
 import { FaCheckCircle } from 'react-icons/fa';
 import aboutImage from '@/assets/Listings/about-livingroom.png';
+import { Link } from 'react-router-dom';
 
 const features = [
   {
@@ -45,7 +46,7 @@ const AboutUsSection = ({ theme }) => {
               </div>
             </div>
           ))}
-          <button className={styles.button}>Узнать больше</button>
+          <Link to="/about" className={styles.button}>Подробнее</Link>
         </div>
       </div>
     </section>
