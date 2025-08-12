@@ -124,10 +124,27 @@
     justify-content: center;
 }
 
+/* Темная тема для мобильной кнопки переключения темы (как в главной) */
+.navbar.dark .mobileThemeToggle,
+.dark .mobileThemeToggle,
+html body .navbar.dark .mobileThemeToggle {
+    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%) !important;
+    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4) !important;
+}
+
 .mobileThemeToggle:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
     background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+}
+
+/* Темная тема hover */
+.navbar.dark .mobileThemeToggle:hover,
+.dark .mobileThemeToggle:hover,
+html body .navbar.dark .mobileThemeToggle:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(124, 58, 237, 0.5);
+    background: linear-gradient(135deg, #6d28d9 0%, #5b21b6 100%) !important;
 }
 
 .mobileThemeToggle:active {
@@ -154,6 +171,14 @@
     box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
     position: relative;
     overflow: hidden;
+}
+
+/* Темная тема для бургер-кнопки (как в главной) */
+.navbar.dark .burger,
+.dark .burger,
+html body .navbar.dark .burger {
+    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%) !important;
+    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4) !important;
 }
 
 .burger:hover {
@@ -454,6 +479,14 @@
         flex: 1;
         text-align: center;
     }
+}
+
+/* Компоновка как на главной для очень маленьких экранов */
+@media (max-width: 480px) {
+    .navbar { flex-direction: row; flex-wrap: nowrap; gap: 0; align-items: center; justify-content: space-between; }
+    .mobileThemeToggle { order: 1; }
+    .logo { order: 2; flex: 1; text-align: center; }
+    .burger { order: 3; }
 }
 
 @media (min-width: 769px) and (max-width: 999px) {

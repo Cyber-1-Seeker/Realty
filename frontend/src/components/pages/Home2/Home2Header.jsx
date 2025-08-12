@@ -83,9 +83,6 @@ const Home2Header = ({ isAuthenticated = false }) => {
                 onClick={(e) => {
                     e.preventDefault();
                     setShowAdvanceModal(true);
-                    if (isMobile) {
-                        setMenuOpen(false); // Закрываем мобильное меню при клике
-                    }
                 }}
                 className={`${styles.navLink} ${theme === 'dark' ? styles.dark : ''}`}
             >
