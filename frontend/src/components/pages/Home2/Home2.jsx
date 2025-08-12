@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {useInView} from 'react-intersection-observer';
 import { useOutletContext } from 'react-router-dom';
 import styles from './Home2.module.css';
@@ -29,6 +29,22 @@ function Home2() {
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [error, setError] = useState('');
     const [commentError, setCommentError] = useState(false);
+
+    // Мобильная логика для показа единственной CTA-кнопки вместо формы
+    const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' ? window.innerWidth <= 700 : false);
+    const [mobileFormOpen, setMobileFormOpen] = useState(false);
+
+    useEffect(() => {
+        const onResize = () => {
+            const m = window.innerWidth <= 700;
+            setIsMobile(m);
+            if (!m) {
+                setMobileFormOpen(false);
+            }
+        };
+        window.addEventListener('resize', onResize);
+        return () => window.removeEventListener('resize', onResize);
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -149,37 +165,49 @@ function Home2() {
                                 </div>
                             </div>
                             <section className={styles.searchBlock}>
-                                <form className={styles.searchForm} onSubmit={handleSubmit}>
-                                    <input
-                                        className={styles.input}
-                                        type="text"
-                                        name="name"
-                                        placeholder="Ваше имя"
-                                        value={formData.name}
-                                        onChange={handleChange}
-                                        required
-                                    />
-                                    <input
-                                        className={styles.input}
-                                        type="tel"
-                                        name="phone"
-                                        placeholder="Номер телефона"
-                                        value={formData.phone}
-                                        onChange={handleChange}
-                                        required
-                                    />
+                                {isMobile && !mobileFormOpen ? (
                                     <button
-                                        className={styles.requestBtn}
-                                        type="submit"
-                                        disabled={loading}
+                                        className={styles.mobileCtaBtn}
+                                        onClick={() => setMobileFormOpen(true)}
+                                        type="button"
                                     >
-                                        {loading ? 'Отправка...' : 'Отправить заявку'}
+                                        Отправить заявку
                                     </button>
-                                </form>
-                                {error && (
-                                    <div className={styles.error}>
-                                        {error}
-                                    </div>
+                                ) : (
+                                    <>
+                                        <form className={`${isMobile ? styles.dropdownForm + ' ' : ''}${styles.searchForm}`} onSubmit={handleSubmit}>
+                                            <input
+                                                className={styles.input}
+                                                type="text"
+                                                name="name"
+                                                placeholder="Ваше имя"
+                                                value={formData.name}
+                                                onChange={handleChange}
+                                                required
+                                            />
+                                            <input
+                                                className={styles.input}
+                                                type="tel"
+                                                name="phone"
+                                                placeholder="Номер телефона"
+                                                value={formData.phone}
+                                                onChange={handleChange}
+                                                required
+                                            />
+                                            <button
+                                                className={styles.requestBtn}
+                                                type="submit"
+                                                disabled={loading}
+                                            >
+                                                {loading ? 'Отправка...' : 'Отправить заявку'}
+                                            </button>
+                                        </form>
+                                        {error && (
+                                            <div className={styles.error}>
+                                                {error}
+                                            </div>
+                                        )}
+                                    </>
                                 )}
                             </section>
                         </div>

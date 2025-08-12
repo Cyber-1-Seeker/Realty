@@ -187,27 +187,105 @@
     /* .navMenu {
         gap: 16px;
     } */
+    
+    .headerHeroContainer {
+        padding-top: 120px; /* Уменьшаем отступ для хедера на мобильных */
+        height: auto; /* Убираем фиксированную высоту */
+        min-height: 100vh;
+    }
+    
     .heroTitle {
         font-size: 2rem;
     }
+    
     .heroSection {
         margin: 8px 0;
-        padding: 8px 2px;
-        border-radius: 16px;
-    }
-    .heroImg {
-        width: 140px;
-        margin-right: 0;
-        margin-top: 0;
-        border-radius: 32px 8px 8px 8px;
-    }
-    .heroImgLarge {
-        width: 220px !important;
-    }
-    .searchForm {
+        padding: 24px 16px;
+        border-radius: 20px;
         flex-direction: column;
+        gap: 20px;
+        align-items: center;
+        text-align: center;
+        padding-bottom: 120px; /* место под оверлей формы */
+    }
+
+    .heroTextBlock {
+        order: 1;
+        align-items: center;
+        text-align: center;
+        position: static; /* позволяем форме позиционироваться относительно heroSection */
+    }
+
+    .filterCards {
+        justify-content: center;
+        flex-wrap: nowrap;
         gap: 12px;
-        padding: 20px 8px;
+        margin-bottom: 16px;
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .filterCard {
+        padding: 10px 12px;
+        font-size: 0.95rem;
+        border-radius: 14px;
+        justify-content: center;
+    }
+
+    .heroImgBlock {
+        order: 2;
+        margin-top: 0;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .heroImg {
+        width: 100%;
+        max-width: 640px;
+        margin: 0;
+        border-radius: 28px; /* более крупное скругление как на референсе */
+    }
+
+    .searchBlock {
+        position: absolute; /* оверлей */
+        left: 50%;
+        bottom: 12px;
+        transform: translateX(-50%);
+        min-width: 0;
+        width: calc(100% - 24px);
+        max-width: 520px;
+        margin: 0;
+        z-index: 20;
+        display: flex;
+        justify-content: center;
+    }
+
+    .searchForm {
+        width: 100%;
+        max-width: 520px;
+        flex-direction: column; /* компактная строка */
+        gap: 10px;
+        padding: 14px 14px;
+        border-radius: 16px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        backdrop-filter: blur(4px);
+    }
+
+    .input {
+        flex: 1 1 auto;
+        min-width: 0;
+        padding: 12px 14px;
+        font-size: 0.95rem;
+        border-radius: 10px;
+    }
+
+    .requestBtn {
+        flex: 0 0 auto;
+        white-space: nowrap;
+        padding: 12px 16px;
+        font-size: 0.95rem;
+        border-radius: 12px;
     }
     
     /* Уменьшаем тени для мобильных устройств */
@@ -222,6 +300,94 @@
 }
 
 @media (max-width: 480px) {
+    .headerHeroContainer {
+        padding-top: 100px; /* Еще меньше отступ для очень маленьких экранов */
+    }
+    
+    .heroSection {
+        padding: 20px 12px;
+        border-radius: 16px;
+        gap: 16px;
+    }
+    
+    .heroSubtitle {
+        font-size: 1.3rem;
+        margin-bottom: 10px;
+    }
+    
+    .heroTitle {
+        font-size: 1.8rem;
+        margin-bottom: 16px;
+    }
+    
+    .filterCards {
+        gap: 12px;
+        margin-bottom: 16px;
+    }
+    
+    .filterCard {
+        padding: 10px 16px;
+        font-size: 0.9rem;
+        border-radius: 12px;
+    }
+    
+    .heroImg {
+        width: 160px;
+        border-radius: 20px 6px 6px 6px;
+    }
+    
+    .searchForm {
+        padding: 20px 16px;
+        gap: 14px;
+    }
+    
+    .input {
+        padding: 14px 16px;
+        font-size: 0.95rem;
+        border-radius: 10px;
+    }
+    
+    .requestBtn {
+        padding: 14px 20px;
+        font-size: 1rem;
+        border-radius: 14px;
+    }
+    
+    /* Позиционирование фоновых элементов для очень маленьких экранов */
+    .bgDotRed {
+        left: -40px;
+        top: 30px;
+        width: 60px;
+        height: 60px;
+    }
+    
+    .bgDotGreen {
+        right: -30px;
+        bottom: 30px;
+        width: 50px;
+        height: 50px;
+    }
+    
+    .bgDotBlue {
+        top: -30px;
+        width: 50px;
+        height: 50px;
+    }
+    
+    .bgLineRight {
+        right: -20px;
+        top: 60px;
+        width: 80px;
+        height: 4px;
+    }
+    
+    .bgLineLeft {
+        left: -30px;
+        bottom: 60px;
+        width: 70px;
+        height: 4px;
+    }
+    
     /* Еще больше уменьшаем тени для очень маленьких экранов */
     .requestBtn {
         box-shadow: 0 1px 4px rgba(34,197,94,0.06);
@@ -684,24 +850,6 @@
     from { opacity: 0; transform: translateX(40px);}
     to { opacity: 1; transform: translateX(0);}
 }
-.heroTextBlock {
-    /* opacity: 0;
-    animation: fadeInUp 0.7s ease 1.2s both; */
-}
-.heroImgBlock {
-    /* opacity: 0;
-    animation: fadeInLeft 0.7s ease 1.2s both; */
-} 
-
-.heroImgBlock {
-    position: relative;
-    z-index: 0;
-}
-.heroImg {
-    z-index: 0;
-    position: relative;
-} 
-
 .heroTitle, .heroSubtitle {
     opacity: 0;
     animation: fadeInUp 0.7s ease 1.2s both;
@@ -789,9 +937,6 @@
     background: linear-gradient(90deg, #ff6b6b 60%, transparent 100%);
 }
 
-.dark .heroImg {
-    /* Тени отключены */
-}
 .themeToggle {
     margin-left: 24px;
     background: none;
@@ -1068,4 +1213,483 @@
 }
 
 /* Глобальный хедер скрыт в Layout для страницы Home2 */
+
+@media (max-width: 700px) {
+    /* Позиционирование фоновых элементов для мобильных */
+    .bgDotRed {
+        left: -60px;
+        top: 40px;
+        width: 80px;
+        height: 80px;
+    }
+    
+    .bgDotGreen {
+        right: -40px;
+        bottom: 40px;
+        width: 60px;
+        height: 60px;
+    }
+    
+    .bgDotBlue {
+        left: 50%;
+        top: -40px; /* Опускаем синий кружок ниже */
+        width: 60px;
+        height: 60px;
+        transform: translateX(-50%);
+    }
+    
+    .bgLineRight {
+        right: -30px;
+        top: 80px;
+        width: 120px;
+        height: 6px;
+    }
+    
+    .bgLineLeft {
+        left: -40px;
+        bottom: 80px;
+        width: 100px;
+        height: 6px;
+    }
+} 
+
+@media (max-width: 768px) {
+    .headerHeroContainer {
+        padding-top: 110px;
+        height: auto;
+        min-height: 100vh;
+    }
+    
+    .heroSection {
+        padding: 28px 20px;
+        border-radius: 24px;
+        flex-direction: column;
+        gap: 24px;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .heroTextBlock {
+        order: 1;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .heroSubtitle {
+        font-size: 1.6rem;
+        text-align: center;
+        margin-bottom: 14px;
+    }
+    
+    .heroTitle {
+        font-size: 2.4rem;
+        text-align: center;
+        margin-bottom: 22px;
+    }
+    
+    .filterCards {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 18px;
+        margin-bottom: 22px;
+    }
+    
+    .filterCard {
+        padding: 14px 22px;
+        font-size: 1.05rem;
+        border-radius: 18px;
+    }
+    
+    .heroImgBlock {
+        order: 2;
+        margin-top: 0;
+        justify-content: center;
+    }
+    
+    .heroImg {
+        width: 240px;
+        margin: 0;
+        border-radius: 28px 10px 10px 10px;
+    }
+    
+    .searchBlock {
+        position: static;
+        transform: none;
+        left: auto;
+        top: auto;
+        min-width: 0;
+        margin-top: 24px;
+        width: 100%;
+    }
+    
+    .searchForm {
+        flex-direction: column;
+        gap: 18px;
+        padding: 26px 22px;
+        width: 100%;
+        max-width: 450px;
+        margin: 0 auto;
+    }
+    
+    .input {
+        width: 100%;
+        padding: 16px 20px;
+        font-size: 1rem;
+        border-radius: 14px;
+    }
+    
+    .requestBtn {
+        width: 100%;
+        padding: 16px 24px;
+        font-size: 1.1rem;
+        border-radius: 16px;
+    }
+    
+    /* Позиционирование фоновых элементов для планшетов */
+    .bgDotRed {
+        left: -80px;
+        top: 50px;
+        width: 100px;
+        height: 100px;
+    }
+    
+    .bgDotGreen {
+        right: -50px;
+        bottom: 50px;
+        width: 80px;
+        height: 80px;
+    }
+    
+    .bgDotBlue {
+        left: 50%;
+        top: -50px;
+        width: 70px;
+        height: 70px;
+        transform: translateX(-50%);
+    }
+    
+    .bgLineRight {
+        right: -40px;
+        top: 100px;
+        width: 160px;
+        height: 7px;
+    }
+    
+    .bgLineLeft {
+        left: -50px;
+        bottom: 100px;
+        width: 140px;
+        height: 7px;
+    }
+} 
+
+@media (max-width: 700px) {
+    .checkIcon {
+        width: 16px;
+        height: 16px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .checkIcon {
+        width: 14px;
+        height: 14px;
+        font-size: 11px;
+    }
+    .searchForm {
+        flex-direction: column;
+    }
+} 
+
+@media (max-width: 700px) {
+    .heroImgBlock {
+        order: 2;
+        margin-top: -8px; /* немного поднимаем блок с изображением */
+        justify-content: center;
+        width: 100%;
+        position: relative;
+    }
+
+    .heroImg {
+        width: 100%;
+        max-width: 640px;
+        margin: 0;
+        border-radius: 28px;
+        transform: translateX(0) translateY(-29px);
+        z-index: 0;
+    }
+
+    .heroSection {
+        padding-bottom: 140px; /* чуть больше места под оверлей */
+    }
+
+    .searchBlock {
+        position: absolute !important;
+        left: 50% !important;
+        right: auto !important;
+        top: auto !important;
+        bottom: 96px !important;
+        transform: translateX(-50%) !important;
+        width: calc(100% - 24px) !important;
+        max-width: 520px !important;
+        margin: 0 !important;
+        z-index: 4 !important;
+        display: flex;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .heroImgBlock { margin-top: -12px; }
+    .heroImg { transform: translateX(0) translateY(-27px); }
+    .searchBlock { bottom: 88px !important; }
+} 
+
+@media (max-width: 700px) {
+    /* Слои: изображение внизу, фильтры над ним, форма выше всех */
+    .heroTextBlock { position: relative; z-index: 4; }
+    .filterCards { position: relative; z-index: 5; }
+
+    .heroImgBlock { position: relative; z-index: 1; }
+    .heroImg {
+        transform: translateY(-22px); /* еще немного выше */
+        z-index: 0; /* ниже фильтров */
+    }
+
+    .searchBlock { z-index: 6 !important; }
+} 
+
+@media (max-width: 700px) {
+    /* Компактнее вертикальный стэк и плотнее к картинке */
+    .heroSection {
+        gap: 0; /* убираем общий вертикальный зазор */
+        padding-bottom: 130px; /* место под форму-оверлей */
+    }
+
+    .heroTextBlock {
+        position: static; /* чтобы форма позиционировалась от heroSection */
+        margin-bottom: 0;
+    }
+
+    .filterCards {
+        position: relative;
+        z-index: 5; /* выше изображения */
+        margin-bottom: 10px; /* небольшой отступ от заголовка */
+    }
+
+    .heroImgBlock {
+        position: relative;
+        z-index: 1;
+        margin-top: -18px; /* подвигаем ближе к фильтрам */
+    }
+
+    .heroImg {
+        transform: translateY(-24px); /* поднимаем сильнее */
+        z-index: 0; /* внизу слоёв */
+    }
+
+    /* Форма-оверлей: по центру, ниже фильтров, поверх картинки */
+    .searchBlock {
+        position: absolute !important;
+        left: 50% !important;
+        right: auto !important;
+        top: auto !important;
+        bottom: 28px !important; /* ближе к нижнему краю изображения */
+        transform: translateX(-50%) !important;
+        width: calc(100% - 24px) !important;
+        max-width: 520px !important;
+        margin: 0 !important;
+        z-index: 6 !important; /* выше всего в hero */
+        display: flex;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .heroSection { padding-bottom: 140px; }
+    .heroImgBlock { margin-top: -16px; }
+    .heroImg { transform: translateY(-22px); }
+    .searchBlock { bottom: 18px !important; }
+} 
+
+/* Final mobile overrides for hero image position */
+@media (max-width: 700px) {
+    .heroImg {
+        animation: none !important;
+        opacity: 1 !important; /* важно: анимация отключена, значит явно показываем */
+        transform: translate3d(0, -209px, 0) !important; /* поднимите/опустите, меняя -39px */
+    }
+}
+@media (max-width: 480px) {
+    .heroImg {
+        animation: none !important;
+        opacity: 1 !important; /* явно показываем */
+        transform: translate3d(0, -157px, 0) !important; /* поднимите/опустите, меняя -37px */
+    }
+} 
+
+/* Final fine-tune for mobile hero overlay and text sizes */
+@media (max-width: 700px) {
+    /* Поднять форму ближе к нижней части изображения */
+    .searchBlock { bottom: 140px !important; }
+
+    /* Сделать заголовки и фильтры компактнее */
+    .heroTitle { font-size: 2rem !important; }
+    .heroSubtitle { font-size: 1.2rem !important; }
+    .filterCards { gap: 10px !important; }
+    .filterCard { padding: 10px 12px !important; font-size: 0.95rem !important; }
+    .checkIcon { width: 14px !important; height: 14px !important; font-size: 11px !important; }
+}
+@media (max-width: 480px) {
+    /* Ещё ближе форму к картинке на очень маленьких экранах */
+    .searchBlock { bottom: 110px !important; }
+
+    /* Ещё компактнее текст и фильтры */
+    .heroTitle { font-size: 1.6rem !important; }
+    .heroSubtitle { font-size: 1.05rem !important; }
+    .filterCards { gap: 8px !important; }
+    .filterCard { padding: 8px 10px !important; font-size: 0.85rem !important; }
+    .checkIcon { width: 12px !important; height: 12px !important; font-size: 10px !important; }
+} 
+
+/* Compact form sizing on mobile */
+@media (max-width: 700px) {
+    .searchBlock {
+        width: min(92vw, 480px) !important;
+        max-width: 480px !important;
+    }
+    .searchForm {
+        padding: 10px 12px !important;
+        gap: 8px !important;
+        border-radius: 12px !important;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.12) !important;
+        backdrop-filter: blur(4px);
+    }
+    .input {
+        padding: 10px 12px !important;
+        font-size: 0.95rem !important;
+        border-radius: 10px !important;
+    }
+    .requestBtn {
+        padding: 10px 14px !important;
+        font-size: 0.95rem !important;
+        border-radius: 10px !important;
+        white-space: nowrap;
+    }
+}
+@media (max-width: 480px) {
+    .searchBlock {
+        width: min(92vw, 380px) !important;
+        max-width: 380px !important;
+    }
+    .searchForm {
+        padding: 10px !important;
+        gap: 8px !important;
+        border-radius: 12px !important;
+    }
+    .input {
+        padding: 10px 12px !important;
+        font-size: 0.9rem !important;
+    }
+    .requestBtn {
+        padding: 10px 12px !important;
+        font-size: 0.9rem !important;
+    }
+} 
+
+/* Final vertical stacked form on mobile */
+@media (max-width: 700px) {
+    .searchBlock {
+        bottom: 360px !important; /* ближе к дому; увеличь/уменьши это значение при необходимости */
+        width: min(86vw, 380px) !important;
+        max-width: 380px !important;
+    }
+    .searchForm {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        justify-content: center !important;
+        padding: 12px !important;
+        gap: 10px !important;
+        border-radius: 14px !important;
+    }
+    .input { width: 100% !important; }
+    .requestBtn { width: 100% !important; }
+}
+@media (max-width: 480px) {
+    .searchBlock {
+        bottom: 130px !important; /* ближе к дому на очень маленьких экранах */
+        width: min(86vw, 340px) !important;
+        max-width: 340px !important;
+    }
+    .searchForm {
+        padding: 10px !important;
+        gap: 10px !important;
+    }
+} 
+
+/* Mobile CTA button above the form - full styles */
+@media (max-width: 700px) {
+    .mobileCtaBtn {
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+        width: min(80vw, 320px) !important;
+        max-width: 320px !important;
+        padding: 14px 18px !important;
+        font-size: 1.05rem !important;
+        font-weight: 700 !important;
+        line-height: 1.2 !important;
+        border: none !important;
+        border-radius: 14px !important;
+        color: #ffffff !important;
+        background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%) !important;
+        box-shadow: 0 10px 24px rgba(22, 163, 74, 0.25) !important;
+        cursor: pointer !important;
+        transition: transform .2s ease, box-shadow .2s ease, background .2s ease !important;
+        margin: 0 auto !important;
+    }
+    .mobileCtaBtn:hover { transform: translateY(-2px) !important; box-shadow: 0 14px 30px rgba(22, 163, 74, 0.3) !important; }
+    .mobileCtaBtn:active { transform: translateY(0) !important; box-shadow: 0 8px 20px rgba(22, 163, 74, 0.25) !important; }
+
+    /* Гарантируем порядок: кнопка сверху, форма ниже */
+    .searchBlock {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        gap: 8px !important;
+    }
+
+    .dropdownForm { margin-top: 10px !important; animation: formReveal .22s ease both; }
+}
+@media (max-width: 480px) {
+    .mobileCtaBtn {
+        width: min(88vw, 300px) !important;
+        max-width: 300px !important;
+        padding: 12px 16px !important;
+        font-size: 1rem !important;
+    }
+    .dropdownForm { margin-top: 8px !important; }
+} 
+
+/* Smooth reveal for the form */
+@media (max-width: 700px) {
+    .searchForm { animation: formReveal .22s ease both; }
+}
+@keyframes formReveal {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+} 
+
+@media (max-width: 700px) {
+    .dropdownForm {
+        margin-top: 10px !important; /* форма появляется ниже кнопки */
+        animation: formReveal .22s ease both;
+    }
+}
+@media (max-width: 480px) {
+    .dropdownForm { margin-top: 8px !important; }
+} 
+
 
