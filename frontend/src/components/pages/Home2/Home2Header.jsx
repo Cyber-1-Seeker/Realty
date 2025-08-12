@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTheme } from '@/context/ThemeContext.jsx';
-import AdvanceModal from "./AdvanceModal.jsx";
+import ModalForm from '@/components/pages/Listings/ListingsPage/ModalForm.jsx';
+import AdvancePaymentForm from './AdvancePaymentForm';
 import styles from './Home2Header.module.css';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
 import useAuthGuard from '@/hooks/useAuthGuard';
@@ -14,6 +15,7 @@ const Home2Header = ({ isAuthenticated = false }) => {
     const [showAuthModal, setShowAuthModal] = useState(false);
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
     const [menuOpen, setMenuOpen] = useState(false);
+    const [showAdvanceModal, setShowAdvanceModal] = useState(false);
     
     const isActive = (paths) => paths.some(p => pathname === p || pathname.startsWith(p + '/'));
 
@@ -51,6 +53,29 @@ const Home2Header = ({ isAuthenticated = false }) => {
             setShowAuthModal(true);
         }
     };
+
+    // Компонент кнопки "Получить аванс" с ModalForm
+    const AdvanceButton = ({ isMobile = false }) => (
+        <>
+            <a
+                href="#"
+                onClick={(e) => {
+                    e.preventDefault();
+                    setShowAdvanceModal(true);
+                    if (isMobile) {
+                        setMenuOpen(false); // Закрываем мобильное меню при клике
+                    }
+                }}
+                className={`${styles.navLink} ${theme === 'dark' ? styles.dark : ''}`}
+            >
+                Получить аванс
+            </a>
+
+            <ModalForm isOpen={showAdvanceModal} onClose={() => setShowAdvanceModal(false)}>
+                <AdvancePaymentForm onClose={() => setShowAdvanceModal(false)} theme={theme} />
+            </ModalForm>
+        </>
+    );
 
     return (
         <>
@@ -94,7 +119,7 @@ const Home2Header = ({ isAuthenticated = false }) => {
                     >
                         База квартир
                     </Link>
-                    <AdvanceModal theme={theme}/>
+                    <AdvanceButton />
                     <a 
                         href="#"
                         onClick={handleProfileClick}
@@ -187,9 +212,7 @@ const Home2Header = ({ isAuthenticated = false }) => {
                                 >
                                     База квартир
                                 </Link>
-                                <div className={styles.mobileAdvanceModal}>
-                                    <AdvanceModal theme={theme}/>
-                                </div>
+                                <AdvanceButton isMobile={true} />
                                 <Link 
                                     to="/profile"
                                     onClick={(e) => {

@@ -494,6 +494,16 @@
         white-space: nowrap;
     }
     
+    /* Стили для кнопки navLink в мобильном меню */
+    .navMenu .navLink {
+        /* Убираем специальные стили, используем стандартные для навигации */
+    }
+    
+    /* Hover эффекты для кнопки navLink в мобильном меню */
+    .navMenu .navLink:hover {
+        /* Убираем специальные hover эффекты */
+    }
+    
     /* Темная тема для ссылок в мобильном меню */
     .dark .navMenu a {
         color: #ffffff !important;
@@ -507,6 +517,25 @@
         background: rgba(255, 255, 255, 0.1) !important;
         border: 1px solid rgba(255, 255, 255, 0.2) !important;
     }
+    
+    /* Темная тема для кнопки navLink в мобильном меню */
+    .dark .navMenu .navLink {
+        /* Убираем специальные стили для темной темы */
+    }
+    
+    /* Темная тема для кнопки navLink в мобильном меню - альтернативный селектор */
+    .navMenu .navLink.dark {
+        /* Убираем специальные стили для темной темы */
+    }
+    
+    /* Hover эффекты для темной темы кнопки navLink в мобильном меню */
+    .dark .navMenu .navLink:hover {
+        /* Убираем специальные hover эффекты */
+    }
+    
+    .navMenu .navLink.dark:hover {
+        /* Убираем специальные hover эффекты */
+    }
 
     .contactBtn {
         display: none;
@@ -518,6 +547,39 @@
     
     .overlay {
         display: block;
+    }
+    
+    /* Уменьшаем тени для мобильных устройств */
+    .mobileThemeToggleBtn {
+        box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
+    }
+    
+    .mobileThemeToggleBtn:hover {
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+    }
+    
+    .dark .mobileThemeToggleBtn {
+        box-shadow: 0 2px 8px rgba(124, 58, 237, 0.3) !important;
+    }
+    
+    .dark .mobileThemeToggleBtn:hover {
+        box-shadow: 0 4px 12px rgba(124, 58, 237, 0.35) !important;
+    }
+    
+    .burger {
+        box-shadow: 0 2px 8px rgba(16, 185, 129, 0.2);
+    }
+    
+    .burger:hover {
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+    }
+    
+    .dark .burger {
+        box-shadow: 0 2px 8px rgba(124, 58, 237, 0.3) !important;
+    }
+    
+    .dark .burger:hover {
+        box-shadow: 0 4px 12px rgba(124, 58, 237, 0.35) !important;
     }
 }
 
@@ -543,4 +605,66 @@
     .logo {
         font-size: 1.25rem;
     }
+    
+    /* Стили для кнопки navLink на очень маленьких экранах */
+    .navMenu .navLink {
+        /* Убираем специальные стили */
+    }
+    
+    /* Еще больше уменьшаем тени для очень маленьких экранов */
+    .navLink:hover {
+        box-shadow: 0 1px 6px rgba(37, 99, 235, 0.15);
+    }
+    
+    /* Уменьшаем тени для темной темы на очень маленьких экранах */
+    .dark .requestBtn {
+        box-shadow: 0 1px 4px rgba(21,128,61,0.06);
+    }
+    
+    /* Стили для других кнопок на очень маленьких экранах */
+    .mobileThemeToggleBtn {
+        box-shadow: 0 1px 6px rgba(37, 99, 235, 0.15);
+    }
+    
+    .mobileThemeToggleBtn:hover {
+        box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
+    }
+    
+    .dark .mobileThemeToggleBtn {
+        box-shadow: 0 1px 6px rgba(124, 58, 237, 0.25) !important;
+    }
+    
+    .dark .mobileThemeToggleBtn:hover {
+        box-shadow: 0 2px 8px rgba(124, 58, 237, 0.3) !important;
+    }
+    
+    .burger {
+        box-shadow: 0 1px 6px rgba(16, 185, 129, 0.15);
+    }
+    
+    .burger:hover {
+        box-shadow: 0 2px 8px rgba(16, 185, 129, 0.2);
+    }
+    
+    .dark .burger {
+        box-shadow: 0 1px 6px rgba(124, 58, 237, 0.25) !important;
+    }
+    
+    .dark .burger:hover {
+        box-shadow: 0 2px 8px rgba(124, 58, 237, 0.3) !important;
+    }
+}
+
+/* Стили для кнопки "Получить аванс" - теперь это обычная навигационная ссылка */
+.navLink {
+    /* Убираем специальные стили, используем стандартные для навигации */
+}
+
+/* Адаптивность для кнопки navLink */
+@media (max-width: 768px) {
+    /* Убираем специальные стили для navLink */
+}
+
+@media (max-width: 480px) {
+    /* Убираем специальные стили для navLink */
 }

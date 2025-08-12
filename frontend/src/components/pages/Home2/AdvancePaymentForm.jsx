@@ -212,7 +212,10 @@ const AdvancePaymentForm = ({ onClose, theme }) => {
                     </motion.button>
                     
                     <div className={styles.privacyNote}>
-                        Нажимая на кнопку, вы соглашаетесь с <Link to="/privacy">политикой конфиденциальности</Link>
+                        Нажимая на кнопку, вы соглашаетесь с{' '}
+                        <Link to="/privacy" className={styles.advancePrivacyLink}>
+                            политикой конфиденциальности
+                        </Link>
                     </div>
                 </form>
             )}

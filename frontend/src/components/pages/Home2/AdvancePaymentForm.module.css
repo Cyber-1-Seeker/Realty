@@ -200,26 +200,13 @@
     to { transform: rotate(360deg); }
 }
 
+/* Простые стили для политики конфиденциальности */
 .privacyNote {
     font-size: 14px;
     color: #6b7280;
     text-align: center;
     margin-top: 16px;
     line-height: 1.5;
-    font-weight: 500;
-}
-
-.privacyNote a {
-    color: #22c55e;
-    text-decoration: none;
-    border-bottom: 1px solid transparent;
-    transition: all 0.3s ease;
-    font-weight: 600;
-}
-
-.privacyNote a:hover {
-    border-bottom: 1px solid #22c55e;
-    color: #16a34a;
 }
 
 .successMessage {
@@ -330,19 +317,6 @@
     box-shadow: 0 16px 40px rgba(52, 211, 153, 0.4);
 }
 
-.dark .privacyNote {
-    color: #9ca3af;
-}
-
-.dark .privacyNote a {
-    color: #34d399;
-}
-
-.dark .privacyNote a:hover {
-    color: #10b981;
-    border-bottom-color: #34d399;
-}
-
 .dark .successMessage {
     background: linear-gradient(135deg, rgba(6, 78, 59, 0.9) 0%, rgba(6, 95, 70, 0.9) 100%);
     border: 2px solid rgba(52, 211, 153, 0.3);
@@ -381,10 +355,34 @@
         padding: 16px 20px;
     }
     
+    /* Простые стили для политики конфиденциальности на планшетах */
+    .privacyNote {
+        font-size: 15px;
+        margin-top: 18px;
+    }
+    
+    /* Уменьшаем тени для мобильных устройств */
+    .submitButton {
+        box-shadow: 0 4px 12px rgba(34, 197, 94, 0.2);
+    }
+    
+    .submitButton:hover {
+        box-shadow: 0 6px 16px rgba(34, 197, 94, 0.25);
+    }
+    
     .dark .modalContent {
         background: rgba(0, 0, 0, 0.95) !important;
         border: 1px solid rgba(59, 130, 246, 0.4) !important;
         box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7), 0 0 40px rgba(59, 130, 246, 0.2) !important;
+    }
+    
+    /* Уменьшаем тени для темной темы на мобильных */
+    .dark .submitButton {
+        box-shadow: 0 4px 12px rgba(52, 211, 153, 0.2);
+    }
+    
+    .dark .submitButton:hover {
+        box-shadow: 0 6px 16px rgba(52, 211, 153, 0.25);
     }
 }
 
@@ -405,9 +403,141 @@
         padding: 20px 16px;
     }
     
+    /* Простые стили для политики конфиденциальности на мобильных */
+    .privacyNote {
+        font-size: 14px;
+        margin-top: 16px;
+        line-height: 1.4;
+    }
+    
+    /* Еще больше уменьшаем тени для очень маленьких экранов */
+    .submitButton {
+        box-shadow: 0 2px 8px rgba(34, 197, 94, 0.15);
+    }
+    
+    .submitButton:hover {
+        box-shadow: 0 4px 12px rgba(34, 197, 94, 0.2);
+    }
+    
     .dark .modalContent {
         background: rgba(0, 0, 0, 0.95) !important;
         border: 1px solid rgba(59, 130, 246, 0.4) !important;
         box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7), 0 0 40px rgba(59, 130, 246, 0.2) !important;
     }
+    
+    /* Уменьшаем тени для темной темы на очень маленьких экранах */
+    .dark .submitButton {
+        box-shadow: 0 2px 8px rgba(52, 211, 153, 0.15);
+    }
+    
+    .dark .submitButton:hover {
+        box-shadow: 0 4px 12px rgba(52, 211, 153, 0.2);
+    }
+}
+
+/* Темная тема для новых классов политики конфиденциальности */
+.dark .privacyContainer {
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid rgba(51, 65, 85, 0.6);
+}
+
+.dark .privacyIcon {
+    color: #94a3b8;
+    opacity: 0.9;
+}
+
+.dark .privacyText {
+    color: #cbd5e1;
+}
+
+.dark .privacyLink {
+    color: #34d399;
+    background: rgba(52, 211, 153, 0.15);
+    border: 1px solid rgba(52, 211, 153, 0.3);
+}
+
+.dark .privacyLink:hover {
+    color: #10b981;
+    background: rgba(52, 211, 153, 0.25);
+    border-color: rgba(52, 211, 153, 0.4);
+    box-shadow: 0 2px 8px rgba(52, 211, 153, 0.2);
+}
+
+/* Темная тема для политики конфиденциальности */
+.dark .privacyNote {
+    color: #9ca3af;
+}
+
+/* Уникальные стили для политики конфиденциальности с высокой специфичностью */
+.advancePrivacyLink {
+    color: #22c55e !important;
+    text-decoration: none !important;
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    font-weight: inherit !important;
+    font-size: inherit !important;
+    line-height: inherit !important;
+    display: inline !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    transition: border-bottom 0.3s ease !important;
+    transform: none !important;
+    outline: none !important;
+}
+
+.advancePrivacyLink:hover {
+    color: #16a34a !important;
+    text-decoration: none !important;
+    background: none !important;
+    border: none !important;
+    border-bottom: 1px solid #22c55e !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+.advancePrivacyLink:active {
+    color: #16a34a !important;
+    text-decoration: none !important;
+    background: none !important;
+    border: none !important;
+    border-bottom: 1px solid #22c55e !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+.advancePrivacyLink:focus {
+    color: #16a34a !important;
+    text-decoration: none !important;
+    background: none !important;
+    border: none !important;
+    outline: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* Темная тема для уникальной ссылки политики конфиденциальности */
+.dark .advancePrivacyLink {
+    color: #34d399 !important;
+}
+
+.dark .advancePrivacyLink:hover {
+    color: #10b981 !important;
+    border-bottom-color: #34d399 !important;
+}
+
+.dark .advancePrivacyLink:active {
+    color: #10b981 !important;
+    border-bottom-color: #34d399 !important;
+}
+
+.dark .advancePrivacyLink:focus {
+    color: #10b981 !important;
 }

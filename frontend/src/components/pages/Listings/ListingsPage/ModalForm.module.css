@@ -48,11 +48,14 @@
     align-items: center;
     justify-content: center;
     z-index: 10;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     color: #64748b;
     border: 2px solid rgba(203, 213, 225, 0.5);
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(10px);
+    /* Дополнительные стили для плавной анимации */
+    transform-origin: center;
+    will-change: transform;
 }
 
 .closeButton:hover {
@@ -61,6 +64,12 @@
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
     color: #ef4444;
     border-color: rgba(239, 68, 68, 0.3);
+}
+
+/* Улучшенные hover эффекты для более плавной анимации */
+.closeButton:active {
+    transform: rotate(90deg) scale(0.95);
+    transition: all 0.1s ease;
 }
 
 /* Темная тема */
@@ -79,6 +88,9 @@
     color: #cbd5e1;
     border: 2px solid rgba(251, 191, 36, 0.3);
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    /* Дополнительные стили для плавной анимации в темной теме */
+    transform-origin: center;
+    will-change: transform;
 }
 
 .dark .closeButton:hover {
@@ -86,4 +98,42 @@
     color: #f87171;
     border-color: rgba(248, 113, 113, 0.4);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    transform: rotate(90deg) scale(1.1);
+}
+
+/* Улучшенные hover эффекты для темной темы */
+.dark .closeButton:active {
+    transform: rotate(90deg) scale(0.95);
+    transition: all 0.1s ease;
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+    .closeButton {
+        width: 44px;
+        height: 44px;
+        top: 18px;
+        right: 18px;
+        border-radius: 14px;
+    }
+    
+    .closeButton svg {
+        width: 22px;
+        height: 22px;
+    }
+}
+
+@media (max-width: 480px) {
+    .closeButton {
+        width: 40px;
+        height: 40px;
+        top: 16px;
+        right: 16px;
+        border-radius: 12px;
+    }
+    
+    .closeButton svg {
+        width: 20px;
+        height: 20px;
+    }
 }
