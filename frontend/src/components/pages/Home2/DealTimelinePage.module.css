@@ -117,6 +117,7 @@
     font-size: 15px;
     color: #3c4d68;
     margin: 0;
+    text-align: start;
 }
 
 @media screen and (max-width: 768px) {
@@ -210,3 +211,5 @@
         box-shadow: 0 0 0 6px #0f172a;
     }
 }
+
+

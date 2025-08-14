@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {useInView} from 'react-intersection-observer';
-import { useOutletContext } from 'react-router-dom';
+import { useOutletContext, useNavigate } from 'react-router-dom';
 import styles from './Home2.module.css';
-import heroImg from '@/assets/Listings/Hero4.png';
+import heroImg from '@/assets/Listings/new7.png';
+import darkHeroImg from '@/assets/Listings/New4.png';
 import DealTimelinePage from "@/components/pages/Home2/DealTimelinePage.jsx";
 import WhyChooseUs from "@/components/pages/Home2/WhyChooseUs.jsx";
 import AboutUsSection from "@/components/pages/Home2/AboutUsSection.jsx";
-import CalculatorLaunch from "@/components/pages/Home2/CalculatorLaunch.jsx";
+import CallToAction from "@/components/pages/Home2/CalculatorSection/CallToAction.jsx";
 import {useTheme} from '@/context/ThemeContext';
 import StatisticsSection from "@/components/pages/Home2/StatisticsSection.jsx";
 import MapSection from "@/components/pages/Home2/MapSection.jsx";
@@ -19,6 +20,7 @@ import ModalForm from '@/components/pages/Listings/ListingsPage/ModalForm.jsx';
 function Home2() {
     const { isAuthenticated = false } = useOutletContext() || {};
     const {theme, toggleTheme} = useTheme();
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         name: '',
         phone: '',
@@ -29,6 +31,18 @@ function Home2() {
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [error, setError] = useState('');
     const [commentError, setCommentError] = useState(false);
+    
+
+
+    // Локальная тема для изображения с отложенным переключением,
+    // чтобы дом менялся после задержки (в такт смене темы)
+    const [imageTheme, setImageTheme] = useState(theme);
+    useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            setImageTheme(theme);
+        }, 200); // ускорили на 0.2s
+        return () => clearTimeout(timeoutId);
+    }, [theme]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -135,15 +149,30 @@ function Home2() {
                             <span className={styles.heroSubtitle}>Платформа для поиска недвижимости</span>
                             <h1 className={styles.heroTitle}>Найдите дом своей мечты</h1>
                             <div className={styles.filterCards}>
-                                <div className={styles.filterCard + ' ' + styles.checked}>
+                                <div
+                                    className={styles.filterCard + ' ' + styles.checked}
+                                    onClick={() => navigate('/listings#add')}
+                                    role="button"
+                                    tabIndex={0}
+                                >
                                     <span className={styles.checkIcon}>✓</span>
                                     <span>Купить</span>
                                 </div>
-                                <div className={styles.filterCard + ' ' + styles.checked}>
+                                <div
+                                    className={styles.filterCard + ' ' + styles.checked}
+                                    onClick={() => navigate('/listings#listings')}
+                                    role="button"
+                                    tabIndex={0}
+                                >
                                     <span className={styles.checkIcon}>✓</span>
                                     <span>Продать</span>
                                 </div>
-                                <div className={styles.filterCard + ' ' + styles.checked}>
+                                <div
+                                    className={styles.filterCard + ' ' + styles.checked}
+                                    onClick={() => navigate('/listings#listings')}
+                                    role="button"
+                                    tabIndex={0}
+                                >
                                     <span className={styles.checkIcon}>✓</span>
                                     <span>Арендовать</span>
                                 </div>
@@ -184,7 +213,11 @@ function Home2() {
                             </section>
                         </div>
                         <div className={styles.heroImgBlock}>
-                            <img src={heroImg} alt="Современный дом" className={styles.heroImg}/>
+                            <img 
+                                src={imageTheme === 'dark' ? darkHeroImg : heroImg} 
+                                alt="Современный дом" 
+                                className={styles.heroImg}
+                            />
                         </div>
                     </section>
                 </div>
@@ -200,7 +233,7 @@ function Home2() {
                     <WhyChooseUs theme={theme}/>
                 </section>
                 <section ref={calcRef} className={`${styles.animSection} ${calcInView ? styles.visible : ''}`}>
-                    <CalculatorLaunch theme={theme}/>
+                    <CallToAction/>
                 </section>
                 <section ref={mapRef} className={`${styles.animSection} ${mapInView ? styles.visible : ''}`}>
                     <MapSection theme={theme}/>

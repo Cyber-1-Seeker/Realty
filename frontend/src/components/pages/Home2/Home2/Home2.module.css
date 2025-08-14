@@ -7,6 +7,7 @@
     overflow-y: auto;
     background-color: white;
     overflow-x: hidden;
+    transition: background-color 0.3s ease;
 }
 
 .altBgWrapper.dark {
@@ -115,7 +116,7 @@
 }
 
 .heroSubtitle {
-    color: #2563eb;
+    color: #2563eb !important;
     font-size: 2rem;
     font-weight: 700;
     font-family: 'Montserrat', 'Inter', Arial, sans-serif;
@@ -124,6 +125,11 @@
     max-width: 520px;
     text-align: left;
     margin-bottom: 16px;
+}
+
+/* Дополнительная специфичность для гарантии синего цвета */
+.heroSection .heroSubtitle {
+    color: #2563eb !important;
 }
 
 .heroTitle {
@@ -415,8 +421,22 @@
 }
 
 /* Темная тема */
-.dark .heroTitle, .dark .heroSubtitle, .dark .navMenu a, .dark .logo {
+.dark .heroTitle, .dark .navMenu a, .dark .logo {
     color: #f3f1ec !important;
+}
+
+.dark .heroSubtitle {
+    color: #60a5fa !important;
+}
+
+/* Стили для изображения в темной теме - с задержкой 1 секунда */
+.dark .heroImg {
+    transition: opacity 0.5s ease 1s;
+}
+
+/* Стили для изображения в светлой теме - с задержкой 1 секунда */
+.heroImg {
+    transition: opacity 0.5s ease 1s;
 }
 
 .dark .navMenu a.active {

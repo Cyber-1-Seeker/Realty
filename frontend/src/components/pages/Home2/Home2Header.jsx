@@ -137,7 +137,7 @@ const Home2Header = ({ isAuthenticated = false }) => {
                     >
                         База квартир
                     </Link>
-                    <AdvanceButton />
+                    {/* <AdvanceButton /> */}
                     <a 
                         href="#"
                         onClick={handleProfileClick}
@@ -151,7 +151,7 @@ const Home2Header = ({ isAuthenticated = false }) => {
                 {/* Десктопные кнопки */}
                 {!isMobile && (
                     <>
-                        <button className={styles.contactBtn}>Связаться с нами</button>
+                        <Link to="/about" className={styles.contactBtn}>Связаться с нами</Link>
                         <button
                             className={styles.themeToggle}
                             onClick={toggleTheme}

@@ -128,6 +128,7 @@
     background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
     color: white;
     border: none;
+    text-decoration: none;
     border-radius: 12px;
     padding: 12px 24px;
     font-size: 1rem;

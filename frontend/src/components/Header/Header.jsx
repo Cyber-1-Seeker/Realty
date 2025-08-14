@@ -94,7 +94,7 @@ const Header = ({ isAuthenticated = false }) => {
                     >
                         База квартир
                     </Link>
-                    <AdvanceModal theme={theme}/>
+                    {/* <AdvanceModal theme={theme}/> */}
                     <Link 
                         to="/profile"
                         onClick={handleProfileClick}
@@ -108,7 +108,7 @@ const Header = ({ isAuthenticated = false }) => {
                 {/* Десктопные кнопки */}
                 {!isMobile && (
                     <>
-                        <button className={styles.contactBtn}>Связаться с нами</button>
+                        <Link to="/about" className={styles.contactBtn}>Связаться с нами</Link>
                         <button
                             className={styles.themeToggle}
                             onClick={toggleTheme}

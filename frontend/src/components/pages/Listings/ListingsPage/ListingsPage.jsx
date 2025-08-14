@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useEffect, useMemo, useState} from 'react';
 import axios from 'axios';
 import Hero from './ListingsHero.jsx';
 import styles from './ListingsPage.module.css';
@@ -43,6 +43,21 @@ const ListingsPage = ({isAuthenticated, currentUser}) => { // Добавляем
         setShowAddForm(false); // Просто закрываем форму
     };
 
+    // Открываем нужную модалку по хэшу/поиску
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            if (window.location.hash === '#add') {
+                setShowAddForm(true);
+            }
+            if (window.location.hash === '#listings') {
+                const el = document.getElementById('listings-root');
+                if (el) {
+                    el.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+        }
+    }, []);
+
     return (
         <div className={theme === 'dark' ? styles.dark : ''}>
             <Hero
@@ -53,7 +68,7 @@ const ListingsPage = ({isAuthenticated, currentUser}) => { // Добавляем
                 onUrgentClick={() => setShowUrgentForm(true)}
             />
 
-            <div className={styles.container}>
+            <div className={styles.container} id="listings-root">
                 <ListingGridSection listings={listings}/>
 
                 {/*
