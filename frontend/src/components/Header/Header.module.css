@@ -1,118 +1,29 @@
-.header {
-    position: sticky;
+.home2Header {
+    position: static;
     top: 0;
-    background: rgba(255, 255, 255, 0.05);
-    transition: background 0.3s, box-shadow 0.3s;
+    left: 0;
+    right: 0;
+    background: transparent;
+    backdrop-filter: none;
+    border-bottom: none;
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 32px 48px 24px 48px;
-    position: relative;
-    z-index: 20;
+    z-index: 100;
     width: 100%;
     box-sizing: border-box;
 }
 
-.header.dark {
-    background: #000000 !important;
-    backdrop-filter: none !important;
-    border-bottom: 1px solid rgba(96, 165, 250, 0.3) !important;
+/* Уникальный класс для максимальной специфичности */
+.home2HeaderUnique {
+    /* Этот класс нужен только для CSS специфичности */
 }
 
-/* Специальные стили для главной страницы в темной теме */
-.header.darkHome {
+.home2Header.dark {
     background: transparent;
     backdrop-filter: none;
     border-bottom: none;
-}
-
-/* ПРИОРИТЕТ: Темная тема должна переопределять прозрачный фон */
-.header.dark.darkHome {
-    background: #000000 !important;
-    backdrop-filter: none !important;
-    border-bottom: 1px solid rgba(96, 165, 250, 0.3) !important;
-}
-
-/* Улучшенная видимость элементов на прозрачном фоне главной страницы */
-.header.darkHome .logo,
-.header.darkHome .logo span {
-    color: #ffffff;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-.header.darkHome .logo b {
-    color: #60a5fa;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-/* ПРИОРИТЕТ: Темная тема должна переопределять прозрачный фон для логотипа */
-.header.dark.darkHome .logo,
-.header.dark.darkHome .logo span {
-    color: #f3f4f6 !important;
-    text-shadow: none !important;
-}
-
-.header.dark.darkHome .logo b {
-    color: #60a5fa !important;
-    text-shadow: none !important;
-}
-
-.header.darkHome .navMenu a {
-    color: #ffffff;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-}
-
-.header.darkHome .navMenu a:hover {
-    background: transparent;
-    backdrop-filter: blur(10px);
-}
-
-/* ПРИОРИТЕТ: Темная тема должна переопределять прозрачный фон для навигации */
-.header.dark.darkHome .navMenu a {
-    color: #f1f5f9 !important;
-    text-shadow: none !important;
-}
-
-.header.dark.darkHome .navMenu a:hover {
-    background: transparent !important;
-    backdrop-filter: none !important;
-}
-
-/* Стили для кнопки "Получить аванс" на главной странице в темной теме */
-.header.darkHome .navMenu button {
-    color: #ffffff;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-}
-
-.header.darkHome .navMenu button:hover {
-    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3);
-    text-shadow: none;
-}
-
-/* ПРИОРИТЕТ: Темная тема должна переопределять прозрачный фон для кнопки */
-.header.dark.darkHome .navMenu button {
-    color: #f1f5f9 !important;
-    text-shadow: none !important;
-}
-
-.header.dark.darkHome .navMenu button:hover {
-    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
-    color: white !important;
-    transform: translateY(-2px) !important;
-    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3) !important;
-    text-shadow: none !important;
-}
-
-.header.dark .logo,
-.header.dark .logo span {
-    color: #f3f4f6;
-}
-
-.header.dark .logo b {
-    color: #60a5fa;
 }
 
 .logo {
@@ -120,180 +31,117 @@
     font-weight: 700;
     color: #111827;
     letter-spacing: 2px;
+    text-shadow: 0 2px 4px rgba(255, 255, 255, 0.8);
 }
 
 .logo span {
     color: #111827;
+    text-shadow: 0 2px 4px rgba(255, 255, 255, 0.8);
 }
 
 .logo b {
     color: #2563eb;
     font-weight: 900;
+    text-shadow: 0 2px 4px rgba(255, 255, 255, 0.8);
 }
 
 .navMenu {
     display: flex;
     gap: 32px;
     position: relative;
-    z-index: 21;
+    z-index: 101;
     margin-right: 22px;
     align-items: center;
 }
 
 .navMenu a {
-    color: #222;
+    color: #111827;
     text-decoration: none;
     font-size: 1.2rem;
     font-weight: 500;
     padding: 8px 12px;
     border-radius: 8px;
     transition: all 0.3s ease;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
 }
 
-.navMenu a:hover {
-    color: white !important;
+/* Базовые стили для всех ссылок при hover */
+.home2HeaderUnique .navMenu a:hover {
+    color: white;
     transform: translateY(-2px);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
 }
 
-/* Цветные градиенты для каждой кнопки */
-.navMenu a[href="/home2"]:hover {
-    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
-    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3) !important;
-    color: white !important;
-    transform: translateY(-2px) !important;
+.home2HeaderUnique .navMenu a[href="/home2"]:hover {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3);
 }
 
-.navMenu a[href="/about"]:hover {
-    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
-    box-shadow: 0 4px 16px rgba(220, 38, 38, 0.3) !important;
-    color: white !important;
-    transform: translateY(-2px) !important;
+.home2HeaderUnique .navMenu a[href="/about"]:hover {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+    box-shadow: 0 4px 16px rgba(220, 38, 38, 0.3);
 }
 
-.navMenu a[href="/listings"]:hover {
-    background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
-    box-shadow: 0 4px 16px rgba(5, 150, 105, 0.3) !important;
-    color: white !important;
-    transform: translateY(-2px) !important;
+.home2HeaderUnique .navMenu a[href="/listings"]:hover {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    box-shadow: 0 4px 16px rgba(5, 150, 105, 0.3);
 }
 
-.navMenu a[href="/profile"]:hover {
-    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%) !important;
-    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3) !important;
-    color: white !important;
-    transform: translateY(-2px) !important;
+.home2HeaderUnique .navMenu a[href="/profile"]:hover {
+    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
 }
 
-/* Максимальная специфичность для профиля */
-header .navMenu a[href="/profile"]:hover {
-    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%) !important;
-    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3) !important;
-    color: white !important;
-    transform: translateY(-2px) !important;
+/* Убираем общие стили для active, чтобы работали специфичные */
+.home2HeaderUnique .navMenu a.active {
+    color: white;
 }
 
-.navMenu a.active {
-    font-weight: 700;
-    border-radius: 8px;
-    transition: all 0.3s ease;
+.home2HeaderUnique .navMenu a[href="/home2"].active {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    color: white;
+    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3);
 }
 
-/* Активные состояния для каждой кнопки */
-.navMenu a[href="/home2"].active {
-    color: white !important;
-    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
-    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3) !important;
-    font-weight: 700 !important;
+.home2HeaderUnique .navMenu a[href="/about"].active {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+    color: white;
+    box-shadow: 0 4px 16px rgba(220, 38, 38, 0.3);
 }
 
-.navMenu a[href="/about"].active {
-    color: white !important;
-    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
-    box-shadow: 0 4px 16px rgba(220, 38, 38, 0.3) !important;
-    font-weight: 700 !important;
+.home2HeaderUnique .navMenu a[href="/listings"].active {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    color: white;
+    box-shadow: 0 4px 16px rgba(5, 150, 105, 0.3);
 }
 
-.navMenu a[href="/listings"].active {
-    color: white !important;
-    background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
-    box-shadow: 0 4px 16px rgba(5, 150, 105, 0.3) !important;
-    font-weight: 700 !important;
-}
-
-.navMenu a[href="/profile"].active {
-    color: white !important;
-    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%) !important;
-    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3) !important;
-    font-weight: 700 !important;
-}
-
-/* Максимальная специфичность для активного состояния профиля */
-header .navMenu a[href="/profile"].active {
-    color: white !important;
-    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%) !important;
-    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3) !important;
-    font-weight: 700 !important;
+.home2HeaderUnique .navMenu a[href="/profile"].active {
+    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+    color: white;
+    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
 }
 
 .dropdown {
     position: relative;
-    cursor: pointer;
-}
-
-/* Стили для кнопки "Получить аванс" в десктопном меню */
-.navMenu button {
-    color: #222;
-    text-decoration: none;
-    font-size: 1.2rem;
-    font-weight: 500;
-    padding: 8px 12px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    background: none;
-    border: none;
-    font-family: inherit;
-}
-
-.navMenu button:hover {
-    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3);
-}
-
-/* Темная тема для кнопки "Получить аванс" */
-.navMenu button.dark {
-    color: #f1f5f9;
-}
-
-.navMenu button.dark:hover {
-    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3);
 }
 
 .contactBtn {
-    background: #2563eb;
-    color: #fff;
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    color: white;
     border: none;
-    border-radius: 24px;
-    padding: 12px 32px;
-    font-size: 1.1rem;
+    text-decoration: none;
+    border-radius: 12px;
+    padding: 12px 24px;
+    font-size: 1rem;
     font-weight: 600;
-    box-shadow: 0 2px 12px rgba(37,99,235,0.08);
     cursor: pointer;
     transition: all 0.3s ease;
-    position: relative;
-    z-index: 21;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
 }
 
 .contactBtn:hover {
-    background: #1d4ed8;
+    background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
     transform: translateY(-2px);
-    box-shadow: 0 4px 16px rgba(29, 78, 216, 0.3);
+    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
 }
 
 .themeToggle {
@@ -308,7 +156,7 @@ header .navMenu a[href="/profile"].active {
     align-items: center;
     justify-content: center;
     position: relative;
-    z-index: 21;
+    z-index: 101;
 }
 
 .themeToggle:hover {
@@ -326,196 +174,232 @@ header .navMenu a[href="/profile"].active {
     transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-/* Эффект "нажатия" для лунной иконки */
 .themeIcon:hover {
     transform: scale(1.15, 1.05);
 }
 
-/* Поворот для солнечной иконки */
 .themeToggle:hover .themeIcon[src*="sun-icon"] {
     transform: rotate(180deg) scale(1.1);
 }
 
 /* Темная тема */
-.dark .header {
-    background: transparent;
-}
-
-/* Темная тема для навбара */
-.header.dark {
-    background: #000000 !important;
-    backdrop-filter: none !important;
-    border-bottom: 1px solid rgba(96, 165, 250, 0.3) !important;
-}
-
-/* Максимальная специфичность для темной темы */
-header.header.dark {
-    background: #000000 !important;
-    backdrop-filter: none !important;
-    border-bottom: 1px solid rgba(96, 165, 250, 0.3) !important;
-}
-
-/* Дополнительная специфичность */
-body .header.dark {
-    background: #000000 !important;
-    backdrop-filter: none !important;
-    border-bottom: 1px solid rgba(96, 165, 250, 0.3) !important;
-}
-
-.header.dark .logo,
-.header.dark .logo span {
+.home2Header.dark .logo,
+.home2Header.dark .logo span {
     color: #f3f4f6;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
 }
 
-.header.dark .logo b {
+.home2Header.dark .logo b {
     color: #60a5fa;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
 }
 
-/* Стили для кнопки "Получить аванс" в темной теме навбара */
-.header.dark .navMenu button {
-    color: #f1f5f9 !important;
+.home2Header.dark .navMenu a {
+    color: #f3f4f6;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
 }
 
-.header.dark .navMenu button:hover {
-    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
-    color: white !important;
-    transform: translateY(-2px) !important;
-    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3) !important;
+/* Специальные стили для профиля в темной теме */
+.home2Header.dark .navMenu a[href="/profile"] {
+    color: #f3f4f6;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
 }
 
-.navMenu a.dark {
-    color: #f1f5f9 !important;
+/* Стили для профиля в темной теме - мобильное меню */
+.dark .mobileNavMenu a[href="/profile"] {
+    color: #f3f4f6;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
 }
 
-.navMenu a.dark:hover {
-    color: white !important;
+/* Мобильное меню: базовые стили контейнера и ссылок (как на других страницах) */
+.mobileNavMenu {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding: 20px;
+    margin: 0;
+}
+
+.mobileNavMenu a {
+    color: #374151;
+    text-decoration: none;
+    font-size: 16px;
+    padding: 12px 16px;
+    display: block;
+    width: 100%;
+    text-align: left;
+    border-radius: 8px;
+    margin: 4px 0;
+    font-weight: 500;
+    line-height: 1.5;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    transition: all 0.3s ease;
+    background: transparent;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* Темная тема для ссылок мобильного меню */
+.dark .mobileNavMenu a {
+    color: #ffffff;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Hover с цветными градиентами под каждую ссылку */
+.mobileNavMenu a[href="/home2"]:hover {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3);
+    color: white;
     transform: translateY(-2px);
-    /* Убираем общие стили hover для темной темы, 
-       так как у каждой кнопки свой специфичный hover */
+    border-color: transparent;
+}
+.mobileNavMenu a[href="/about"]:hover {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+    box-shadow: 0 4px 16px rgba(220, 38, 38, 0.3);
+    color: white;
+    transform: translateY(-2px);
+    border-color: transparent;
+}
+.mobileNavMenu a[href="/listings"]:hover {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    box-shadow: 0 4px 16px rgba(5, 150, 105, 0.3);
+    color: white;
+    transform: translateY(-2px);
+    border-color: transparent;
+}
+.mobileNavMenu a[href="/profile"]:hover {
+    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
+    color: white;
+    transform: translateY(-2px);
+    border-color: transparent;
 }
 
-/* В тёмной теме каждая кнопка имеет свой градиент */
-.navMenu a.dark[href="/home2"]:hover {
-    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
-    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3) !important;
-    color: white !important;
-    transform: translateY(-2px) !important;
-}
-
-.navMenu a.dark[href="/about"]:hover {
-    background: linear-gradient(135deg, #dc2626 0%, #b91c1b 100%) !important;
-    box-shadow: 0 4px 16px rgba(220, 38, 38, 0.3) !important;
-    color: white !important;
-    transform: translateY(-2px) !important;
-}
-
-.navMenu a.dark[href="/listings"]:hover {
-    background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
-    box-shadow: 0 4px 16px rgba(5, 150, 105, 0.3) !important;
-    color: white !important;
-    transform: translateY(-2px) !important;
-}
-
-.navMenu a.dark[href="/profile"]:hover {
-    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%) !important;
-    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3) !important;
-    color: white !important;
-    transform: translateY(-2px) !important;
-}
-
-/* Максимальная специфичность для профиля в темной теме */
-header .navMenu a.dark[href="/profile"]:hover {
-    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%) !important;
-    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3) !important;
-    color: white !important;
-    transform: translateY(-2px) !important;
-}
-
-.navMenu a.dark.active {
+/* Active состояния с цветными градиентами */
+.mobileNavMenu a.active {
     font-weight: 700;
     border-radius: 8px;
     transition: all 0.3s ease;
+    background: transparent;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+.mobileNavMenu a[href="/home2"].active {
+    color: white;
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3);
+    border-color: transparent;
+}
+.mobileNavMenu a[href="/about"].active {
+    color: white;
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+    box-shadow: 0 4px 16px rgba(220, 38, 38, 0.3);
+    border-color: transparent;
+}
+.mobileNavMenu a[href="/listings"].active {
+    color: white;
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    box-shadow: 0 4px 16px rgba(5, 150, 105, 0.3);
+    border-color: transparent;
+}
+.mobileNavMenu a[href="/profile"].active {
+    color: white;
+    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
+    border-color: transparent;
 }
 
-/* Активные состояния для каждой кнопки в темной теме */
-.navMenu a.dark[href="/home2"].active {
-    color: white !important;
-    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
-    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3) !important;
-    font-weight: 700 !important;
+/* Стили для мобильного профиля в темной теме */
+.dark .mobileNavMenu a[href="/profile"].active {
+    color: white;
+    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
+    border-color: transparent;
 }
 
-.navMenu a.dark[href="/about"].active {
-    color: white !important;
-    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
-    box-shadow: 0 4px 16px rgba(220, 38, 38, 0.3) !important;
-    font-weight: 700 !important;
-}
-
-.navMenu a.dark[href="/listings"].active {
-    color: white !important;
-    background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
-    box-shadow: 0 4px 16px rgba(5, 150, 105, 0.3) !important;
-    font-weight: 700 !important;
-}
-
-.navMenu a.dark[href="/profile"].active {
-    color: white !important;
-    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%) !important;
-    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3) !important;
-    font-weight: 700 !important;
-}
-
-/* Максимальная специфичность для активного состояния профиля в темной теме */
-header .navMenu a.dark[href="/profile"].active {
-    color: white !important;
-    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%) !important;
-    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3) !important;
-    font-weight: 700 !important;
-}
-
-.dark .contactBtn {
-    background: #2563eb;
-    color: #fff;
-}
-
-.dark .contactBtn:hover {
-    background: #1d4ed8;
+.dark .mobileNavMenu a[href="/profile"]:hover {
+    color: white;
+    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
+    border-color: transparent;
     transform: translateY(-2px);
-    box-shadow: 0 4px 16px rgba(29, 78, 216, 0.3);
 }
 
-.header.dark .contactBtn {
-    background: #2563eb !important;
-    color: #fff !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+/* Специфичные стили для темной темы */
+.home2HeaderUnique.dark .navMenu a[href="/home2"]:hover {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3);
 }
 
-.header.dark .contactBtn:hover {
-    background: #1d4ed8 !important;
-    transform: translateY(-2px) !important;
-    box-shadow: 0 4px 16px rgba(29, 78, 216, 0.3) !important;
-    border-color: rgba(255, 255, 255, 0.2) !important;
+.home2HeaderUnique.dark .navMenu a[href="/about"]:hover {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+    box-shadow: 0 4px 16px rgba(220, 38, 38, 0.3);
 }
 
-.dark .themeToggle:hover {
+.home2HeaderUnique.dark .navMenu a[href="/listings"]:hover {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    box-shadow: 0 4px 16px rgba(5, 150, 105, 0.3);
+}
+
+.home2HeaderUnique.dark .navMenu a[href="/profile"]:hover {
+    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
+}
+
+.home2Header.dark .contactBtn {
+    background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+    box-shadow: 0 4px 12px rgba(96, 165, 250, 0.3);
+}
+
+.home2Header.dark .contactBtn:hover {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    box-shadow: 0 6px 16px rgba(96, 165, 250, 0.4);
+}
+
+.home2Header.dark .themeToggle:hover {
     background-color: rgba(243, 241, 236, 0.1);
-    transform: scale(1.05) translateY(-2px);
 }
 
-.header.dark .themeToggle {
-    background: rgba(255, 255, 255, 0.05) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+/* Специфичные стили для активного состояния в темной теме */
+.home2HeaderUnique.dark .navMenu a[href="/home2"].active {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3);
 }
 
-.header.dark .themeToggle:hover {
-    background-color: rgba(255, 255, 255, 0.15) !important;
-    transform: scale(1.05) translateY(-2px) !important;
-    border-color: rgba(255, 255, 255, 0.2) !important;
+.home2HeaderUnique.dark .navMenu a[href="/about"].active {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    box-shadow: 0 4px 16px rgba(5, 150, 105, 0.3);
+}
+
+.home2HeaderUnique.dark .navMenu a[href="/listings"].active {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+    box-shadow: 0 4px 16px rgba(220, 38, 38, 0.3);
+}
+
+.home2HeaderUnique.dark .navMenu a[href="/profile"].active {
+    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
+}
+
+/* Дополнительные стили для темной темы профиля */
+.home2Header.dark .navMenu a[href="/profile"].active {
+    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
+    color: white;
+}
+
+/* Стили для темной темы профиля при hover */
+.home2Header.dark .navMenu a[href="/profile"]:hover {
+    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
+    color: white;
+    transform: translateY(-2px);
 }
 
 /* Мобильная кнопка переключения темы */
-.mobileThemeToggle {
+.mobileThemeToggleBtn {
     display: none;
     width: 40px;
     height: 40px;
@@ -523,90 +407,128 @@ header .navMenu a.dark[href="/profile"].active {
     border: none;
     border-radius: 12px;
     cursor: pointer;
-    padding: 8px;
+    z-index: 102;
+    position: relative;
     transition: all 0.3s ease;
     box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
     align-items: center;
     justify-content: center;
 }
 
-/* Мобильная кнопка переключения темы в темной теме */
-/* В темной теме делаем как на главной: фиолетовый градиент */
-.header.dark .mobileThemeToggle {
-    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%) !important;
-    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4) !important;
-}
-.header.dark .mobileThemeToggle:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(124, 58, 237, 0.5) !important;
-    background: linear-gradient(135deg, #6d28d9 0%, #5b21b6 100%) !important;
-}
-
 /* Темная тема для мобильной кнопки переключения темы */
-.dark .mobileThemeToggle {
+.dark .mobileThemeToggleBtn {
     background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%) !important;
     box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4) !important;
 }
 
-.mobileThemeToggle:hover {
+.mobileThemeToggleBtn:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
     background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
 }
 
 /* Темная тема для hover эффекта мобильной кнопки переключения темы */
-.dark .mobileThemeToggle:hover {
+.dark .mobileThemeToggleBtn:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 16px rgba(124, 58, 237, 0.5);
     background: linear-gradient(135deg, #6d28d9 0%, #5b21b6 100%) !important;
 }
 
-.mobileThemeToggle:active {
+.mobileThemeToggleBtn:active {
     transform: translateY(0);
 }
 
 /* Темная тема для активного состояния мобильной кнопки переключения темы */
-.dark .mobileThemeToggle:active {
+.dark .mobileThemeToggleBtn:active {
     transform: translateY(0);
 }
 
-.mobileThemeToggle img {
-    width: 24px;
-    height: 24px;
-    transition: transform 0.3s ease;
-}
-
-/* Темная тема для иконки в мобильной кнопке переключения темы */
-.dark .mobileThemeToggle img {
-    filter: brightness(1.2);
-}
-
-/* Бургер-кнопка */
-.burger {
+/* Оверлей для мобильного меню */
+.overlay {
     display: none;
-    width: 40px;
-    height: 40px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 99;
+    backdrop-filter: blur(2px);
+}
+
+/* Темная тема для оверлея */
+.dark .overlay {
+    background: rgba(0, 0, 0, 0.7) !important;
+    backdrop-filter: blur(4px) !important;
+}
+
+/* Адаптивность */
+@media (max-width: 1024px) {
+    .home2Header {
+        padding: 24px 32px 20px 32px;
+    }
+
+    .navMenu {
+        gap: 24px;
+        margin-right: 16px;
+    }
+
+    .navMenu a {
+        font-size: 1.1rem;
+        padding: 6px 10px;
+    }
+
+    .contactBtn {
+        padding: 10px 20px;
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .home2Header {
+        padding: 16px 16px 12px 16px;
+        flex-direction: row; /* Возвращаем горизонтальное расположение */
+        gap: 0;
+        position: relative;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .mobileThemeToggleBtn {
+        display: flex;
+        position: relative;
+        left: auto;
+        top: auto;
+        margin: 0;
+        width: 44px;
+        height: 44px;
+        order: 1;
+    }
+
+    .logo {
+        font-size: 1.6rem;
+        order: 2;
+        flex: 1;
+        text-align: center;
+    }
+
+.burger {
+        display: block;
+        width: 44px;
+        height: 44px;
     background: linear-gradient(135deg, #10b981 0%, #059669 100%);
     border: none;
     border-radius: 12px;
     color: white;
     cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 12px rgba(16, 185, 185, 0.3);
+        z-index: 102;
     position: relative;
-    overflow: hidden;
-}
-
-/* Бургер-кнопка в темной теме */
-/* В темной теме бургер тоже фиолетовый как на главной */
-.header.dark .burger {
-    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%) !important;
-    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4) !important;
-}
-.header.dark .burger:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(124, 58, 237, 0.5) !important;
-    background: linear-gradient(135deg, #6d28d9 0%, #5b21b6 100%) !important;
+        right: auto;
+        top: auto;
+        margin: 0;
+        order: 3;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
 }
 
 /* Темная тема для бургер-кнопки */
@@ -637,1161 +559,396 @@ header .navMenu a.dark[href="/profile"].active {
     transform: translateY(0);
 }
 
-.burger span {
+    .burger::before {
+        content: '';
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 20px;
+        width: 22px;
     height: 2px;
     background: white;
+        box-shadow:
+            0 -7px 0 white,
+            0 7px 0 white;
     transition: all 0.3s ease;
 }
 
-/* Темная тема для span элементов бургер-кнопки */
-.dark .burger span {
-    background: white;
-}
-
-.burger span:nth-child(1) {
-    transform: translate(-50%, -8px);
-}
-
-/* Темная тема для span элементов бургер-кнопки */
-.dark .burger span:nth-child(1) {
-    transform: translate(-50%, -8px);
-}
-
-.burger span:nth-child(2) {
-    transform: translate(-50%, -50%);
-}
-
-/* Темная тема для span элементов бургер-кнопки */
-.dark .burger span:nth-child(2) {
-    transform: translate(-50%, -50%);
-}
-
-.burger span:nth-child(3) {
-    transform: translate(-50%, 8px);
-}
-
-/* Темная тема для span элементов бургер-кнопки */
-.dark .burger span:nth-child(3) {
-    transform: translate(-50%, 8px);
-}
-
-.burger.open span:nth-child(1) {
+    .burger.open::before {
     transform: translate(-50%, -50%) rotate(45deg);
-}
+        box-shadow:
+            0 0 0 transparent,
+            0 0 0 transparent;
+    }
 
-/* Темная тема для открытого состояния бургер-кнопки */
-.dark .burger.open span:nth-child(1) {
-    transform: translate(-50%, -50%) rotate(45deg);
-}
-
-.burger.open span:nth-child(2) {
-    opacity: 0;
-}
-
-/* Темная тема для открытого состояния бургер-кнопки */
-.dark .burger.open span:nth-child(2) {
-    opacity: 0;
-}
-
-.burger.open span:nth-child(3) {
+    .burger.open::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
     transform: translate(-50%, -50%) rotate(-45deg);
-}
+        width: 22px;
+        height: 2px;
+        background: white;
+    }
 
-/* Темная тема для открытого состояния бургер-кнопки */
-.dark .burger.open span:nth-child(3) {
-    transform: translate(-50%, -50%) rotate(-45deg);
-}
-
-
-
-.mobileAdvanceModal {
-    margin: 4px 0;
-}
-
-/* Стили для кнопки "Получить аванс" в мобильном меню */
-.mobileAdvanceModal button {
-    color: #374151;
-    text-decoration: none;
-    font-size: 16px;
-    padding: 12px 16px;
-    display: block;
-    width: 100%;
-    text-align: left;
-    border-radius: 8px;
-    margin: 4px 0;
-    font-weight: 500;
-    line-height: 1.5;
-    min-height: 44px;
-    display: flex;
-    align-items: center;
-    white-space: nowrap;
-    transition: all 0.3s ease;
-    background: transparent;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    cursor: pointer;
-    font-family: inherit;
-}
-
-/* Стили для крестика в мобильной модалке аванса */
-.mobileAdvanceModal .modal-close,
-.mobileAdvanceModal .close-button,
-.mobileAdvanceModal button[aria-label*="закрыть"],
-.mobileAdvanceModal button[aria-label*="close"] {
-    width: 24px !important;
-    height: 24px !important;
-    min-width: 24px !important;
-    min-height: 24px !important;
-    max-width: 24px !important;
-    max-height: 24px !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    font-size: 16px !important;
-    line-height: 1 !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    background: rgba(0, 0, 0, 0.1) !important;
-    border: 1px solid rgba(0, 0, 0, 0.2) !important;
-    border-radius: 50% !important;
-    color: #374151 !important;
-    cursor: pointer !important;
-    transition: all 0.3s ease !important;
-}
-
-/* Hover эффект для крестика */
-.mobileAdvanceModal .modal-close:hover,
-.mobileAdvanceModal .close-button:hover,
-.mobileAdvanceModal button[aria-label*="закрыть"]:hover,
-.mobileAdvanceModal button[aria-label*="close"]:hover {
-    background: rgba(0, 0, 0, 0.2) !important;
-    transform: scale(1.1) !important;
-}
-
-/* Темная тема для кнопки "Получить аванс" в мобильном меню */
-.dark .mobileAdvanceModal button {
-    color: #ffffff !important;
-    background: transparent !important;
-    border: 1px solid rgba(255, 255, 255, 0.3) !important;
-}
-
-/* Темная тема для крестика в мобильной модалке аванса */
-.dark .mobileAdvanceModal .modal-close,
-.dark .mobileAdvanceModal .close-button,
-.dark .mobileAdvanceModal button[aria-label*="закрыть"],
-.dark .mobileAdvanceModal button[aria-label*="close"] {
-    background: rgba(255, 255, 255, 0.2) !important;
-    border: 1px solid rgba(255, 255, 255, 0.4) !important;
-    color: #ffffff !important;
-}
-
-/* Hover эффект для крестика в темной теме */
-.dark .mobileAdvanceModal .modal-close:hover,
-.dark .mobileAdvanceModal .close-button:hover,
-.dark .mobileAdvanceModal button[aria-label*="закрыть"]:hover,
-.dark .mobileAdvanceModal button[aria-label*="close"]:hover {
-    background: rgba(255, 255, 255, 0.3) !important;
-    transform: scale(1.1) !important;
-}
-
-.header.dark .mobileAdvanceModal button {
-    color: #ffffff !important;
-    background: transparent !important;
-    border: 1px solid rgba(255, 255, 255, 0.3) !important;
-}
-
-/* Максимальная специфичность для кнопки "Получить аванс" в мобильном меню в темной теме */
-body .header.dark .mobileAdvanceModal button {
-    color: #ffffff !important;
-    background: transparent !important;
-    border: 1px solid rgba(255, 255, 255, 0.3) !important;
-}
-
-.mobileAdvanceModal button:hover {
-    color: white !important;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
-    border-color: transparent;
-}
-
-.header.dark .mobileAdvanceModal button:hover {
-    color: white !important;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
-    border-color: transparent;
-}
-
-/* Темная тема для hover эффекта кнопки "Получить аванс" в мобильном меню */
-.dark .mobileAdvanceModal button:hover {
-    color: white !important;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
-    border-color: transparent;
-}
-
-/* Оверлей для мобильного меню */
-.overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 19;
-    backdrop-filter: blur(2px);
-}
-
-/* Темная тема для оверлея */
-.dark .overlay {
-    background: rgba(0, 0, 0, 0.7) !important;
-    backdrop-filter: blur(4px) !important;
-}
-
-/* Мобильное боковое меню */
-.mobileMenu {
+    .navMenu {
     position: fixed;
     top: 0;
     left: 0;
     width: 280px;
     height: 100vh;
-    background: #ffffff;
-    z-index: 20;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        flex-direction: column;
+        gap: 0;
+        margin: 0;
+        padding: 80px 20px 20px 20px;
     box-shadow: 4px 0 12px rgba(0, 0, 0, 0.1);
-    overflow-y: auto;
-}
+        transform: translateX(0);
+        opacity: 1;
+        visibility: visible;
+        transition: all 0.3s ease;
+        z-index: 100;
+        border-radius: 0 12px 12px 0;
+    }
 
-/* Темная тема для мобильного меню - работает независимо от header */
-.dark .mobileMenu {
-    background: #000000 !important;
+    /* Уменьшаем размер навбара для экранов ≤500px */
+    @media (max-width: 500px) {
+        .navMenu {
+            width: 224px !important; /* уменьшаем на 20% (280px * 0.8 = 224px) */
+            padding: 60px 16px 16px 16px !important; /* уменьшаем отступы пропорционально */
+        }
+    }
+
+    /* Темная тема для мобильного меню */
+    .dark .navMenu {
+        background: rgba(0, 0, 0, 0.95) !important;
     color: #ffffff !important;
     box-shadow: 4px 0 12px rgba(0, 0, 0, 0.8) !important;
     border-right: 1px solid rgba(255, 255, 255, 0.2) !important;
 }
 
-/* Темная тема для мобильного меню - альтернативный селектор */
-.mobileMenu.dark {
-    background: #000000 !important;
+    /* Темная тема для мобильного меню - альтернативный селектор */
+    .navMenu.dark {
+        background: rgba(0, 0, 0, 0.95) !important;
     color: #ffffff !important;
     box-shadow: 4px 0 12px rgba(0, 0, 0, 0.8) !important;
     border-right: 1px solid rgba(255, 255, 255, 0.2) !important;
 }
 
-.header.dark .mobileMenu {
-    background: #000000 !important;
-    color: #ffffff !important;
-    box-shadow: 4px 0 12px rgba(0, 0, 0, 0.8) !important;
-    border-right: 1px solid rgba(255, 255, 255, 0.2) !important;
-}
+    .navMenu.open {
+        transform: translateX(0);
+        opacity: 1;
+        visibility: visible;
+    }
 
-/* Максимальная специфичность для мобильного меню в темной теме */
-body .header.dark .mobileMenu {
-    background: #000000 !important;
-    color: #ffffff !important;
-    box-shadow: 4px 0 12px rgba(0, 0, 0, 0.8) !important;
-    border-right: 1px solid rgba(255, 255, 255, 0.2) !important;
-}
-
-.mobileMenuHeader {
-    padding: 20px;
-    border-bottom: 1px solid #e5e7eb;
-    text-align: center;
-}
-
-/* Темная тема для заголовка мобильного меню */
-.dark .mobileMenuHeader {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.3) !important;
-    background: transparent !important;
-}
-
-/* Темная тема для заголовка мобильного меню - альтернативный селектор */
-.mobileMenuHeader.dark {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.3) !important;
-    background: transparent !important;
-}
-
-.header.dark .mobileMenuHeader {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.3) !important;
-    background: transparent !important;
-}
-
-/* Максимальная специфичность для заголовка мобильного меню в темной теме */
-body .header.dark .mobileMenuHeader {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.3) !important;
-    background: transparent !important;
-}
-
-.mobileMenuHeader h3 {
-    margin: 0;
-    font-size: 18px;
-    font-weight: 600;
-    color: #374151;
-}
-
-/* Темная тема для заголовка мобильного меню */
-.dark .mobileMenuHeader h3 {
-    color: #ffffff !important;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-}
-
-/* Темная тема для заголовка мобильного меню - альтернативный селектор */
-.mobileMenuHeader.dark h3 {
-    color: #ffffff !important;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-}
-
-.header.dark .mobileMenuHeader h3 {
-    color: #ffffff;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-}
-
-.mobileNavMenu {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    padding: 20px;
-    margin: 0;
-}
-
-.mobileNavMenu a {
-    color: #374151;
-    text-decoration: none;
-    font-size: 16px;
-    padding: 12px 16px;
-    display: block;
+    .navMenu a {
     width: 100%;
-    text-align: left;
-    border-radius: 8px;
-    margin: 4px 0;
+        padding: 14px 16px;
+        text-align: center;
+        border-radius: 10px;
+        margin: 6px 0;
+        font-size: 1.1rem;
     font-weight: 500;
     line-height: 1.5;
-    min-height: 44px;
+        min-height: 48px;
     display: flex;
     align-items: center;
+        justify-content: center;
     white-space: nowrap;
-    transition: all 0.3s ease;
-}
-
-/* Темная тема для навигационных ссылок в мобильном меню */
-.dark .mobileNavMenu a {
-    color: #ffffff !important;
-    background: transparent !important;
-    border: 1px solid rgba(255, 255, 255, 0.2) !important;
-}
-
-/* Темная тема для навигационных ссылок в мобильном меню - альтернативный селектор */
-.mobileNavMenu a.dark {
-    color: #ffffff !important;
-    background: transparent !important;
-    border: 1px solid rgba(255, 255, 255, 0.2) !important;
-}
-
-.header.dark .mobileNavMenu a {
-    color: #ffffff !important;
-    background: transparent !important;
-    border: 1px solid rgba(255, 255, 255, 0.2) !important;
-}
-
-/* Максимальная специфичность для навигационных ссылок в мобильном меню в темной теме */
-body .header.dark .mobileNavMenu a {
-    color: #ffffff !important;
-    background: transparent !important;
-    border: 1px solid rgba(255, 255, 255, 0.2) !important;
-}
-
-.header.dark .mobileNavMenu a.active {
-    background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-/* Темная тема для активного состояния ссылок в мобильном меню */
-.dark .mobileNavMenu a.active {
-    background: transparent !important;
-    border: 1px solid rgba(255, 255, 255, 0.3) !important;
-}
-
-.mobileNavMenu a:hover {
-    color: white !important;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-    background: transparent;
-    border-color: rgba(0, 0, 0, 0.1);
-}
-
-.header.dark .mobileNavMenu a:hover {
-    background: transparent;
-    border-color: rgba(255, 255, 255, 0.3);
-}
-
-/* Темная тема для hover эффектов в мобильном меню */
-.dark .mobileNavMenu a:hover {
-    background: transparent !important;
-    border-color: rgba(255, 255, 255, 0.3) !important;
-}
-
-/* Цветные градиенты для каждой кнопки в мобильном меню */
-.mobileNavMenu a[href="/home2"]:hover {
-    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
-    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3) !important;
-    color: white !important;
-    transform: translateY(-2px) !important;
-    border-color: transparent !important;
-}
-
-.header.dark .mobileNavMenu a[href="/home2"]:hover {
-    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
-    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3) !important;
-    color: white !important;
-    transform: translateY(-2px) !important;
-    border-color: transparent !important;
-}
-
-/* Темная тема для hover эффекта главной страницы в мобильном меню */
-.dark .mobileNavMenu a[href="/home2"]:hover {
-    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
-    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3) !important;
-    color: white !important;
-    transform: translateY(-2px) !important;
-    border-color: transparent !important;
-}
-
-.mobileNavMenu a[href="/about"]:hover {
-    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
-    box-shadow: 0 4px 16px rgba(220, 38, 38, 0.3) !important;
-    color: white !important;
-    transform: translateY(-2px) !important;
-    border-color: transparent !important;
-}
-
-.header.dark .mobileNavMenu a[href="/about"]:hover {
-    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
-    box-shadow: 0 4px 16px rgba(220, 38, 38, 0.3) !important;
-    color: white !important;
-    transform: translateY(-2px) !important;
-    border-color: transparent !important;
-}
-
-/* Темная тема для hover эффекта страницы "О нас" в мобильном меню */
-.dark .mobileNavMenu a[href="/about"]:hover {
-    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
-    box-shadow: 0 4px 16px rgba(220, 38, 38, 0.3) !important;
-    color: white !important;
-    transform: translateY(-2px) !important;
-    border-color: transparent !important;
-}
-
-.mobileNavMenu a[href="/listings"]:hover {
-    background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
-    box-shadow: 0 4px 16px rgba(5, 150, 105, 0.3) !important;
-    color: white !important;
-    transform: translateY(-2px) !important;
-    border-color: transparent !important;
-}
-
-.header.dark .mobileNavMenu a[href="/listings"]:hover {
-    background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
-    box-shadow: 0 4px 16px rgba(5, 150, 105, 0.3) !important;
-    color: white !important;
-    transform: translateY(-2px) !important;
-    border-color: transparent !important;
-}
-
-/* Темная тема для hover эффекта страницы "Объявления" в мобильном меню */
-.dark .mobileNavMenu a[href="/listings"]:hover {
-    background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
-    box-shadow: 0 4px 16px rgba(5, 150, 105, 0.3) !important;
-    color: white !important;
-    transform: translateY(-2px) !important;
-    border-color: transparent !important;
-}
-
-.mobileNavMenu a[href="/profile"]:hover {
-    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%) !important;
-    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3) !important;
-    color: white !important;
-    transform: translateY(-2px) !important;
-    border-color: transparent !important;
-}
-
-.header.dark .mobileNavMenu a[href="/profile"]:hover {
-    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%) !important;
-    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3) !important;
-    color: white !important;
-    transform: translateY(-2px) !important;
-    border-color: transparent !important;
-}
-
-/* Темная тема для hover эффекта страницы "Профиль" в мобильном меню */
-.dark .mobileNavMenu a[href="/profile"]:hover {
-    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%) !important;
-    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3) !important;
-    color: white !important;
-    transform: translateY(-2px) !important;
-    border-color: transparent !important;
-}
-
-.mobileNavMenu a.active {
-    font-weight: 700;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-    background: transparent;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-/* Активные состояния для каждой кнопки в мобильном меню */
-.mobileNavMenu a[href="/home2"].active {
-    color: white !important;
-    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
-    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3) !important;
-    font-weight: 700 !important;
-    border-color: transparent !important;
-}
-
-.header.dark .mobileNavMenu a[href="/home2"].active {
-    color: white !important;
-    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
-    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3) !important;
-    font-weight: 700 !important;
-    border-color: transparent !important;
-}
-
-/* Темная тема для активного состояния главной страницы в мобильном меню */
-.dark .mobileNavMenu a[href="/home2"].active {
-    color: white !important;
-    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
-    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3) !important;
-    font-weight: 700 !important;
-    border-color: transparent !important;
-}
-
-.mobileNavMenu a[href="/about"].active {
-    color: white !important;
-    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
-    box-shadow: 0 4px 16px rgba(220, 38, 38, 0.3) !important;
-    font-weight: 700 !important;
-    border-color: transparent !important;
-}
-
-.header.dark .mobileNavMenu a[href="/about"].active {
-    color: white !important;
-    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
-    box-shadow: 0 4px 16px rgba(220, 38, 38, 0.3) !important;
-    font-weight: 700 !important;
-    border-color: transparent !important;
-}
-
-/* Темная тема для активного состояния страницы "О нас" в мобильном меню */
-.dark .mobileNavMenu a[href="/about"].active {
-    color: white !important;
-    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
-    box-shadow: 0 4px 16px rgba(220, 38, 38, 0.3) !important;
-    font-weight: 700 !important;
-    border-color: transparent !important;
-}
-
-.mobileNavMenu a[href="/listings"].active {
-    color: white !important;
-    background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
-    box-shadow: 0 4px 16px rgba(5, 150, 105, 0.3) !important;
-    font-weight: 700 !important;
-    border-color: transparent !important;
-}
-
-.header.dark .mobileNavMenu a[href="/listings"].active {
-    color: white !important;
-    background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
-    box-shadow: 0 4px 16px rgba(5, 150, 105, 0.3) !important;
-    font-weight: 700 !important;
-    border-color: transparent !important;
-}
-
-/* Темная тема для активного состояния страницы "Объявления" в мобильном меню */
-.dark .mobileNavMenu a[href="/listings"].active {
-    color: white !important;
-    background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
-    box-shadow: 0 4px 16px rgba(5, 150, 105, 0.3) !important;
-    font-weight: 700 !important;
-    border-color: transparent !important;
-}
-
-.mobileNavMenu a[href="/profile"].active {
-    color: white !important;
-    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%) !important;
-    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3) !important;
-    font-weight: 700 !important;
-    border-color: transparent !important;
-}
-
-.header.dark .mobileNavMenu a[href="/profile"].active {
-    color: white !important;
-    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%) !important;
-    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3) !important;
-    font-weight: 700 !important;
-    border-color: transparent !important;
-}
-
-/* Темная тема для активного состояния страницы "Профиль" в мобильном меню */
-.dark .mobileNavMenu a[href="/profile"].active {
-    color: white !important;
-    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%) !important;
-    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3) !important;
-    font-weight: 700 !important;
-    border-color: transparent !important;
-}
-
-/* Адаптивность */
-@media (max-width: 1024px) {
-    .header {
-        padding: 24px 32px;
     }
-    
-    .navMenu {
-        gap: 24px;
+
+    /* Стили для кнопки navLink в мобильном меню */
+    .navMenu .navLink {
+        /* Убираем специальные стили, используем стандартные для навигации */
     }
-    
-    .navMenu a {
-        font-size: 1rem;
+
+    /* Hover эффекты для кнопки navLink в мобильном меню */
+    .navMenu .navLink:hover {
+        /* Убираем специальные hover эффекты */
     }
-    
+
+    /* Темная тема для ссылок в мобильном меню */
+    .dark .navMenu a {
+    color: #ffffff !important;
+        background: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+    /* Темная тема для ссылок в мобильном меню - альтернативный селектор */
+    .navMenu a.dark {
+    color: #ffffff !important;
+        background: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+    /* Темная тема для кнопки navLink в мобильном меню */
+    .dark .navMenu .navLink {
+        /* Убираем специальные стили для темной темы */
+    }
+
+    /* Темная тема для кнопки navLink в мобильном меню - альтернативный селектор */
+    .navMenu .navLink.dark {
+        /* Убираем специальные стили для темной темы */
+    }
+
+    /* Hover эффекты для темной темы кнопки navLink в мобильном меню */
+    .dark .navMenu .navLink:hover {
+        /* Убираем специальные hover эффекты */
+    }
+
+    .navMenu .navLink.dark:hover {
+        /* Убираем специальные hover эффекты */
+    }
+
     .contactBtn {
-        padding: 10px 24px;
-        font-size: 1rem;
+        display: none;
     }
-    
-    /* Темная тема для средних экранов */
-    .header.dark {
-        background: #000000 !important;
-        backdrop-filter: none !important;
-        border-bottom: 1px solid rgba(96, 165, 250, 0.3) !important;
-    }
-    
-    .header.dark .logo,
-    .header.dark .logo span {
-        color: #f3f4f6 !important;
-    }
-    
-    .header.dark .logo b {
-        color: #60a5fa !important;
-    }
-}
 
-@media (max-width: 768px) {
-    .header {
-        padding: 16px 24px;
-        flex-wrap: wrap;
-        position: relative;
+    .overlay {
+        display: block;
     }
-    
-    .mobileThemeToggle {
-        display: flex;
+
+    /* Уменьшаем тени для мобильных устройств */
+    .mobileThemeToggleBtn {
+        box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
     }
-    
+
+    .mobileThemeToggleBtn:hover {
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+    }
+
+    .dark .mobileThemeToggleBtn {
+        box-shadow: 0 2px 8px rgba(124, 58, 237, 0.3) !important;
+    }
+
+    .dark .mobileThemeToggleBtn:hover {
+        box-shadow: 0 4px 12px rgba(124, 58, 237, 0.35) !important;
+    }
+
     .burger {
-        display: flex;
+        box-shadow: 0 2px 8px rgba(16, 185, 129, 0.2);
     }
-    
-    .navMenu {
-        display: none;
+
+    .burger:hover {
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
     }
-    
-    .contactBtn {
-        display: none;
+
+    .dark .burger {
+        box-shadow: 0 2px 8px rgba(124, 58, 237, 0.3) !important;
     }
-    
-    .themeToggle {
-        display: none;
+
+    .dark .burger:hover {
+        box-shadow: 0 4px 12px rgba(124, 58, 237, 0.35) !important;
     }
-    
+}
+
+/* Адаптивность навбара для экранов от 951px до больших размеров */
+@media (min-width: 951px) and (max-width: 1200px) {
+    .home2Header {
+        padding: 28px 40px 20px 40px; /* уменьшаем отступы */
+    }
+
     .logo {
-        font-size: 1.5rem;
-        flex: 1;
-        text-align: center;
+        font-size: 1.8rem; /* уменьшаем логотип */
     }
-    
-    /* Темная тема для мобильного навбара */
-    .header.dark {
-        background: #000000 !important;
-        backdrop-filter: none !important;
-        border-bottom: 1px solid rgba(96, 165, 250, 0.3) !important;
+
+    .navMenu {
+        gap: 24px; /* уменьшаем промежутки между ссылками */
+        margin-right: 18px; /* уменьшаем правый отступ */
     }
-    
-    .header.dark .logo,
-    .header.dark .logo span {
-        color: #f3f4f6 !important;
+
+    .navMenu a {
+        font-size: 1.1rem; /* уменьшаем размер шрифта ссылок */
+        padding: 6px 10px; /* уменьшаем отступы ссылок */
     }
-    
-    .header.dark .logo b {
-        color: #60a5fa !important;
+}
+
+@media (min-width: 951px) and (max-width: 1100px) {
+    .home2Header {
+        padding: 24px 32px 16px 32px; /* еще меньше отступы */
     }
-    
-    /* Темная тема для мобильного навбара */
-    .dark .header {
-        background: #000000 !important;
-        backdrop-filter: none !important;
-        border-bottom: 1px solid rgba(96, 165, 250, 0.3) !important;
+
+    .logo {
+        font-size: 1.6rem; /* еще меньше логотип */
     }
-    
-    .dark .logo,
-    .dark .logo span {
-        color: #f3f4f6 !important;
+
+    .navMenu {
+        gap: 20px; /* еще меньше промежутки */
+        margin-right: 16px; /* еще меньше правый отступ */
     }
-    
-    .dark .logo b {
-        color: #60a5fa !important;
+
+    .navMenu a {
+        font-size: 1rem; /* еще меньше размер шрифта */
+        padding: 5px 8px; /* еще меньше отступы */
     }
+}
+
+/* Wide-mobile (burger) up to 1400px) — отключено по требованию, используем только до 768px */
+@media (max-width: 1400px) {
+    /* Ничего не меняем здесь. Бургер включается только для <=768px по текущим правилам ниже. */
 }
 
 @media (max-width: 480px) {
-    .header {
-        padding: 12px 16px;
+    .home2Header {
+        padding: 12px 12px 8px 12px;
+    }
+
+    .logo {
+        font-size: 1.4rem;
+    }
+
+    .mobileThemeToggleBtn {
+        width: 40px;
+        height: 40px;
+    }
+
+    .burger {
+        width: 40px;
+        height: 40px;
+    }
+
+    .burger::before {
+        width: 20px;
+        box-shadow:
+            0 -6px 0 white,
+            0 6px 0 white;
+    }
+    
+    .navMenu {
+        width: 260px;
+        padding: 70px 16px 16px 16px;
+    }
+    
+    .navMenu.open {
+        transform: translateX(260px);
+    }
+    
+    .navMenu a {
+        padding: 12px 14px;
+        font-size: 1rem;
+        min-height: 44px;
+        margin: 4px 0;
+    }
+
+    /* Еще больше уменьшаем тени для очень маленьких экранов */
+    .mobileThemeToggleBtn {
+        box-shadow: 0 1px 6px rgba(37, 99, 235, 0.15);
+    }
+
+    .mobileThemeToggleBtn:hover {
+        box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
+    }
+
+    .dark .mobileThemeToggleBtn {
+        box-shadow: 0 1px 6px rgba(124, 58, 237, 0.25) !important;
+    }
+
+    .dark .mobileThemeToggleBtn:hover {
+        box-shadow: 0 2px 8px rgba(124, 58, 237, 0.3) !important;
+    }
+    
+    .burger {
+        box-shadow: 0 1px 6px rgba(16, 185, 129, 0.15);
+    }
+
+    .burger:hover {
+        box-shadow: 0 2px 8px rgba(16, 185, 129, 0.2);
+    }
+
+    .dark .burger {
+        box-shadow: 0 1px 6px rgba(124, 58, 237, 0.25) !important;
+    }
+
+    .dark .burger:hover {
+        box-shadow: 0 2px 8px rgba(124, 58, 237, 0.3) !important;
+    }
+}
+
+/* Стили для кнопки "Получить аванс" - теперь это обычная навигационная ссылка */
+.navLink {
+    /* Убираем специальные стили, используем стандартные для навигации */
+}
+
+/* Адаптивность для кнопки navLink */
+@media (max-width: 768px) {
+    /* Убираем специальные стили для navLink */
+}
+
+@media (max-width: 480px) {
+    /* Убираем специальные стили для navLink */
+}
+
+/* Mobile header for <=950px to match JS breakpoint */
+@media (max-width: 951px) {
+  .home2Header {
+    padding: 20px 16px 16px 16px;
         flex-direction: row;
-        flex-wrap: nowrap;
-        align-items: center;
-        justify-content: space-between;
         gap: 0;
-    }
-    
-    .mobileThemeToggle { order: 1; }
-    .logo { order: 2; flex: 1; text-align: center; font-size: 1.2rem; }
-    .burger { order: 3; }
-    
-    /* Темная тема для маленьких экранов */
-    .header.dark {
-        background: #000000 !important;
-        backdrop-filter: none !important;
-        border-bottom: 1px solid rgba(96, 165, 250, 0.3) !important;
-    }
-    
-    .header.dark .logo,
-    .header.dark .logo span {
-        color: #f3f4f6 !important;
-    }
-    
-    .header.dark .logo b {
-        color: #60a5fa !important;
-    }
-    
-    /* Темная тема для маленьких экранов */
-    .dark .header {
-        background: #000000 !important;
-        backdrop-filter: none !important;
-        border-bottom: 1px solid rgba(96, 165, 250, 0.3) !important;
-    }
-    
-    .dark .logo,
-    .dark .logo span {
-        color: #f3f4f6 !important;
-    }
-    
-    .dark .logo b {
-        color: #60a5fa !important;
-    }
-    
-    /* Улучшенная видимость для маленьких экранов */
-    .mobileAdvanceModal button {
-        font-size: 18px;
-        padding: 16px 20px;
-        min-height: 52px;
-        background: transparent;
-        border: 1px solid rgba(0, 0, 0, 0.1);
-        font-weight: 600;
-    }
-    
-    /* Стили для крестика на маленьких экранах */
-    .mobileAdvanceModal .modal-close,
-    .mobileAdvanceModal .close-button,
-    .mobileAdvanceModal button[aria-label*="закрыть"],
-    .mobileAdvanceModal button[aria-label*="close"] {
-        width: 28px !important;
-        height: 28px !important;
-        min-width: 28px !important;
-        min-height: 28px !important;
-        max-width: 28px !important;
-        max-height: 28px !important;
-        font-size: 18px !important;
-    }
-    
-    .header.dark .mobileAdvanceModal button {
-        background: transparent !important;
-        border: 1px solid rgba(255, 255, 255, 0.4) !important;
-        color: #ffffff !important;
-        font-weight: 600 !important;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) !important;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
-    }
-    
-    /* Темная тема для кнопки "Получить аванс" на маленьких экранах */
-    .dark .mobileAdvanceModal button {
-        background: transparent !important;
-        border: 1px solid rgba(255, 255, 255, 0.4) !important;
-        color: #ffffff !important;
-        font-weight: 600 !important;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) !important;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
-    }
-    
-    /* Темная тема для крестика на маленьких экранах */
-    .dark .mobileAdvanceModal .modal-close,
-    .dark .mobileAdvanceModal .close-button,
-    .dark .mobileAdvanceModal button[aria-label*="закрыть"],
-    .dark .mobileAdvanceModal button[aria-label*="close"] {
-        background: rgba(255, 255, 255, 0.25) !important;
-        border: 1px solid rgba(255, 255, 255, 0.5) !important;
-        color: #ffffff !important;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) !important;
-    }
-    
-    /* Дополнительные стили для темной темы на маленьких экранах */
-    .header.dark .mobileMenu {
-        background: #000000 !important;
-        color: #ffffff !important;
-        box-shadow: 4px 0 12px rgba(0, 0, 0, 0.8) !important;
-        border-right: 1px solid rgba(255, 255, 255, 0.2) !important;
-    }
-    
-    /* Темная тема для мобильного меню на маленьких экранах */
-    .dark .mobileMenu {
-        background: #000000 !important;
-        color: #ffffff !important;
-        box-shadow: 4px 0 12px rgba(0, 0, 0, 0.8) !important;
-        border-right: 1px solid rgba(255, 255, 255, 0.2) !important;
-    }
-    
-    .header.dark .mobileMenuHeader {
-        border-bottom: 1px solid rgba(255, 255, 255, 0.3) !important;
-        background: transparent !important;
-    }
-    
-    /* Темная тема для заголовка мобильного меню на маленьких экранах */
-    .dark .mobileMenuHeader {
-        border-bottom: 1px solid rgba(255, 255, 255, 0.3) !important;
-        background: transparent !important;
-    }
-    
-    .header.dark .mobileNavMenu a {
-        background: transparent !important;
-        border: 1px solid rgba(255, 255, 255, 0.4) !important;
-        color: #ffffff !important;
-        font-weight: 600 !important;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) !important;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
-    }
-    
-    /* Темная тема для навигационных ссылок в мобильном меню на маленьких экранах */
-    .dark .mobileNavMenu a {
-        background: transparent !important;
-        border: 1px solid rgba(255, 255, 255, 0.4) !important;
-        color: #ffffff !important;
-        font-weight: 600 !important;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) !important;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
-    }
-    
-    .header.dark .mobileAdvanceModal button:hover {
-        background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
-        border-color: transparent !important;
-        color: white !important;
-        transform: translateY(-2px) !important;
-        box-shadow: 0 4px 16px rgba(37, 99, 235, 0.4) !important;
-        font-weight: 700 !important;
-        text-shadow: none !important;
-    }
-    
-    /* Темная тема для hover эффекта кнопки "Получить аванс" на маленьких экранах */
-    .dark .mobileAdvanceModal button:hover {
-        background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
-        border-color: transparent !important;
-        color: white !important;
-        transform: translateY(-2px) !important;
-        box-shadow: 0 4px 16px rgba(37, 99, 235, 0.4) !important;
-        font-weight: 700 !important;
-        text-shadow: none !important;
-    }
-    
-    /* Дополнительные стили для hover эффектов в темной теме на маленьких экранах */
-    .header.dark .mobileNavMenu a:hover {
-        background: transparent !important;
-        border-color: rgba(255, 255, 255, 0.5) !important;
-        color: #ffffff !important;
-        transform: translateY(-2px) !important;
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4) !important;
-        font-weight: 700 !important;
-        text-shadow: none !important;
-    }
-    
-    /* Темная тема для hover эффектов навигационных ссылок на маленьких экранах */
-    .dark .mobileNavMenu a:hover {
-        background: transparent !important;
-        border-color: rgba(255, 255, 255, 0.5) !important;
-        color: #ffffff !important;
-        transform: translateY(-2px) !important;
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4) !important;
-        font-weight: 700 !important;
-        text-shadow: none !important;
-    }
-    
-    /* Улучшенная видимость для всех элементов мобильного меню на маленьких экранах */
-    .mobileNavMenu a {
-        font-size: 18px;
-        padding: 16px 20px;
-        min-height: 52px;
-        background: transparent;
-        border: 1px solid rgba(0, 0, 0, 0.1);
-        font-weight: 600;
-    }
-    
-    /* Дополнительные стили для темной темы на маленьких экранах */
-    .header.dark .mobileNavMenu a {
-        background: transparent !important;
-        border: 1px solid rgba(255, 255, 255, 0.4) !important;
-        color: #ffffff !important;
-        font-weight: 600 !important;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) !important;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
-    }
-    
-    .header.dark .mobileNavMenu a {
-        background: transparent !important;
-        border: 1px solid rgba(255, 255, 255, 0.4) !important;
-        color: #ffffff !important;
-        font-weight: 600 !important;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) !important;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
-    }
-    
-    .header.dark .mobileNavMenu a:hover {
-        background: rgba(255, 255, 255, 0.3) !important;
-        border-color: rgba(255, 255, 255, 0.5) !important;
-        color: #ffffff !important;
-        transform: translateY(-2px) !important;
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4) !important;
-        font-weight: 700 !important;
-        text-shadow: none !important;
-    }
-    
-    /* Улучшенная видимость заголовка мобильного меню */
-    .mobileMenuHeader h3 {
-        font-size: 20px;
-        font-weight: 700;
-        color: #374151;
-    }
-    
-    .header.dark .mobileMenuHeader h3 {
-        color: #ffffff !important;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) !important;
-        font-weight: 700 !important;
-        background: transparent !important;
-        padding: 16px 20px !important;
-        border-radius: 8px !important;
-        margin: 0 20px 20px 20px !important;
-        border: 1px solid rgba(255, 255, 255, 0.3) !important;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
-    }
-    
-    /* Темная тема для заголовка мобильного меню на маленьких экранах */
-    .dark .mobileMenuHeader h3 {
-        color: #ffffff !important;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) !important;
-        font-weight: 700 !important;
-        background: transparent !important;
-        padding: 16px 20px !important;
-        border-radius: 8px !important;
-        margin: 0 20px 20px 20px !important;
-        border: 1px solid rgba(255, 255, 255, 0.3) !important;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
-    }
-}
+    position: relative;
+    justify-content: space-between;
+    align-items: center;
+  }
 
-/* Абсолютная максимальная специфичность для профиля */
-body header .navMenu a[href="/profile"]:hover {
-    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%) !important;
-    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3) !important;
-    color: white !important;
-    transform: translateY(-2px) !important;
-}
+  .mobileThemeToggleBtn {
+    display: flex;
+    position: relative;
+    left: auto;
+    top: auto;
+    margin: 0;
+    width: 44px;
+    height: 44px;
+    order: 1;
+  }
 
-body header .navMenu a[href="/profile"].active {
-    color: white !important;
-    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%) !important;
-    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3) !important;
-    font-weight: 700 !important;
-}
+  .logo { font-size: 1.6rem; order: 2; flex: 1; text-align: center; }
 
-body header .navMenu a.dark[href="/profile"]:hover {
-    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%) !important;
-    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3) !important;
-    color: white !important;
-    transform: translateY(-2px) !important;
-}
+  .burger {
+    display: block;
+    width: 44px;
+    height: 44px;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    cursor: pointer;
+    z-index: 102;
+    position: relative;
+    right: auto;
+    top: auto;
+    margin: 0;
+    order: 3;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+  }
+  .dark .burger { background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%) !important; box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4) !important; }
+  .burger:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4); background: linear-gradient(135deg, #059669 0%, #047857 100%); }
+  .dark .burger:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(124, 58, 237, 0.5); background: linear-gradient(135deg, #6d28d9 0%, #5b21b6 100%) !important; }
+  .burger:active { transform: translateY(0); }
+  .dark .burger:active { transform: translateY(0); }
+  .burger::before {
+    content: '';
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 22px; height: 2px; background: white;
+    box-shadow: 0 -7px 0 white, 0 7px 0 white; transition: all 0.3s ease;
+  }
+  .burger.open::before { transform: translate(-50%, -50%) rotate(45deg); box-shadow: 0 0 0 transparent, 0 0 0 transparent; }
+  .burger.open::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-45deg); width: 22px; height: 2px; background: white; }
 
-body header .navMenu a.dark[href="/profile"].active {
-    color: white !important;
-    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%) !important;
-    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3) !important;
-    font-weight: 700 !important;
-}
+  .navMenu {
+    position: fixed; top: 0; left: 0; width: 300px; height: 100vh;
+    background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px);
+    flex-direction: column; gap: 0; margin: 0; padding: 80px 20px 20px 20px;
+    box-shadow: 4px 0 12px rgba(0, 0, 0, 0.1); transform: translateX(0);
+    opacity: 1; visibility: visible; transition: all 0.3s ease; z-index: 100; border-radius: 0 12px 12px 0;
+  }
+  .dark .navMenu, .navMenu.dark { background: rgba(0, 0, 0, 0.95) !important; color: #ffffff !important; box-shadow: 4px 0 12px rgba(0, 0, 0, 0.8) !important; border-right: 1px solid rgba(255, 255, 255, 0.2) !important; }
+  .navMenu.open { transform: translateX(0); opacity: 1; visibility: visible; }
+  .navMenu a { width: 100%; padding: 14px 16px; text-align: center; border-radius: 10px; margin: 6px 0; font-size: 1.1rem; font-weight: 500; line-height: 1.5; min-height: 48px; display: flex; align-items: center; justify-content: center; white-space: nowrap; }
 
-/* Используем :where() для максимальной специфичности */
-:where(body, html) header .navMenu a[href="/profile"]:hover {
-    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%) !important;
-    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3) !important;
-    color: white !important;
-    transform: translateY(-2px) !important;
-}
+  .overlay { display: block; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.5); z-index: 99; backdrop-filter: blur(2px); }
+  .dark .overlay { background: rgba(0, 0, 0, 0.7) !important; backdrop-filter: blur(4px) !important; }
 
-:where(body, html) header .navMenu a[href="/profile"].active {
-    color: white !important;
-    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%) !important;
-    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3) !important;
-    font-weight: 700 !important;
-}
-
-:where(body, html) header .navMenu a.dark[href="/profile"]:hover {
-    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%) !important;
-    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3) !important;
-    color: white !important;
-    transform: translateY(-2px) !important;
-}
-
-:where(body, html) header .navMenu a.dark[href="/profile"].active {
-    color: white !important;
-    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%) !important;
-    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3) !important;
-    font-weight: 700 !important;
-}
-
-/* Финальная попытка - используем все возможные селекторы */
-html body header .navMenu a[href="/profile"]:hover,
-html body header .navMenu a[href="/profile"]:focus,
-html body header .navMenu a[href="/profile"]:active {
-    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%) !important;
-    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3) !important;
-    color: white !important;
-    transform: translateY(-2px) !important;
-    border: none !important;
-    outline: none !important;
-    font-weight: 500 !important;
-    text-decoration: inherit !important;
-}
-
-html body header .navMenu a.dark[href="/profile"]:hover,
-html body header .navMenu a.dark[href="/profile"]:focus,
-html body header .navMenu a.dark[href="/profile"]:active {
-    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%) !important;
-    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3) !important;
-    color: white !important;
-    transform: translateY(-2px) !important;
-    border: none !important;
-    outline: none !important;
-    font-weight: 500 !important;
-    text-decoration: inherit !important;
-} 
-
-/* ФИНАЛЬНЫЕ СТИЛИ С МАКСИМАЛЬНОЙ СПЕЦИФИЧНОСТЬЮ ДЛЯ ТЕМНОЙ ТЕМЫ НАВБАРА */
-html body header.header.dark {
-    background: #000000 !important;
-    backdrop-filter: none !important;
-    border-bottom: 1px solid rgba(96, 165, 250, 0.3) !important;
-}
-
-html body header.header.dark .logo,
-html body header.header.dark .logo span {
-    color: #f3f4f6 !important;
-}
-
-html body header.header.dark .logo b {
-    color: #60a5fa !important;
-}
-
-html body header.header.dark .navMenu a {
-    color: #f1f5f9 !important;
-}
-
-html body header.header.dark .navMenu button {
-    color: #f1f5f9 !important;
-}
-
-html body header.header.dark .contactBtn {
-    background: #2563eb !important;
-    color: #fff !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-}
-
-html body header.header.dark .themeToggle {
-    background: rgba(255, 255, 255, 0.05) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-}
-
-html body header.header.dark .mobileThemeToggle {
-    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%) !important;
-    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4) !important;
-}
-
-html body header.header.dark .burger {
-    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%) !important;
-    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4) !important;
-}
-
-/* ФИНАЛЬНЫЕ СТИЛИ ДЛЯ МОБИЛЬНОГО МЕНЮ В ТЕМНОЙ ТЕМЕ */
-html body header.header.dark .mobileMenu {
-    background: #000000 !important;
-    color: #ffffff !important;
-    box-shadow: 4px 0 12px rgba(0, 0, 0, 0.8) !important;
-    border-right: 1px solid rgba(255, 255, 255, 0.2) !important;
-}
-
-html body header.header.dark .mobileMenuHeader {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.3) !important;
-    background: transparent !important;
-}
-
-html body header.header.dark .mobileMenuHeader h3 {
-    color: #ffffff !important;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) !important;
-}
-
-html body header.header.dark .mobileNavMenu a {
-    color: #ffffff !important;
-    background: transparent !important;
-    border: 1px solid rgba(255, 255, 255, 0.2) !important;
-}
-
-html body header.header.dark .mobileAdvanceModal button {
-    color: #ffffff !important;
-    background: transparent !important;
-    border: 1px solid rgba(255, 255, 255, 0.3) !important;
-}
-
-/* ФИНАЛЬНЫЕ СТИЛИ С МАКСИМАЛЬНОЙ СПЕЦИФИЧНОСТЬЮ ДЛЯ ТЕМНОЙ ТЕМЫ НАВБАРА НА ГЛАВНОЙ СТРАНИЦЕ */
-html body header.header.dark.darkHome {
-    background: #000000 !important;
-    backdrop-filter: none !important;
-    border-bottom: 1px solid rgba(96, 165, 250, 0.3) !important;
-}
-
-html body header.header.dark.darkHome .logo,
-html body header.header.dark.darkHome .logo span {
-    color: #f3f4f6 !important;
-    text-shadow: none !important;
-}
-
-html body header.header.dark.darkHome .logo b {
-    color: #60a5fa !important;
-    text-shadow: none !important;
-}
-
-html body header.header.dark.darkHome .navMenu a {
-    color: #f1f5f9 !important;
-    text-shadow: none !important;
-}
-
-html body header.header.dark.darkHome .navMenu button {
-    color: #f1f5f9 !important;
-    text-shadow: none !important;
+  .contactBtn { display: none; }
 }

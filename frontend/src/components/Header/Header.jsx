@@ -1,28 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { useTheme } from '@/context/ThemeContext.jsx';
-import AdvanceModal from "@/components/pages/Home2/AdvanceModal.jsx";
 import styles from './Header.module.css';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
 import useAuthGuard from '@/hooks/useAuthGuard';
 import AuthModal from '@/components/AuthModal/AuthModal.jsx';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const Header = ({ isAuthenticated = false }) => {
+const Home2Header = ({ isAuthenticated = false }) => {
     const { theme, toggleTheme } = useTheme();
     const { pathname } = useLocation();
     const navigate = useNavigate();
     const [showAuthModal, setShowAuthModal] = useState(false);
-    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 950);
     const [menuOpen, setMenuOpen] = useState(false);
-    
-    const isActive = (paths) => paths.some(p => pathname === p);
+
+    const isActive = (paths) => paths.some(p => pathname === p || pathname.startsWith(p + '/'));
 
     const guard = useAuthGuard(isAuthenticated, () => setShowAuthModal(true));
 
     // Обработка изменения размера экрана
     useEffect(() => {
         const handleResize = () => {
-            const mobile = window.innerWidth <= 768;
+            const mobile = window.innerWidth <= 950;
             setIsMobile(mobile);
             if (!mobile) {
                 setMenuOpen(false);
@@ -38,6 +37,27 @@ const Header = ({ isAuthenticated = false }) => {
         setMenuOpen(false);
     };
 
+    // Закрытие меню по Escape и блокировка скролла при открытом меню (как в глобальном хедере)
+    useEffect(() => {
+        const handleEscape = (e) => {
+            if (e.key === 'Escape') {
+                setMenuOpen(false);
+            }
+        };
+
+        if (menuOpen) {
+            document.addEventListener('keydown', handleEscape);
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'unset';
+        }
+
+        return () => {
+            document.removeEventListener('keydown', handleEscape);
+            document.body.style.overflow = 'unset';
+        };
+    }, [menuOpen]);
+
     // Закрытие меню при переходе на другую страницу
     const handleNavClick = () => {
         setMenuOpen(false);
@@ -52,13 +72,15 @@ const Header = ({ isAuthenticated = false }) => {
         }
     };
 
+
+
     return (
         <>
-            <header className={`${styles.header} ${theme === 'dark' ? styles.dark : ''} ${theme === 'dark' && pathname === '/home2' ? styles.darkHome : ''}`}>
+            <header className={`${styles.home2Header} ${styles.home2HeaderUnique} ${theme === 'dark' ? styles.dark : ''}`}>
                 {/* Мобильная кнопка переключения темы - слева */}
                 {isMobile && (
                     <button
-                        className={styles.mobileThemeToggle}
+                        className={styles.mobileThemeToggleBtn}
                         onClick={toggleTheme}
                         aria-label={theme === 'light' ? 'Переключить на тёмную тему' : 'Переключить на светлую тему'}
                     >
@@ -72,39 +94,39 @@ const Header = ({ isAuthenticated = false }) => {
                 )}
 
                 <div className={styles.logo}><span>STRACK </span><b>ESTATE</b></div>
-                
+
                 {/* Десктопное меню */}
                 {!isMobile && (
                     <nav className={styles.navMenu}>
-                    <Link 
-                        to="/home2" 
+                    <Link
+                        to="/home2"
                         className={`${isActive(['/home2']) ? styles.active : ''} ${theme === 'dark' ? styles.dark : ''}`}
                     >
                         Главная
                     </Link>
-                    <Link 
-                        to="/about" 
+                    <Link
+                        to="/about"
                         className={`${isActive(['/about']) ? styles.active : ''} ${theme === 'dark' ? styles.dark : ''}`}
                     >
                         О нас
                     </Link>
-                    <Link 
-                        to="/listings" 
+                    <Link
+                        to="/listings"
                         className={`${styles.dropdown} ${isActive(['/listings']) ? styles.active : ''} ${theme === 'dark' ? styles.dark : ''}`}
                     >
                         База квартир
                     </Link>
-                    {/* <AdvanceModal theme={theme}/> */}
-                    <Link 
-                        to="/profile"
+                    {/* <AdvanceButton /> */}
+                    <a
+                        href="/profile"
                         onClick={handleProfileClick}
                         className={`${isActive(['/profile']) ? styles.active : ''} ${theme === 'dark' ? styles.dark : ''}`}
                     >
                         Профиль
-                    </Link>
+                    </a>
                 </nav>
                 )}
-                
+
                 {/* Десктопные кнопки */}
                 {!isMobile && (
                     <>
@@ -127,8 +149,8 @@ const Header = ({ isAuthenticated = false }) => {
 
                 {/* Бургер-кнопка - только на мобильных */}
                 {isMobile && (
-                    <button 
-                        className={`${styles.burger} ${menuOpen ? styles.open : ''}`} 
+                    <button
+                        className={`${styles.burger} ${menuOpen ? styles.open : ''}`}
                         onClick={() => setMenuOpen(!menuOpen)}
                         aria-label="Открыть меню"
                     >
@@ -152,46 +174,44 @@ const Header = ({ isAuthenticated = false }) => {
                             transition={{duration: 0.3}}
                             onClick={handleOverlayClick}
                         />
-                        
+
                         {/* Боковое меню */}
                         <motion.div
-                            className={`${styles.mobileMenu} ${theme === 'dark' ? styles.dark : ''}`}
-                            initial={{x: -280}}
+                            className={`${styles.navMenu} ${theme === 'dark' ? styles.dark : ''}`}
+                            initial={{x: '-100%'}}
                             animate={{x: 0}}
-                            exit={{x: -280}}
+                            exit={{x: '-100%'}}
                             transition={{duration: 0.3, ease: "easeOut"}}
                         >
                             <div className={styles.mobileMenuHeader}>
                                 <h3>Меню</h3>
                             </div>
-                            
+
                             <nav className={styles.mobileNavMenu}>
-                                <Link 
-                                    to="/home2" 
+                                <Link
+                                    to="/home2"
                                     className={`${isActive(['/home2']) ? styles.active : ''} ${theme === 'dark' ? styles.dark : ''}`}
                                     onClick={handleNavClick}
                                 >
                                     Главная
                                 </Link>
-                                <Link 
-                                    to="/about" 
+                                <Link
+                                    to="/about"
                                     className={`${isActive(['/about']) ? styles.active : ''} ${theme === 'dark' ? styles.dark : ''}`}
                                     onClick={handleNavClick}
                                 >
                                     О нас
                                 </Link>
-                                <Link 
-                                    to="/listings" 
+                                <Link
+                                    to="/listings"
                                     className={`${styles.dropdown} ${isActive(['/listings']) ? styles.active : ''} ${theme === 'dark' ? styles.dark : ''}`}
                                     onClick={handleNavClick}
                                 >
                                     База квартир
                                 </Link>
-                                <div className={styles.mobileAdvanceModal}>
-                                    <AdvanceModal theme={theme}/>
-                                </div>
-                                <Link 
-                                    to="/profile"
+
+                                <a
+                                    href="/profile"
                                     onClick={(e) => {
                                         handleProfileClick(e);
                                         handleNavClick();
@@ -199,7 +219,7 @@ const Header = ({ isAuthenticated = false }) => {
                                     className={`${isActive(['/profile']) ? styles.active : ''} ${theme === 'dark' ? styles.dark : ''}`}
                                 >
                                     Профиль
-                                </Link>
+                                </a>
                             </nav>
                         </motion.div>
                     </>
@@ -208,7 +228,7 @@ const Header = ({ isAuthenticated = false }) => {
 
             {/* Модальное окно авторизации */}
             {showAuthModal && (
-                <AuthModal 
+                <AuthModal
                     onClose={() => setShowAuthModal(false)}
                     onAuthSuccess={() => {
                         setShowAuthModal(false);
@@ -220,4 +240,4 @@ const Header = ({ isAuthenticated = false }) => {
     );
 };
 
-export default Header; 
+export default Home2Header;

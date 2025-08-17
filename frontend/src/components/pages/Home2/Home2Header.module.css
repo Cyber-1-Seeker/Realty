@@ -199,6 +199,18 @@
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
 }
 
+/* Специальные стили для профиля в темной теме */
+.home2Header.dark .navMenu a[href="/profile"] {
+    color: #f3f4f6;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+/* Стили для профиля в темной теме - мобильное меню */
+.dark .mobileNavMenu a[href="/profile"] {
+    color: #f3f4f6;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+}
+
 /* Мобильное меню: базовые стили контейнера и ссылок (как на других страницах) */
 .mobileNavMenu {
     display: flex;
@@ -231,39 +243,39 @@
 
 /* Темная тема для ссылок мобильного меню */
 .dark .mobileNavMenu a {
-    color: #ffffff !important;
-    background: transparent !important;
-    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: #ffffff;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 /* Hover с цветными градиентами под каждую ссылку */
 .mobileNavMenu a[href="/home2"]:hover {
-    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
-    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3) !important;
-    color: white !important;
-    transform: translateY(-2px) !important;
-    border-color: transparent !important;
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3);
+    color: white;
+    transform: translateY(-2px);
+    border-color: transparent;
 }
 .mobileNavMenu a[href="/about"]:hover {
-    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
-    box-shadow: 0 4px 16px rgba(220, 38, 38, 0.3) !important;
-    color: white !important;
-    transform: translateY(-2px) !important;
-    border-color: transparent !important;
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+    box-shadow: 0 4px 16px rgba(220, 38, 38, 0.3);
+    color: white;
+    transform: translateY(-2px);
+    border-color: transparent;
 }
 .mobileNavMenu a[href="/listings"]:hover {
-    background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
-    box-shadow: 0 4px 16px rgba(5, 150, 105, 0.3) !important;
-    color: white !important;
-    transform: translateY(-2px) !important;
-    border-color: transparent !important;
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    box-shadow: 0 4px 16px rgba(5, 150, 105, 0.3);
+    color: white;
+    transform: translateY(-2px);
+    border-color: transparent;
 }
 .mobileNavMenu a[href="/profile"]:hover {
-    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%) !important;
-    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3) !important;
-    color: white !important;
-    transform: translateY(-2px) !important;
-    border-color: transparent !important;
+    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
+    color: white;
+    transform: translateY(-2px);
+    border-color: transparent;
 }
 
 /* Active состояния с цветными градиентами */
@@ -275,28 +287,44 @@
     border: 1px solid rgba(0, 0, 0, 0.1);
 }
 .mobileNavMenu a[href="/home2"].active {
-    color: white !important;
-    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
-    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3) !important;
-    border-color: transparent !important;
+    color: white;
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3);
+    border-color: transparent;
 }
 .mobileNavMenu a[href="/about"].active {
-    color: white !important;
-    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
-    box-shadow: 0 4px 16px rgba(220, 38, 38, 0.3) !important;
-    border-color: transparent !important;
+    color: white;
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+    box-shadow: 0 4px 16px rgba(220, 38, 38, 0.3);
+    border-color: transparent;
 }
 .mobileNavMenu a[href="/listings"].active {
-    color: white !important;
-    background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
-    box-shadow: 0 4px 16px rgba(5, 150, 105, 0.3) !important;
-    border-color: transparent !important;
+    color: white;
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    box-shadow: 0 4px 16px rgba(5, 150, 105, 0.3);
+    border-color: transparent;
 }
 .mobileNavMenu a[href="/profile"].active {
-    color: white !important;
-    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%) !important;
-    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3) !important;
-    border-color: transparent !important;
+    color: white;
+    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
+    border-color: transparent;
+}
+
+/* Стили для мобильного профиля в темной теме */
+.dark .mobileNavMenu a[href="/profile"].active {
+    color: white;
+    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
+    border-color: transparent;
+}
+
+.dark .mobileNavMenu a[href="/profile"]:hover {
+    color: white;
+    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
+    border-color: transparent;
+    transform: translateY(-2px);
 }
 
 /* Специфичные стили для темной темы */
@@ -353,6 +381,21 @@
 .home2HeaderUnique.dark .navMenu a[href="/profile"].active {
     background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
     box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
+}
+
+/* Дополнительные стили для темной темы профиля */
+.home2Header.dark .navMenu a[href="/profile"].active {
+    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
+    color: white;
+}
+
+/* Стили для темной темы профиля при hover */
+.home2Header.dark .navMenu a[href="/profile"]:hover {
+    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
+    color: white;
+    transform: translateY(-2px);
 }
 
 /* Мобильная кнопка переключения темы */
@@ -469,99 +512,99 @@
         text-align: center;
     }
 
-    .burger {
+.burger {
         display: block;
         width: 44px;
         height: 44px;
-        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-        border: none;
-        border-radius: 12px;
-        color: white;
-        cursor: pointer;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    cursor: pointer;
         z-index: 102;
-        position: relative;
+    position: relative;
         right: auto;
         top: auto;
         margin: 0;
         order: 3;
         transition: all 0.3s ease;
         box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
-    }
-    
-    /* Темная тема для бургер-кнопки */
-    .dark .burger {
-        background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%) !important;
-        box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4) !important;
-    }
-    
-    .burger:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
-        background: linear-gradient(135deg, #059669 0%, #047857 100%);
-    }
-    
-    /* Темная тема для hover эффекта бургер-кнопки */
-    .dark .burger:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(124, 58, 237, 0.5);
-        background: linear-gradient(135deg, #6d28d9 0%, #5b21b6 100%) !important;
-    }
-    
-    .burger:active {
-        transform: translateY(0);
-    }
-    
-    /* Темная тема для активного состояния бургер-кнопки */
-    .dark .burger:active {
-        transform: translateY(0);
-    }
-    
+}
+
+/* Темная тема для бургер-кнопки */
+.dark .burger {
+    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%) !important;
+    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4) !important;
+}
+
+.burger:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+}
+
+/* Темная тема для hover эффекта бургер-кнопки */
+.dark .burger:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(124, 58, 237, 0.5);
+    background: linear-gradient(135deg, #6d28d9 0%, #5b21b6 100%) !important;
+}
+
+.burger:active {
+    transform: translateY(0);
+}
+
+/* Темная тема для активного состояния бургер-кнопки */
+.dark .burger:active {
+    transform: translateY(0);
+}
+
     .burger::before {
         content: '';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
         width: 22px;
-        height: 2px;
-        background: white;
-        box-shadow: 
+    height: 2px;
+    background: white;
+        box-shadow:
             0 -7px 0 white,
             0 7px 0 white;
-        transition: all 0.3s ease;
-    }
-    
+    transition: all 0.3s ease;
+}
+
     .burger.open::before {
-        transform: translate(-50%, -50%) rotate(45deg);
-        box-shadow: 
+    transform: translate(-50%, -50%) rotate(45deg);
+        box-shadow:
             0 0 0 transparent,
             0 0 0 transparent;
     }
-    
+
     .burger.open::after {
         content: '';
         position: absolute;
         top: 50%;
         left: 50%;
-        transform: translate(-50%, -50%) rotate(-45deg);
+    transform: translate(-50%, -50%) rotate(-45deg);
         width: 22px;
         height: 2px;
         background: white;
     }
 
     .navMenu {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 280px;
-        height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 280px;
+    height: 100vh;
         background: rgba(255, 255, 255, 0.95);
         backdrop-filter: blur(10px);
         flex-direction: column;
         gap: 0;
         margin: 0;
         padding: 80px 20px 20px 20px;
-        box-shadow: 4px 0 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 4px 0 12px rgba(0, 0, 0, 0.1);
         transform: translateX(0);
         opacity: 1;
         visibility: visible;
@@ -569,84 +612,92 @@
         z-index: 100;
         border-radius: 0 12px 12px 0;
     }
-    
+
+    /* Уменьшаем размер навбара для экранов ≤500px */
+    @media (max-width: 500px) {
+        .navMenu {
+            width: 224px !important; /* уменьшаем на 20% (280px * 0.8 = 224px) */
+            padding: 60px 16px 16px 16px !important; /* уменьшаем отступы пропорционально */
+        }
+    }
+
     /* Темная тема для мобильного меню */
     .dark .navMenu {
         background: rgba(0, 0, 0, 0.95) !important;
-        color: #ffffff !important;
-        box-shadow: 4px 0 12px rgba(0, 0, 0, 0.8) !important;
-        border-right: 1px solid rgba(255, 255, 255, 0.2) !important;
-    }
-    
+    color: #ffffff !important;
+    box-shadow: 4px 0 12px rgba(0, 0, 0, 0.8) !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
     /* Темная тема для мобильного меню - альтернативный селектор */
     .navMenu.dark {
         background: rgba(0, 0, 0, 0.95) !important;
-        color: #ffffff !important;
-        box-shadow: 4px 0 12px rgba(0, 0, 0, 0.8) !important;
-        border-right: 1px solid rgba(255, 255, 255, 0.2) !important;
-    }
-    
+    color: #ffffff !important;
+    box-shadow: 4px 0 12px rgba(0, 0, 0, 0.8) !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
     .navMenu.open {
         transform: translateX(0);
         opacity: 1;
         visibility: visible;
     }
-    
+
     .navMenu a {
-        width: 100%;
+    width: 100%;
         padding: 14px 16px;
         text-align: center;
         border-radius: 10px;
         margin: 6px 0;
         font-size: 1.1rem;
-        font-weight: 500;
-        line-height: 1.5;
+    font-weight: 500;
+    line-height: 1.5;
         min-height: 48px;
-        display: flex;
-        align-items: center;
+    display: flex;
+    align-items: center;
         justify-content: center;
-        white-space: nowrap;
+    white-space: nowrap;
     }
-    
+
     /* Стили для кнопки navLink в мобильном меню */
     .navMenu .navLink {
         /* Убираем специальные стили, используем стандартные для навигации */
     }
-    
+
     /* Hover эффекты для кнопки navLink в мобильном меню */
     .navMenu .navLink:hover {
         /* Убираем специальные hover эффекты */
     }
-    
+
     /* Темная тема для ссылок в мобильном меню */
     .dark .navMenu a {
-        color: #ffffff !important;
+    color: #ffffff !important;
         background: rgba(255, 255, 255, 0.1) !important;
-        border: 1px solid rgba(255, 255, 255, 0.2) !important;
-    }
-    
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
     /* Темная тема для ссылок в мобильном меню - альтернативный селектор */
     .navMenu a.dark {
-        color: #ffffff !important;
+    color: #ffffff !important;
         background: rgba(255, 255, 255, 0.1) !important;
-        border: 1px solid rgba(255, 255, 255, 0.2) !important;
-    }
-    
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
     /* Темная тема для кнопки navLink в мобильном меню */
     .dark .navMenu .navLink {
         /* Убираем специальные стили для темной темы */
     }
-    
+
     /* Темная тема для кнопки navLink в мобильном меню - альтернативный селектор */
     .navMenu .navLink.dark {
         /* Убираем специальные стили для темной темы */
     }
-    
+
     /* Hover эффекты для темной темы кнопки navLink в мобильном меню */
     .dark .navMenu .navLink:hover {
         /* Убираем специальные hover эффекты */
     }
-    
+
     .navMenu .navLink.dark:hover {
         /* Убираем специальные hover эффекты */
     }
@@ -654,42 +705,83 @@
     .contactBtn {
         display: none;
     }
-    
+
     .overlay {
         display: block;
     }
-    
+
     /* Уменьшаем тени для мобильных устройств */
     .mobileThemeToggleBtn {
         box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
     }
-    
+
     .mobileThemeToggleBtn:hover {
         box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
     }
-    
+
     .dark .mobileThemeToggleBtn {
         box-shadow: 0 2px 8px rgba(124, 58, 237, 0.3) !important;
     }
-    
+
     .dark .mobileThemeToggleBtn:hover {
         box-shadow: 0 4px 12px rgba(124, 58, 237, 0.35) !important;
     }
-    
+
     .burger {
         box-shadow: 0 2px 8px rgba(16, 185, 129, 0.2);
     }
-    
+
     .burger:hover {
         box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
     }
-    
+
     .dark .burger {
         box-shadow: 0 2px 8px rgba(124, 58, 237, 0.3) !important;
     }
-    
+
     .dark .burger:hover {
         box-shadow: 0 4px 12px rgba(124, 58, 237, 0.35) !important;
+    }
+}
+
+/* Адаптивность навбара для экранов от 951px до больших размеров */
+@media (min-width: 951px) and (max-width: 1200px) {
+    .home2Header {
+        padding: 28px 40px 20px 40px; /* уменьшаем отступы */
+    }
+
+    .logo {
+        font-size: 1.8rem; /* уменьшаем логотип */
+    }
+
+    .navMenu {
+        gap: 24px; /* уменьшаем промежутки между ссылками */
+        margin-right: 18px; /* уменьшаем правый отступ */
+    }
+
+    .navMenu a {
+        font-size: 1.1rem; /* уменьшаем размер шрифта ссылок */
+        padding: 6px 10px; /* уменьшаем отступы ссылок */
+    }
+}
+
+@media (min-width: 951px) and (max-width: 1100px) {
+    .home2Header {
+        padding: 24px 32px 16px 32px; /* еще меньше отступы */
+    }
+
+    .logo {
+        font-size: 1.6rem; /* еще меньше логотип */
+    }
+
+    .navMenu {
+        gap: 20px; /* еще меньше промежутки */
+        margin-right: 16px; /* еще меньше правый отступ */
+    }
+
+    .navMenu a {
+        font-size: 1rem; /* еще меньше размер шрифта */
+        padding: 5px 8px; /* еще меньше отступы */
     }
 }
 
@@ -706,69 +798,69 @@
     .logo {
         font-size: 1.4rem;
     }
-    
+
     .mobileThemeToggleBtn {
         width: 40px;
         height: 40px;
     }
-    
+
     .burger {
         width: 40px;
         height: 40px;
     }
-    
+
     .burger::before {
         width: 20px;
-        box-shadow: 
+        box-shadow:
             0 -6px 0 white,
             0 6px 0 white;
     }
-    
+
     .navMenu {
         width: 260px;
         padding: 70px 16px 16px 16px;
     }
-    
+
     .navMenu.open {
         transform: translateX(260px);
     }
-    
+
     .navMenu a {
         padding: 12px 14px;
         font-size: 1rem;
         min-height: 44px;
         margin: 4px 0;
     }
-    
+
     /* Еще больше уменьшаем тени для очень маленьких экранов */
     .mobileThemeToggleBtn {
         box-shadow: 0 1px 6px rgba(37, 99, 235, 0.15);
     }
-    
+
     .mobileThemeToggleBtn:hover {
         box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
     }
-    
+
     .dark .mobileThemeToggleBtn {
         box-shadow: 0 1px 6px rgba(124, 58, 237, 0.25) !important;
     }
-    
+
     .dark .mobileThemeToggleBtn:hover {
         box-shadow: 0 2px 8px rgba(124, 58, 237, 0.3) !important;
     }
-    
+
     .burger {
         box-shadow: 0 1px 6px rgba(16, 185, 129, 0.15);
     }
-    
+
     .burger:hover {
         box-shadow: 0 2px 8px rgba(16, 185, 129, 0.2);
     }
-    
+
     .dark .burger {
         box-shadow: 0 1px 6px rgba(124, 58, 237, 0.25) !important;
     }
-    
+
     .dark .burger:hover {
         box-shadow: 0 2px 8px rgba(124, 58, 237, 0.3) !important;
     }
@@ -789,11 +881,11 @@
 }
 
 /* Mobile header for <=950px to match JS breakpoint */
-@media (max-width: 950px) {
+@media (max-width: 951px) {
   .home2Header {
     padding: 20px 16px 16px 16px;
-    flex-direction: row;
-    gap: 0;
+        flex-direction: row;
+        gap: 0;
     position: relative;
     justify-content: space-between;
     align-items: center;
