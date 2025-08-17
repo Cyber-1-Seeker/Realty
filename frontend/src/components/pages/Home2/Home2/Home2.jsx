@@ -45,7 +45,10 @@ const Home2 = () => {
                         <div className={styles.bgLineLeft}></div>
                         <div className={styles.heroTextBlock}>
                             <span className={styles.heroSubtitle}>Платформа для поиска недвижимости</span>
-                            <h1 className={styles.heroTitle}>Найдите дом своей мечты</h1>
+                            <h1 className={styles.heroTitle}>
+                                <span className={styles.heroTitleLine1}>Найдите дом</span>
+                                <span className={styles.heroTitleLine2}>своей мечты</span>
+                            </h1>
                             <div className={styles.filterCards}>
                                 <div className={styles.filterCard + ' ' + styles.checked}>
                                     <span className={styles.checkIcon}>✓</span>

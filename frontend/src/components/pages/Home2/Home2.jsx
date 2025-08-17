@@ -3,7 +3,7 @@ import {useInView} from 'react-intersection-observer';
 import { useOutletContext, useNavigate } from 'react-router-dom';
 import styles from './Home2.module.css';
 import heroImg from '@/assets/Listings/new7.png';
-import darkHeroImg from '@/assets/Listings/New4.png';
+import darkHeroImg from '@/assets/Listings/new4.png';
 import DealTimelinePage from "@/components/pages/Home2/DealTimelinePage.jsx";
 import WhyChooseUs from "@/components/pages/Home2/WhyChooseUs.jsx";
 import AboutUsSection from "@/components/pages/Home2/AboutUsSection.jsx";
