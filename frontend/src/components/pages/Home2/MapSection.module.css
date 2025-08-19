@@ -6,16 +6,7 @@
 }
 
 /* Добавляем псевдоэлемент для тени */
-.mapSection::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 20px; /* Высота тени */
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(255, 255, 255, 0)); /* Градиент от тени к прозрачному */
-    pointer-events: none; /* Чтобы не мешать взаимодействию с контентом */
-}
+
 
 .contactBox {
   max-width: 600px;

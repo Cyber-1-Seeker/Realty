@@ -7,7 +7,6 @@ import darkHeroImg from '@/assets/Listings/new4.png';
 import DealTimelinePage from "@/components/pages/Home2/DealTimelinePage.jsx";
 import WhyChooseUs from "@/components/pages/Home2/WhyChooseUs.jsx";
 import AboutUsSection from "@/components/pages/Home2/AboutUsSection.jsx";
-import CallToAction from "@/components/pages/Home2/CalculatorSection/CallToAction.jsx";
 import {useTheme} from '@/context/ThemeContext';
 import StatisticsSection from "@/components/pages/Home2/StatisticsSection.jsx";
 import MapSection from "@/components/pages/Home2/MapSection.jsx";
@@ -17,6 +16,7 @@ import Home2Header from "@/components/pages/Home2/Home2Header.jsx";
 import { API_PUBLIC } from '@/utils/api/axiosPublic.js';
 import { getCSRFTokenFromCookie } from "@/utils/api/csrf.js";
 import ModalForm from '@/components/pages/Listings/ListingsPage/ModalForm.jsx';
+import CalculatorLaunch from "@/components/pages/Home2/CalculatorLaunch.jsx";
 function Home2() {
     const { isAuthenticated = false } = useOutletContext() || {};
     const {theme, toggleTheme} = useTheme();
@@ -233,7 +233,7 @@ function Home2() {
                     <WhyChooseUs theme={theme}/>
                 </section>
                 <section ref={calcRef} className={`${styles.animSection} ${calcInView ? styles.visible : ''}`}>
-                    <CallToAction/>
+                    <CalculatorLaunch/>
                 </section>
                 <section ref={mapRef} className={`${styles.animSection} ${mapInView ? styles.visible : ''}`}>
                     <MapSection theme={theme}/>
