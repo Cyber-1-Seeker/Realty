@@ -34,14 +34,6 @@ class Apartment(models.Model):
         ('multiple', 'Несколько санузлов'),
     ]
 
-    RENOVATION_TYPES = [
-        ('rough', 'Черновая'),
-        ('clean', 'Чистовая'),
-        ('euro', 'Евроремонт'),
-        ('design', 'Дизайнерский'),
-        ('partial', 'Частичный ремонт'),
-    ]
-
     VIEW_TYPES = [
         ('yard', 'Двор'),
         ('street', 'Улица'),
@@ -65,15 +57,15 @@ class Apartment(models.Model):
     )
     rejection_reason = models.TextField(blank=True, null=True, verbose_name='Причина отклонения')
     property_type = models.CharField(max_length=20, choices=PROPERTY_TYPES, default='apartment')
-    address = models.CharField(max_length=255)
-    title = models.CharField(max_length=100, verbose_name='Заголовок объявления')
+    address = models.CharField(max_length=255, verbose_name='Адрес')
 
     # Площади
     total_area = models.DecimalField(
         max_digits=8,
         decimal_places=2,
         validators=[MinValueValidator(0.01)],
-        verbose_name='Общая площадь (м²)'
+        verbose_name='Общая площадь (м²)',
+        default=0.01
     )
     living_area = models.DecimalField(
         max_digits=8,
@@ -92,66 +84,32 @@ class Apartment(models.Model):
         verbose_name='Площадь кухни (м²)'
     )
 
-    # Этажность
+    # Этаж
     floor = models.PositiveIntegerField(
         null=True,
         blank=True,
         verbose_name='Этаж',
         help_text="Для домов можно оставить пустым"
     )
-    total_floors = models.PositiveIntegerField(
-        null=True,
-        blank=True,
-        verbose_name='Этажность дома',
-        help_text="Для домов можно оставить пустым"
-    )
 
-    # Характеристики
+    # Количество комнат
     rooms = models.PositiveIntegerField(
         verbose_name='Количество комнат',
-        validators=[MinValueValidator(0), MaxValueValidator(1000)]
+        validators=[MinValueValidator(0), MaxValueValidator(1000)],
+        default=1
     )
+
     bathroom_type = models.CharField(
         max_length=20,
         choices=BATHROOM_TYPES,
         default='combined',
         verbose_name='Санузел'
     )
-    renovation = models.CharField(
-        max_length=20,
-        choices=RENOVATION_TYPES,
-        default='clean',
-        verbose_name='Ремонт'
-    )
-    balcony = models.PositiveIntegerField(
-        default=0,
-        verbose_name='Количество балконов/лоджий'
-    )
     view = models.CharField(
         max_length=20,
         choices=VIEW_TYPES,
         default='yard',
         verbose_name='Вид из окна'
-    )
-
-    # Годы
-    construction_year = models.PositiveIntegerField(
-        null=True,
-        blank=True,
-        validators=[
-            MinValueValidator(1800),
-            MaxValueValidator(2100)
-        ],
-        verbose_name='Год постройки'
-    )
-    last_renovation_year = models.PositiveIntegerField(
-        null=True,
-        blank=True,
-        validators=[
-            MinValueValidator(1800),
-            MaxValueValidator(2100)
-        ],
-        verbose_name='Год ремонта'
     )
 
     # Цена и условия
@@ -215,7 +173,7 @@ class Apartment(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f'{self.title} - {self.address}'
+        return f'{self.address}'
 
 
 class ApartmentImage(models.Model):

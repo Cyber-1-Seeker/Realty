@@ -31,7 +31,10 @@ class ApartmentSerializer(serializers.ModelSerializer):
 
     def to_internal_value(self, data):
         # Преобразуем строки в Decimal для числовых полей
-        decimal_fields = ['price', 'deposit', 'total_area', 'living_area', 'kitchen_area']
+        decimal_fields = [
+            'price', 'deposit', 
+            'total_area', 'living_area', 'kitchen_area'
+        ]
         for field in decimal_fields:
             if field in data and isinstance(data[field], str):
                 data[field] = data[field].replace(' ', '').replace(',', '.')

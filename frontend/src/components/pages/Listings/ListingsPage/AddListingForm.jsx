@@ -1,5 +1,5 @@
 import {useState, useEffect, useRef} from 'react';
-import {Form, Input, Button, Select, Switch, Upload, Steps, ConfigProvider, theme, Tooltip} from 'antd';
+import {Form, Input, Button, Select, Switch, Upload, Steps, ConfigProvider, theme, Tooltip, Modal, Slider, InputNumber} from 'antd';
 import { useTheme } from '@/context/ThemeContext';
 import {Link} from 'react-router-dom'
 import {
@@ -26,6 +26,127 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
     // Используем переданную тему или получаем из контекста
     const { theme: contextTheme } = useTheme();
     const currentTheme = theme || contextTheme;
+
+    // Кастомный слайдер с полем ввода сверху
+    const SliderWithInput = ({ name, min, max, step, tooltipFormatter, suffix, customFormatter, ...props }) => {
+        const [value, setValue] = useState(min);
+        
+        // Отслеживаем изменения в форме
+        const formValue = Form.useWatch(name, form);
+        
+        // Обновляем локальное состояние при изменении в форме
+        useEffect(() => {
+            if (formValue !== undefined && formValue !== null) {
+                setValue(formValue);
+            }
+        }, [formValue]);
+        
+        const handleSliderChange = (newValue) => {
+            setValue(newValue);
+            // Небольшая задержка для более плавной работы
+            setTimeout(() => {
+                form.setFieldsValue({ [name]: newValue });
+            }, 10);
+        };
+
+        const handleInputChange = (newValue) => {
+            if (newValue !== null && newValue !== undefined) {
+                // Автоматически ограничиваем значение согласно максимуму слайдера
+                const clampedValue = Math.max(min, Math.min(max, newValue));
+                setValue(clampedValue);
+                form.setFieldsValue({ [name]: clampedValue });
+                
+                // Если введенное значение больше максимума, показываем уведомление
+                if (newValue > max) {
+                    Modal.info({
+                        title: 'Значение ограничено',
+                        content: `Максимальное значение для этого поля: ${max}${suffix || ''}`,
+                    });
+                }
+            }
+        };
+
+        // Форматируем значение для отображения в поле
+        const displayValue = customFormatter ? customFormatter(value) : value;
+
+        return (
+            <div style={{ position: 'relative', paddingTop: '50px' }}>
+                {/* Поле ввода сверху справа */}
+                <div style={{ 
+                    position: 'absolute', 
+                    top: '0', 
+                    right: '0',
+                    zIndex: 1
+                }}>
+                    {customFormatter ? (
+                        <Input
+                            value={displayValue}
+                            onChange={(e) => {
+                                const inputValue = e.target.value;
+                                if (inputValue === 'Студия') {
+                                    handleInputChange(0);
+                                } else if (inputValue === '') {
+                                    // Позволяем пустое поле
+                                    setValue(0);
+                                    form.setFieldsValue({ [name]: 0 });
+                                } else {
+                                    const numValue = parseInt(inputValue.replace(/[^\d]/g, ''));
+                                    if (!isNaN(numValue)) {
+                                        handleInputChange(numValue);
+                                    }
+                                }
+                            }}
+                            onBlur={() => {
+                                // При потере фокуса восстанавливаем правильное значение
+                                if (value === 0) {
+                                    setValue(0);
+                                }
+                            }}
+                            style={{ 
+                                width: '120px',
+                                backgroundColor: currentTheme === 'dark' ? '#1f2937' : '#ffffff',
+                                border: `1px solid ${currentTheme === 'dark' ? '#374151' : '#d9d9d9'}`,
+                                borderRadius: '6px',
+                                boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+                            }}
+                            placeholder="Введите значение"
+                        />
+                    ) : (
+                        <InputNumber
+                            min={min}
+                            max={max}
+                            step={step}
+                            value={value}
+                            onChange={handleInputChange}
+                            style={{ 
+                                width: '120px',
+                                backgroundColor: currentTheme === 'dark' ? '#1f2937' : '#ffffff',
+                                border: `1px solid ${currentTheme === 'dark' ? '#374151' : '#d9d9d9'}`,
+                                borderRadius: '6px',
+                                boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+                            }}
+                            placeholder={`${min}-${max}`}
+                            addonAfter={suffix}
+                        />
+                    )}
+                </div>
+                
+                {/* Слайдер */}
+                <Slider
+                    min={min}
+                    max={max}
+                    step={step}
+                    value={value}
+                    onChange={handleSliderChange}
+                    tooltip={{
+                        formatter: tooltipFormatter,
+                        placement: 'top'
+                    }}
+                    {...props}
+                />
+            </div>
+        );
+    };
 
     // Функция для создания лейбла с тултипом
     const createLabelWithTooltip = (label, tooltipText) => (
@@ -89,14 +210,6 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
         {value: 'multiple', label: 'Несколько санузлов'},
     ];
 
-    const renovationTypes = [
-        {value: 'rough', label: 'Черновая'},
-        {value: 'clean', label: 'Чистовая'},
-        {value: 'euro', label: 'Евроремонт'},
-        {value: 'design', label: 'Дизайнерский'},
-        {value: 'partial', label: 'Частичный ремонт'},
-    ];
-
     const viewTypes = [
         {value: 'yard', label: 'Двор'},
         {value: 'street', label: 'Улица'},
@@ -155,19 +268,10 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
         if (value <= 0) {
             return Promise.reject('Площадь должна быть положительным числом');
         }
-        if (value >= 10000) {
-            return Promise.reject('Слишком большое число');
+        if (value > 1000) {
+            return Promise.reject('Площадь не может быть больше 1000 м²');
         }
 
-        return Promise.resolve();
-    };
-
-    const validateYear = (_, value) => {
-        if (!value) return Promise.resolve();
-        const year = parseInt(value);
-        if (isNaN(year)) return Promise.reject('Введите корректный год');
-        if (year < 1800) return Promise.reject('Год должен быть не ранее 1800');
-        if (year > 2100) return Promise.reject('Год не может быть позже 2100');
         return Promise.resolve();
     };
 
@@ -216,9 +320,8 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
             if (user?.id) formData.append('owner', user.id);
 
             const numericFields = [
-                'total_area', 'floor', 'total_floors', 'rooms', 'price',
-                'living_area', 'kitchen_area', 'balcony', 'deposit',
-                'construction_year', 'last_renovation_year'
+                'total_area', 'floor', 'rooms', 'price', 'deposit',
+                'living_area', 'kitchen_area'
             ];
 
             const cleanNumberValue = (value) => {
@@ -245,11 +348,10 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                 }
             }
 
+            // Устанавливаем значения по умолчанию для обязательных полей
             if (!allValues.bathroom_type) formData.append('bathroom_type', 'combined');
-            if (!allValues.renovation) formData.append('renovation', 'clean');
             if (!allValues.view) formData.append('view', 'yard');
             if (!allValues.deal_type) formData.append('deal_type', 'sale');
-            if (allValues.balcony === undefined) formData.append('balcony', 0);
 
             if (allValues.images?.length) {
                 allValues.images.forEach(file => {
@@ -417,75 +519,51 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                         </Form.Item>
 
                         <Form.Item
-                            name="title"
-                            label={createLabelWithTooltip(
-                                "Заголовок объявления",
-                                'Краткое описание объекта. Укажите основные характеристики, которые привлекут внимание: количество комнат, площадь, особенности. Например: "Светлая 2-комн. квартира с видом на парк"'
-                            )}
-                            rules={[
-                                {required: true, message: 'Введите заголовок'},
-                                {max: 100, message: 'Максимум 100 символов'}
-                            ]}
-                        >
-                            <Input placeholder="Например: Светлая 2-комн. квартира в новом доме"/>
-                        </Form.Item>
-
-                        <Form.Item
                             name="total_area"
                             label={createLabelWithTooltip(
                                 "Общая площадь (м²)",
-                                'Укажите общую площадь помещения в квадратных метрах, включая все комнаты, коридоры, санузлы и балконы (если они есть). Используйте точку или запятую для дробных значений.'
+                                'Укажите общую площадь помещения в квадратных метрах. Перетащите ползунок для выбора значения.'
                             )}
                             rules={[
                                 {required: true, message: 'Введите площадь'},
                                 {validator: validateArea}
                             ]}
                         >
-                            <Input type="number" min="0.01" step="0.01" placeholder="м²"/>
+                            <SliderWithInput
+                                name="total_area"
+                                min={0.01}
+                                max={1000}
+                                step={0.01}
+                                tooltipFormatter={(value) => `${value} м²`}
+                                suffix="м²"
+                            />
                         </Form.Item>
 
                         {showFloorFields() && (
-                            <>
-                                <Form.Item
+                            <Form.Item
+                                name="floor"
+                                label={createLabelWithTooltip(
+                                    "Этаж",
+                                    propertyType === 'house' || propertyType === 'townhouse'
+                                        ? 'Для домов и таунхаусов можно указать основной этаж'
+                                        : 'На каком этаже расположен объект'
+                                )}
+                                rules={[
+                                    {
+                                        required: !['house', 'townhouse'].includes(propertyType),
+                                        message: 'Введите этаж'
+                                    }
+                                ]}
+                            >
+                                <SliderWithInput
                                     name="floor"
-                                                                        label={createLabelWithTooltip(
-                                        "Этаж",
-                                        propertyType === 'house' || propertyType === 'townhouse'
-                                            ? 'Для домов и таунхаусов можно указать основной этаж'
-                                            : 'На каком этаже расположен объект'
-                                    )}
-                                    rules={[
-                                        {pattern: /^\d+$/, message: 'Введите целое число'},
-                                        {
-                                            required: !['house', 'townhouse'].includes(propertyType),
-                                            message: 'Введите этаж'
-                                        },
-                                        {validator: validateFloor}
-                                    ]}
-                                >
-                                    <Input type="number" min="0" placeholder="Например: 1"/>
-                                </Form.Item>
-
-                                <Form.Item
-                                    name="total_floors"
-                                                                        label={createLabelWithTooltip(
-                                        "Этажность здания",
-                                        propertyType === 'house' || propertyType === 'townhouse'
-                                            ? 'Общее количество этажей в здании'
-                                            : 'Сколько всего этажей в доме'
-                                    )}
-                                    rules={[
-                                        {pattern: /^\d+$/, message: 'Введите целое число'},
-                                        {
-                                            required: !['house', 'townhouse'].includes(propertyType),
-                                            message: 'Введите этажность'
-                                        },
-                                        {validator: validateFloor}
-                                    ]}
-                                >
-                                    <Input type="number" min="1" placeholder="Например: 5"/>
-                                </Form.Item>
-                            </>
+                                    min={0}
+                                    max={100}
+                                    step={1}
+                                    tooltipFormatter={(value) => `${value} этаж`}
+                                    suffix="этаж"
+                                />
+                            </Form.Item>
                         )}
                     </>
                 );
@@ -497,13 +575,18 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                             name="rooms"
                             label="Количество комнат"
                             rules={[
-                                {required: true, message: 'Введите количество комнат'},
-                                {pattern: /^\d+$/, message: 'Введите целое число'},
-                                {min: 0, message: 'Не может быть отрицательным'},
-                                {max: 3, message: 'Слишком большое количество комнат'}
+                                {required: true, message: 'Введите количество комнат'}
                             ]}
                         >
-                            <Input type="number" min="0" placeholder="0 для студии"/>
+                            <SliderWithInput
+                                name="rooms"
+                                min={0}
+                                max={20}
+                                step={1}
+                                tooltipFormatter={(value) => value === 0 ? 'Студия' : `${value} комн.`}
+                                suffix=""
+                                customFormatter={(value) => value === 0 ? 'Студия' : `${value} комн.`}
+                            />
                         </Form.Item>
 
                         <Form.Item
@@ -513,18 +596,6 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                         >
                             <Select placeholder="Выберите тип">
                                 {bathroomTypes.map(type => (
-                                    <Option key={type.value} value={type.value}>{type.label}</Option>
-                                ))}
-                            </Select>
-                        </Form.Item>
-
-                        <Form.Item
-                            name="renovation"
-                            label="Ремонт"
-                            rules={[{required: true, message: 'Выберите тип ремонта'}]}
-                        >
-                            <Select placeholder="Выберите тип ремонта">
-                                {renovationTypes.map(type => (
                                     <Option key={type.value} value={type.value}>{type.label}</Option>
                                 ))}
                             </Select>
@@ -543,44 +614,18 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                         </Form.Item>
 
                         <Form.Item
-                            name="balcony"
-                            label="Балкон/лоджия"
-
-                            rules={[
-                                {
-                                    validator: async (_, value) => {
-                                        if (value === undefined || value === '') {
-                                            return Promise.resolve();
-                                        }
-                                        const numValue = parseInt(value);
-                                        if (isNaN(numValue)) {
-                                            return Promise.reject('Введите целое число');
-                                        }
-                                        if (numValue < 0) {
-                                            return Promise.reject('Значение не может быть отрицательным');
-                                        }
-                                        if (numValue > 4) {
-                                            return Promise.reject('Слишком большое количество');
-                                        }
-                                        return Promise.resolve();
-                                    }
-                                }
-                            ]}
-                        >
-                            <Input 
-                                type="number" 
-                                min="0" 
-                                max="4"
-                                placeholder="Количество"
-                            />
-                        </Form.Item>
-
-                        <Form.Item
                             name="living_area"
                             label="Жилая площадь (м²)"
                             rules={[{validator: validateArea}]}
                         >
-                            <Input type="number" min="0" step="0.01" placeholder="м²"/>
+                            <SliderWithInput
+                                name="living_area"
+                                min={0}
+                                max={800}
+                                step={0.01}
+                                tooltipFormatter={(value) => `${value} м²`}
+                                suffix=" м²"
+                            />
                         </Form.Item>
 
                         <Form.Item
@@ -588,23 +633,14 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                             label="Площадь кухни (м²)"
                             rules={[{validator: validateArea}]}
                         >
-                            <Input type="number" min="0" step="0.01" placeholder="м²"/>
-                        </Form.Item>
-
-                        <Form.Item
-                            name="construction_year"
-                            label="Год постройки"
-                            rules={[{validator: validateYear}]}
-                        >
-                            <Input type="number" placeholder="Год постройки"/>
-                        </Form.Item>
-
-                        <Form.Item
-                            name="last_renovation_year"
-                            label="Год ремонта"
-                            rules={[{validator: validateYear}]}
-                        >
-                            <Input type="number" placeholder="Год последнего ремонта"/>
+                            <SliderWithInput
+                                name="kitchen_area"
+                                min={0}
+                                max={200}
+                                step={0.01}
+                                tooltipFormatter={(value) => `${value} м²`}
+                                suffix=" м²"
+                            />
                         </Form.Item>
                     </>
                 );
