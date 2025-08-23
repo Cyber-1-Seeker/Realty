@@ -202,3 +202,156 @@
     color: #4b5563;
 }
 
+Кста/* Темная тема */
+.dark.servicesWrapper {
+    background-color: #111827;
+}
+
+.dark .servicesBox {
+    background-color: rgba(31, 41, 55, 0.9);
+    color: #f3f4f6;
+    box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
+}
+
+.dark .servicesBox::before {
+    background: rgba(0, 0, 0, 0.5); /* Более темное затемнение для темной темы */
+}
+
+.dark .servicesBox h2 {
+    color: #60a5fa;
+    text-shadow: 0 2px 8px rgba(96, 165, 250, 0.4);
+}
+
+.dark .servicesBox h3 {
+    color: #e5e7eb;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.dark .servicesBox button {
+    background: linear-gradient(135deg, #1e40af, #1e3a8a);
+    color: #ffffff;
+    box-shadow: 0 4px 15px rgba(30, 64, 175, 0.4);
+    border: 1px solid #60a5fa;
+}
+
+.dark .servicesBox button:hover {
+    background: linear-gradient(135deg, #1e3a8a, #1e40af);
+    box-shadow: 0 6px 20px rgba(30, 64, 175, 0.6);
+    border-color: #93c5fd;
+}
+
+.dark .servicesBox button:active {
+    box-shadow: 0 2px 10px rgba(30, 64, 175, 0.4);
+}
+
+/* Стили для карточек в темной теме */
+.dark .card {
+    background-color: #1f2937;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    border: 1px solid #374151;
+}
+
+.dark .card h3 {
+    color: #60a5fa;
+}
+
+.dark .card p {
+    color: #d1d5db;
+}
+
+/* Стили для формы в темной теме */
+.dark :global(.ant-form) {
+    background-color: #1f2937;
+    color: #f3f4f6;
+}
+
+.dark :global(.ant-form-item-label > label) {
+    color: #e5e7eb !important;
+}
+
+.dark :global(.ant-input),
+.dark :global(.ant-input-number),
+.dark :global(.ant-select-selector),
+.dark :global(.ant-textarea) {
+    background-color: #374151 !important;
+    border-color: #4b5563 !important;
+    color: #f3f4f6 !important;
+}
+
+.dark :global(.ant-input:hover),
+.dark :global(.ant-input-number:hover),
+.dark :global(.ant-select-selector:hover),
+.dark :global(.ant-textarea:hover) {
+    border-color: #60a5fa !important;
+}
+
+.dark :global(.ant-input:focus),
+.dark :global(.ant-input-number:focus),
+.dark :global(.ant-select-selector:focus),
+.dark :global(.ant-textarea:focus) {
+    border-color: #60a5fa !important;
+    box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.2) !important;
+}
+
+.dark :global(.ant-input::placeholder),
+.dark :global(.ant-input-number::placeholder),
+.dark :global(.ant-textarea::placeholder) {
+    color: #9ca3af !important;
+}
+
+.dark :global(.ant-select-dropdown) {
+    background-color: #1f2937 !important;
+    border-color: #374151 !important;
+}
+
+.dark :global(.ant-select-item) {
+    color: #f3f4f6 !important;
+}
+
+.dark :global(.ant-select-item-option-active:not(.ant-select-item-option-disabled)) {
+    background-color: #374151 !important;
+}
+
+.dark :global(.ant-select-item-option-selected:not(.ant-select-item-option-disabled)) {
+    background-color: rgba(96, 165, 250, 0.2) !important;
+    color: #60a5fa !important;
+}
+
+.dark :global(.ant-btn-primary) {
+    background-color: #1e40af !important;
+    border-color: #60a5fa !important;
+    color: #ffffff !important;
+}
+
+.dark :global(.ant-btn-primary:hover) {
+    background-color: #1e3a8a !important;
+    border-color: #93c5fd !important;
+}
+
+.dark :global(.ant-btn-primary:focus) {
+    box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.2) !important;
+}
+
+/* Стили для модального окна в темной теме */
+.dark :global(.ant-modal-content) {
+    background-color: #1f2937 !important;
+    border-color: #374151 !important;
+}
+
+.dark :global(.ant-modal-header) {
+    background-color: #1f2937 !important;
+    border-bottom-color: #374151 !important;
+}
+
+.dark :global(.ant-modal-title) {
+    color: #60a5fa !important;
+}
+
+.dark :global(.ant-modal-close) {
+    color: #9ca3af !important;
+}
+
+.dark :global(.ant-modal-close:hover) {
+    color: #60a5fa !important;
+}
+

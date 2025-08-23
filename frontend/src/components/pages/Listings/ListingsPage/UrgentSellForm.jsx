@@ -4,6 +4,7 @@ import styles from './UrgentSellForm.module.css';
 import axios from 'axios';
 import {getCSRFTokenFromCookie} from '@/utils/api/csrf.js'; // если уже есть
 import {API_PUBLIC} from '@/utils/api/axiosPublic.js'; // axios instance с baseURL и т.д.
+import { useTheme } from '@/context/ThemeContext';
 
 const UrgentSellForm = ({onClose}) => {
     const [formData, setFormData] = useState({
@@ -13,6 +14,7 @@ const UrgentSellForm = ({onClose}) => {
     });
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
+    const { theme } = useTheme();
 
     // Запрашиваем CSRF при монтировании
     useEffect(() => {
@@ -63,7 +65,7 @@ const UrgentSellForm = ({onClose}) => {
     };
 
     return (
-        <form onSubmit={handleSubmit} className={styles.form}>
+        <form onSubmit={handleSubmit} className={`${styles.form} ${theme === 'dark' ? styles.dark : ''}`}>
             <h2>Срочная продажа квартиры</h2>
 
             <input

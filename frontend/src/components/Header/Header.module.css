@@ -21,7 +21,7 @@
 }
 
 .home2Header.dark {
-    background: transparent;
+    background: #111827;
     backdrop-filter: none;
     border-bottom: none;
 }
@@ -458,7 +458,7 @@
 
 /* Темная тема для оверлея */
 .dark .overlay {
-    background: rgba(0, 0, 0, 0.7) !important;
+    background: radial-gradient(circle at center, rgba(35, 75, 139, 0.18) 0%, rgba(15, 23, 42, 0.9) 30%, #0f172a 60%, #111827 100%) !important;
     backdrop-filter: blur(4px) !important;
 }
 
@@ -623,7 +623,7 @@
 
     /* Темная тема для мобильного меню */
     .dark .navMenu {
-        background: rgba(0, 0, 0, 0.95) !important;
+        background: radial-gradient(circle at center, rgba(35, 75, 139, 0.18) 0%, rgba(15, 23, 42, 0.9) 30%, #0f172a 60%, #111827 100%) !important;
     color: #ffffff !important;
     box-shadow: 4px 0 12px rgba(0, 0, 0, 0.8) !important;
     border-right: 1px solid rgba(255, 255, 255, 0.2) !important;
@@ -631,7 +631,7 @@
 
     /* Темная тема для мобильного меню - альтернативный селектор */
     .navMenu.dark {
-        background: rgba(0, 0, 0, 0.95) !important;
+        background: radial-gradient(circle at center, rgba(35, 75, 139, 0.18) 0%, rgba(15, 23, 42, 0.9) 30%, #0f172a 60%, #111827 100%) !important;
     color: #ffffff !important;
     box-shadow: 4px 0 12px rgba(0, 0, 0, 0.8) !important;
     border-right: 1px solid rgba(255, 255, 255, 0.2) !important;
@@ -943,12 +943,17 @@
     box-shadow: 4px 0 12px rgba(0, 0, 0, 0.1); transform: translateX(0);
     opacity: 1; visibility: visible; transition: all 0.3s ease; z-index: 100; border-radius: 0 12px 12px 0;
   }
-  .dark .navMenu, .navMenu.dark { background: rgba(0, 0, 0, 0.95) !important; color: #ffffff !important; box-shadow: 4px 0 12px rgba(0, 0, 0, 0.8) !important; border-right: 1px solid rgba(255, 255, 255, 0.2) !important; }
+  .dark .navMenu, .navMenu.dark { background: radial-gradient(circle at center, rgba(35, 75, 139, 0.18) 0%, rgba(15, 23, 42, 0.9) 30%, #0f172a 60%, #111827 100%) !important; color: #ffffff !important; box-shadow: 4px 0 12px rgba(0, 0, 0, 0.8) !important; border-right: 1px solid rgba(255, 255, 255, 0.2) !important; }
   .navMenu.open { transform: translateX(0); opacity: 1; visibility: visible; }
   .navMenu a { width: 100%; padding: 14px 16px; text-align: center; border-radius: 10px; margin: 6px 0; font-size: 1.1rem; font-weight: 500; line-height: 1.5; min-height: 48px; display: flex; align-items: center; justify-content: center; white-space: nowrap; }
 
   .overlay { display: block; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.5); z-index: 99; backdrop-filter: blur(2px); }
-  .dark .overlay { background: rgba(0, 0, 0, 0.7) !important; backdrop-filter: blur(4px) !important; }
+  .dark .overlay { background: radial-gradient(circle at center, rgba(35, 75, 139, 0.18) 0%, rgba(15, 23, 42, 0.9) 30%, #0f172a 60%, #111827 100%) !important; backdrop-filter: blur(4px) !important; }
 
   .contactBtn { display: none; }
+}
+
+/* Theme transitions for header elements */
+.navMenu, .overlay {
+    transition: background 0.5s ease, backdrop-filter 0.5s ease;
 }

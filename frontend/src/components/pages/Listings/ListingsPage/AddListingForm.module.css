@@ -57,6 +57,44 @@
     text-shadow: 0 0 8px rgba(147, 197, 253, 0.3); /* Добавляем легкое свечение */
 }
 
+/* Стили для слайдера Ant Design в темной теме */
+.dark :global(.ant-slider) {
+    /* Делаем дорожку слайдера более яркой */
+}
+
+.dark :global(.ant-slider-rail) {
+    background-color: #4b5563 !important; /* Более яркий серый вместо черного */
+}
+
+.dark :global(.ant-slider-track) {
+    background-color: #60a5fa !important; /* Яркий синий цвет для активной части */
+    box-shadow: 0 0 8px rgba(96, 165, 250, 0.4) !important; /* Добавляем свечение */
+}
+
+.dark :global(.ant-slider-handle) {
+    border-color: #60a5fa !important; /* Яркая граница для ползунка */
+    background-color: #ffffff !important; /* Белый фон для ползунка */
+    box-shadow: 0 0 12px rgba(96, 165, 250, 0.6) !important; /* Яркое свечение */
+}
+
+.dark :global(.ant-slider-handle:hover) {
+    border-color: #93c5fd !important; /* Еще более яркий при наведении */
+    box-shadow: 0 0 16px rgba(96, 165, 250, 0.8) !important; /* Усиленное свечение */
+}
+
+.dark :global(.ant-slider-handle:focus) {
+    border-color: #93c5fd !important;
+    box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.2), 0 0 16px rgba(96, 165, 250, 0.8) !important;
+}
+
+.dark :global(.ant-slider-mark-text) {
+    color: #e5e7eb !important; /* Более яркий цвет для меток */
+}
+
+.dark :global(.ant-slider-mark-text-active) {
+    color: #60a5fa !important; /* Яркий цвет для активных меток */
+}
+
 .dark :global(.ant-input),
 .dark :global(.ant-input-number),
 .dark :global(.ant-select-selector),

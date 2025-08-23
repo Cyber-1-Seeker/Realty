@@ -22,6 +22,53 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+/* Theme transition for all elements */
+* {
+  transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease;
+}
+
+/* Глобальные стили для слайдера Ant Design в темной теме */
+[data-theme="dark"] .ant-slider-rail,
+.dark .ant-slider-rail {
+  background-color: #4b5563 !important; /* Более яркий серый вместо черного */
+}
+
+[data-theme="dark"] .ant-slider-track,
+.dark .ant-slider-track {
+  background-color: #60a5fa !important; /* Яркий синий цвет для активной части */
+  box-shadow: 0 0 8px rgba(96, 165, 250, 0.4) !important; /* Добавляем свечение */
+}
+
+[data-theme="dark"] .ant-slider-handle,
+.dark .ant-slider-handle {
+  border-color: #60a5fa !important; /* Яркая граница для ползунка */
+  background-color: #ffffff !important; /* Белый фон для ползунка */
+  box-shadow: 0 0 12px rgba(96, 165, 250, 0.6) !important; /* Яркое свечение */
+}
+
+[data-theme="dark"] .ant-slider-handle:hover,
+.dark .ant-slider-handle:hover {
+  border-color: #93c5fd !important; /* Еще более яркий при наведении */
+  box-shadow: 0 0 16px rgba(96, 165, 250, 0.8) !important; /* Усиленное свечение */
+}
+
+[data-theme="dark"] .ant-slider-handle:focus,
+.dark .ant-slider-handle:focus {
+  border-color: #93c5fd !important;
+  box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.2), 0 0 16px rgba(96, 165, 250, 0.8) !important;
+}
+
+[data-theme="dark"] .ant-slider-mark-text,
+.dark .ant-slider-mark-text {
+  color: #e5e7eb !important; /* Более яркий цвет для меток */
+}
+
+[data-theme="dark"] .ant-slider-mark-text-active,
+.dark .ant-slider-mark-text-active {
+  color: #60a5fa !important; /* Яркий цвет для активных меток */
 }
 
 h1 {

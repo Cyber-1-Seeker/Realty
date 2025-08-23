@@ -594,120 +594,167 @@
 
 /* Основная секция */
 .section.dark {
-    background: radial-gradient(circle at center, rgba(35, 75, 139, 0.15) 0%, rgba(15, 23, 42, 0.9) 30%, #0f172a 60%, #111827 100%);
+    background: radial-gradient(circle at center, rgba(35, 75, 139, 0.18) 0%, rgba(15, 23, 42, 0.9) 30%, #0f172a 60%, #111827 100%) !important;
     position: relative;
     overflow: hidden;
 }
 
-.section.dark::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 450px;
-    height: 450px;
-    background: radial-gradient(circle, rgba(96, 165, 250, 0.08) 0%, rgba(96, 165, 250, 0.04) 40%, transparent 70%);
-    border-radius: 50%;
-    z-index: 0;
-    pointer-events: none;
+/* Убираем эффекты */
+
+/* Убираем звездное небо */
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
 }
 
 .dark .wrapper {
-    background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
-    border: 1px solid rgba(55, 65, 81, 0.8);
-    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.3);
+    background: radial-gradient(circle at center, rgba(27, 50, 85, 0.18) 0%, rgba(15, 23, 42, 0.9) 30%, #0f172a 60%, #0e1522 100%) !important;
+    border: 1px solid #333333 !important;
+    box-shadow: 0 12px 36px rgba(255, 255, 255, 0.1) !important;
+    position: relative;
+    z-index: 10;
+}
+
+/* Убираем эффекты wrapper */
+.dark .wrapper::before {
+    display: none !important;
 }
 
 .dark .heading {
-    color: #f9fafb;
+    color: #ffffff !important;
+    text-shadow: none !important;
 }
 
 .dark .subtext {
-    color: #d1d5db;
+    color: #ffffff !important;
+    text-shadow: none !important;
+}
+
+.dark .contentCenter {
+    background: transparent !important;
 }
 
 /* Кнопка запуска */
 .dark .button {
-    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-    box-shadow: 0 6px 16px rgba(59, 130, 246, 0.3);
+    background-color: #204ccc !important;
+    color: #ffffff !important;
+    border: 1px solid #555555 !important;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3) !important;
+}
+
+.dark .button::before {
+    display: none !important;
 }
 
 .dark .button:hover {
-    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+    background-color: #254090 !important;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4) !important;
+    transform: translateY(-3px);
 }
 
 /* Модальное окно в темной теме */
 .dark .modalContent {
-    background: rgba(2, 6, 23, 0.95) !important;
-    border: 1px solid rgba(59, 130, 246, 0.4) !important;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7), 0 0 40px rgba(59, 130, 246, 0.2) !important;
+    background: #000000 !important;
+    border: 1px solid #333333 !important;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8) !important;
 }
 
 .dark .modalContent::before {
     background: radial-gradient(circle at center, rgba(59, 130, 246, 0.12) 0%, transparent 70%);
 }
 
+.dark .modalContent::after {
+    display: none !important;
+}
+
+@keyframes modalShimmer {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
+}
+
 .dark .modalIcon {
-    background: rgba(0, 0, 0, 0.7);
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.9) 0%, rgba(30, 41, 59, 0.9) 100%);
     border: 1px solid rgba(59, 130, 246, 0.4);
-    box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
+    box-shadow: 
+        0 0 20px rgba(59, 130, 246, 0.2),
+        0 0 0 1px rgba(59, 130, 246, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.dark .modalIcon::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at center, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+    pointer-events: none;
 }
 
 .dark .modalIcon svg {
     color: #60a5fa;
+    filter: drop-shadow(0 0 10px rgba(96, 165, 250, 0.5));
 }
 
 .dark .modalHeader h3 {
-    color: #60a5fa;
-    text-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
+    color: #ffffff;
+    text-shadow: none;
     font-weight: 800;
     letter-spacing: -0.5px;
 }
 
 .dark .subtitle {
-    color: #93c5fd;
-    text-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+    color: #ffffff;
+    text-shadow: none;
     opacity: 0.9;
 }
 
 /* Форма */
 .modalContent .dark .form,
 .dark .form {
-    background: rgba(0, 0, 0, 0.9) !important;
-    border: 1px solid rgba(59, 130, 246, 0.3) !important;
-    box-shadow: 0 8px 32px rgba(59, 130, 246, 0.15) !important;
-    backdrop-filter: blur(10px);
+    background: #000000 !important;
+    border: 1px solid #333333 !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
+}
+
+.dark .form::before {
+    display: none !important;
 }
 
 .dark .formGroup label {
-    color: #f1f5f9;
+    color: #ffffff;
+    text-shadow: none;
+    font-weight: 600;
 }
 
 .modalContent .dark .input,
 .modalContent .dark .select,
 .dark .input,
 .dark .select {
-    background: rgba(0, 0, 0, 0.9) !important;
-    border: 2px solid rgba(59, 130, 246, 0.4) !important;
-    color: #f1f5f9 !important;
-    box-shadow: 0 4px 16px rgba(59, 130, 246, 0.2), 0 0 8px rgba(59, 130, 246, 0.1) !important;
+    background: #000000 !important;
+    border: 2px solid #333333 !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
 }
 
 .dark .input:focus,
 .dark .select:focus {
-    border-color: #60a5fa;
-    background: rgba(0, 0, 0, 1);
-    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.3), 0 8px 24px rgba(59, 130, 246, 0.25), 0 0 16px rgba(59, 130, 246, 0.2);
+    border-color: #555555;
+    background: #000000;
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1);
 }
 
 .dark .input::placeholder {
     color: #6b7280;
+    text-shadow: none;
 }
 
 .dark .selectArrow {
     color: #60a5fa;
+    filter: drop-shadow(0 0 5px rgba(96, 165, 250, 0.3));
 }
 
 /* Чекбокс */
@@ -808,7 +855,19 @@
 
 /* Статистика в темной теме */
 .dark .statisticsBackground {
-    filter: drop-shadow(0 8px 16px rgba(96, 165, 250, 0.15));
+    background: radial-gradient(circle at center, rgba(35, 75, 139, 0.18) 0%, rgba(15, 23, 42, 0.9) 30%, #0f172a 60%, #111827 100%) !important;
+    border: 1px solid #333333 !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
+}
+
+.dark .statisticsBackground::before,
+.dark .statisticsBackground::after {
+    display: none !important;
+}
+
+@keyframes shimmer {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
 }
 
 /* Дополнительные стили для формы заказа оценки */
@@ -1239,18 +1298,46 @@
 /* Темная тема для статистики */
 .dark .chartLine {
     filter: drop-shadow(0 8px 16px rgba(96, 165, 250, 0.25));
+    stroke: url(#gradientLine);
 }
 
 .dark .chartPoint {
     filter: drop-shadow(0 4px 8px rgba(96, 165, 250, 0.3));
+    fill: #1e293b;
+    stroke: #60a5fa;
+    stroke-width: 4;
+}
+
+.dark .chartPoint:hover {
+    fill: #60a5fa;
+    stroke: #ffffff;
+    stroke-width: 6;
+    filter: drop-shadow(0 0 20px rgba(96, 165, 250, 0.8));
+    transition: all 0.3s ease;
 }
 
 .dark .pieSvg {
     filter: drop-shadow(0 4px 8px rgba(96, 165, 250, 0.25));
 }
 
+.dark .pieSlice {
+    stroke: #60a5fa;
+    filter: drop-shadow(0 0 10px rgba(96, 165, 250, 0.3));
+}
+
 .dark .bar {
-    box-shadow: 0 4px 8px rgba(96, 165, 250, 0.2);
+    box-shadow: 
+        0 4px 8px rgba(96, 165, 250, 0.2),
+        0 0 0 1px rgba(96, 165, 250, 0.1);
+    border: 1px solid rgba(96, 165, 250, 0.2);
+}
+
+.dark .bar:hover {
+    box-shadow: 
+        0 6px 12px rgba(96, 165, 250, 0.3),
+        0 0 0 1px rgba(96, 165, 250, 0.3);
+    transform: scaleY(1.05);
+    transition: all 0.3s ease;
 }
 
 .filterCards {
@@ -1259,4 +1346,102 @@
     opacity: 0;
     transform: translateY(20px);
     animation: fadeInFilterCards 1s ease-out 1.5s forwards;
+}
+
+/* Дополнительные эффекты для темной темы */
+.dark .wrapper:hover {
+    border-color: rgba(59, 130, 246, 0.5);
+    box-shadow: 
+        0 12px 36px rgba(0, 0, 0, 0.4),
+        0 0 0 1px rgba(59, 130, 246, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.dark .statisticsBackground:hover {
+    border-color: rgba(59, 130, 246, 0.5);
+    box-shadow: 
+        0 12px 40px rgba(0, 0, 0, 0.5),
+        0 0 0 1px rgba(59, 130, 246, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+/* Неоновые эффекты для темной темы */
+.dark .heading::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #60a5fa, #8b5cf6, #ec4899);
+    animation: expandLine 2s ease-out 1s forwards;
+}
+
+@keyframes expandLine {
+    to {
+        width: 100px;
+    }
+}
+
+/* Анимация для звезд */
+.dark .section::before {
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translate(-50%, -50%) translateY(0px); }
+    50% { transform: translate(-50%, -50%) translateY(-10px); }
+}
+
+/* Дополнительные стили для темной темы, если потребуется переопределить что-то конкретное */
+.dark :global(.ant-select-dropdown),
+.dark :global(.ant-select-item),
+.dark :global(.ant-select-selector) {
+    transition: all 0.2s ease !important;
+}
+
+.dark :global(.ant-select-item-option-active:not(.ant-select-item-option-disabled)) {
+    background-color: #374151 !important;
+}
+
+.dark :global(.ant-select-item-option-selected:not(.ant-select-item-option-disabled)) {
+    background-color: rgba(59, 130, 246, 0.2) !important;
+    color: #60a5fa !important;
+}
+
+/* Стили для слайдера Ant Design в темной теме */
+.dark :global(.ant-slider-rail) {
+    background-color: #4b5563 !important; /* Более яркий серый вместо черного */
+}
+
+.dark :global(.ant-slider-track) {
+    background-color: #60a5fa !important; /* Яркий синий цвет для активной части */
+    box-shadow: 0 0 8px rgba(96, 165, 250, 0.4) !important; /* Добавляем свечение */
+}
+
+.dark :global(.ant-slider-handle) {
+    border-color: #60a5fa !important; /* Яркая граница для ползунка */
+    background-color: #ffffff !important; /* Белый фон для ползунка */
+    box-shadow: 0 0 12px rgba(96, 165, 250, 0.6) !important; /* Яркое свечение */
+}
+
+.dark :global(.ant-slider-handle:hover) {
+    border-color: #93c5fd !important; /* Еще более яркий при наведении */
+    box-shadow: 0 0 16px rgba(96, 165, 250, 0.8) !important; /* Усиленное свечение */
+}
+
+.dark :global(.ant-slider-handle:focus) {
+    border-color: #93c5fd !important;
+    box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.2), 0 0 16px rgba(96, 165, 250, 0.8) !important;
+}
+
+.dark :global(.ant-slider-mark-text) {
+    color: #e5e7eb !important; /* Более яркий цвет для меток */
+}
+
+.dark :global(.ant-slider-mark-text-active) {
+    color: #60a5fa !important; /* Яркий цвет для активных меток */
 }

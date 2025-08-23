@@ -4,13 +4,15 @@ import {motion} from 'framer-motion';
 import ModalForm from "@/components/pages/Listings/ListingsPage/ModalForm.jsx";
 import UrgentSellForm from "@/components/pages/Listings/ListingsPage/UrgentSellForm.jsx";
 import AuthModal from "@/components/AuthModal/AuthModal.jsx";
+import { useTheme } from '@/context/ThemeContext';
 
 const UrgentSell = () => {
     const [showUrgentForm, setShowUrgentForm] = useState(false);
+    const { theme } = useTheme();
 
     return (
         <motion.section
-            className={styles.servicesWrapper}
+            className={`${styles.servicesWrapper} ${theme === 'dark' ? styles.dark : ''}`}
             initial={{opacity: 0, y: 50}}
             whileInView={{opacity: 1, y: 0}}
             transition={{duration: 0.6}}

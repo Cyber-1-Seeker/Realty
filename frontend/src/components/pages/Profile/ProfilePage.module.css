@@ -8,6 +8,370 @@
     position: relative;
 }
 
+/* Темная тема - покрываем весь экран */
+.dark.profileContainer {
+    background: #111827;
+    min-height: 100vh;
+    position: relative;
+    z-index: 1;
+}
+
+/* Дополнительный контейнер для темной темы */
+.dark.profileContainer::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #111827;
+    z-index: -1;
+}
+
+/* Глобальные стили для темной темы страницы профиля */
+.dark.profileContainer {
+    /* Применяем темный фон к body и html через глобальные стили */
+}
+
+/* Стили для темной темы основного контента */
+.dark .profileHeader h1 {
+    color: #60a5fa;
+    text-shadow: 0 2px 8px rgba(96, 165, 250, 0.3);
+}
+
+.dark .userInfoCard {
+    background: #1f2937;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    border-top-color: #60a5fa;
+}
+
+.dark .userInfoHeader {
+    border-bottom-color: #374151;
+}
+
+.dark .userInfoHeader h2 {
+    color: #60a5fa;
+}
+
+.dark .infoItem {
+    background: #374151;
+    border: 1px solid #4b5563;
+}
+
+.dark .infoItem:hover {
+    background: #4b5563;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.dark .infoIcon {
+    background: #1e40af;
+    color: #60a5fa;
+}
+
+.dark .infoLabel {
+    color: #9ca3af;
+}
+
+.dark .infoValue {
+    color: #e5e7eb;
+}
+
+.dark .apartmentsSection {
+    background: #1f2937;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    border-top-color: #10b981;
+}
+
+.dark .apartmentsHeader {
+    border-bottom-color: #374151;
+}
+
+.dark .apartmentsSection h2 {
+    color: #60a5fa;
+}
+
+.dark .apartmentsTable {
+    background: #374151;
+}
+
+.dark .noImagePlaceholder {
+    background: #4b5563;
+    color: #9ca3af;
+    border-color: #6b7280;
+}
+
+.dark .noApartments {
+    color: #9ca3af;
+}
+
+.dark .noApartments h3 {
+    color: #60a5fa;
+}
+
+.dark .noApartments p {
+    color: #d1d5db;
+}
+
+.dark .loadingContainer {
+    background: #111827;
+}
+
+.dark .imagePreviewMask {
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.dark .imagePreviewMask:hover {
+    background: rgba(0, 0, 0, 0.9);
+}
+
+/* Стили для таблицы в темной теме */
+.dark :global(.ant-table) {
+    background-color: #374151 !important;
+    color: #f3f4f6 !important;
+}
+
+.dark :global(.ant-table-thead > tr > th) {
+    background-color: #1f2937 !important;
+    color: #60a5fa !important;
+    border-bottom-color: #4b5563 !important;
+}
+
+.dark :global(.ant-table-tbody > tr > td) {
+    background-color: #374151 !important;
+    color: #e5e7eb !important;
+    border-bottom-color: #4b5563 !important;
+}
+
+.dark :global(.ant-table-tbody > tr:hover > td) {
+    background-color: #4b5563 !important;
+}
+
+.dark :global(.ant-table-tbody > tr > td) {
+    border-bottom-color: #4b5563 !important;
+}
+
+.dark :global(.ant-table-tbody > tr:last-child > td) {
+    border-bottom-color: #4b5563 !important;
+}
+
+/* Стили для кнопок в темной теме */
+.dark .logoutButton,
+.dark .deleteAccountButton {
+    background-color: #1e40af !important;
+    border-color: #60a5fa !important;
+    color: #ffffff !important;
+}
+
+.dark .logoutButton:hover,
+.dark .deleteAccountButton:hover {
+    background-color: #1e3a8a !important;
+    border-color: #93c5fd !important;
+}
+
+.dark .addButton {
+    background-color: #059669 !important;
+    border-color: #10b981 !important;
+    color: #ffffff !important;
+}
+
+.dark .addButton:hover {
+    background-color: #047857 !important;
+    border-color: #34d399 !important;
+}
+
+/* Стили для тегов в темной теме */
+.dark :global(.ant-tag) {
+    background-color: #374151 !important;
+    border-color: #4b5563 !important;
+    color: #e5e7eb !important;
+}
+
+.dark :global(.ant-tag-green) {
+    background-color: #065f46 !important;
+    border-color: #10b981 !important;
+    color: #34d399 !important;
+}
+
+.dark :global(.ant-tag-red) {
+    background-color: #991b1b !important;
+    border-color: #dc2626 !important;
+    color: #f87171 !important;
+}
+
+.dark :global(.ant-tag-orange) {
+    background-color: #92400e !important;
+    border-color: #f59e0b !important;
+    color: #fbbf24 !important;
+}
+
+/* Стили для пагинации в темной теме */
+.dark :global(.ant-pagination) {
+    color: #e5e7eb !important;
+}
+
+.dark :global(.ant-pagination-item) {
+    background-color: #374151 !important;
+    border-color: #4b5563 !important;
+    color: #e5e7eb !important;
+}
+
+.dark :global(.ant-pagination-item:hover) {
+    border-color: #60a5fa !important;
+}
+
+.dark :global(.ant-pagination-item-active) {
+    background-color: #1e40af !important;
+    border-color: #60a5fa !important;
+    color: #ffffff !important;
+}
+
+.dark :global(.ant-pagination-prev),
+.dark :global(.ant-pagination-next) {
+    background-color: #374151 !important;
+    border-color: #4b5563 !important;
+    color: #e5e7eb !important;
+}
+
+.dark :global(.ant-pagination-prev:hover),
+.dark :global(.ant-pagination-next:hover) {
+    border-color: #60a5fa !important;
+}
+
+/* Дополнительные стили для темной темы */
+.dark :global(.ant-spin) {
+    color: #60a5fa !important;
+}
+
+.dark :global(.ant-spin-dot-item) {
+    background-color: #60a5fa !important;
+}
+
+.dark :global(.ant-message) {
+    color: #f3f4f6 !important;
+}
+
+.dark :global(.ant-message-notice-content) {
+    background-color: #1f2937 !important;
+    border: 1px solid #374151 !important;
+    color: #f3f4f6 !important;
+}
+
+.dark :global(.ant-message-success .anticon) {
+    color: #10b981 !important;
+}
+
+.dark :global(.ant-message-error .anticon) {
+    color: #ef4444 !important;
+}
+
+.dark :global(.ant-message-info .anticon) {
+    color: #60a5fa !important;
+}
+
+/* Стили для подтверждений в темной теме */
+.dark :global(.ant-modal-confirm) {
+    background-color: #1f2937 !important;
+}
+
+.dark :global(.ant-modal-confirm-title) {
+    color: #60a5fa !important;
+}
+
+.dark :global(.ant-modal-confirm-content) {
+    color: #e5e7eb !important;
+}
+
+.dark :global(.ant-modal-confirm-btns .ant-btn) {
+    background-color: #374151 !important;
+    border-color: #4b5563 !important;
+    color: #f3f4f6 !important;
+}
+
+.dark :global(.ant-modal-confirm-btns .ant-btn-primary) {
+    background-color: #1e40af !important;
+    border-color: #60a5fa !important;
+    color: #ffffff !important;
+}
+
+.dark :global(.ant-modal-confirm-btns .ant-btn-dangerous) {
+    background-color: #dc2626 !important;
+    border-color: #ef4444 !important;
+    color: #ffffff !important;
+}
+
+/* Стили для тултипов в темной теме */
+.dark :global(.ant-tooltip) {
+    color: #f3f4f6 !important;
+}
+
+.dark :global(.ant-tooltip-inner) {
+    background-color: #1f2937 !important;
+    border: 1px solid #374151 !important;
+    color: #f3f4f6 !important;
+}
+
+.dark :global(.ant-tooltip-arrow-content::before) {
+    background: #1f2937 !important;
+    border: 1px solid #374151 !important;
+}
+
+/* Стили для попапов в темной теме */
+.dark :global(.ant-popover) {
+    background-color: #1f2937 !important;
+    border-color: #374151 !important;
+}
+
+.dark :global(.ant-popover-title) {
+    color: #60a5fa !important;
+    border-bottom-color: #374151 !important;
+}
+
+.dark :global(.ant-popover-inner-content) {
+    color: #e5e7eb !important;
+}
+
+/* Стили для dropdown в темной теме */
+.dark :global(.ant-dropdown-menu) {
+    background-color: #1f2937 !important;
+    border-color: #374151 !important;
+}
+
+.dark :global(.ant-dropdown-menu-item) {
+    color: #f3f4f6 !important;
+}
+
+.dark :global(.ant-dropdown-menu-item:hover) {
+    background-color: #374151 !important;
+}
+
+.dark :global(.ant-dropdown-menu-item-selected) {
+    background-color: rgba(96, 165, 250, 0.2) !important;
+    color: #60a5fa !important;
+}
+
+/* Стили для модальных окон в темной теме */
+.dark :global(.ant-modal-content) {
+    background-color: #1f2937 !important;
+    border-color: #374151 !important;
+}
+
+.dark :global(.ant-modal-header) {
+    background-color: #1f2937 !important;
+    border-bottom-color: #374151 !important;
+}
+
+.dark :global(.ant-modal-title) {
+    color: #60a5fa !important;
+}
+
+.dark :global(.ant-modal-close) {
+    color: #9ca3af !important;
+}
+
+.dark :global(.ant-modal-close:hover) {
+    color: #60a5fa !important;
+}
+
 /* Хедер интегрированный в hero */
 /* Убираем все стили навигации, так как они конфликтуют с основным Header */
 
@@ -187,7 +551,6 @@
     justify-content: center;
     align-items: center;
     min-height: 400px;
-    /*background: #f3f1ec;*/
     background: white;
 }
 
@@ -204,91 +567,6 @@
 .actionButton {
     padding: 4px 8px;
     font-size: 12px;
-}
-
-/* Тёмная тема */
-.profileContainer.dark {
-    background: #111827;
-}
-
-.dark .profileHeader h1 {
-    color: #ffffff;
-}
-
-.dark .userInfoCard {
-    background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
-    border: 1px solid rgba(59, 130, 246, 0.3);
-    box-shadow: 0 12px 32px rgba(59, 130, 246, 0.2), 0 0 0 1px rgba(96, 165, 250, 0.1);
-    border-top: 4px solid #60a5fa;
-}
-
-.dark .userInfoHeader h2 {
-    color: #ffffff;
-}
-
-.dark .infoItem {
-    background: #374151;
-    border: 1px solid rgba(59, 130, 246, 0.2);
-}
-
-.dark .infoItem:hover {
-    background: #4b5563;
-    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
-}
-
-.dark .infoIcon {
-    color: #60a5fa;
-    background: rgba(96, 165, 250, 0.2);
-}
-
-.dark .infoLabel {
-    color: #9ca3af;
-}
-
-.dark .infoValue {
-    color: #f3f4f6;
-}
-
-.dark .apartmentsSection {
-    background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
-    border: 1px solid rgba(59, 130, 246, 0.3);
-    box-shadow: 0 12px 32px rgba(59, 130, 246, 0.2), 0 0 0 1px rgba(96, 165, 250, 0.1);
-    border-top: 4px solid #34d399;
-}
-
-.dark .apartmentsSection h2 {
-    color: #ffffff;
-}
-
-.dark .apartmentsTable {
-    background: #374151;
-    border: 1px solid rgba(59, 130, 246, 0.2);
-}
-
-.dark .noImagePlaceholder {
-    background: #4b5563;
-    border: 1px dashed #6b7280;
-    color: #9ca3af;
-}
-
-.dark .noApartments {
-    color: #9ca3af;
-}
-
-.dark .loadingContainer {
-    background: #111827;
-}
-
-/* Планшеты и ниже: выравниваем инфо-блоки по центру */
-@media (max-width: 1024px) {
-  .infoItem {
-    flex-direction: column;
-    align-items: center;
-  }
-  .infoItem > div {
-    text-align: center;
-    width: 100%;
-  }
 }
 
 /* Стили для таблицы в светлой теме */
@@ -308,203 +586,7 @@
     background: #f5f5f5 !important;
 }
 
-/* Стили для таблицы в темной теме */
-.dark :global(.ant-table-thead > tr > th) {
-    background: #1f2937 !important;
-    color: #f3f4f6;
-    border-bottom: 1px solid rgba(59, 130, 246, 0.2);
-}
-
-.dark :global(.ant-table-tbody > tr > td) {
-    background: #111827;
-    color: #f3f4f6;
-    border-bottom: 1px solid rgba(59, 130, 246, 0.2);
-}
-
-.dark :global(.ant-table-tbody > tr:hover > td) {
-    background: #1f2937 !important;
-}
-
-.dark :global(.ant-table) {
-    background: transparent;
-    color: #f3f4f6;
-}
-
-.dark :global(.ant-table-cell-row-hover) {
-    background: #1f2937 !important;
-}
-
-.dark :global(.ant-pagination-item),
-.dark :global(.ant-pagination-prev),
-.dark :global(.ant-pagination-next) {
-    background: #1f2937;
-    border-color: rgba(59, 130, 246, 0.2);
-}
-
-.dark :global(.ant-pagination-item a),
-.dark :global(.ant-pagination-prev a),
-.dark :global(.ant-pagination-next a) {
-    color: #f3f4f6;
-}
-
-.dark :global(.ant-pagination-item-active) {
-    background: #3b82f6;
-    border-color: #3b82f6;
-}
-
-.dark :global(.ant-pagination-item-active a) {
-    color: #ffffff;
-}
-
-.dark :global(.ant-table-placeholder:hover > td) {
-    background: #111827 !important;
-}
-
-.statusInfoContainer {
-    padding: 20px 0;
-}
-
-.statusHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid #eee;
-    transition: border-color 0.3s ease;
-}
-
-.statusHeader h3 {
-    margin: 0;
-    font-size: 18px;
-    color: #333;
-    font-weight: 500;
-    transition: color 0.3s ease;
-}
-
-.statusDescription {
-    color: #666;
-    line-height: 1.6;
-    margin-bottom: 20px;
-    transition: color 0.3s ease;
-}
-
-.rejectionActions {
-    padding-top: 15px;
-    border-top: 1px solid #eee;
-    transition: border-color 0.3s ease;
-}
-
-/* Темная тема для модального окна статуса */
-.dark .statusHeader {
-    border-bottom-color: #374151;
-}
-
-.dark .statusHeader h3 {
-    color: #f3f4f6;
-}
-
-.dark .statusDescription {
-    color: #9ca3af;
-}
-
-.dark .rejectionActions {
-    border-top-color: #374151;
-}
-
-/* Стили для Ant Design Modal в темной теме */
-.dark :global(.ant-modal-content) {
-    background-color: #1f2937 !important;
-    border: 1px solid #374151 !important;
-}
-
-.dark :global(.ant-modal-header) {
-    background-color: #1f2937 !important;
-    border-bottom-color: #374151 !important;
-}
-
-.dark :global(.ant-modal-title) {
-    color: #f3f4f6 !important;
-}
-
-.dark :global(.ant-modal-body) {
-    background-color: #1f2937 !important;
-    color: #f3f4f6 !important;
-}
-
-.dark :global(.ant-modal-footer) {
-    background-color: #1f2937 !important;
-    border-top-color: #374151 !important;
-}
-
-.dark :global(.ant-modal-close) {
-    color: #9ca3af !important;
-}
-
-.dark :global(.ant-modal-close:hover) {
-    color: #f3f4f6 !important;
-}
-
-.dark :global(.ant-btn) {
-    border-color: #374151 !important;
-}
-
-.dark :global(.ant-btn-default) {
-    background-color: #374151 !important;
-    color: #f3f4f6 !important;
-}
-
-.dark :global(.ant-btn-default:hover) {
-    background-color: #4b5563 !important;
-    border-color: #4b5563 !important;
-}
-
-.dark :global(.ant-btn-primary) {
-    background-color: #3b82f6 !important;
-    border-color: #3b82f6 !important;
-}
-
-.dark :global(.ant-btn-primary:hover) {
-    background-color: #2563eb !important;
-    border-color: #2563eb !important;
-}
-
-/* Стили для Tag компонентов в темной теме */
-.dark :global(.ant-tag) {
-    border-color: #374151 !important;
-}
-
-.dark :global(.ant-tag-orange) {
-    background-color: #92400e !important;
-    border-color: #92400e !important;
-    color: #fef3c7 !important;
-}
-
-.dark :global(.ant-tag-red) {
-    background-color: #991b1b !important;
-    border-color: #991b1b !important;
-    color: #fecaca !important;
-}
-
-.dark :global(.ant-tag-green) {
-    background-color: #065f46 !important;
-    border-color: #065f46 !important;
-    color: #d1fae5 !important;
-}
-
-.dark :global(.ant-tag-blue) {
-    background-color: #1e40af !important;
-    border-color: #1e40af !important;
-    color: #dbeafe !important;
-}
-
-.dark :global(.ant-tag-gray) {
-    background-color: #374151 !important;
-    border-color: #374151 !important;
-    color: #d1d5db !important;
-}
-
-/* Специальные стили для модального окна статуса */
+/* Стили для модального окна статуса */
 .statusModal {
     /* Базовые стили */
 }

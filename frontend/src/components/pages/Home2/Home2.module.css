@@ -784,7 +784,7 @@
 } 
 
 .dark {
-    background-color: #181a1b !important;
+    background-color: #0f172a !important;
 }
 
 .dark .pageWrapper {
@@ -792,7 +792,7 @@
 }
 
 .dark .heroSection {
-    background-color: rgba(24, 26, 27, 0.85);
+    background-color: #0f172a;
 }
 
 .dark .heroTitle, .dark .filterCard label {

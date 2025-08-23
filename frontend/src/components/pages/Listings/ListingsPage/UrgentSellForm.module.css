@@ -66,3 +66,125 @@
 .privacyNote a:hover {
   border-bottom: 1px solid #ef4444;
 }
+
+/* Темная тема */
+.dark .form {
+  background: #1f2937;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  border: 1px solid #374151;
+}
+
+.dark .form h2 {
+  color: #60a5fa;
+  text-shadow: 0 2px 8px rgba(96, 165, 250, 0.3);
+}
+
+.dark .form input,
+.dark .form textarea {
+  background: #374151;
+  border-color: #4b5563;
+  color: #f3f4f6;
+}
+
+.dark .form input::placeholder,
+.dark .form textarea::placeholder {
+  color: #9ca3af;
+}
+
+.dark .form input:focus,
+.dark .form textarea:focus {
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.2);
+}
+
+.dark .form button {
+  background: #1e40af;
+  border: 1px solid #60a5fa;
+  box-shadow: 0 4px 12px rgba(30, 64, 175, 0.3);
+}
+
+.dark .form button:hover {
+  background: #1e3a8a;
+  border-color: #93c5fd;
+  box-shadow: 0 6px 16px rgba(30, 64, 175, 0.4);
+}
+
+.dark .form button:disabled {
+  background: #4b5563;
+  border-color: #6b7280;
+  color: #9ca3af;
+  cursor: not-allowed;
+}
+
+.dark .form .privacyNote {
+  color: #9ca3af;
+}
+
+.dark .form .privacyNote a {
+  color: #60a5fa;
+}
+
+.dark .form .privacyNote a:hover {
+  border-bottom-color: #60a5fa;
+}
+
+/* Темная тема */
+.form.dark {
+  background: #1f2937;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  border: 1px solid #374151;
+}
+
+.form.dark h2 {
+  color: #60a5fa;
+  text-shadow: 0 2px 8px rgba(96, 165, 250, 0.3);
+}
+
+.form.dark input,
+.form.dark textarea {
+  background: #374151;
+  border-color: #4b5563;
+  color: #f3f4f6;
+}
+
+.form.dark input::placeholder,
+.form.dark textarea::placeholder {
+  color: #9ca3af;
+}
+
+.form.dark input:focus,
+.form.dark textarea:focus {
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.2);
+}
+
+.form.dark button {
+  background: #1e40af;
+  border: 1px solid #60a5fa;
+  box-shadow: 0 4px 12px rgba(30, 64, 175, 0.3);
+}
+
+.form.dark button:hover {
+  background: #1e3a8a;
+  border-color: #93c5fd;
+  box-shadow: 0 6px 16px rgba(30, 64, 175, 0.4);
+}
+
+.form.dark button:disabled {
+  background: #4b5563;
+  border-color: #6b7280;
+  color: #9ca3af;
+  cursor: not-allowed;
+}
+
+.form.dark .privacyNote {
+  color: #9ca3af;
+}
+
+.form.dark .privacyNote a {
+  color: #60a5fa;
+}
+
+.form.dark .privacyNote a:hover {
+  border-bottom-color: #60a5fa;
+}

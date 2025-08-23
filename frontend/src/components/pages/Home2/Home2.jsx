@@ -151,7 +151,7 @@ function Home2() {
                             <div className={styles.filterCards}>
                                 <div
                                     className={styles.filterCard + ' ' + styles.checked}
-                                    onClick={() => navigate('/listings#add')}
+                                    onClick={() => navigate('/listings#listings')}
                                     role="button"
                                     tabIndex={0}
                                 >
@@ -160,7 +160,7 @@ function Home2() {
                                 </div>
                                 <div
                                     className={styles.filterCard + ' ' + styles.checked}
-                                    onClick={() => navigate('/listings#listings')}
+                                    onClick={() => navigate('/listings#add')}
                                     role="button"
                                     tabIndex={0}
                                 >
@@ -233,7 +233,7 @@ function Home2() {
                     <WhyChooseUs theme={theme}/>
                 </section>
                 <section ref={calcRef} className={`${styles.animSection} ${calcInView ? styles.visible : ''}`}>
-                    <CalculatorLaunch/>
+                    <CalculatorLaunch theme={theme}/>
                 </section>
                 <section ref={mapRef} className={`${styles.animSection} ${mapInView ? styles.visible : ''}`}>
                     <MapSection theme={theme}/>

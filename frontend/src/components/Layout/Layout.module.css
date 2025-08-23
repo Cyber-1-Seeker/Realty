@@ -6,7 +6,12 @@
 }
 
 .layout.dark {
-  background-color: #111827;
+    background: radial-gradient(circle at center, rgba(29, 65, 123, 0.18) 0%, rgba(46, 49, 57, 0.9) 30%, #1d2f5a 60%, #253f6f 100%);
+}
+
+/* Theme transition */
+.layout {
+    transition: background 0.8s ease;
 }
 
 .main {

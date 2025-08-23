@@ -147,7 +147,7 @@
 /* =========================== */
 
 .dark .wrapper {
-    background: rgba(24, 26, 27, 0.85);
+    background: radial-gradient(circle at center, rgba(35, 75, 139, 0.18) 0%, rgba(15, 23, 42, 0.9) 30%, #0f172a 60%, #111827 100%);
     color: #f1f5f9;
     position: relative;
     overflow: hidden;
@@ -176,7 +176,7 @@
 }
 
 .dark .contentBox {
-    background: linear-gradient(145deg, #1f2937, #111827);
+    background: linear-gradient(145deg, rgba(35, 75, 139, 0.3), rgba(15, 23, 42, 0.9));
     border: 1px solid rgba(59, 130, 246, 0.2);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 }
@@ -210,6 +210,11 @@
     .dark .circle {
         box-shadow: 0 0 0 6px #0f172a;
     }
+}
+
+/* Theme transitions */
+.wrapper, .contentBox {
+    transition: background 0.5s ease;
 }
 
 
