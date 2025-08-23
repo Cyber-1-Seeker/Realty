@@ -110,6 +110,21 @@ const ListingDetails = () => {
         return `${parseFloat(value).toFixed(1)} м²`;
     };
 
+    const renderRange = (fromValue, toValue, unit = '') => {
+        if (!fromValue && !toValue) return '—';
+        if (fromValue && !toValue) return `${parseFloat(fromValue).toFixed(1)}${unit}`;
+        if (!fromValue && toValue) return `${parseFloat(toValue).toFixed(1)}${unit}`;
+        
+        const from = parseFloat(fromValue).toFixed(1);
+        const to = parseFloat(toValue).toFixed(1);
+        
+        if (from === to) {
+            return `${from}${unit}`;
+        }
+        
+        return `${from} - ${to}${unit}`;
+    };
+
     const renderPrice = (value) => {
         if (!value) return '—';
         return `${parseFloat(value).toLocaleString('ru-RU')} ₽`;
@@ -142,9 +157,9 @@ const ListingDetails = () => {
     };
 
     // Компонент для отображения карточек с информацией
-    const InfoCard = ({icon, label, value, colSpan = 6}) => (
-        <Col xs={24} sm={12} md={8} lg={colSpan}>
-            <Card className={styles.statCard}>
+    const InfoCard = ({icon, label, value, colSpan = 6, className = ''}) => {
+        const cardContent = (
+            <Card className={`${styles.statCard} ${className}`}>
                 <div className={styles.statContent}>
                     <div className={styles.statIcon}>{icon}</div>
                     <div className={styles.statText}>
@@ -153,8 +168,15 @@ const ListingDetails = () => {
                     </div>
                 </div>
             </Card>
-        </Col>
-    );
+        );
+
+        // Если передан colSpan, оборачиваем в Col, иначе возвращаем просто карточку
+        return colSpan ? (
+            <Col xs={24} sm={12} md={8} lg={colSpan}>
+                {cardContent}
+            </Col>
+        ) : cardContent;
+    };
 
     // Компонент для деталей объекта
     const DetailItem = ({icon, label, value}) => (
@@ -312,27 +334,22 @@ const ListingDetails = () => {
                         <InfoCard
                             icon={<BankOutlined/>}
                             label="Общая площадь"
-                            value={renderArea(apartment.total_area)}
+                            value={renderRange(apartment.total_area_from, apartment.total_area_to, ' м²')}
+                            colSpan={8}
                         />
 
                         <InfoCard
                             icon={<HomeOutlined/>}
                             label="Комнат"
                             value={renderValue(apartment.rooms)}
+                            colSpan={8}
                         />
-
-                        {apartment.floor && apartment.total_floors && (
-                            <InfoCard
-                                icon={<BuildOutlined/>}
-                                label="Этаж"
-                                value={`${apartment.floor}/${apartment.total_floors}`}
-                            />
-                        )}
 
                         <InfoCard
                             icon={<ApartmentOutlined/>}
                             label="Тип недвижимости"
                             value={propertyTypeMap[apartment.property_type] || apartment.property_type}
+                            colSpan={8}
                         />
                     </Row>
                 </div>
@@ -349,29 +366,14 @@ const ListingDetails = () => {
                         <div className={styles.detailsGroup}>
                             <h3 className={styles.detailsSubtitle}>Планировка</h3>
                             <DetailItem
-                                icon={<ApartmentOutlined/>}
-                                label="Тип недвижимости"
-                                value={propertyTypeMap[apartment.property_type] || apartment.property_type}
-                            />
-                            <DetailItem
-                                icon={<HomeOutlined/>}
-                                label="Комнат"
-                                value={renderValue(apartment.rooms)}
-                            />
-                            <DetailItem
-                                icon={<BankOutlined/>}
-                                label="Общая площадь"
-                                value={renderArea(apartment.total_area)}
-                            />
-                            <DetailItem
                                 icon={<BankOutlined/>}
                                 label="Жилая площадь"
-                                value={renderArea(apartment.living_area)}
+                                value={renderRange(apartment.living_area_from, apartment.living_area_to, ' м²')}
                             />
                             <DetailItem
                                 icon={<BankOutlined/>}
                                 label="Площадь кухни"
-                                value={renderArea(apartment.kitchen_area)}
+                                value={renderRange(apartment.kitchen_area_from, apartment.kitchen_area_to, ' м²')}
                             />
                         </div>
 
@@ -392,11 +394,6 @@ const ListingDetails = () => {
                                 label="Вид из окна"
                                 value={viewTypeMap[apartment.view] || apartment.view}
                             />
-                            <DetailItem
-                                icon={<InfoCircleOutlined/>}
-                                label="Балкон/лоджия"
-                                value={apartment.balcony ? `${apartment.balcony} шт.` : 'Нет'}
-                            />
                         </div>
 
                         <div className={styles.detailsGroup}>
@@ -404,25 +401,17 @@ const ListingDetails = () => {
                             <DetailItem
                                 icon={<BuildOutlined/>}
                                 label="Этаж"
-                                value={apartment.floor && apartment.total_floors
-                                    ? `${apartment.floor}/${apartment.total_floors}`
+                                value={apartment.floor_from && apartment.total_floors_from
+                                    ? `${renderRange(apartment.floor_from, apartment.floor_to, '')}/${renderRange(apartment.total_floors_from, apartment.total_floors_to, '')}`
                                     : '—'}
                             />
                             <DetailItem
-                                icon={<CalendarOutlined/>}
-                                label="Год постройки"
-                                value={renderValue(apartment.construction_year)}
+                                icon={<BuildOutlined/>}
+                                label="Этажность дома"
+                                value={apartment.total_floors_from && apartment.total_floors_to
+                                    ? renderRange(apartment.total_floors_from, apartment.total_floors_to, ' этажей')
+                                    : '—'}
                             />
-                            <DetailItem
-                                icon={<CalendarOutlined/>}
-                                label="Год ремонта"
-                                value={renderValue(apartment.last_renovation_year)}
-                            />
-                            {/*<DetailItem*/}
-                            {/*    icon={<EnvironmentOutlined/>}*/}
-                            {/*    label="Район"*/}
-                            {/*    value={apartment.district || 'Не указан'}*/}
-                            {/*/>*/}
                         </div>
                     </div>
                 </div>

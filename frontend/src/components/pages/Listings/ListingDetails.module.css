@@ -99,6 +99,22 @@
     color: #f3f4f6;
 }
 
+.dark .statCard.areaCard {
+    min-width: fit-content;
+    max-width: none;
+    margin-right: 16px;
+}
+
+.dark .statCard.areaCard .statValue {
+    white-space: nowrap;
+    overflow: visible;
+}
+
+.dark .areaCardContainer {
+    display: flex;
+    align-items: stretch;
+}
+
 .dark .detailItem {
     background: #111827;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
@@ -526,6 +542,15 @@
 /* Статистика */
 .statsGrid {
     margin-bottom: 10px;
+    display: flex;
+    justify-content: center; /* Центрируем содержимое по горизонтали */
+}
+
+.statsGrid .ant-row {
+    margin: 0 !important;
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap; /* Карточки не переносятся на новую строку */
 }
 
 .statCard {
@@ -577,6 +602,25 @@
     font-size: 20px;
     font-weight: 600;
     color: #333;
+}
+
+/* Специальный стиль для карточки общей площади */
+.statCard.areaCard {
+    min-width: fit-content;
+    max-width: none;
+    margin-right: 16px; /* Добавляем отступ справа */
+}
+
+.statCard.areaCard .statValue {
+    white-space: nowrap;
+    overflow: visible;
+}
+
+/* Контейнер для карточки общей площади */
+.areaCardContainer {
+    display: flex;
+    align-items: stretch;
+    flex: 0 0 auto; /* Не сжимается и не растягивается */
 }
 
 /* Детали объекта */

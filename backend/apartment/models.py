@@ -59,37 +59,80 @@ class Apartment(models.Model):
     property_type = models.CharField(max_length=20, choices=PROPERTY_TYPES, default='apartment')
     address = models.CharField(max_length=255, verbose_name='Адрес')
 
-    # Площади
-    total_area = models.DecimalField(
+    # Площади - диапазоны
+    total_area_from = models.DecimalField(
         max_digits=8,
         decimal_places=2,
         validators=[MinValueValidator(0.01)],
-        verbose_name='Общая площадь (м²)',
+        verbose_name='Общая площадь от (м²)',
         default=0.01
     )
-    living_area = models.DecimalField(
+    total_area_to = models.DecimalField(
         max_digits=8,
         decimal_places=2,
-        null=True,
-        blank=True,
         validators=[MinValueValidator(0.01)],
-        verbose_name='Жилая площадь (м²)'
+        verbose_name='Общая площадь до (м²)',
+        default=0.01
     )
-    kitchen_area = models.DecimalField(
+    living_area_from = models.DecimalField(
         max_digits=8,
         decimal_places=2,
         null=True,
         blank=True,
         validators=[MinValueValidator(0.01)],
-        verbose_name='Площадь кухни (м²)'
+        verbose_name='Жилая площадь от (м²)'
+    )
+    living_area_to = models.DecimalField(
+        max_digits=8,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        validators=[MinValueValidator(0.01)],
+        verbose_name='Жилая площадь до (м²)'
+    )
+    kitchen_area_from = models.DecimalField(
+        max_digits=8,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        validators=[MinValueValidator(0.01)],
+        verbose_name='Площадь кухни от (м²)'
+    )
+    kitchen_area_to = models.DecimalField(
+        max_digits=8,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        validators=[MinValueValidator(0.01)],
+        verbose_name='Площадь кухни до (м²)'
     )
 
-    # Этаж
-    floor = models.PositiveIntegerField(
+    # Этаж квартиры - диапазон
+    floor_from = models.PositiveIntegerField(
         null=True,
         blank=True,
-        verbose_name='Этаж',
-        help_text="Для домов можно оставить пустым"
+        verbose_name='Этаж квартиры от',
+        help_text="Если вы не знаете точный этаж, укажите диапазон"
+    )
+    floor_to = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+        verbose_name='Этаж квартиры до',
+        help_text="Если вы не знаете точный этаж, укажите диапазон"
+    )
+
+    # Этажность дома - диапазон
+    total_floors_from = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+        verbose_name='Этажность дома от',
+        help_text="Если вы не знаете точную этажность дома, укажите примерный диапазон"
+    )
+    total_floors_to = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+        verbose_name='Этажность дома до',
+        help_text="Если вы не знаете точную этажность дома, укажите примерный диапазон"
     )
 
     # Количество комнат
@@ -166,8 +209,43 @@ class Apartment(models.Model):
         verbose_name_plural = 'Объекты недвижимости'
         ordering = ['-created_at']
 
+    def clean(self):
+        """Валидация логики диапазонов"""
+        from django.core.exceptions import ValidationError
+        
+        # Проверка этажа квартиры
+        if self.floor_from and self.floor_to:
+            if self.floor_from < 1:
+                raise ValidationError({'floor_from': 'Этаж квартиры не может быть меньше 1'})
+            if self.floor_to < self.floor_from:
+                raise ValidationError({'floor_to': 'Этаж "до" не может быть меньше этажа "от"'})
+        
+        # Проверка этажности дома
+        if self.total_floors_from and self.total_floors_to:
+            if self.total_floors_to < self.total_floors_from:
+                raise ValidationError({'total_floors_to': 'Этажность "до" не может быть меньше этажности "от"'})
+        
+        # Проверка этажа квартиры относительно этажности дома
+        if (self.floor_to and self.total_floors_to and 
+            self.floor_to > self.total_floors_to):
+            raise ValidationError({'floor_to': 'Этаж квартиры не может быть больше этажности дома'})
+        
+        # Проверка площадей
+        if self.total_area_to and self.total_area_from:
+            if self.total_area_to < self.total_area_from:
+                raise ValidationError({'total_area_to': 'Площадь "до" не может быть меньше площади "от"'})
+        
+        if self.living_area_to and self.living_area_from:
+            if self.living_area_to < self.living_area_from:
+                raise ValidationError({'living_area_to': 'Жилая площадь "до" не может быть меньше жилой площади "от"'})
+        
+        if self.kitchen_area_to and self.kitchen_area_from:
+            if self.kitchen_area_to < self.kitchen_area_from:
+                raise ValidationError({'kitchen_area_to': 'Площадь кухни "до" не может быть меньше площади кухни "от"'})
+
     def save(self, *args, **kwargs):
-        """Автоматически управляет is_active на основе статуса"""
+        """Автоматически управляет is_active на основе статуса и валидирует данные"""
+        self.clean()
         if self.status in ['pending', 'rejected']:
             self.is_active = False
         super().save(*args, **kwargs)

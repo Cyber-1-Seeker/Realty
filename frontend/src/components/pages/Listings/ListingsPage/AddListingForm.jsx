@@ -179,6 +179,31 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
             </Tooltip>
         </span>
     );
+
+    // Компонент для переключения между точным значением и диапазоном
+    const ModeToggle = ({ mode, onToggle, label }) => (
+        <div className={styles.modeToggle}>
+            <span className={styles.modeToggleLabel}>{label}</span>
+            <div className={styles.modeToggleButtons}>
+                <Button
+                    type={mode === 'exact' ? 'primary' : 'default'}
+                    size="small"
+                    onClick={() => onToggle('exact')}
+                    className={styles.modeToggleButton}
+                >
+                    Точное значение
+                </Button>
+                <Button
+                    type={mode === 'range' ? 'primary' : 'default'}
+                    size="small"
+                    onClick={() => onToggle('range')}
+                    className={styles.modeToggleButton}
+                >
+                    Диапазон
+                </Button>
+            </div>
+        </div>
+    );
     const [form] = Form.useForm();
     const [currentStep, setCurrentStep] = useState(0);
     const [fileList, setFileList] = useState([]);
@@ -187,6 +212,28 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
     const [propertyType, setPropertyType] = useState('apartment');
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const formContentRef = useRef(null);
+    const [uploadErrors, setUploadErrors] = useState({});
+    const [submitError, setSubmitError] = useState('');
+
+    // Состояния для управления режимом полей (точное значение или диапазон)
+    const [totalAreaMode, setTotalAreaMode] = useState('exact'); // 'exact' или 'range'
+    const [floorMode, setFloorMode] = useState('exact');
+    const [totalFloorsMode, setTotalFloorsMode] = useState('exact');
+    const [livingAreaMode, setLivingAreaMode] = useState('exact');
+    const [kitchenAreaMode, setKitchenAreaMode] = useState('exact');
+
+    // Отслеживаем изменения полей для валидации
+    const totalAreaFrom = Form.useWatch('total_area_from', form);
+    const totalAreaTo = Form.useWatch('total_area_to', form);
+    const floorFrom = Form.useWatch('floor_from', form);
+    const floorTo = Form.useWatch('floor_to', form);
+    const totalFloorsFrom = Form.useWatch('total_floors_from', form);
+    const totalFloorsTo = Form.useWatch('total_floors_to', form);
+    const livingAreaFrom = Form.useWatch('living_area_from', form);
+    const livingAreaTo = Form.useWatch('living_area_to', form);
+    const kitchenAreaFrom = Form.useWatch('kitchen_area_from', form);
+    const kitchenAreaTo = Form.useWatch('kitchen_area_to', form);
+    const rooms = Form.useWatch('rooms', form);
 
     // Автоматическая прокрутка вверх при смене шага
     useEffect(() => {
@@ -194,6 +241,28 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
             formContentRef.current.scrollTop = 0;
         }
     }, [currentStep]);
+
+    // Автоматическое обновление количества комнат при изменении типа недвижимости
+    useEffect(() => {
+        if (propertyType === 'studio') {
+            form.setFieldsValue({ rooms: 0 });
+        } else {
+            form.setFieldsValue({ rooms: 1 });
+        }
+    }, [propertyType, form]);
+
+    // Синхронизация между точным значением и диапазоном для общей площади
+    useEffect(() => {
+        if (totalAreaMode === 'exact') {
+            const exactValue = form.getFieldValue('total_area_exact');
+            if (exactValue) {
+                form.setFieldsValue({ 
+                    total_area_from: exactValue,
+                    total_area_to: exactValue
+                });
+            }
+        }
+    }, [totalAreaMode, form]);
 
     // Определение констант для типов
     const propertyTypes = [
@@ -247,18 +316,18 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
             .then(values => {
                 setFormValues(prev => ({...prev, ...values}));
                 setCurrentStep(currentStep + 1);
+                setSubmitError(''); // Очищаем ошибку отправки
             })
             .catch(() => {
-                Modal.error({
-                    title: 'Ошибка заполнения',
-                    content: 'Пожалуйста, заполните все обязательные поля',
-                });
+                // Ошибки валидации показываются прямо в форме
+                // Никаких модальных окон
             });
     };
 
     // Возврат к предыдущему шагу
     const prevStep = () => {
         setCurrentStep(currentStep - 1);
+        setSubmitError(''); // Очищаем ошибку отправки
     };
 
     // Валидатор для площадей
@@ -304,7 +373,7 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
 
     const validateFloor = (_, value) => {
         if (!value) return Promise.resolve();
-        if (value < 0) return Promise.reject('Этаж не может быть отрицательным');
+        if (value < 1) return Promise.reject('Этаж не может быть меньше 1');
         if (value > 32767) return Promise.reject('Слишком большое значение этажа');
         return Promise.resolve();
     };
@@ -316,21 +385,103 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
             const lastStepValues = await form.validateFields();
             const allValues = {...formValues, ...lastStepValues};
 
+            // Валидация значений перед отправкой
+            const validationErrors = [];
+            
+            // Проверяем минимальные значения для площадей
+            if (allValues.total_area_from < 1.00) {
+                validationErrors.push('Общая площадь "от" не может быть меньше 1.00 м²');
+            }
+            if (allValues.total_area_to < 1.00) {
+                validationErrors.push('Общая площадь "до" не может быть меньше 1.00 м²');
+            }
+            if (allValues.living_area_from < 1.00) {
+                validationErrors.push('Жилая площадь "от" не может быть меньше 1.00 м²');
+            }
+            if (allValues.living_area_to < 1.00) {
+                validationErrors.push('Жилая площадь "до" не может быть меньше 1.00 м²');
+            }
+            if (allValues.kitchen_area_from < 1.00) {
+                validationErrors.push('Площадь кухни "от" не может быть меньше 1.00 м²');
+            }
+            if (allValues.kitchen_area_to < 1.00) {
+                validationErrors.push('Площадь кухни "до" не может быть меньше 1.00 м²');
+            }
+            
+            // Проверяем минимальные значения для этажей
+            if (allValues.floor_from < 1) {
+                validationErrors.push('Этаж квартиры "от" не может быть меньше 1');
+            }
+            if (allValues.total_floors_from < 1) {
+                validationErrors.push('Этажность дома "от" не может быть меньше 1');
+            }
+            
+            // Проверяем диапазоны
+            if (allValues.total_area_to < allValues.total_area_from) {
+                validationErrors.push('Общая площадь "до" не может быть меньше площади "от"');
+            }
+            if (allValues.living_area_to < allValues.living_area_from) {
+                validationErrors.push('Жилая площадь "до" не может быть меньше жилой площади "от"');
+            }
+            if (allValues.kitchen_area_to < allValues.kitchen_area_from) {
+                validationErrors.push('Площадь кухни "до" не может быть меньше площади кухни "от"');
+            }
+            if (allValues.floor_to < allValues.floor_from) {
+                validationErrors.push('Этаж квартиры "до" не может быть меньше этажа "от"');
+            }
+            if (allValues.total_floors_to < allValues.total_floors_from) {
+                validationErrors.push('Этажность дома "до" не может быть меньше этажности "от"');
+            }
+            
+            // Проверяем этаж квартиры относительно этажности дома
+            if (allValues.floor_to > allValues.total_floors_to) {
+                validationErrors.push('Этаж квартиры не может быть больше этажности дома');
+            }
+            
+            // Если есть ошибки валидации, показываем их и прерываем отправку
+            if (validationErrors.length > 0) {
+                setSubmitError(validationErrors.join('. '));
+                setLoading(false);
+                return;
+            }
+
             const formData = new FormData();
             if (user?.id) formData.append('owner', user.id);
 
             const numericFields = [
-                'total_area', 'floor', 'rooms', 'price', 'deposit',
-                'living_area', 'kitchen_area'
+                'total_area_from', 'total_area_to', 'floor_from', 'floor_to', 
+                'total_floors_from', 'total_floors_to', 'rooms', 'price', 'deposit',
+                'living_area_from', 'living_area_to', 'kitchen_area_from', 'kitchen_area_to'
             ];
 
             const cleanNumberValue = (value) => {
                 if (value === undefined || value === null || value === '') return null;
-                const cleaned = String(value)
-                    .replace(/[^\d,.-]/g, '')
-                    .replace(',', '.');
-                const numValue = parseFloat(cleaned);
-                return isNaN(numValue) ? null : numValue;
+                
+                // Если значение уже число, возвращаем его
+                if (typeof value === 'number') return value;
+                
+                // Преобразуем в строку и убираем лишние пробелы
+                const stringValue = String(value).trim();
+                
+                // Если пустая строка, возвращаем null
+                if (stringValue === '') return null;
+                
+                // Заменяем запятую на точку для корректного парсинга
+                const normalizedValue = stringValue.replace(',', '.');
+                
+                // Парсим число
+                const numValue = parseFloat(normalizedValue);
+                
+                // Проверяем, что получилось валидное число
+                if (isNaN(numValue)) return null;
+                
+                // Для площадей проверяем минимальное значение
+                if (numValue < 1.00) {
+                    console.warn('Значение меньше 1.00:', numValue);
+                    return 1.00; // Возвращаем минимальное значение
+                }
+                
+                return numValue;
             };
 
             for (const [key, value] of Object.entries(allValues)) {
@@ -339,7 +490,13 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                 if (numericFields.includes(key)) {
                     const cleanedValue = cleanNumberValue(value);
                     if (cleanedValue !== null) {
-                        formData.append(key, cleanedValue);
+                        // Убеждаемся, что передаем число, а не строку
+                        const numericValue = Number(cleanedValue);
+                        // Проверяем, что значение не меньше 0.01 для площадей
+                        if (key.includes('area') && numericValue < 0.01) {
+                            console.warn(`Значение ${key} меньше 0.01:`, numericValue);
+                        }
+                        formData.append(key, numericValue);
                     }
                 } else if (key === 'bargain') {
                     formData.append(key, value ? 'true' : 'false');
@@ -348,10 +505,30 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                 }
             }
 
-            // Устанавливаем значения по умолчанию для обязательных полей
-            if (!allValues.bathroom_type) formData.append('bathroom_type', 'combined');
-            if (!allValues.view) formData.append('view', 'yard');
-            if (!allValues.deal_type) formData.append('deal_type', 'sale');
+                    // Устанавливаем значения по умолчанию для обязательных полей
+        if (!allValues.bathroom_type) formData.append('bathroom_type', 'combined');
+        if (!allValues.view) formData.append('view', 'yard');
+        if (!allValues.deal_type) formData.append('deal_type', 'sale');
+        
+                    // Устанавливаем значения по умолчанию для числовых полей, если они не заполнены
+            if (!allValues.total_area_from || allValues.total_area_from < 1.00) {
+                formData.set('total_area_from', 1.00);
+            }
+            if (!allValues.total_area_to || allValues.total_area_to < 1.00) {
+                formData.set('total_area_to', 1.00);
+            }
+            if (!allValues.living_area_from || allValues.living_area_from < 1.00) {
+                formData.set('living_area_from', 1.00);
+            }
+            if (!allValues.living_area_to || allValues.living_area_to < 1.00) {
+                formData.set('living_area_to', 1.00);
+            }
+            if (!allValues.kitchen_area_from || allValues.kitchen_area_from < 1.00) {
+                formData.set('kitchen_area_from', 1.00);
+            }
+            if (!allValues.kitchen_area_to || allValues.kitchen_area_to < 1.00) {
+                formData.set('kitchen_area_to', 1.00);
+            }
 
             if (allValues.images?.length) {
                 allValues.images.forEach(file => {
@@ -367,6 +544,7 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
 
             // Показываем окно успеха
             setShowSuccessModal(true);
+            setSubmitError(''); // Очищаем ошибку отправки
         } catch (error) {
             console.error('Ошибка:', error);
             let errorMessage = 'Не удалось добавить объявление';
@@ -387,10 +565,8 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                 errorMessage = error.message;
             }
 
-            Modal.error({
-                title: 'Ошибка отправки',
-                content: errorMessage,
-            });
+            // Ошибка отправки показывается в форме (только общее сообщение)
+            setSubmitError('Ошибка отправки');
         } finally {
             setLoading(false);
         }
@@ -518,52 +694,673 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                             <Input placeholder="Город, улица, дом" autoFocus/>
                         </Form.Item>
 
-                        <Form.Item
-                            name="total_area"
-                            label={createLabelWithTooltip(
-                                "Общая площадь (м²)",
-                                'Укажите общую площадь помещения в квадратных метрах. Перетащите ползунок для выбора значения.'
-                            )}
-                            rules={[
-                                {required: true, message: 'Введите площадь'},
-                                {validator: validateArea}
-                            ]}
-                        >
-                            <SliderWithInput
-                                name="total_area"
-                                min={0.01}
-                                max={1000}
-                                step={0.01}
-                                tooltipFormatter={(value) => `${value} м²`}
-                                suffix="м²"
+                        <div className={styles.relatedFields}>
+                            <div className={styles.rangeFieldsTitle}>Общая площадь</div>
+                            
+                            <ModeToggle 
+                                mode={totalAreaMode} 
+                                onToggle={setTotalAreaMode}
+                                label="Режим указания площади:"
                             />
-                        </Form.Item>
+
+                            {totalAreaMode === 'exact' ? (
+                                // Режим точного значения
+                                <div className={styles.exactField}>
+                                    <div className={styles.fieldLabel}>Площадь (м²)</div>
+                                    <Form.Item
+                                        name="total_area_exact"
+                                        rules={[
+                                            {required: true, message: 'Введите площадь'},
+                                            {validator: validateArea},
+                                            {
+                                                validator: (_, value) => {
+                                                    if (value && value < 0.01) {
+                                                        return Promise.reject('Общая площадь не может быть меньше 0.01 м²');
+                                                    }
+                                                    return Promise.resolve();
+                                                }
+                                            }
+                                        ]}
+                                    >
+                                        <div style={{ position: 'relative', paddingTop: '50px' }}>
+                                            <div style={{ 
+                                                position: 'absolute', 
+                                                top: '0', 
+                                                right: '0',
+                                                zIndex: 1
+                                            }}>
+                                                <InputNumber
+                                                    min={1.00}
+                                                    max={1000}
+                                                    step={0.01}
+                                                    style={{ width: '120px' }}
+                                                    addonAfter="м²"
+                                                    value={totalAreaFrom || 1.00}
+                                                    onChange={(value) => {
+                                                        if (value) {
+                                                            form.setFieldsValue({ 
+                                                                total_area_exact: value,
+                                                                total_area_from: value,
+                                                                total_area_to: value
+                                                            });
+                                                        }
+                                                    }}
+                                                />
+                                            </div>
+                                            <Slider
+                                                min={1.00}
+                                                max={1000}
+                                                step={0.01}
+                                                style={{ width: '100%' }}
+                                                value={totalAreaFrom || 1.00}
+                                                tooltip={{
+                                                    formatter: (value) => `${value} м²`,
+                                                    placement: 'top'
+                                                }}
+                                                onChange={(value) => {
+                                                    form.setFieldsValue({ 
+                                                        total_area_exact: value,
+                                                        total_area_from: value,
+                                                        total_area_to: value
+                                                    });
+                                                }}
+                                            />
+                                        </div>
+                                    </Form.Item>
+                                </div>
+                            ) : (
+                                // Режим диапазона
+                                <div className={styles.rangeFieldsContainer}>
+                                    <div className={styles.rangeField}>
+                                        <div className={styles.fieldLabel} htmlFor="total_area_from_input">От (м²)</div>
+                                    <Form.Item
+                                        name="total_area_from"
+                                        rules={[
+                                            {required: true, message: 'Введите площадь'},
+                                            {validator: validateArea},
+                                            {
+                                                validator: (_, value) => {
+                                                    if (value && value < 0.01) {
+                                                        return Promise.reject('Общая площадь не может быть меньше 0.01 м²');
+                                                    }
+                                                    return Promise.resolve();
+                                                }
+                                            },
+                                            {
+                                                validator: (_, value) => {
+                                                    const toValue = form.getFieldValue('total_area_to');
+                                                    if (toValue && value && value > toValue) {
+                                                        return Promise.reject('Значение "от" не может быть больше значения "до"');
+                                                    }
+                                                    return Promise.resolve();
+                                                }
+                                            }
+                                        ]}
+                                    >
+                                        <div style={{ position: 'relative', paddingTop: '50px' }}>
+                                            <div style={{ 
+                                                position: 'absolute', 
+                                                top: '0', 
+                                                right: '0',
+                                                zIndex: 1
+                                            }}>
+                                                <InputNumber
+                                                    id="total_area_from_input"
+                                                    min={1.00}
+                                                    max={1000}
+                                                    step={0.01}
+                                                    style={{ width: '120px' }}
+                                                    addonAfter="м²"
+                                                    value={totalAreaFrom || 1.00}
+                                                    onChange={(value) => {
+                                                        // Убеждаемся, что значение не меньше 1.00
+                                                        const validValue = value < 1.00 ? 1.00 : value;
+                                                        form.setFieldsValue({ total_area_from: validValue });
+                                                        
+                                                        // Проверяем, что "от" не больше "до"
+                                                        const toValue = form.getFieldValue('total_area_to');
+                                                        if (toValue && validValue > toValue) {
+                                                            form.setFieldsValue({ total_area_to: validValue });
+                                                        }
+                                                    }}
+                                                />
+                                            </div>
+                                            <Slider
+                                                min={1.00}
+                                                max={1000}
+                                                step={0.01}
+                                                style={{ width: '100%' }}
+                                                value={totalAreaFrom || 1.00}
+                                                tooltip={{
+                                                    formatter: (value) => `${value} м²`,
+                                                    placement: 'top'
+                                                }}
+                                                onChange={(value) => {
+                                                    // Убеждаемся, что значение не меньше 1.00
+                                                    const validValue = value < 1.00 ? 1.00 : value;
+                                                    form.setFieldsValue({ total_area_from: validValue });
+                                                    
+                                                    // Проверяем, что "от" не больше "до"
+                                                    const toValue = form.getFieldValue('total_area_to');
+                                                    if (toValue && validValue > toValue) {
+                                                        form.setFieldsValue({ total_area_to: validValue });
+                                                    }
+                                                }}
+                                            />
+                                        </div>
+                                    </Form.Item>
+                                    <div className={styles.rangeFieldHint}>
+                                        Укажите минимальную общую площадь помещения в квадратных метрах
+                                    </div>
+                                </div>
+
+                                <div className={styles.rangeField}>
+                                    <div className={styles.fieldLabel} htmlFor="total_area_to_input">До (м²)</div>
+                                    <Form.Item
+                                        name="total_area_to"
+                                        rules={[
+                                            {required: true, message: 'Введите площадь'},
+                                            {validator: validateArea},
+                                            {
+                                                validator: (_, value) => {
+                                                    if (value && value < 0.01) {
+                                                        return Promise.reject('Общая площадь не может быть меньше 0.01 м²');
+                                                    }
+                                                    return Promise.resolve();
+                                                }
+                                            },
+                                            {
+                                                validator: (_, value) => {
+                                                    const fromValue = form.getFieldValue('total_area_from');
+                                                    if (fromValue && value && value < fromValue) {
+                                                        return Promise.reject('Значение "до" не может быть меньше значения "от"');
+                                                    }
+                                                    return Promise.resolve();
+                                                }
+                                            }
+                                        ]}
+                                    >
+                                        <div style={{ position: 'relative', paddingTop: '50px' }}>
+                                            <div style={{ 
+                                                position: 'absolute', 
+                                                top: '0', 
+                                                right: '0',
+                                                zIndex: 1
+                                            }}>
+                                                <InputNumber
+                                                    id="total_area_to_input"
+                                                    min={1.00}
+                                                    max={1000}
+                                                    step={0.01}
+                                                    style={{ width: '120px' }}
+                                                    addonAfter="м²"
+                                                    value={totalAreaTo || 1.00}
+                                                    onChange={(value) => {
+                                                        // Убеждаемся, что значение не меньше 1.00
+                                                        const validValue = value < 1.00 ? 1.00 : value;
+                                                        form.setFieldsValue({ total_area_to: validValue });
+                                                        
+                                                        // Проверяем, что "до" не меньше "от"
+                                                        const fromValue = form.getFieldValue('total_area_from');
+                                                        if (fromValue && validValue < fromValue) {
+                                                            form.setFieldsValue({ total_area_from: validValue });
+                                                        }
+                                                    }}
+                                                />
+                                            </div>
+                                            <Slider
+                                                min={1.00}
+                                                max={1000}
+                                                step={0.01}
+                                                style={{ width: '100%' }}
+                                                value={totalAreaTo || 1.00}
+                                                tooltip={{
+                                                    formatter: (value) => `${value} м²`,
+                                                    placement: 'top'
+                                                }}
+                                                onChange={(value) => {
+                                                    // Убеждаемся, что значение не меньше 1.00
+                                                    const validValue = value < 1.00 ? 1.00 : value;
+                                                    form.setFieldsValue({ total_area_to: validValue });
+                                                    
+                                                    // Проверяем, что "до" не меньше "от"
+                                                    const fromValue = form.getFieldValue('total_area_from');
+                                                    if (fromValue && validValue < fromValue) {
+                                                        form.setFieldsValue({ total_area_from: validValue });
+                                                    }
+                                                }}
+                                            />
+                                        </div>
+                                    </Form.Item>
+                                    <div className={styles.rangeFieldHint}>
+                                        Укажите максимальную общую площадь. Если точная площадь известна, оставьте то же значение
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                        </div>
 
                         {showFloorFields() && (
-                            <Form.Item
-                                name="floor"
-                                label={createLabelWithTooltip(
-                                    "Этаж",
-                                    propertyType === 'house' || propertyType === 'townhouse'
-                                        ? 'Для домов и таунхаусов можно указать основной этаж'
-                                        : 'На каком этаже расположен объект'
+                            <>
+                                <div className={styles.relatedFields}>
+                                    <div className={styles.rangeFieldsTitle}>Этаж квартиры</div>
+                                    
+                                    <ModeToggle 
+                                        mode={floorMode} 
+                                        onToggle={setFloorMode}
+                                        label="Режим указания этажа:"
+                                    />
+
+                                    {floorMode === 'exact' ? (
+                                        // Режим точного значения
+                                        <div className={styles.exactField}>
+                                            <div className={styles.fieldLabel}>Этаж</div>
+                                            <Form.Item
+                                                name="floor_exact"
+                                                rules={[
+                                                    {
+                                                        required: !['house', 'townhouse'].includes(propertyType),
+                                                        message: 'Введите этаж'
+                                                    },
+                                                    {validator: validateFloor},
+                                                    {
+                                                        validator: (_, value) => {
+                                                            if (value && value < 1) {
+                                                                return Promise.reject('Этаж квартиры не может быть меньше 1');
+                                                            }
+                                                            return Promise.resolve();
+                                                        }
+                                                    }
+                                                ]}
+                                            >
+                                                <div style={{ position: 'relative', paddingTop: '50px' }}>
+                                                    <div style={{ 
+                                                        position: 'absolute', 
+                                                        top: '0', 
+                                                        right: '0',
+                                                        zIndex: 1
+                                                    }}>
+                                                        <InputNumber
+                                                            min={1}
+                                                            max={100}
+                                                            step={1}
+                                                            style={{ width: '120px' }}
+                                                            addonAfter="этаж"
+                                                            value={floorFrom || 1}
+                                                            onChange={(value) => {
+                                                                if (value) {
+                                                                    form.setFieldsValue({ 
+                                                                        floor_exact: value,
+                                                                        floor_from: value,
+                                                                        floor_to: value
+                                                                    });
+                                                                }
+                                                            }}
+                                                        />
+                                                    </div>
+                                                    <Slider
+                                                        min={1}
+                                                        max={100}
+                                                        step={1}
+                                                        style={{ width: '100%' }}
+                                                        value={floorFrom || 1}
+                                                        tooltip={{
+                                                            formatter: (value) => `${value} этаж`,
+                                                            placement: 'top'
+                                                        }}
+                                                        onChange={(value) => {
+                                                            form.setFieldsValue({ 
+                                                                floor_exact: value,
+                                                                floor_from: value,
+                                                                floor_to: value
+                                                            });
+                                                        }}
+                                                    />
+                                                </div>
+                                            </Form.Item>
+                                        </div>
+                                    ) : (
+                                        // Режим диапазона
+                                        <div className={styles.rangeFieldsContainer}>
+                                <div className={styles.rangeField}>
+                                    <div className={styles.fieldLabel} htmlFor="floor_from_input">От</div>
+                                            <Form.Item
+                                                name="floor_from"
+                                                rules={[
+                                                    {
+                                                        required: !['house', 'townhouse'].includes(propertyType),
+                                                        message: 'Введите этаж'
+                                                    },
+                                                    {validator: validateFloor},
+                                                    {
+                                                        validator: (_, value) => {
+                                                            if (value && value < 1) {
+                                                                return Promise.reject('Этаж квартиры не может быть меньше 1');
+                                                            }
+                                                            return Promise.resolve();
+                                                        }
+                                                    },
+                                                    {
+                                                        validator: (_, value) => {
+                                                            const toValue = form.getFieldValue('floor_to');
+                                                            if (toValue && value && value > toValue) {
+                                                                return Promise.reject('Этаж "от" не может быть больше этажа "до"');
+                                                            }
+                                                            return Promise.resolve();
+                                                        }
+                                                    }
+                                                ]}
+                                            >
+                                                <div style={{ position: 'relative', paddingTop: '50px' }}>
+                                                    <div style={{ 
+                                                        position: 'absolute', 
+                                                        top: '0', 
+                                                        right: '0',
+                                                        zIndex: 1
+                                                    }}>
+                                                        <InputNumber
+                                                            id="floor_from_input"
+                                                            min={1}
+                                                            max={100}
+                                                            step={1}
+                                                            style={{ width: '120px' }}
+                                                            addonAfter="этаж"
+                                                            value={floorFrom || 1}
+                                                            onChange={(value) => {
+                                                                form.setFieldsValue({ floor_from: value });
+                                                            }}
+                                                        />
+                                                    </div>
+                                                    <Slider
+                                                        min={1}
+                                                        max={100}
+                                                        step={1}
+                                                        style={{ width: '100%' }}
+                                                        value={floorFrom || 1}
+                                                        tooltip={{
+                                                            formatter: (value) => `${value} этаж`,
+                                                            placement: 'top'
+                                                        }}
+                                                        onChange={(value) => {
+                                                            form.setFieldsValue({ floor_from: value });
+                                                        }}
+                                                    />
+                                                </div>
+                                            </Form.Item>
+                                            <div className={styles.rangeFieldHint}>
+                                                Если вы не знаете точный этаж, укажите диапазон. Минимальный этаж - 1
+                                            </div>
+                                        </div>
+
+                                        <div className={styles.rangeField}>
+                                            <div className={styles.fieldLabel} htmlFor="floor_to_input">До</div>
+                                            <Form.Item
+                                                name="floor_to"
+                                                rules={[
+                                                    {
+                                                        required: !['house', 'townhouse'].includes(propertyType),
+                                                        message: 'Введите этаж'
+                                                    },
+                                                    {validator: validateFloor},
+                                                    {
+                                                        validator: (_, value) => {
+                                                            const fromValue = form.getFieldValue('floor_from');
+                                                            if (fromValue && value && value < fromValue) {
+                                                                return Promise.reject('Этаж "до" не может быть меньше этажа "от"');
+                                                            }
+                                                            return Promise.resolve();
+                                                        }
+                                                    },
+                                                    {
+                                                        validator: (_, value) => {
+                                                            const totalFloorsTo = form.getFieldValue('total_floors_to');
+                                                            if (totalFloorsTo && value && value > totalFloorsTo) {
+                                                                return Promise.reject('Этаж квартиры не может быть больше этажности дома');
+                                                            }
+                                                            return Promise.resolve();
+                                                        }
+                                                    }
+                                                ]}
+                                            >
+                                                <div style={{ position: 'relative', paddingTop: '50px' }}>
+                                                    <div style={{ 
+                                                        position: 'absolute', 
+                                                        top: '0', 
+                                                        right: '0',
+                                                        zIndex: 1
+                                                    }}>
+                                                        <InputNumber
+                                                            id="floor_to_input"
+                                                            min={1}
+                                                            max={100}
+                                                            step={1}
+                                                            style={{ width: '120px' }}
+                                                            addonAfter="этаж"
+                                                            value={floorTo || 1}
+                                                            onChange={(value) => {
+                                                                form.setFieldsValue({ floor_to: value });
+                                                            }}
+                                                        />
+                                                    </div>
+                                                    <Slider
+                                                        min={1}
+                                                        max={100}
+                                                        step={1}
+                                                        style={{ width: '100%' }}
+                                                        value={floorTo || 1}
+                                                        tooltip={{
+                                                            formatter: (value) => `${value} этаж`,
+                                                            placement: 'top'
+                                                        }}
+                                                        onChange={(value) => {
+                                                            form.setFieldsValue({ floor_to: value });
+                                                        }}
+                                                    />
+                                                </div>
+                                            </Form.Item>
+                                            <div className={styles.rangeFieldHint}>
+                                                Максимальный этаж не может быть больше этажности дома
+                                            </div>
+                                        </div>
+                                    </div>
                                 )}
-                                rules={[
-                                    {
-                                        required: !['house', 'townhouse'].includes(propertyType),
-                                        message: 'Введите этаж'
-                                    }
-                                ]}
-                            >
-                                <SliderWithInput
-                                    name="floor"
-                                    min={0}
-                                    max={100}
-                                    step={1}
-                                    tooltipFormatter={(value) => `${value} этаж`}
-                                    suffix="этаж"
-                                />
-                            </Form.Item>
+                                </div>
+
+                                <div className={styles.relatedFields}>
+                                    <div className={styles.rangeFieldsTitle}>Этажность дома</div>
+                                    
+                                    <ModeToggle 
+                                        mode={totalFloorsMode} 
+                                        onToggle={setTotalFloorsMode}
+                                        label="Режим указания этажности:"
+                                    />
+
+                                    {totalFloorsMode === 'exact' ? (
+                                        // Режим точного значения
+                                        <div className={styles.exactField}>
+                                            <div className={styles.fieldLabel}>Этажность дома</div>
+                                            <Form.Item
+                                                name="total_floors_exact"
+                                                rules={[
+                                                    {validator: validateFloor},
+                                                    {
+                                                        validator: (_, value) => {
+                                                            if (value && value < 1) {
+                                                                return Promise.reject('Этажность дома не может быть меньше 1');
+                                                            }
+                                                            return Promise.resolve();
+                                                        }
+                                                    }
+                                                ]}
+                                            >
+                                                <div style={{ position: 'relative', paddingTop: '50px' }}>
+                                                    <div style={{ 
+                                                        position: 'absolute', 
+                                                        top: '0', 
+                                                        right: '0',
+                                                        zIndex: 1
+                                                    }}>
+                                                        <InputNumber
+                                                            min={1}
+                                                            max={200}
+                                                            step={1}
+                                                            style={{ width: '120px' }}
+                                                            addonAfter="этажей"
+                                                            value={totalFloorsFrom || 1}
+                                                            onChange={(value) => {
+                                                                if (value) {
+                                                                    form.setFieldsValue({ 
+                                                                        total_floors_exact: value,
+                                                                        total_floors_from: value,
+                                                                        total_floors_to: value
+                                                                    });
+                                                                }
+                                                            }}
+                                                        />
+                                                    </div>
+                                                    <Slider
+                                                        min={1}
+                                                        max={200}
+                                                        step={1}
+                                                        style={{ width: '100%' }}
+                                                        value={totalFloorsFrom || 1}
+                                                        tooltip={{
+                                                            formatter: (value) => `${value} этажей`,
+                                                            placement: 'top'
+                                                        }}
+                                                        onChange={(value) => {
+                                                            form.setFieldsValue({ 
+                                                                total_floors_exact: value,
+                                                                total_floors_from: value,
+                                                                total_floors_to: value
+                                                            });
+                                                        }}
+                                                    />
+                                                </div>
+                                            </Form.Item>
+                                        </div>
+                                    ) : (
+                                        // Режим диапазона
+                                        <div className={styles.rangeFieldsContainer}>
+                                <div className={styles.rangeField}>
+                                    <div className={styles.fieldLabel} htmlFor="total_floors_from_input">От</div>
+                                            <Form.Item
+                                                name="total_floors_from"
+                                                rules={[
+                                                    {validator: validateFloor},
+                                                    {
+                                                        validator: (_, value) => {
+                                                            const toValue = form.getFieldValue('total_floors_to');
+                                                            if (toValue && value && value > toValue) {
+                                                                return Promise.reject('Этажность "от" не может быть больше этажности "до"');
+                                                            }
+                                                            return Promise.resolve();
+                                                        }
+                                                    }
+                                                ]}
+                                            >
+                                                <div style={{ position: 'relative', paddingTop: '50px' }}>
+                                                    <div style={{ 
+                                                        position: 'absolute', 
+                                                        top: '0', 
+                                                        right: '0',
+                                                        zIndex: 1
+                                                    }}>
+                                                        <InputNumber
+                                                            id="total_floors_from_input"
+                                                            min={1}
+                                                            max={200}
+                                                            step={1}
+                                                            style={{ width: '120px' }}
+                                                            addonAfter="этажей"
+                                                            value={totalFloorsFrom || 1}
+                                                            onChange={(value) => {
+                                                                form.setFieldsValue({ total_floors_from: value });
+                                                            }}
+                                                        />
+                                                    </div>
+                                                    <Slider
+                                                        min={1}
+                                                        max={200}
+                                                        step={1}
+                                                        style={{ width: '100%' }}
+                                                        value={totalFloorsFrom || 1}
+                                                        tooltip={{
+                                                            formatter: (value) => `${value} этажей`,
+                                                            placement: 'top'
+                                                        }}
+                                                        onChange={(value) => {
+                                                            form.setFieldsValue({ total_floors_from: value });
+                                                        }}
+                                                    />
+                                                </div>
+                                            </Form.Item>
+                                            <div className={styles.rangeFieldHint}>
+                                                Если вы не знаете точную этажность дома, укажите примерный диапазон
+                                            </div>
+                                        </div>
+
+                                        <div className={styles.rangeField}>
+                                            <div className={styles.fieldLabel} htmlFor="total_floors_to_input">До</div>
+                                            <Form.Item
+                                                name="total_floors_to"
+                                                rules={[
+                                                    {validator: validateFloor},
+                                                    {
+                                                        validator: (_, value) => {
+                                                            const fromValue = form.getFieldValue('total_floors_from');
+                                                            if (fromValue && value && value < fromValue) {
+                                                                return Promise.reject('Этажность "до" не может быть меньше этажности "от"');
+                                                            }
+                                                            return Promise.resolve();
+                                                        }
+                                                    }
+                                                ]}
+                                            >
+                                                <div style={{ position: 'relative', paddingTop: '50px' }}>
+                                                    <div style={{ 
+                                                        position: 'absolute', 
+                                                        top: '0', 
+                                                        right: '0',
+                                                        zIndex: 1
+                                                    }}>
+                                                        <InputNumber
+                                                            id="total_floors_to_input"
+                                                            min={1}
+                                                            max={200}
+                                                            step={1}
+                                                            style={{ width: '120px' }}
+                                                            addonAfter="этажей"
+                                                            value={totalFloorsTo || 1}
+                                                            onChange={(value) => {
+                                                                form.setFieldsValue({ total_floors_to: value });
+                                                            }}
+                                                        />
+                                                    </div>
+                                                    <Slider
+                                                        min={1}
+                                                        max={200}
+                                                        step={1}
+                                                        style={{ width: '100%' }}
+                                                        value={totalFloorsTo || 1}
+                                                        tooltip={{
+                                                            formatter: (value) => `${value} этажей`,
+                                                            placement: 'top'
+                                                        }}
+                                                        onChange={(value) => {
+                                                            form.setFieldsValue({ total_floors_to: value });
+                                                        }}
+                                                    />
+                                                </div>
+                                            </Form.Item>
+                                            <div className={styles.rangeFieldHint}>
+                                                Если вы не знаете точную этажность дома, укажите примерный диапазон
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+                                </div>
+                            </>
                         )}
                     </>
                 );
@@ -575,18 +1372,47 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                             name="rooms"
                             label="Количество комнат"
                             rules={[
-                                {required: true, message: 'Введите количество комнат'}
+                                {
+                                    required: propertyType !== 'studio',
+                                    message: propertyType === 'studio' ? 'Для студии количество комнат не требуется' : 'Введите количество комнат'
+                                }
                             ]}
                         >
-                            <SliderWithInput
-                                name="rooms"
-                                min={0}
-                                max={20}
-                                step={1}
-                                tooltipFormatter={(value) => value === 0 ? 'Студия' : `${value} комн.`}
-                                suffix=""
-                                customFormatter={(value) => value === 0 ? 'Студия' : `${value} комн.`}
-                            />
+                            <div style={{ position: 'relative', paddingTop: '50px' }}>
+                                <div style={{ 
+                                    position: 'absolute', 
+                                    top: '0', 
+                                    right: '0',
+                                    zIndex: 1
+                                }}>
+                                    <InputNumber
+                                        id="rooms_input"
+                                        min={propertyType === 'studio' ? 0 : 1}
+                                        max={20}
+                                        step={1}
+                                        style={{ width: '120px' }}
+                                        addonAfter="комн."
+                                        value={rooms || (propertyType === 'studio' ? 0 : 1)}
+                                        onChange={(value) => {
+                                            form.setFieldsValue({ rooms: value });
+                                        }}
+                                    />
+                                </div>
+                                <Slider
+                                    min={propertyType === 'studio' ? 0 : 1}
+                                    max={20}
+                                    step={1}
+                                    style={{ width: '100%' }}
+                                    value={rooms || (propertyType === 'studio' ? 0 : 1)}
+                                    tooltip={{
+                                        formatter: (value) => value === 0 ? 'Студия' : `${value} комн.`,
+                                        placement: 'top'
+                                    }}
+                                    onChange={(value) => {
+                                        form.setFieldsValue({ rooms: value });
+                                    }}
+                                />
+                            </div>
                         </Form.Item>
 
                         <Form.Item
@@ -613,35 +1439,444 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                             </Select>
                         </Form.Item>
 
-                        <Form.Item
-                            name="living_area"
-                            label="Жилая площадь (м²)"
-                            rules={[{validator: validateArea}]}
-                        >
-                            <SliderWithInput
-                                name="living_area"
-                                min={0}
-                                max={800}
-                                step={0.01}
-                                tooltipFormatter={(value) => `${value} м²`}
-                                suffix=" м²"
+                        <div className={styles.relatedFields}>
+                            <div className={styles.rangeFieldsTitle}>Жилая площадь</div>
+                            
+                            <ModeToggle 
+                                mode={livingAreaMode} 
+                                onToggle={setLivingAreaMode}
+                                label="Режим указания жилой площади:"
                             />
-                        </Form.Item>
 
-                        <Form.Item
-                            name="kitchen_area"
-                            label="Площадь кухни (м²)"
-                            rules={[{validator: validateArea}]}
-                        >
-                            <SliderWithInput
-                                name="kitchen_area"
-                                min={0}
-                                max={200}
-                                step={0.01}
-                                tooltipFormatter={(value) => `${value} м²`}
-                                suffix=" м²"
+                            {livingAreaMode === 'exact' ? (
+                                // Режим точного значения
+                                <div className={styles.exactField}>
+                                    <div className={styles.fieldLabel}>Жилая площадь (м²)</div>
+                                    <Form.Item
+                                        name="living_area_exact"
+                                        rules={[
+                                            {required: true, message: 'Введите жилую площадь'},
+                                            {validator: validateArea},
+                                            {
+                                                validator: (_, value) => {
+                                                    if (value && value < 0.01) {
+                                                        return Promise.reject('Жилая площадь не может быть меньше 0.01 м²');
+                                                    }
+                                                    return Promise.resolve();
+                                                }
+                                            }
+                                        ]}
+                                    >
+                                        <div style={{ position: 'relative', paddingTop: '50px' }}>
+                                            <div style={{ 
+                                                position: 'absolute', 
+                                                top: '0', 
+                                                right: '0',
+                                                zIndex: 1
+                                            }}>
+                                                <InputNumber
+                                                    min={1.00}
+                                                    max={1000}
+                                                    step={0.01}
+                                                    style={{ width: '120px' }}
+                                                    addonAfter="м²"
+                                                    value={livingAreaFrom || 1.00}
+                                                    onChange={(value) => {
+                                                        if (value) {
+                                                            form.setFieldsValue({ 
+                                                                living_area_exact: value,
+                                                                living_area_from: value,
+                                                                living_area_to: value
+                                                            });
+                                                        }
+                                                    }}
+                                                />
+                                            </div>
+                                            <Slider
+                                                min={1.00}
+                                                max={1000}
+                                                step={0.01}
+                                                style={{ width: '100%' }}
+                                                value={livingAreaFrom || 1.00}
+                                                tooltip={{
+                                                    formatter: (value) => `${value} м²`,
+                                                    placement: 'top'
+                                                }}
+                                                onChange={(value) => {
+                                                    form.setFieldsValue({ 
+                                                        living_area_exact: value,
+                                                        living_area_from: value,
+                                                        living_area_to: value
+                                                    });
+                                                }}
+                                            />
+                                        </div>
+                                    </Form.Item>
+                                </div>
+                            ) : (
+                                // Режим диапазона
+                                <div className={styles.rangeFieldsContainer}>
+                                    <div className={styles.rangeField}>
+                                        <div className={styles.fieldLabel} htmlFor="living_area_from_input">От (м²)</div>
+                                    <Form.Item
+                                        name="living_area_from"
+                                        rules={[
+                                            {validator: validateArea},
+                                            {
+                                                validator: (_, value) => {
+                                                    if (value && value < 0.01) {
+                                                        return Promise.reject('Жилая площадь не может быть меньше 0.01 м²');
+                                                    }
+                                                    return Promise.resolve();
+                                                }
+                                            },
+                                            {
+                                                validator: (_, value) => {
+                                                    const toValue = form.getFieldValue('living_area_to');
+                                                    if (toValue && value && value > toValue) {
+                                                        return Promise.reject('Значение "от" не может быть больше значения "до"');
+                                                    }
+                                                    return Promise.resolve();
+                                                }
+                                            }
+                                        ]}
+                                    >
+                                        <div style={{ position: 'relative', paddingTop: '50px' }}>
+                                            <div style={{ 
+                                                position: 'absolute', 
+                                                top: '0', 
+                                                right: '0',
+                                                zIndex: 1
+                                            }}>
+                                                <InputNumber
+                                                    id="living_area_from_input"
+                                                    min={1.00}
+                                                    max={800}
+                                                    step={0.01}
+                                                    style={{ width: '120px' }}
+                                                    addonAfter="м²"
+                                                    value={livingAreaFrom || 1.00}
+                                                    onChange={(value) => {
+                                                        // Убеждаемся, что значение не меньше 1.00
+                                                        const validValue = value < 1.00 ? 1.00 : value;
+                                                        form.setFieldsValue({ living_area_from: validValue });
+                                                    }}
+                                                />
+                                            </div>
+                                            <Slider
+                                                min={1.00}
+                                                max={800}
+                                                step={0.01}
+                                                style={{ width: '100%' }}
+                                                value={livingAreaFrom || 1.00}
+                                                tooltip={{
+                                                    formatter: (value) => `${value} м²`,
+                                                    placement: 'top'
+                                                }}
+                                                onChange={(value) => {
+                                                    // Убеждаемся, что значение не меньше 1.00
+                                                    const validValue = value < 1.00 ? 1.00 : value;
+                                                    form.setFieldsValue({ living_area_from: validValue });
+                                                }}
+                                            />
+                                        </div>
+                                    </Form.Item>
+                                    <div className={styles.rangeFieldHint}>
+                                        Укажите минимальную жилую площадь помещения
+                                    </div>
+                                </div>
+
+                                <div className={styles.rangeField}>
+                                    <div className={styles.fieldLabel} htmlFor="living_area_to_input">До (м²)</div>
+                                    <Form.Item
+                                        name="living_area_to"
+                                        rules={[
+                                            {validator: validateArea},
+                                            {
+                                                validator: (_, value) => {
+                                                    if (value && value < 0.01) {
+                                                        return Promise.reject('Жилая площадь не может быть меньше 0.01 м²');
+                                                    }
+                                                    return Promise.resolve();
+                                                }
+                                            },
+                                            {
+                                                validator: (_, value) => {
+                                                    const fromValue = form.getFieldValue('living_area_from');
+                                                    if (fromValue && value && value < fromValue) {
+                                                        return Promise.reject('Значение "до" не может быть меньше значения "от"');
+                                                    }
+                                                    return Promise.resolve();
+                                                }
+                                            }
+                                        ]}
+                                    >
+                                        <div style={{ position: 'relative', paddingTop: '50px' }}>
+                                            <div style={{ 
+                                                position: 'absolute', 
+                                                top: '0', 
+                                                right: '0',
+                                                zIndex: 1
+                                            }}>
+                                                <InputNumber
+                                                    id="living_area_to_input"
+                                                    min={1.00}
+                                                    max={800}
+                                                    step={0.01}
+                                                    style={{ width: '120px' }}
+                                                    addonAfter="м²"
+                                                    value={livingAreaTo || 1.00}
+                                                    onChange={(value) => {
+                                                        // Убеждаемся, что значение не меньше 1.00
+                                                        const validValue = value < 1.00 ? 1.00 : value;
+                                                        form.setFieldsValue({ living_area_to: validValue });
+                                                    }}
+                                                />
+                                            </div>
+                                            <Slider
+                                                min={1.00}
+                                                max={800}
+                                                step={0.01}
+                                                style={{ width: '100%' }}
+                                                value={livingAreaTo || 1.00}
+                                                tooltip={{
+                                                    formatter: (value) => `${value} м²`,
+                                                    placement: 'top'
+                                                }}
+                                                onChange={(value) => {
+                                                    // Убеждаемся, что значение не меньше 1.00
+                                                    const validValue = value < 0.01 ? 1.00 : value;
+                                                    form.setFieldsValue({ living_area_to: validValue });
+                                                }}
+                                            />
+                                        </div>
+                                    </Form.Item>
+                                    <div className={styles.rangeFieldHint}>
+                                        Укажите максимальную жилую площадь. Если точная площадь известна, оставьте то же значение
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                        </div>
+
+                        <div className={styles.relatedFields}>
+                            <div className={styles.rangeFieldsTitle}>Площадь кухни</div>
+                            
+                            <ModeToggle 
+                                mode={kitchenAreaMode} 
+                                onToggle={setKitchenAreaMode}
+                                label="Режим указания площади кухни:"
                             />
-                        </Form.Item>
+
+                            {kitchenAreaMode === 'exact' ? (
+                                // Режим точного значения
+                                <div className={styles.exactField}>
+                                    <div className={styles.fieldLabel}>Площадь кухни (м²)</div>
+                                    <Form.Item
+                                        name="kitchen_area_exact"
+                                        rules={[
+                                            {validator: validateArea},
+                                            {
+                                                validator: (_, value) => {
+                                                    if (value && value < 0.01) {
+                                                        return Promise.reject('Площадь кухни не может быть меньше 0.01 м²');
+                                                    }
+                                                    return Promise.resolve();
+                                                }
+                                            }
+                                        ]}
+                                    >
+                                        <div style={{ position: 'relative', paddingTop: '50px' }}>
+                                            <div style={{ 
+                                                position: 'absolute', 
+                                                top: '0', 
+                                                right: '0',
+                                                zIndex: 1
+                                            }}>
+                                                <InputNumber
+                                                    min={1.00}
+                                                    max={200}
+                                                    step={0.01}
+                                                    style={{ width: '120px' }}
+                                                    addonAfter="м²"
+                                                    value={kitchenAreaFrom || 1.00}
+                                                    onChange={(value) => {
+                                                        if (value) {
+                                                            form.setFieldsValue({ 
+                                                                kitchen_area_exact: value,
+                                                                kitchen_area_from: value,
+                                                                kitchen_area_to: value
+                                                            });
+                                                        }
+                                                    }}
+                                                />
+                                            </div>
+                                            <Slider
+                                                min={1.00}
+                                                max={200}
+                                                step={0.01}
+                                                style={{ width: '100%' }}
+                                                value={kitchenAreaFrom || 1.00}
+                                                tooltip={{
+                                                    formatter: (value) => `${value} м²`,
+                                                    placement: 'top'
+                                                }}
+                                                onChange={(value) => {
+                                                    form.setFieldsValue({ 
+                                                        kitchen_area_exact: value,
+                                                        kitchen_area_from: value,
+                                                        kitchen_area_to: value
+                                                    });
+                                                }}
+                                            />
+                                        </div>
+                                    </Form.Item>
+                                </div>
+                            ) : (
+                                // Режим диапазона
+                                <div className={styles.rangeFieldsContainer}>
+                                    <div className={styles.rangeField}>
+                                        <div className={styles.fieldLabel} htmlFor="kitchen_area_from_input">От (м²)</div>
+                                    <Form.Item
+                                        name="kitchen_area_from"
+                                        rules={[
+                                            {validator: validateArea},
+                                            {
+                                                validator: (_, value) => {
+                                                    if (value && value < 0.01) {
+                                                        return Promise.reject('Площадь кухни не может быть меньше 0.01 м²');
+                                                    }
+                                                    return Promise.resolve();
+                                                }
+                                            },
+                                            {
+                                                validator: (_, value) => {
+                                                    const toValue = form.getFieldValue('kitchen_area_to');
+                                                    if (toValue && value && value > toValue) {
+                                                        return Promise.reject('Значение "от" не может быть больше значения "до"');
+                                                    }
+                                                    return Promise.resolve();
+                                                }
+                                            }
+                                        ]}
+                                    >
+                                        <div style={{ position: 'relative', paddingTop: '50px' }}>
+                                            <div style={{ 
+                                                position: 'absolute', 
+                                                top: '0', 
+                                                right: '0',
+                                                zIndex: 1
+                                            }}>
+                                                <InputNumber
+                                                    id="kitchen_area_from_input"
+                                                    min={1.00}
+                                                    max={200}
+                                                    step={0.01}
+                                                    style={{ width: '120px' }}
+                                                    addonAfter="м²"
+                                                    value={kitchenAreaFrom || 1.00}
+                                                    onChange={(value) => {
+                                                        // Убеждаемся, что значение не меньше 1.00
+                                                        const validValue = value < 1.00 ? 1.00 : value;
+                                                        form.setFieldsValue({ kitchen_area_from: validValue });
+                                                    }}
+                                                />
+                                            </div>
+                                                                                         <Slider
+                                                 min={1.00}
+                                                 max={200}
+                                                 step={0.01}
+                                                 style={{ width: '100%' }}
+                                                 value={kitchenAreaFrom || 1.00}
+                                                 tooltip={{
+                                                     formatter: (value) => `${value} м²`,
+                                                     placement: 'top'
+                                                 }}
+                                                 onChange={(value) => {
+                                                     // Убеждаемся, что значение не меньше 1.00
+                                                     const validValue = value < 1.00 ? 1.00 : value;
+                                                     form.setFieldsValue({ kitchen_area_from: validValue });
+                                                 }}
+                                             />
+                                        </div>
+                                    </Form.Item>
+                                    <div className={styles.rangeFieldHint}>
+                                        Укажите минимальную площадь кухни
+                                    </div>
+                                </div>
+
+                                <div className={styles.rangeField}>
+                                    <div className={styles.fieldLabel} htmlFor="kitchen_area_to_input">До (м²)</div>
+                                    <Form.Item
+                                        name="kitchen_area_to"
+                                        rules={[
+                                            {validator: validateArea},
+                                            {
+                                                validator: (_, value) => {
+                                                    if (value && value < 0.01) {
+                                                        return Promise.reject('Площадь кухни не может быть меньше 0.01 м²');
+                                                    }
+                                                    return Promise.resolve();
+                                                }
+                                            },
+                                            {
+                                                validator: (_, value) => {
+                                                    const fromValue = form.getFieldValue('kitchen_area_from');
+                                                    if (fromValue && value && value < fromValue) {
+                                                        return Promise.reject('Значение "до" не может быть меньше значения "от"');
+                                                    }
+                                                    return Promise.resolve();
+                                                }
+                                            }
+                                        ]}
+                                    >
+                                        <div style={{ position: 'relative', paddingTop: '50px' }}>
+                                            <div style={{ 
+                                                position: 'absolute', 
+                                                top: '0', 
+                                                right: '0',
+                                                zIndex: 1
+                                            }}>
+                                                <InputNumber
+                                                    id="kitchen_area_to_input"
+                                                    min={1.00}
+                                                    max={200}
+                                                    step={0.01}
+                                                    style={{ width: '120px' }}
+                                                    addonAfter="м²"
+                                                    value={kitchenAreaTo || 1.00}
+                                                    onChange={(value) => {
+                                                        // Убеждаемся, что значение не меньше 1.00
+                                                        const validValue = value < 1.00 ? 1.00 : value;
+                                                        form.setFieldsValue({ kitchen_area_to: validValue });
+                                                    }}
+                                                />
+                                            </div>
+                                                                                         <Slider
+                                                 min={1.00}
+                                                 max={200}
+                                                 step={0.01}
+                                                 style={{ width: '100%' }}
+                                                 value={kitchenAreaTo || 1.00}
+                                                 tooltip={{
+                                                     formatter: (value) => `${value} м²`,
+                                                     placement: 'top'
+                                                 }}
+                                                 onChange={(value) => {
+                                                     // Убеждаемся, что значение не меньше 1.00
+                                                     const validValue = value < 1.00 ? 1.00 : value;
+                                                     form.setFieldsValue({ kitchen_area_to: validValue });
+                                                 }}
+                                             />
+                                        </div>
+                                    </Form.Item>
+                                    <div className={styles.rangeFieldHint}>
+                                        Укажите максимальную площадь кухни. Если точная площадь известна, оставьте то же значение
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                        </div>
                     </>
                 );
 
@@ -695,25 +1930,29 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                             <Upload
                                 listType="picture-card"
                                 fileList={fileList}
-                                onChange={({fileList}) => setFileList(fileList)}
+                                onChange={({fileList}) => {
+                                    setFileList(fileList);
+                                    // Очищаем ошибки при успешной загрузке
+                                    setUploadErrors({});
+                                }}
                                 beforeUpload={(file) => {
                                     // Проверка размера файла (10MB)
                                     const isLt10M = file.size / 1024 / 1024 < 10;
                                     if (!isLt10M) {
-                                        Modal.error({
-                                            title: 'Ошибка',
-                                            content: 'Изображение должно быть меньше 10MB',
-                                        });
+                                        setUploadErrors(prev => ({
+                                            ...prev,
+                                            size: 'Изображение должно быть меньше 10MB'
+                                        }));
                                         return false;
                                     }
 
                                     // Проверка типа файла
                                     const isImage = file.type.startsWith('image/');
                                     if (!isImage) {
-                                        Modal.error({
-                                            title: 'Ошибка',
-                                            content: 'Можно загружать только изображения',
-                                        });
+                                        setUploadErrors(prev => ({
+                                            ...prev,
+                                            type: 'Можно загружать только изображения'
+                                        }));
                                         return false;
                                     }
 
@@ -721,10 +1960,10 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                                     const totalSize = fileList.reduce((sum, f) => sum + (f.size || 0), 0) + file.size;
                                     const isTotalSizeOk = totalSize / 1024 / 1024 < 50;
                                     if (!isTotalSizeOk) {
-                                        Modal.error({
-                                            title: 'Ошибка',
-                                            content: 'Общий размер всех файлов не должен превышать 50MB',
-                                        });
+                                        setUploadErrors(prev => ({
+                                            ...prev,
+                                            totalSize: 'Общий размер всех файлов не должен превышать 50MB'
+                                        }));
                                         return false;
                                     }
 
@@ -741,6 +1980,14 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                                     </div>
                                 )}
                             </Upload>
+                            {/* Отображение ошибок загрузки */}
+                            {Object.keys(uploadErrors).length > 0 && (
+                                <div style={{ color: '#ff4d4f', fontSize: '12px', marginTop: '8px' }}>
+                                    {Object.values(uploadErrors).map((error, index) => (
+                                        <div key={index}>{error}</div>
+                                    ))}
+                                </div>
+                            )}
                         </Form.Item>
                     </>
                 );
@@ -847,7 +2094,17 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                 initialValues={{
                     deal_type: 'sale',
                     balcony: 0,
-                    bargain: false
+                    bargain: false,
+                    total_area_from: 1.00,
+                    total_area_to: 1.00,
+                    floor_from: 1,
+                    floor_to: 1,
+                    total_floors_from: 1,
+                    total_floors_to: 1,
+                    living_area_from: 1.00,
+                    living_area_to: 1.00,
+                    kitchen_area_from: 1.00,
+                    kitchen_area_to: 1.00
                 }}
                 onFinish={currentStep === steps.length - 1 ? handleSubmit : nextStep}
             >
@@ -856,6 +2113,13 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                     ref={formContentRef}
                 >
                     {renderFormStep()}
+                    
+                    {/* Отображение ошибки отправки */}
+                    {submitError && (
+                        <div style={{ color: '#ff4d4f', fontSize: '14px', textAlign: 'center', padding: '16px', backgroundColor: '#fff2f0', border: '1px solid #ffccc7', borderRadius: '6px', marginBottom: '16px' }}>
+                            {submitError}
+                        </div>
+                    )}
                 </div>
 
                 <div className={styles.formActions}>

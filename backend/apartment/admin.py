@@ -6,7 +6,7 @@ from .models import Apartment, ApartmentImage
 class ApartmentAdmin(admin.ModelAdmin):
     list_display = [
         'address', 'property_type', 'deal_type', 'price', 
-        'total_area', 'rooms', 'status', 'owner', 'created_at'
+        'total_area_from', 'total_area_to', 'rooms', 'status', 'owner', 'created_at'
     ]
     list_filter = [
         'status', 'property_type', 'deal_type', 'bathroom_type', 'view',
@@ -20,10 +20,17 @@ class ApartmentAdmin(admin.ModelAdmin):
             'fields': ('owner', 'status', 'rejection_reason', 'property_type', 'address')
         }),
         ('Площади', {
-            'fields': ('total_area', 'living_area', 'kitchen_area')
+            'fields': (
+                ('total_area_from', 'total_area_to'),
+                ('living_area_from', 'living_area_to'),
+                ('kitchen_area_from', 'kitchen_area_to')
+            )
         }),
         ('Этажность', {
-            'fields': ('floor',)
+            'fields': (
+                ('floor_from', 'floor_to'),
+                ('total_floors_from', 'total_floors_to')
+            )
         }),
         ('Характеристики', {
             'fields': ('rooms', 'bathroom_type', 'view')
