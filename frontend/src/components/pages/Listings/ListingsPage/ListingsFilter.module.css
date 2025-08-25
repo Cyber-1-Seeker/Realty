@@ -1,0 +1,455 @@
+.filterContainer {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 24px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.filterContainer.collapsed {
+    padding: 0;
+}
+
+.filterContainer.collapsed .filterContent {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+}
+
+.filterContent {
+    max-height: 1000px;
+    opacity: 1;
+    transition: all 0.3s ease;
+}
+
+.filterHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 20px 0 20px;
+    margin-bottom: 20px;
+}
+
+.filterHeader.collapsed {
+    padding: 20px;
+    margin-bottom: 0;
+}
+
+.filterTitle {
+    flex: 1;
+}
+
+.filterContent {
+    padding: 0 20px 20px 20px;
+}
+
+.resultsCount {
+    font-size: 14px;
+    color: #666;
+    margin-top: 4px;
+    font-weight: 400;
+}
+
+.filterIcon {
+    font-size: 20px;
+    color: #1890ff;
+    margin-bottom: 5px;
+}
+
+.collapseButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #666;
+    font-size: 14px;
+}
+
+.collapseButton:hover {
+    background: #f5f5f5;
+    color: #333;
+}
+
+.collapseButton .icon {
+    transition: transform 0.3s ease;
+}
+
+.collapseButton.collapsed .icon {
+    transform: rotate(-90deg);
+}
+
+.filterHeader h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+}
+
+.filterCollapse {
+    margin-bottom: 16px;
+}
+
+.filterSection {
+    padding: 16px 0;
+}
+
+.rangeInputs {
+    margin-bottom: 16px;
+}
+
+.inputGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+
+
+.rangeSlider {
+    margin-top: 8px;
+}
+
+.filterActions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-start;
+}
+
+.applyButton {
+    min-width: 140px;
+}
+
+.clearButton {
+    min-width: 100px;
+}
+
+/* Ночная тема - используем точно такие же стили как в AddListingForm */
+[data-theme="dark"] .filterContainer,
+.dark .filterContainer {
+    background-color: #111827;
+    color: #f3f4f6;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="dark"] .filterContent,
+.dark .filterContent {
+    background-color: #111827;
+}
+
+[data-theme="dark"] .filterHeader h3,
+.dark .filterHeader h3 {
+    color: #f3f4f6;
+}
+
+[data-theme="dark"] .resultsCount,
+.dark .resultsCount {
+    color: #9ca3af;
+}
+
+[data-theme="dark"] .filterIcon,
+.dark .filterIcon {
+    color: #60a5fa;
+}
+
+[data-theme="dark"] .collapseButton,
+.dark .collapseButton {
+    color: #f3f4f6;
+}
+
+[data-theme="dark"] .collapseButton:hover,
+.dark .collapseButton:hover {
+    background-color: #374151;
+    color: #f3f4f6;
+}
+
+[data-theme="dark"] .filterSection,
+.dark .filterSection {
+    color: #f3f4f6;
+}
+
+
+
+[data-theme="dark"] .rangeSlider,
+.dark .rangeSlider {
+    color: #f3f4f6;
+}
+
+
+
+/* Стили для основных текстовых элементов в темной теме */
+[data-theme="dark"] .filterContainer h3,
+.dark .filterContainer h3,
+[data-theme="dark"] .filterContainer .resultsCount,
+.dark .filterContainer .resultsCount,
+[data-theme="dark"] .filterContainer .collapseButton,
+.dark .filterContainer .collapseButton {
+    color: #f3f4f6 !important;
+}
+
+/* Стили для лейблов "От" и "До" в темной теме */
+[data-theme="dark"] .filterContainer .inputGroup label,
+.dark .filterContainer .inputGroup label {
+    color: #f3f4f6 !important;
+    font-weight: 500 !important;
+}
+
+/* Стили для Ant Design компонентов - точно как в AddListingForm */
+[data-theme="dark"] :global(.ant-slider-rail),
+.dark :global(.ant-slider-rail) {
+    background-color: #4b5563 !important; /* Более яркий серый вместо черного */
+}
+
+[data-theme="dark"] :global(.ant-slider-track),
+.dark :global(.ant-slider-track) {
+    background-color: #60a5fa !important; /* Яркий синий цвет для активной части */
+    box-shadow: 0 0 8px rgba(96, 165, 250, 0.4) !important; /* Добавляем свечение */
+}
+
+[data-theme="dark"] :global(.ant-slider-handle),
+.dark :global(.ant-slider-handle) {
+    border-color: #60a5fa !important; /* Яркая граница для ползунка */
+    background-color: #ffffff !important; /* Белый фон для ползунка */
+    box-shadow: 0 0 12px rgba(96, 165, 250, 0.6) !important; /* Яркое свечение */
+}
+
+[data-theme="dark"] :global(.ant-slider-handle:hover),
+.dark :global(.ant-slider-handle:hover) {
+    border-color: #93c5fd !important; /* Еще более яркий при наведении */
+    box-shadow: 0 0 16px rgba(96, 165, 250, 0.8) !important; /* Усиленное свечение */
+}
+
+[data-theme="dark"] :global(.ant-slider-handle:focus),
+.dark :global(.ant-slider-handle:focus) {
+    border-color: #93c5fd !important;
+    box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.2), 0 0 16px rgba(96, 165, 250, 0.8) !important;
+}
+
+[data-theme="dark"] :global(.ant-slider-mark-text),
+.dark :global(.ant-slider-mark-text) {
+    color: #e5e7eb !important; /* Более яркий цвет для меток */
+}
+
+[data-theme="dark"] :global(.ant-slider-mark-text-active),
+.dark :global(.ant-slider-mark-text-active) {
+    color: #60a5fa !important; /* Яркий цвет для активных меток */
+}
+
+[data-theme="dark"] :global(.ant-input-number),
+.dark :global(.ant-input-number),
+[data-theme="dark"] :global(.ant-input-number-input),
+.dark :global(.ant-input-number-input) {
+    background-color: #111827 !important;
+    border-color: #374151 !important;
+    color: #f3f4f6 !important;
+}
+
+[data-theme="dark"] :global(.ant-input-number:hover),
+.dark :global(.ant-input-number:hover) {
+    border-color: #60a5fa !important;
+}
+
+[data-theme="dark"] :global(.ant-input-number:focus),
+.dark :global(.ant-input-number:focus) {
+    border-color: #60a5fa !important;
+    box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.2) !important;
+}
+
+/* Добавляем стили для placeholder как в модалке */
+[data-theme="dark"] :global(.ant-input-number::placeholder),
+.dark :global(.ant-input-number::placeholder) {
+    color: #9ca3af !important;
+}
+
+[data-theme="dark"] :global(.ant-btn),
+.dark :global(.ant-btn) {
+    background-color: #374151 !important;
+    border-color: #374151 !important;
+    color: #f3f4f6 !important;
+}
+
+[data-theme="dark"] :global(.ant-btn:hover),
+.dark :global(.ant-btn:hover) {
+    background-color: #4b5563 !important;
+    border-color: #4b5563 !important;
+}
+
+[data-theme="dark"] :global(.ant-btn-primary),
+.dark :global(.ant-btn-primary) {
+    background-color: #3b82f6 !important;
+    border-color: #3b82f6 !important;
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] :global(.ant-btn-primary:hover),
+.dark :global(.ant-btn-primary:hover) {
+    background-color: #2563eb !important;
+    border-color: #2563eb !important;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3) !important;
+}
+
+[data-theme="dark"] :global(.ant-collapse),
+.dark :global(.ant-collapse) {
+    background-color: #111827 !important;
+    border-color: #374151 !important;
+}
+
+[data-theme="dark"] :global(.ant-collapse-item),
+.dark :global(.ant-collapse-item) {
+    background-color: #111827 !important;
+    border-color: #374151 !important;
+}
+
+[data-theme="dark"] :global(.ant-collapse-header),
+.dark :global(.ant-collapse-header) {
+    background-color: #111827 !important;
+    color: #f3f4f6 !important;
+}
+
+[data-theme="dark"] :global(.ant-collapse-content),
+.dark :global(.ant-collapse-content) {
+    background-color: #111827 !important;
+    border-color: #374151 !important;
+}
+
+[data-theme="dark"] :global(.ant-collapse-content-box),
+.dark :global(.ant-collapse-content-box) {
+    background-color: #111827 !important;
+    color: #f3f4f6 !important;
+}
+
+[data-theme="dark"] :global(.ant-divider),
+.dark :global(.ant-divider) {
+    border-color: #374151 !important;
+}
+
+/* Дополнительные стили для collapse как в модалке */
+[data-theme="dark"] :global(.ant-collapse-header-text),
+.dark :global(.ant-collapse-header-text) {
+    color: #f3f4f6 !important;
+}
+
+[data-theme="dark"] :global(.ant-collapse-expand-icon),
+.dark :global(.ant-collapse-expand-icon) {
+    color: #f3f4f6 !important;
+}
+
+/* Стили для всех возможных текстовых элементов Ant Design */
+[data-theme="dark"] :global(.ant-form-item-label > label),
+.dark :global(.ant-form-item-label > label) {
+    color: #f3f4f6 !important;
+}
+
+[data-theme="dark"] :global(.ant-form-item-extra),
+.dark :global(.ant-form-item-extra) {
+    color: #9ca3af !important;
+}
+
+[data-theme="dark"] :global(.ant-form-item-explain),
+.dark :global(.ant-form-item-explain) {
+    color: #9ca3af !important;
+}
+
+[data-theme="dark"] :global(.ant-select-selection-item),
+.dark :global(.ant-select-selection-item) {
+    color: #f3f4f6 !important;
+}
+
+[data-theme="dark"] :global(.ant-select-selection-placeholder),
+.dark :global(.ant-select-selection-placeholder) {
+    color: #9ca3af !important;
+}
+
+/* Стили для InputNumber компонентов */
+[data-theme="dark"] :global(.ant-input-number),
+.dark :global(.ant-input-number) {
+    background-color: #374151 !important;
+    border-color: #4b5563 !important;
+    color: #f3f4f6 !important;
+}
+
+[data-theme="dark"] :global(.ant-input-number-input),
+.dark :global(.ant-input-number-input) {
+    color: #f3f4f6 !important;
+}
+
+[data-theme="dark"] :global(.ant-input-number-placeholder),
+.dark :global(.ant-input-number-placeholder) {
+    color: #9ca3af !important;
+}
+
+/* Стили для collapse заголовков */
+[data-theme="dark"] :global(.ant-collapse-header),
+.dark :global(.ant-collapse-header) {
+    color: #f3f4f6 !important;
+}
+
+[data-theme="dark"] :global(.ant-collapse-header-text),
+.dark :global(.ant-collapse-header-text) {
+    color: #f3f4f6 !important;
+}
+
+/* Стили для expand иконки */
+[data-theme="dark"] :global(.ant-collapse-expand-icon),
+.dark :global(.ant-collapse-expand-icon) {
+    color: #f3f4f6 !important;
+}
+
+[data-theme="dark"] .collapseButton,
+.dark .collapseButton {
+    color: #ffffff;
+}
+
+[data-theme="dark"] .collapseButton:hover,
+.dark .collapseButton:hover {
+    background: #333333;
+    color: #ffffff;
+}
+
+[data-theme="dark"] .filterHeader h3,
+.dark .filterHeader h3 {
+    color: #ffffff;
+}
+
+[data-theme="dark"] .filterIcon,
+.dark .filterIcon {
+    color: #60a5fa;
+}
+
+[data-theme="dark"] .resultsCount,
+.dark .resultsCount {
+    color: #cccccc;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -101,6 +101,7 @@
   /* Фиксируем размер кнопки, чтобы избежать мерцания при hover карточки */
   transform: translateZ(0);
   backface-visibility: hidden;
+  text-decoration: none;
 }
 
 .button::before {

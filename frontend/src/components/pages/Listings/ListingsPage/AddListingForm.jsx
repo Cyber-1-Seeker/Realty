@@ -770,8 +770,8 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                                 </div>
                             ) : (
                                 // Режим диапазона
-                                <div className={styles.rangeFieldsContainer}>
-                                    <div className={styles.rangeField}>
+                            <div className={styles.rangeFieldsContainer}>
+                                <div className={styles.rangeField}>
                                         <div className={styles.fieldLabel} htmlFor="total_area_from_input">От (м²)</div>
                                     <Form.Item
                                         name="total_area_from"
@@ -1021,8 +1021,8 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                                         </div>
                                     ) : (
                                         // Режим диапазона
-                                        <div className={styles.rangeFieldsContainer}>
-                                <div className={styles.rangeField}>
+                                    <div className={styles.rangeFieldsContainer}>
+                                        <div className={styles.rangeField}>
                                     <div className={styles.fieldLabel} htmlFor="floor_from_input">От</div>
                                             <Form.Item
                                                 name="floor_from"
@@ -1241,8 +1241,8 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                                         </div>
                                     ) : (
                                         // Режим диапазона
-                                        <div className={styles.rangeFieldsContainer}>
-                                <div className={styles.rangeField}>
+                                    <div className={styles.rangeFieldsContainer}>
+                                        <div className={styles.rangeField}>
                                     <div className={styles.fieldLabel} htmlFor="total_floors_from_input">От</div>
                                             <Form.Item
                                                 name="total_floors_from"
@@ -1515,8 +1515,8 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                                 </div>
                             ) : (
                                 // Режим диапазона
-                                <div className={styles.rangeFieldsContainer}>
-                                    <div className={styles.rangeField}>
+                            <div className={styles.rangeFieldsContainer}>
+                                <div className={styles.rangeField}>
                                         <div className={styles.fieldLabel} htmlFor="living_area_from_input">От (м²)</div>
                                     <Form.Item
                                         name="living_area_from"
@@ -1734,8 +1734,8 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                                 </div>
                             ) : (
                                 // Режим диапазона
-                                <div className={styles.rangeFieldsContainer}>
-                                    <div className={styles.rangeField}>
+                            <div className={styles.rangeFieldsContainer}>
+                                <div className={styles.rangeField}>
                                         <div className={styles.fieldLabel} htmlFor="kitchen_area_from_input">От (м²)</div>
                                     <Form.Item
                                         name="kitchen_area_from"
@@ -1872,11 +1872,11 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                                     </Form.Item>
                                     <div className={styles.rangeFieldHint}>
                                         Укажите максимальную площадь кухни. Если точная площадь известна, оставьте то же значение
-                                    </div>
-                                </div>
-                            </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                         )}
-                        </div>
+                                        </div>
                     </>
                 );
 

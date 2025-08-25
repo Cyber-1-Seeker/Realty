@@ -6,6 +6,7 @@ import { useTheme } from '@/context/ThemeContext';
 
 import backgroundImage from '@/assets/Listings/Hero2.jpg';
 import ListingGridSection from "@/components/pages/Listings/ListingsPage/ListingGridSection.jsx";
+import ListingsFilter from "@/components/pages/Listings/ListingsPage/ListingsFilter.jsx";
 import ModalForm from "@/components/pages/Listings/ListingsPage/ModalForm.jsx";
 import AddListingForm from "@/components/pages/Listings/ListingsPage/AddListingForm.jsx";
 import UrgentSellForm from "@/components/pages/Listings/ListingsPage/UrgentSellForm.jsx";
@@ -16,6 +17,8 @@ import { API_URL } from '@/utils/config';
 const ListingsPage = ({isAuthenticated, currentUser}) => { // Добавляем currentUser в пропсы
     const { theme } = useTheme();
     const [listings, setListings] = useState([]);
+    const [filteredListings, setFilteredListings] = useState([]);
+    const [activeFilters, setActiveFilters] = useState({});
     // const [visibleCount, setVisibleCount] = useState(6); // Отключаем пагинацию
     const [showAddForm, setShowAddForm] = useState(false);
     const [showUrgentForm, setShowUrgentForm] = useState(false);
@@ -29,8 +32,143 @@ const ListingsPage = ({isAuthenticated, currentUser}) => { // Добавляем
     const fetchListings = () => {
         axios
             .get(`${API_URL}/api/apartment/apartments/`)
-            .then((res) => setListings(res.data))
+            .then((res) => {
+                
+                
+                setListings(res.data);
+                setFilteredListings(res.data); // Инициализируем отфильтрованный список
+            })
             .catch((err) => console.error('Ошибка загрузки квартир:', err));
+    };
+
+    // Функция фильтрации квартир
+    const applyFilters = (filters) => {
+        setActiveFilters(filters);
+        
+        let filtered = [...listings];
+        
+
+        
+        // Применяем ВСЕ фильтры одновременно к каждой квартире
+        filtered = filtered.filter((listing) => {
+            let passesAllFilters = true;
+            
+            // 1. Фильтр по общей площади
+            if (filters.totalAreaFrom != null || filters.totalAreaTo != null) {
+                const hasFrom = listing.total_area_from !== null && listing.total_area_from !== undefined;
+                const hasTo = listing.total_area_to !== null && listing.total_area_to !== undefined;
+                
+                if (!hasFrom && !hasTo) {
+                    passesAllFilters = false;
+                } else {
+                    let passesAreaFilter = true;
+                    
+                    if (filters.totalAreaFrom != null && hasFrom) {
+                        const areaFrom = parseFloat(listing.total_area_from);
+                        passesAreaFilter = passesAreaFilter && areaFrom >= filters.totalAreaFrom;
+                    }
+                    
+                    if (filters.totalAreaTo != null && hasTo) {
+                        const areaTo = parseFloat(listing.total_area_to);
+                        passesAreaFilter = passesAreaFilter && areaTo <= filters.totalAreaTo;
+                    }
+                    
+                    if (!passesAreaFilter) {
+                        passesAllFilters = false;
+                    }
+                }
+            }
+            
+            // 2. Фильтр по жилой площади
+            if (passesAllFilters && (filters.livingAreaFrom != null || filters.livingAreaTo != null)) {
+                const hasFrom = listing.living_area_from !== null && listing.living_area_from !== undefined;
+                const hasTo = listing.living_area_to !== null && listing.living_area_to !== undefined;
+                
+                if (!hasFrom && !hasTo) {
+                    passesAllFilters = false;
+                } else {
+                    let passesLivingAreaFilter = true;
+                    
+                    if (filters.livingAreaFrom != null && hasFrom) {
+                        const areaFrom = parseFloat(listing.living_area_from);
+                        passesLivingAreaFilter = passesLivingAreaFilter && areaFrom >= filters.livingAreaFrom;
+                    }
+                    
+                    if (filters.livingAreaTo != null && hasTo) {
+                        const areaTo = parseFloat(listing.living_area_to);
+                        passesLivingAreaFilter = passesLivingAreaFilter && areaTo <= filters.livingAreaTo;
+                    }
+                    
+                    if (!passesLivingAreaFilter) {
+                        passesAllFilters = false;
+                    }
+                }
+            }
+            
+            // 3. Фильтр по этажу
+            if (passesAllFilters && (filters.floorFrom != null || filters.floorTo != null)) {
+                const hasFrom = listing.floor_from !== null && listing.floor_from !== undefined;
+                const hasTo = listing.floor_to !== null && listing.floor_to !== undefined;
+                
+                if (!hasFrom && !hasTo) {
+                    passesAllFilters = false;
+                } else {
+                    let passesFloorFilter = true;
+                    
+                    if (filters.floorFrom != null && hasFrom) {
+                        const floorFrom = parseInt(listing.floor_from);
+                        passesFloorFilter = passesFloorFilter && floorFrom >= filters.floorFrom;
+                    }
+                    
+                    if (filters.floorTo != null && hasTo) {
+                        const floorTo = parseInt(listing.floor_to);
+                        passesFloorFilter = passesFloorFilter && floorTo <= filters.floorTo;
+                    }
+                    
+                    if (!passesFloorFilter) {
+                        passesAllFilters = false;
+                    }
+                }
+            }
+            
+            // 4. Фильтр по этажности дома
+            if (passesAllFilters && (filters.totalFloorsFrom != null || filters.totalFloorsTo != null)) {
+                const hasFrom = listing.total_floors_from !== null && listing.total_floors_from !== undefined;
+                const hasTo = listing.total_floors_to !== null && listing.total_floors_to !== undefined;
+                
+                if (!hasFrom && !hasTo) {
+                    passesAllFilters = false;
+                } else {
+                    let passesTotalFloorsFilter = true;
+                    
+                    if (filters.totalFloorsFrom != null && hasFrom) {
+                        const floorsFrom = parseInt(listing.total_floors_from);
+                        passesTotalFloorsFilter = passesTotalFloorsFilter && floorsFrom >= filters.totalFloorsFrom;
+                    }
+                    
+                    if (filters.totalFloorsTo != null && hasTo) {
+                        const floorsTo = parseInt(listing.total_floors_to);
+                        passesTotalFloorsFilter = passesTotalFloorsFilter && floorsTo <= filters.totalFloorsTo;
+                    }
+                    
+                    if (!passesTotalFloorsFilter) {
+                        passesAllFilters = false;
+                    }
+                }
+            }
+            
+            return passesAllFilters;
+        });
+        
+
+        
+        setFilteredListings(filtered);
+    };
+
+    // Очистка фильтров
+    const clearFilters = () => {
+        setActiveFilters({});
+        setFilteredListings(listings);
     };
 
     const guard = useAuthGuard(isAuthenticated, () => setShowAuthModal(true));
@@ -69,7 +207,15 @@ const ListingsPage = ({isAuthenticated, currentUser}) => { // Добавляем
             />
 
             <div className={styles.container} id="listings-root">
-                <ListingGridSection listings={listings}/>
+                <ListingsFilter 
+                    onFilterChange={applyFilters}
+                    onClearFilters={clearFilters}
+                    totalCount={listings.length}
+                    filteredCount={filteredListings.length}
+                    activeFilters={activeFilters}
+                />
+                
+                <ListingGridSection listings={filteredListings}/>
 
                 {/*
                 {hasMore && (
