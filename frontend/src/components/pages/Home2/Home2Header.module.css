@@ -21,7 +21,7 @@
 }
 
 .home2Header.dark {
-    background: #111827;
+    background: transparent;
     backdrop-filter: none;
     border-bottom: none;
 }
