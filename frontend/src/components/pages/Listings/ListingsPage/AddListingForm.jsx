@@ -188,9 +188,38 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                 const fromValue = form.getFieldValue(`${fieldName}_from`);
                 if (fromValue) {
                     form.setFieldsValue({ [`${fieldName}_exact`]: fromValue });
+                } else {
+                    // Если нет значения "от", устанавливаем минимальное значение по умолчанию
+                    const minValue = fieldName === 'total_area' || fieldName === 'living_area' || fieldName === 'kitchen_area' ? 1.0 : 1;
+                    form.setFieldsValue({ 
+                        [`${fieldName}_exact`]: minValue,
+                        [`${fieldName}_from`]: minValue,
+                        [`${fieldName}_to`]: minValue
+                    });
+                }
+            } else {
+                // При переключении на диапазон, берем точное значение и устанавливаем его как "от" и "до"
+                const exactValue = form.getFieldValue(`${fieldName}_exact`);
+                if (exactValue) {
+                    form.setFieldsValue({ 
+                        [`${fieldName}_from`]: exactValue,
+                        [`${fieldName}_to`]: exactValue
+                    });
+                } else {
+                    // Если нет точного значения, устанавливаем минимальное значение по умолчанию
+                    const minValue = fieldName === 'total_area' || fieldName === 'living_area' || fieldName === 'kitchen_area' ? 1.0 : 1;
+                    form.setFieldsValue({ 
+                        [`${fieldName}_from`]: minValue,
+                        [`${fieldName}_to`]: minValue
+                    });
                 }
             }
             onToggle(newMode);
+            
+            // Принудительно обновляем форму для корректной работы ползунков
+            setTimeout(() => {
+                form.validateFields();
+            }, 50);
         };
 
         return (
@@ -238,14 +267,19 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
     // Отслеживаем изменения полей для валидации
     const totalAreaFrom = Form.useWatch('total_area_from', form);
     const totalAreaTo = Form.useWatch('total_area_to', form);
+    const totalAreaExact = Form.useWatch('total_area_exact', form);
     const floorFrom = Form.useWatch('floor_from', form);
     const floorTo = Form.useWatch('floor_to', form);
+    const floorExact = Form.useWatch('floor_exact', form);
     const totalFloorsFrom = Form.useWatch('total_floors_from', form);
     const totalFloorsTo = Form.useWatch('total_floors_to', form);
+    const totalFloorsExact = Form.useWatch('total_floors_exact', form);
     const livingAreaFrom = Form.useWatch('living_area_from', form);
     const livingAreaTo = Form.useWatch('living_area_to', form);
+    const livingAreaExact = Form.useWatch('living_area_exact', form);
     const kitchenAreaFrom = Form.useWatch('kitchen_area_from', form);
     const kitchenAreaTo = Form.useWatch('kitchen_area_to', form);
+    const kitchenAreaExact = Form.useWatch('kitchen_area_exact', form);
     const rooms = Form.useWatch('rooms', form);
 
     // Автоматическая прокрутка вверх при смене шага
@@ -254,6 +288,51 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
             formContentRef.current.scrollTop = 0;
         }
     }, [currentStep]);
+
+    // Инициализация формы при первом рендере
+    useEffect(() => {
+        // Устанавливаем начальные значения для точных полей
+        if (totalAreaMode === 'exact') {
+            const exactValue = totalAreaExact || 1.00;
+            form.setFieldsValue({
+                total_area_exact: exactValue,
+                total_area_from: exactValue,
+                total_area_to: exactValue
+            });
+        }
+        if (floorMode === 'exact') {
+            const exactValue = floorExact || 1;
+            form.setFieldsValue({
+                floor_exact: exactValue,
+                floor_from: exactValue,
+                floor_to: exactValue
+            });
+        }
+        if (totalFloorsMode === 'exact') {
+            const exactValue = totalFloorsExact || 1;
+            form.setFieldsValue({
+                total_floors_exact: exactValue,
+                total_floors_from: exactValue,
+                total_floors_to: exactValue
+            });
+        }
+        if (livingAreaMode === 'exact') {
+            const exactValue = livingAreaExact || 1.00;
+            form.setFieldsValue({
+                living_area_exact: exactValue,
+                living_area_from: exactValue,
+                living_area_to: exactValue
+            });
+        }
+        if (kitchenAreaMode === 'exact') {
+            const exactValue = kitchenAreaExact || 1.00;
+            form.setFieldsValue({
+                kitchen_area_exact: exactValue,
+                kitchen_area_from: exactValue,
+                kitchen_area_to: exactValue
+            });
+        }
+    }, [totalAreaExact, floorExact, totalFloorsExact, livingAreaExact, kitchenAreaExact, totalAreaMode, floorMode, totalFloorsMode, livingAreaMode, kitchenAreaMode]); // Зависимости для корректной работы
 
     // Автоматическое обновление количества комнат при изменении типа недвижимости
     useEffect(() => {
@@ -264,70 +343,116 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
         }
     }, [propertyType, form]);
 
+    // Принудительное обновление формы при изменении режимов для корректной работы ползунков
+    useEffect(() => {
+        if (formContentRef.current) {
+            // Небольшая задержка для корректного обновления UI
+            setTimeout(() => {
+                form.validateFields();
+                // Дополнительно обновляем UI для всех полей в точном режиме
+                if (totalAreaMode === 'exact') {
+                    const exactValue = totalAreaExact || 1.00;
+                    form.setFieldsValue({
+                        total_area_exact: exactValue,
+                        total_area_from: exactValue,
+                        total_area_to: exactValue
+                    });
+                }
+                if (floorMode === 'exact') {
+                    const exactValue = floorExact || 1;
+                    form.setFieldsValue({
+                        floor_exact: exactValue,
+                        floor_from: exactValue,
+                        floor_to: exactValue
+                    });
+                }
+                if (totalFloorsMode === 'exact') {
+                    const exactValue = totalFloorsExact || 1;
+                    form.setFieldsValue({
+                        total_floors_exact: exactValue,
+                        total_floors_from: exactValue,
+                        total_floors_to: exactValue
+                    });
+                }
+                if (livingAreaMode === 'exact') {
+                    const exactValue = livingAreaExact || 1.00;
+                    form.setFieldsValue({
+                        living_area_exact: exactValue,
+                        living_area_from: exactValue,
+                        living_area_to: exactValue
+                    });
+                }
+                if (kitchenAreaMode === 'exact') {
+                    const exactValue = kitchenAreaExact || 1.00;
+                    form.setFieldsValue({
+                        kitchen_area_exact: exactValue,
+                        kitchen_area_from: exactValue,
+                        kitchen_area_to: exactValue
+                    });
+                }
+            }, 100);
+        }
+    }, [totalAreaMode, floorMode, totalFloorsMode, livingAreaMode, kitchenAreaMode]);
+
     // Синхронизация между точным значением и диапазоном для общей площади
     useEffect(() => {
-        if (totalAreaMode === 'exact') {
-            const exactValue = form.getFieldValue('total_area_exact');
-            if (exactValue) {
-                form.setFieldsValue({ 
-                    total_area_from: exactValue,
-                    total_area_to: exactValue
-                });
-            }
+        if (totalAreaMode === 'exact' && totalAreaExact) {
+            form.setFieldsValue({ 
+                total_area_from: totalAreaExact,
+                total_area_to: totalAreaExact
+            });
         }
-    }, [totalAreaMode, form]);
+    }, [totalAreaMode, totalAreaExact, form]);
 
     // Синхронизация при изменении режима этажа
     useEffect(() => {
-        if (floorMode === 'exact') {
-            const exactValue = form.getFieldValue('floor_exact');
-            if (exactValue) {
-                form.setFieldsValue({ 
-                    floor_from: exactValue,
-                    floor_to: exactValue
-                });
-            }
+        if (floorMode === 'exact' && floorExact) {
+            form.setFieldsValue({ 
+                floor_from: floorExact,
+                floor_to: floorExact
+            });
         }
-    }, [floorMode, form]);
+    }, [floorMode, floorExact, form]);
 
     // Синхронизация при изменении режима этажности
     useEffect(() => {
-        if (totalFloorsMode === 'exact') {
-            const exactValue = form.getFieldValue('total_floors_exact');
-            if (exactValue) {
-                form.setFieldsValue({ 
-                    total_floors_from: exactValue,
-                    total_floors_to: exactValue
-                });
-            }
+        if (totalFloorsMode === 'exact' && totalFloorsExact) {
+            form.setFieldsValue({ 
+                total_floors_from: totalFloorsExact,
+                total_floors_to: totalFloorsExact
+            });
         }
-    }, [totalFloorsMode, form]);
+    }, [totalFloorsMode, totalFloorsExact, form]);
 
     // Синхронизация при изменении режима жилой площади
     useEffect(() => {
-        if (livingAreaMode === 'exact') {
-            const exactValue = form.getFieldValue('living_area_exact');
-            if (exactValue) {
-                form.setFieldsValue({ 
-                    living_area_from: exactValue,
-                    living_area_to: exactValue
-                });
-            }
+        if (livingAreaMode === 'exact' && livingAreaExact) {
+            form.setFieldsValue({ 
+                living_area_from: livingAreaExact,
+                living_area_to: livingAreaExact
+            });
         }
-    }, [livingAreaMode, form]);
+    }, [livingAreaMode, livingAreaExact, form]);
 
     // Синхронизация при изменении режима площади кухни
     useEffect(() => {
-        if (kitchenAreaMode === 'exact') {
-            const exactValue = form.getFieldValue('kitchen_area_exact');
-            if (exactValue) {
-                form.setFieldsValue({ 
-                    kitchen_area_from: exactValue,
-                    kitchen_area_to: exactValue
-                });
-            }
+        if (kitchenAreaMode === 'exact' && kitchenAreaExact) {
+            form.setFieldsValue({ 
+                kitchen_area_from: kitchenAreaExact,
+                kitchen_area_to: kitchenAreaExact
+            });
         }
-    }, [kitchenAreaMode, form]);
+    }, [kitchenAreaMode, kitchenAreaExact, form]);
+
+
+
+
+
+
+
+
+
+
 
     // Определение констант для типов
     const propertyTypes = [
@@ -508,6 +633,28 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                 setSubmitError(validationErrors.join('. '));
                 setLoading(false);
                 return;
+            }
+
+            // Дополнительная синхронизация перед отправкой для полей в точном режиме
+            if (totalAreaMode === 'exact' && allValues.total_area_exact) {
+                allValues.total_area_from = allValues.total_area_exact;
+                allValues.total_area_to = allValues.total_area_exact;
+            }
+            if (floorMode === 'exact' && allValues.floor_exact) {
+                allValues.floor_from = allValues.floor_exact;
+                allValues.floor_to = allValues.floor_exact;
+            }
+            if (totalFloorsMode === 'exact' && allValues.total_floors_exact) {
+                allValues.total_floors_from = allValues.total_floors_exact;
+                allValues.total_floors_to = allValues.total_floors_exact;
+            }
+            if (livingAreaMode === 'exact' && allValues.living_area_exact) {
+                allValues.living_area_from = allValues.living_area_exact;
+                allValues.living_area_to = allValues.living_area_exact;
+            }
+            if (kitchenAreaMode === 'exact' && allValues.kitchen_area_exact) {
+                allValues.kitchen_area_from = allValues.kitchen_area_exact;
+                allValues.kitchen_area_to = allValues.kitchen_area_exact;
             }
 
             const formData = new FormData();
@@ -804,14 +951,24 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                                                     step={0.01}
                                                     style={{ width: '120px' }}
                                                     addonAfter="м²"
-                                                    value={form.getFieldValue('total_area_exact') || 1.00}
+                                                    value={totalAreaExact || 1.00}
                                                     onChange={(value) => {
-                                                        if (value) {
+                                                        if (value !== null && value !== undefined) {
                                                             form.setFieldsValue({ 
                                                                 total_area_exact: value,
                                                                 total_area_from: value,
                                                                 total_area_to: value
                                                             });
+                                                            // Принудительно обновляем форму для корректной работы ползунков
+                                                            setTimeout(() => {
+                                                                form.validateFields(['total_area_exact']);
+                                                                // Дополнительно обновляем UI
+                                                                form.setFieldsValue({ 
+                                                                    total_area_exact: value,
+                                                                    total_area_from: value,
+                                                                    total_area_to: value
+                                                                });
+                                                            }, 0);
                                                         }
                                                     }}
                                                 />
@@ -821,17 +978,29 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                                                 max={1000}
                                                 step={0.01}
                                                 style={{ width: '100%' }}
-                                                value={form.getFieldValue('total_area_exact') || 1.00}
+                                                value={totalAreaExact || 1.00}
                                                 tooltip={{
                                                     formatter: (value) => `${value} м²`,
                                                     placement: 'top'
                                                 }}
                                                 onChange={(value) => {
-                                                    form.setFieldsValue({ 
-                                                        total_area_exact: value,
-                                                        total_area_from: value,
-                                                        total_area_to: value
-                                                    });
+                                                    if (value !== null && value !== undefined) {
+                                                        form.setFieldsValue({ 
+                                                            total_area_exact: value,
+                                                            total_area_from: value,
+                                                            total_area_to: value
+                                                        });
+                                                        // Принудительно обновляем форму для корректной работы полей ввода
+                                                        setTimeout(() => {
+                                                            form.validateFields(['total_area_exact']);
+                                                            // Дополнительно обновляем UI
+                                                            form.setFieldsValue({ 
+                                                                total_area_exact: value,
+                                                                total_area_from: value,
+                                                                total_area_to: value
+                                                            });
+                                                        }, 0);
+                                                    }
                                                 }}
                                             />
                                         </div>
@@ -1062,14 +1231,24 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                                                             step={1}
                                                             style={{ width: '120px' }}
                                                             addonAfter="этаж"
-                                                            value={form.getFieldValue('floor_exact') || 1}
+                                                            value={floorExact || 1}
                                                             onChange={(value) => {
-                                                                if (value) {
+                                                                if (value !== null && value !== undefined) {
                                                                     form.setFieldsValue({ 
                                                                         floor_exact: value,
                                                                         floor_from: value,
                                                                         floor_to: value
                                                                     });
+                                                                    // Принудительно обновляем форму для корректной работы ползунков
+                                                                    setTimeout(() => {
+                                                                        form.validateFields(['floor_exact']);
+                                                                        // Дополнительно обновляем UI
+                                                                        form.setFieldsValue({ 
+                                                                            floor_exact: value,
+                                                                            floor_from: value,
+                                                                            floor_to: value
+                                                                        });
+                                                                    }, 0);
                                                                 }
                                                             }}
                                                         />
@@ -1079,17 +1258,29 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                                                         max={100}
                                                         step={1}
                                                         style={{ width: '100%' }}
-                                                        value={form.getFieldValue('floor_exact') || 1}
+                                                        value={floorExact || 1}
                                                         tooltip={{
                                                             formatter: (value) => `${value} этаж`,
                                                             placement: 'top'
                                                         }}
                                                         onChange={(value) => {
-                                                            form.setFieldsValue({ 
-                                                                floor_exact: value,
-                                                                floor_from: value,
-                                                                floor_to: value
-                                                            });
+                                                            if (value !== null && value !== undefined) {
+                                                                form.setFieldsValue({ 
+                                                                    floor_exact: value,
+                                                                    floor_from: value,
+                                                                    floor_to: value
+                                                                });
+                                                                // Принудительно обновляем форму для корректной работы полей ввода
+                                                                setTimeout(() => {
+                                                                    form.validateFields(['floor_exact']);
+                                                                    // Дополнительно обновляем UI
+                                                                    form.setFieldsValue({ 
+                                                                        floor_exact: value,
+                                                                        floor_from: value,
+                                                                        floor_to: value
+                                                                    });
+                                                                }, 0);
+                                                            }
                                                         }}
                                                     />
                                                 </div>
@@ -1287,14 +1478,24 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                                                             step={1}
                                                             style={{ width: '120px' }}
                                                             addonAfter="этажей"
-                                                            value={form.getFieldValue('total_floors_exact') || 1}
+                                                            value={totalFloorsExact || 1}
                                                             onChange={(value) => {
-                                                                if (value) {
+                                                                if (value !== null && value !== undefined) {
                                                                     form.setFieldsValue({ 
                                                                         total_floors_exact: value,
                                                                         total_floors_from: value,
                                                                         total_floors_to: value
                                                                     });
+                                                                    // Принудительно обновляем форму для корректной работы ползунков
+                                                                    setTimeout(() => {
+                                                                        form.validateFields(['total_floors_exact']);
+                                                                        // Дополнительно обновляем UI
+                                                                        form.setFieldsValue({ 
+                                                                            total_floors_exact: value,
+                                                                            total_floors_from: value,
+                                                                            total_floors_to: value
+                                                                        });
+                                                                    }, 0);
                                                                 }
                                                             }}
                                                         />
@@ -1304,17 +1505,29 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                                                         max={200}
                                                         step={1}
                                                         style={{ width: '100%' }}
-                                                        value={form.getFieldValue('total_floors_exact') || 1}
+                                                        value={totalFloorsExact || 1}
                                                         tooltip={{
                                                             formatter: (value) => `${value} этажей`,
                                                             placement: 'top'
                                                         }}
                                                         onChange={(value) => {
-                                                            form.setFieldsValue({ 
-                                                                total_floors_exact: value,
-                                                                total_floors_from: value,
-                                                                total_floors_to: value
-                                                            });
+                                                            if (value !== null && value !== undefined) {
+                                                                form.setFieldsValue({ 
+                                                                    total_floors_exact: value,
+                                                                    total_floors_from: value,
+                                                                    total_floors_to: value
+                                                                });
+                                                                // Принудительно обновляем форму для корректной работы полей ввода
+                                                                setTimeout(() => {
+                                                                    form.validateFields(['total_floors_exact']);
+                                                                    // Дополнительно обновляем UI
+                                                                    form.setFieldsValue({ 
+                                                                        total_floors_exact: value,
+                                                                        total_floors_from: value,
+                                                                        total_floors_to: value
+                                                                    });
+                                                                }, 0);
+                                                            }
                                                         }}
                                                     />
                                                 </div>
@@ -1573,14 +1786,24 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                                                     step={0.01}
                                                     style={{ width: '120px' }}
                                                     addonAfter="м²"
-                                                    value={form.getFieldValue('living_area_exact') || 1.00}
+                                                    value={livingAreaExact || 1.00}
                                                     onChange={(value) => {
-                                                        if (value) {
+                                                        if (value !== null && value !== undefined) {
                                                             form.setFieldsValue({ 
                                                                 living_area_exact: value,
                                                                 living_area_from: value,
                                                                 living_area_to: value
                                                             });
+                                                            // Принудительно обновляем форму для корректной работы ползунков
+                                                            setTimeout(() => {
+                                                                form.validateFields(['living_area_exact']);
+                                                                // Дополнительно обновляем UI
+                                                                form.setFieldsValue({ 
+                                                                    living_area_exact: value,
+                                                                    living_area_from: value,
+                                                                    living_area_to: value
+                                                                });
+                                                            }, 0);
                                                         }
                                                     }}
                                                 />
@@ -1590,17 +1813,29 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                                                 max={1000}
                                                 step={0.01}
                                                 style={{ width: '100%' }}
-                                                value={form.getFieldValue('living_area_exact') || 1.00}
+                                                value={livingAreaExact || 1.00}
                                                 tooltip={{
                                                     formatter: (value) => `${value} м²`,
                                                     placement: 'top'
                                                 }}
                                                 onChange={(value) => {
-                                                    form.setFieldsValue({ 
-                                                        living_area_exact: value,
-                                                        living_area_from: value,
-                                                        living_area_to: value
-                                                    });
+                                                    if (value !== null && value !== undefined) {
+                                                        form.setFieldsValue({ 
+                                                            living_area_exact: value,
+                                                            living_area_from: value,
+                                                            living_area_to: value
+                                                        });
+                                                        // Принудительно обновляем форму для корректной работы полей ввода
+                                                        setTimeout(() => {
+                                                            form.validateFields(['living_area_exact']);
+                                                            // Дополнительно обновляем UI
+                                                            form.setFieldsValue({ 
+                                                                living_area_exact: value,
+                                                                living_area_from: value,
+                                                                living_area_to: value
+                                                            });
+                                                        }, 0);
+                                                    }
                                                 }}
                                             />
                                         </div>
@@ -1805,14 +2040,24 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                                                     step={0.01}
                                                     style={{ width: '120px' }}
                                                     addonAfter="м²"
-                                                    value={form.getFieldValue('kitchen_area_exact') || 1.00}
+                                                    value={kitchenAreaExact || 1.00}
                                                     onChange={(value) => {
-                                                        if (value) {
+                                                        if (value !== null && value !== undefined) {
                                                             form.setFieldsValue({ 
                                                                 kitchen_area_exact: value,
                                                                 kitchen_area_from: value,
                                                                 kitchen_area_to: value
                                                             });
+                                                            // Принудительно обновляем форму для корректной работы ползунков
+                                                            setTimeout(() => {
+                                                                form.validateFields(['kitchen_area_exact']);
+                                                                // Дополнительно обновляем UI
+                                                                form.setFieldsValue({ 
+                                                                    kitchen_area_exact: value,
+                                                                    kitchen_area_from: value,
+                                                                    kitchen_area_to: value
+                                                                });
+                                                            }, 0);
                                                         }
                                                     }}
                                                 />
@@ -1822,17 +2067,29 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                                                 max={200}
                                                 step={0.01}
                                                 style={{ width: '100%' }}
-                                                value={form.getFieldValue('kitchen_area_exact') || 1.00}
+                                                value={kitchenAreaExact || 1.00}
                                                 tooltip={{
                                                     formatter: (value) => `${value} м²`,
                                                     placement: 'top'
                                                 }}
                                                 onChange={(value) => {
-                                                    form.setFieldsValue({ 
-                                                        kitchen_area_exact: value,
-                                                        kitchen_area_from: value,
-                                                        kitchen_area_to: value
-                                                    });
+                                                    if (value !== null && value !== undefined) {
+                                                        form.setFieldsValue({ 
+                                                            kitchen_area_exact: value,
+                                                            kitchen_area_from: value,
+                                                            kitchen_area_to: value
+                                                        });
+                                                        // Принудительно обновляем форму для корректной работы полей ввода
+                                                        setTimeout(() => {
+                                                            form.validateFields(['kitchen_area_exact']);
+                                                            // Дополнительно обновляем UI
+                                                            form.setFieldsValue({ 
+                                                                kitchen_area_exact: value,
+                                                                kitchen_area_from: value,
+                                                                kitchen_area_to: value
+                                                            });
+                                                        }, 0);
+                                                    }
                                                 }}
                                             />
                                         </div>

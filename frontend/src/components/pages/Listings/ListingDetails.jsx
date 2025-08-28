@@ -125,6 +125,22 @@ const ListingDetails = () => {
         return `${from} - ${to}${unit}`;
     };
 
+    // Специальная функция для отображения целых чисел (этаж, этажность)
+    const renderIntegerRange = (fromValue, toValue, unit = '') => {
+        if (!fromValue && !toValue) return '—';
+        if (fromValue && !toValue) return `${parseInt(fromValue)}${unit}`;
+        if (!fromValue && toValue) return `${parseInt(toValue)}${unit}`;
+        
+        const from = parseInt(fromValue);
+        const to = parseInt(toValue);
+        
+        if (from === to) {
+            return `${from}${unit}`;
+        }
+        
+        return `${from} - ${to}${unit}`;
+    };
+
     const renderPrice = (value) => {
         if (!value) return '—';
         return `${parseFloat(value).toLocaleString('ru-RU')} ₽`;
@@ -401,15 +417,15 @@ const ListingDetails = () => {
                             <DetailItem
                                 icon={<BuildOutlined/>}
                                 label="Этаж"
-                                value={apartment.floor_from && apartment.total_floors_from
-                                    ? `${renderRange(apartment.floor_from, apartment.floor_to, '')}/${renderRange(apartment.total_floors_from, apartment.total_floors_to, '')}`
+                                value={apartment.floor_from || apartment.floor_to
+                                    ? renderIntegerRange(apartment.floor_from, apartment.floor_to, '')
                                     : '—'}
                             />
                             <DetailItem
                                 icon={<BuildOutlined/>}
                                 label="Этажность дома"
-                                value={apartment.total_floors_from && apartment.total_floors_to
-                                    ? renderRange(apartment.total_floors_from, apartment.total_floors_to, ' этажей')
+                                value={apartment.total_floors_from || apartment.total_floors_to
+                                    ? renderIntegerRange(apartment.total_floors_from, apartment.total_floors_to, ' этажей')
                                     : '—'}
                             />
                         </div>

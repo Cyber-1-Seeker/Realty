@@ -227,6 +227,10 @@
     color: #d1d5db;
 }
 
+.dark .subsectionTitle{
+    color: #f3f4f6;
+}
+
 .dark .loadingContainer,
 .dark .errorContainer,
 .dark .noDataContainer {
