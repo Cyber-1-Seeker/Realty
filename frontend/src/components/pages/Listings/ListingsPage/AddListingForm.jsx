@@ -181,29 +181,42 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
     );
 
     // Компонент для переключения между точным значением и диапазоном
-    const ModeToggle = ({ mode, onToggle, label }) => (
-        <div className={styles.modeToggle}>
-            <span className={styles.modeToggleLabel}>{label}</span>
-            <div className={styles.modeToggleButtons}>
-                <Button
-                    type={mode === 'exact' ? 'primary' : 'default'}
-                    size="small"
-                    onClick={() => onToggle('exact')}
-                    className={styles.modeToggleButton}
-                >
-                    Точное значение
-                </Button>
-                <Button
-                    type={mode === 'range' ? 'primary' : 'default'}
-                    size="small"
-                    onClick={() => onToggle('range')}
-                    className={styles.modeToggleButton}
-                >
-                    Диапазон
-                </Button>
+    const ModeToggle = ({ mode, onToggle, label, fieldName }) => {
+        const handleToggle = (newMode) => {
+            if (newMode === 'exact') {
+                // При переключении на точное значение, берем значение "от" и устанавливаем его как точное
+                const fromValue = form.getFieldValue(`${fieldName}_from`);
+                if (fromValue) {
+                    form.setFieldsValue({ [`${fieldName}_exact`]: fromValue });
+                }
+            }
+            onToggle(newMode);
+        };
+
+        return (
+            <div className={styles.modeToggle}>
+                <span className={styles.modeToggleLabel}>{label}</span>
+                <div className={styles.modeToggleButtons}>
+                    <Button
+                        type={mode === 'exact' ? 'primary' : 'default'}
+                        size="small"
+                        onClick={() => handleToggle('exact')}
+                        className={styles.modeToggleButton}
+                    >
+                        Точное значение
+                    </Button>
+                    <Button
+                        type={mode === 'range' ? 'primary' : 'default'}
+                        size="small"
+                        onClick={() => handleToggle('range')}
+                        className={styles.modeToggleButton}
+                    >
+                        Диапазон
+                    </Button>
+                </div>
             </div>
-        </div>
-    );
+        );
+    };
     const [form] = Form.useForm();
     const [currentStep, setCurrentStep] = useState(0);
     const [fileList, setFileList] = useState([]);
@@ -263,6 +276,58 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
             }
         }
     }, [totalAreaMode, form]);
+
+    // Синхронизация при изменении режима этажа
+    useEffect(() => {
+        if (floorMode === 'exact') {
+            const exactValue = form.getFieldValue('floor_exact');
+            if (exactValue) {
+                form.setFieldsValue({ 
+                    floor_from: exactValue,
+                    floor_to: exactValue
+                });
+            }
+        }
+    }, [floorMode, form]);
+
+    // Синхронизация при изменении режима этажности
+    useEffect(() => {
+        if (totalFloorsMode === 'exact') {
+            const exactValue = form.getFieldValue('total_floors_exact');
+            if (exactValue) {
+                form.setFieldsValue({ 
+                    total_floors_from: exactValue,
+                    total_floors_to: exactValue
+                });
+            }
+        }
+    }, [totalFloorsMode, form]);
+
+    // Синхронизация при изменении режима жилой площади
+    useEffect(() => {
+        if (livingAreaMode === 'exact') {
+            const exactValue = form.getFieldValue('living_area_exact');
+            if (exactValue) {
+                form.setFieldsValue({ 
+                    living_area_from: exactValue,
+                    living_area_to: exactValue
+                });
+            }
+        }
+    }, [livingAreaMode, form]);
+
+    // Синхронизация при изменении режима площади кухни
+    useEffect(() => {
+        if (kitchenAreaMode === 'exact') {
+            const exactValue = form.getFieldValue('kitchen_area_exact');
+            if (exactValue) {
+                form.setFieldsValue({ 
+                    kitchen_area_from: exactValue,
+                    kitchen_area_to: exactValue
+                });
+            }
+        }
+    }, [kitchenAreaMode, form]);
 
     // Определение констант для типов
     const propertyTypes = [
@@ -701,6 +766,7 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                                 mode={totalAreaMode} 
                                 onToggle={setTotalAreaMode}
                                 label="Режим указания площади:"
+                                fieldName="total_area"
                             />
 
                             {totalAreaMode === 'exact' ? (
@@ -710,7 +776,10 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                                     <Form.Item
                                         name="total_area_exact"
                                         rules={[
-                                            {required: true, message: 'Введите площадь'},
+                                            {
+                                                required: totalAreaMode === 'exact',
+                                                message: 'Введите площадь'
+                                            },
                                             {validator: validateArea},
                                             {
                                                 validator: (_, value) => {
@@ -735,7 +804,7 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                                                     step={0.01}
                                                     style={{ width: '120px' }}
                                                     addonAfter="м²"
-                                                    value={totalAreaFrom || 1.00}
+                                                    value={form.getFieldValue('total_area_exact') || 1.00}
                                                     onChange={(value) => {
                                                         if (value) {
                                                             form.setFieldsValue({ 
@@ -752,7 +821,7 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                                                 max={1000}
                                                 step={0.01}
                                                 style={{ width: '100%' }}
-                                                value={totalAreaFrom || 1.00}
+                                                value={form.getFieldValue('total_area_exact') || 1.00}
                                                 tooltip={{
                                                     formatter: (value) => `${value} м²`,
                                                     placement: 'top'
@@ -776,7 +845,10 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                                     <Form.Item
                                         name="total_area_from"
                                         rules={[
-                                            {required: true, message: 'Введите площадь'},
+                                            {
+                                                required: totalAreaMode === 'range',
+                                                message: 'Введите площадь'
+                                            },
                                             {validator: validateArea},
                                             {
                                                 validator: (_, value) => {
@@ -856,10 +928,13 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
 
                                 <div className={styles.rangeField}>
                                     <div className={styles.fieldLabel} htmlFor="total_area_to_input">До (м²)</div>
-                                    <Form.Item
+                                                                        <Form.Item
                                         name="total_area_to"
                                         rules={[
-                                            {required: true, message: 'Введите площадь'},
+                                            {
+                                                required: totalAreaMode === 'range',
+                                                message: 'Введите площадь'
+                                            },
                                             {validator: validateArea},
                                             {
                                                 validator: (_, value) => {
@@ -949,6 +1024,7 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                                         mode={floorMode} 
                                         onToggle={setFloorMode}
                                         label="Режим указания этажа:"
+                                        fieldName="floor"
                                     />
 
                                     {floorMode === 'exact' ? (
@@ -959,7 +1035,7 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                                                 name="floor_exact"
                                                 rules={[
                                                     {
-                                                        required: !['house', 'townhouse'].includes(propertyType),
+                                                        required: !['house', 'townhouse'].includes(propertyType) && floorMode === 'exact',
                                                         message: 'Введите этаж'
                                                     },
                                                     {validator: validateFloor},
@@ -986,7 +1062,7 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                                                             step={1}
                                                             style={{ width: '120px' }}
                                                             addonAfter="этаж"
-                                                            value={floorFrom || 1}
+                                                            value={form.getFieldValue('floor_exact') || 1}
                                                             onChange={(value) => {
                                                                 if (value) {
                                                                     form.setFieldsValue({ 
@@ -1003,7 +1079,7 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                                                         max={100}
                                                         step={1}
                                                         style={{ width: '100%' }}
-                                                        value={floorFrom || 1}
+                                                        value={form.getFieldValue('floor_exact') || 1}
                                                         tooltip={{
                                                             formatter: (value) => `${value} этаж`,
                                                             placement: 'top'
@@ -1028,7 +1104,7 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                                                 name="floor_from"
                                                 rules={[
                                                     {
-                                                        required: !['house', 'townhouse'].includes(propertyType),
+                                                        required: !['house', 'townhouse'].includes(propertyType) && floorMode === 'range',
                                                         message: 'Введите этаж'
                                                     },
                                                     {validator: validateFloor},
@@ -1098,7 +1174,7 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                                                 name="floor_to"
                                                 rules={[
                                                     {
-                                                        required: !['house', 'townhouse'].includes(propertyType),
+                                                        required: !['house', 'townhouse'].includes(propertyType) && floorMode === 'range',
                                                         message: 'Введите этаж'
                                                     },
                                                     {validator: validateFloor},
@@ -1173,6 +1249,7 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                                         mode={totalFloorsMode} 
                                         onToggle={setTotalFloorsMode}
                                         label="Режим указания этажности:"
+                                        fieldName="total_floors"
                                     />
 
                                     {totalFloorsMode === 'exact' ? (
@@ -1182,6 +1259,10 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                                             <Form.Item
                                                 name="total_floors_exact"
                                                 rules={[
+                                                    {
+                                                        required: totalFloorsMode === 'exact',
+                                                        message: 'Введите этажность дома'
+                                                    },
                                                     {validator: validateFloor},
                                                     {
                                                         validator: (_, value) => {
@@ -1206,7 +1287,7 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                                                             step={1}
                                                             style={{ width: '120px' }}
                                                             addonAfter="этажей"
-                                                            value={totalFloorsFrom || 1}
+                                                            value={form.getFieldValue('total_floors_exact') || 1}
                                                             onChange={(value) => {
                                                                 if (value) {
                                                                     form.setFieldsValue({ 
@@ -1223,7 +1304,7 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                                                         max={200}
                                                         step={1}
                                                         style={{ width: '100%' }}
-                                                        value={totalFloorsFrom || 1}
+                                                        value={form.getFieldValue('total_floors_exact') || 1}
                                                         tooltip={{
                                                             formatter: (value) => `${value} этажей`,
                                                             placement: 'top'
@@ -1247,6 +1328,10 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                                             <Form.Item
                                                 name="total_floors_from"
                                                 rules={[
+                                                    {
+                                                        required: totalFloorsMode === 'range',
+                                                        message: 'Введите этажность дома'
+                                                    },
                                                     {validator: validateFloor},
                                                     {
                                                         validator: (_, value) => {
@@ -1305,6 +1390,10 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                                             <Form.Item
                                                 name="total_floors_to"
                                                 rules={[
+                                                    {
+                                                        required: totalFloorsMode === 'range',
+                                                        message: 'Введите этажность дома'
+                                                    },
                                                     {validator: validateFloor},
                                                     {
                                                         validator: (_, value) => {
@@ -1446,6 +1535,7 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                                 mode={livingAreaMode} 
                                 onToggle={setLivingAreaMode}
                                 label="Режим указания жилой площади:"
+                                fieldName="living_area"
                             />
 
                             {livingAreaMode === 'exact' ? (
@@ -1455,7 +1545,10 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                                     <Form.Item
                                         name="living_area_exact"
                                         rules={[
-                                            {required: true, message: 'Введите жилую площадь'},
+                                            {
+                                                required: livingAreaMode === 'exact',
+                                                message: 'Введите жилую площадь'
+                                            },
                                             {validator: validateArea},
                                             {
                                                 validator: (_, value) => {
@@ -1480,7 +1573,7 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                                                     step={0.01}
                                                     style={{ width: '120px' }}
                                                     addonAfter="м²"
-                                                    value={livingAreaFrom || 1.00}
+                                                    value={form.getFieldValue('living_area_exact') || 1.00}
                                                     onChange={(value) => {
                                                         if (value) {
                                                             form.setFieldsValue({ 
@@ -1497,7 +1590,7 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                                                 max={1000}
                                                 step={0.01}
                                                 style={{ width: '100%' }}
-                                                value={livingAreaFrom || 1.00}
+                                                value={form.getFieldValue('living_area_exact') || 1.00}
                                                 tooltip={{
                                                     formatter: (value) => `${value} м²`,
                                                     placement: 'top'
@@ -1521,6 +1614,10 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                                     <Form.Item
                                         name="living_area_from"
                                         rules={[
+                                            {
+                                                required: livingAreaMode === 'range',
+                                                message: 'Введите жилую площадь'
+                                            },
                                             {validator: validateArea},
                                             {
                                                 validator: (_, value) => {
@@ -1591,6 +1688,10 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                                     <Form.Item
                                         name="living_area_to"
                                         rules={[
+                                            {
+                                                required: livingAreaMode === 'range',
+                                                message: 'Введите жилую площадь'
+                                            },
                                             {validator: validateArea},
                                             {
                                                 validator: (_, value) => {
@@ -1645,7 +1746,7 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                                                 }}
                                                 onChange={(value) => {
                                                     // Убеждаемся, что значение не меньше 1.00
-                                                    const validValue = value < 0.01 ? 1.00 : value;
+                                                    const validValue = value < 1.00 ? 1.00 : value;
                                                     form.setFieldsValue({ living_area_to: validValue });
                                                 }}
                                             />
@@ -1666,6 +1767,7 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                                 mode={kitchenAreaMode} 
                                 onToggle={setKitchenAreaMode}
                                 label="Режим указания площади кухни:"
+                                fieldName="kitchen_area"
                             />
 
                             {kitchenAreaMode === 'exact' ? (
@@ -1675,6 +1777,10 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                                     <Form.Item
                                         name="kitchen_area_exact"
                                         rules={[
+                                            {
+                                                required: kitchenAreaMode === 'exact',
+                                                message: 'Введите площадь кухни'
+                                            },
                                             {validator: validateArea},
                                             {
                                                 validator: (_, value) => {
@@ -1699,7 +1805,7 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                                                     step={0.01}
                                                     style={{ width: '120px' }}
                                                     addonAfter="м²"
-                                                    value={kitchenAreaFrom || 1.00}
+                                                    value={form.getFieldValue('kitchen_area_exact') || 1.00}
                                                     onChange={(value) => {
                                                         if (value) {
                                                             form.setFieldsValue({ 
@@ -1716,7 +1822,7 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                                                 max={200}
                                                 step={0.01}
                                                 style={{ width: '100%' }}
-                                                value={kitchenAreaFrom || 1.00}
+                                                value={form.getFieldValue('kitchen_area_exact') || 1.00}
                                                 tooltip={{
                                                     formatter: (value) => `${value} м²`,
                                                     placement: 'top'
@@ -1740,6 +1846,10 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                                     <Form.Item
                                         name="kitchen_area_from"
                                         rules={[
+                                            {
+                                                required: kitchenAreaMode === 'range',
+                                                message: 'Введите площадь кухни'
+                                            },
                                             {validator: validateArea},
                                             {
                                                 validator: (_, value) => {
@@ -1810,6 +1920,10 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                                     <Form.Item
                                         name="kitchen_area_to"
                                         rules={[
+                                            {
+                                                required: kitchenAreaMode === 'range',
+                                                message: 'Введите площадь кухни'
+                                            },
                                             {validator: validateArea},
                                             {
                                                 validator: (_, value) => {
@@ -2095,14 +2209,19 @@ const AddListingForm = ({onClose: parentOnClose, onSuccess, user, theme}) => {
                     deal_type: 'sale',
                     balcony: 0,
                     bargain: false,
+                    total_area_exact: 1.00,
                     total_area_from: 1.00,
                     total_area_to: 1.00,
+                    floor_exact: 1,
                     floor_from: 1,
                     floor_to: 1,
+                    total_floors_exact: 1,
                     total_floors_from: 1,
                     total_floors_to: 1,
+                    living_area_exact: 1.00,
                     living_area_from: 1.00,
                     living_area_to: 1.00,
+                    kitchen_area_exact: 1.00,
                     kitchen_area_from: 1.00,
                     kitchen_area_to: 1.00
                 }}
