@@ -117,13 +117,14 @@ const Home2Header = ({ isAuthenticated = false }) => {
                         База квартир
                     </Link>
                     {/* <AdvanceButton /> */}
-                    <a 
-                        href="#"
+                    <Link 
+                        to="/profile"
                         onClick={handleProfileClick}
+                        data-profile="true"
                         className={`${isActive(['/profile']) ? styles.active : ''} ${theme === 'dark' ? styles.dark : ''}`}
                     >
                         Профиль
-                    </a>
+                    </Link>
                 </nav>
                 )}
                 
@@ -216,6 +217,7 @@ const Home2Header = ({ isAuthenticated = false }) => {
                                         handleProfileClick(e);
                                         handleNavClick();
                                     }}
+                                    data-profile="true"
                                     className={`${isActive(['/profile']) ? styles.active : ''} ${theme === 'dark' ? styles.dark : ''}`}
                                 >
                                     Профиль

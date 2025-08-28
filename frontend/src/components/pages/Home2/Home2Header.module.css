@@ -86,13 +86,15 @@
     box-shadow: 0 4px 16px rgba(5, 150, 105, 0.3);
 }
 
-.home2HeaderUnique .navMenu a[href="/profile"]:hover {
+.home2HeaderUnique .navMenu a[href="/profile"]:hover,
+.home2HeaderUnique .navMenu a[data-profile="true"]:hover {
     background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
     box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
 }
 
 /* Убираем общие стили для active, чтобы работали специфичные */
-.home2HeaderUnique .navMenu a.active {
+.home2HeaderUnique .navMenu a.active,
+.home2HeaderUnique .navMenu .active {
     color: white;
 }
 
@@ -114,7 +116,8 @@
     box-shadow: 0 4px 16px rgba(5, 150, 105, 0.3);
 }
 
-.home2HeaderUnique .navMenu a[href="/profile"].active {
+.home2HeaderUnique .navMenu a[href="/profile"].active,
+.home2HeaderUnique .navMenu a[data-profile="true"].active {
     background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
     color: white;
     box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
@@ -270,7 +273,8 @@
     transform: translateY(-2px);
     border-color: transparent;
 }
-.mobileNavMenu a[href="/profile"]:hover {
+.mobileNavMenu a[href="/profile"]:hover,
+.mobileNavMenu a[data-profile="true"]:hover {
     background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
     box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
     color: white;
@@ -304,7 +308,8 @@
     box-shadow: 0 4px 16px rgba(5, 150, 105, 0.3);
     border-color: transparent;
 }
-.mobileNavMenu a[href="/profile"].active {
+.mobileNavMenu a[href="/profile"].active,
+.mobileNavMenu a[data-profile="true"].active {
     color: white;
     background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
     box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
@@ -312,14 +317,16 @@
 }
 
 /* Стили для мобильного профиля в темной теме */
-.dark .mobileNavMenu a[href="/profile"].active {
+.dark .mobileNavMenu a[href="/profile"].active,
+.dark .mobileNavMenu a[data-profile="true"].active {
     color: white;
     background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
     box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
     border-color: transparent;
 }
 
-.dark .mobileNavMenu a[href="/profile"]:hover {
+.dark .mobileNavMenu a[href="/profile"]:hover,
+.dark .mobileNavMenu a[data-profile="true"]:hover {
     color: white;
     background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
     box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
@@ -343,7 +350,8 @@
     box-shadow: 0 4px 16px rgba(5, 150, 105, 0.3);
 }
 
-.home2HeaderUnique.dark .navMenu a[href="/profile"]:hover {
+.home2HeaderUnique.dark .navMenu a[href="/profile"]:hover,
+.home2HeaderUnique.dark .navMenu a[data-profile="true"]:hover {
     background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
     box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
 }
@@ -378,20 +386,23 @@
     box-shadow: 0 4px 16px rgba(220, 38, 38, 0.3);
 }
 
-.home2HeaderUnique.dark .navMenu a[href="/profile"].active {
+.home2HeaderUnique.dark .navMenu a[href="/profile"].active,
+.home2HeaderUnique.dark .navMenu a[data-profile="true"].active {
     background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
     box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
 }
 
 /* Дополнительные стили для темной темы профиля */
-.home2Header.dark .navMenu a[href="/profile"].active {
+.home2Header.dark .navMenu a[href="/profile"].active,
+.home2Header.dark .navMenu a[data-profile="true"].active {
     background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
     box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
     color: white;
 }
 
 /* Стили для темной темы профиля при hover */
-.home2Header.dark .navMenu a[href="/profile"]:hover {
+.home2Header.dark .navMenu a[href="/profile"]:hover,
+.home2Header.dark .navMenu a[data-profile="true"]:hover {
     background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
     box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
     color: white;

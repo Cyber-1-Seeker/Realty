@@ -37,7 +37,7 @@
 .text {
   font-size: 16px;
   line-height: 1.6;
-  margin-bottom: 16px;
+  margin-bottom: 25px;
   color: #dfeaff;
 }
 
@@ -191,6 +191,17 @@
 }
 
 /* Адаптивность */
+@media (max-width: 1050px) {
+  .textBlock {
+    text-align: center;
+  }
+  
+  .button {
+    display: inline-block;
+    margin: 0 auto;
+  }
+}
+
 @media (max-width: 768px) {
   .contentWrapper {
     flex-direction: column;
