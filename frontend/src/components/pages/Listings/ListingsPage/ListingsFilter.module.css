@@ -1,10 +1,16 @@
 .filterContainer {
-    background: #ffffff;
+    background: #f8fafc;
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     margin-bottom: 24px;
     overflow: hidden;
     transition: all 0.3s ease;
+    border: 1px solid #e2e8f0;
+}
+
+.filterContainer:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
 }
 
 .filterContainer.collapsed {
@@ -47,33 +53,47 @@
 .resultsCount {
     font-size: 14px;
     color: #666;
-    margin-top: 4px;
+    margin-top: 4.7px;
+    margin-bottom: 4.5px;
     font-weight: 400;
+    transition: color 0.3s ease;
+    background: rgba(59, 130, 246, 0.1);
+    border-radius: 6px;
+    display: inline-block;
 }
 
 .filterIcon {
     font-size: 20px;
     color: #1890ff;
     margin-bottom: 5px;
+    transition: all 0.3s ease;
+}
+
+.filterIcon:hover {
+    transform: scale(1.1);
+    color: #2563eb;
 }
 
 .collapseButton {
     background: none;
     border: none;
     cursor: pointer;
-    padding: 8px;
-    border-radius: 6px;
+    padding: 8px 12px;
+    border-radius: 8px;
     transition: all 0.2s ease;
     display: flex;
     align-items: center;
     gap: 8px;
     color: #666;
     font-size: 14px;
+    font-weight: 500;
 }
 
 .collapseButton:hover {
-    background: #f5f5f5;
-    color: #333;
+    background: #f1f5f9;
+    color: #374151;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .collapseButton .icon {
@@ -89,6 +109,16 @@
     font-size: 18px;
     font-weight: 600;
     color: #333;
+    transition: color 0.3s ease;
+}
+
+/* Улучшенные стили для заголовка фильтра */
+.filterHeader {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border-radius: 12px 12px 0 0;
+    padding: 20px 20px 0 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #e2e8f0;
 }
 
 .filterCollapse {
@@ -97,6 +127,54 @@
 
 .filterSection {
     padding: 16px 0;
+}
+
+/* Стили для заголовка фильтра типа сделки */
+.filterSection h4 {
+    color: #333;
+    font-weight: 600;
+    margin-bottom: 12px;
+    font-size: 16px;
+}
+
+/* Стили для светлой темы */
+.filterContainer.light {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+}
+
+.filterContainer.light .filterHeader {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.filterContainer.light .filterSection h4 {
+    color: #333;
+}
+
+.filterContainer.light .resultsCount {
+    background: rgba(59, 130, 246, 0.1);
+    color: #666;
+}
+
+/* Стили для Select компонента в светлой теме */
+.filterSection .ant-select {
+    width: 100%;
+}
+
+.filterSection .ant-select-selector {
+    border-radius: 8px;
+    border: 1.5px solid #e5e7eb;
+    transition: all 0.2s ease;
+}
+
+.filterSection .ant-select-selector:hover {
+    border-color: #60a5fa;
+}
+
+.filterSection .ant-select-focused .ant-select-selector {
+    border-color: #60a5fa;
+    box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.2);
 }
 
 .rangeInputs {
@@ -123,23 +201,67 @@
 
 .applyButton {
     min-width: 140px;
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    border: none;
+    color: #ffffff;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+}
+
+.applyButton:hover {
+    background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
 
 .clearButton {
     min-width: 100px;
+    background: #f3f4f6;
+    border: 1px solid #d1d5db;
+    color: #374151;
+    font-weight: 500;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.clearButton:hover {
+    background: #e5e7eb;
+    border-color: #9ca3af;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Ночная тема - используем точно такие же стили как в AddListingForm */
 [data-theme="dark"] .filterContainer,
-.dark .filterContainer {
-    background-color: #111827;
+.dark .filterContainer,
+.filterContainer.dark {
+    background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
     color: #f3f4f6;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    border: 1px solid #374151;
+}
+
+[data-theme="dark"] .filterContainer:hover,
+.dark .filterContainer:hover,
+.filterContainer.dark:hover {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    transform: translateY(-2px);
+}
+
+/* Улучшенные стили для заголовка фильтра в темной теме */
+[data-theme="dark"] .filterHeader,
+.dark .filterHeader,
+.filterContainer.dark .filterHeader {
+    background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+    border-bottom: 1px solid #374151;
 }
 
 [data-theme="dark"] .filterContent,
-.dark .filterContent {
-    background-color: #111827;
+.dark .filterContent,
+.filterContainer.dark .filterContent {
+    background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
 }
 
 [data-theme="dark"] .filterHeader h3,
@@ -148,12 +270,16 @@
 }
 
 [data-theme="dark"] .resultsCount,
-.dark .resultsCount {
+.dark .resultsCount,
+.filterContainer.dark .resultsCount {
     color: #9ca3af;
+    background: rgba(96, 165, 250, 0.2);
+    border: 1px solid rgba(96, 165, 250, 0.3);
 }
 
 [data-theme="dark"] .filterIcon,
-.dark .filterIcon {
+.dark .filterIcon,
+.filterContainer.dark .filterIcon {
     color: #60a5fa;
 }
 
@@ -185,10 +311,13 @@
 /* Стили для основных текстовых элементов в темной теме */
 [data-theme="dark"] .filterContainer h3,
 .dark .filterContainer h3,
+.filterContainer.dark h3,
 [data-theme="dark"] .filterContainer .resultsCount,
 .dark .filterContainer .resultsCount,
+.filterContainer.dark .resultsCount,
 [data-theme="dark"] .filterContainer .collapseButton,
-.dark .filterContainer .collapseButton {
+.dark .filterContainer .collapseButton,
+.filterContainer.dark .collapseButton {
     color: #f3f4f6 !important;
 }
 
@@ -197,6 +326,30 @@
 .dark .filterContainer .inputGroup label {
     color: #f3f4f6 !important;
     font-weight: 500 !important;
+}
+
+/* Стили для заголовка фильтра типа сделки */
+[data-theme="dark"] .filterSection h4,
+.dark .filterSection h4,
+.filterContainer.dark .filterSection h4 {
+    color: #f3f4f6 !important;
+    font-weight: 600 !important;
+    margin-bottom: 12px !important;
+}
+
+/* Стили для разделителей в темной теме */
+[data-theme="dark"] .filterSection,
+.dark .filterSection,
+.filterContainer.dark .filterSection {
+    background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+    border-bottom: 1px solid #374151 !important;
+    padding-bottom: 16px !important;
+}
+
+[data-theme="dark"] .filterSection:last-child,
+.dark .filterSection:last-child,
+.filterContainer.dark .filterSection:last-child {
+    border-bottom: none !important;
 }
 
 /* Стили для Ant Design компонентов - точно как в AddListingForm */
@@ -295,31 +448,31 @@
 
 [data-theme="dark"] :global(.ant-collapse),
 .dark :global(.ant-collapse) {
-    background-color: #111827 !important;
+    background: linear-gradient(135deg, #1f2937 0%, #111827 100%) !important;
     border-color: #374151 !important;
 }
 
 [data-theme="dark"] :global(.ant-collapse-item),
 .dark :global(.ant-collapse-item) {
-    background-color: #111827 !important;
+    background: linear-gradient(135deg, #1f2937 0%, #111827 100%) !important;
     border-color: #374151 !important;
 }
 
 [data-theme="dark"] :global(.ant-collapse-header),
 .dark :global(.ant-collapse-header) {
-    background-color: #111827 !important;
+    background: linear-gradient(135deg, #1f2937 0%, #111827 100%) !important;
     color: #f3f4f6 !important;
 }
 
 [data-theme="dark"] :global(.ant-collapse-content),
 .dark :global(.ant-collapse-content) {
-    background-color: #111827 !important;
+    background: linear-gradient(135deg, #1f2937 0%, #111827 100%) !important;
     border-color: #374151 !important;
 }
 
 [data-theme="dark"] :global(.ant-collapse-content-box),
 .dark :global(.ant-collapse-content-box) {
-    background-color: #111827 !important;
+    background: linear-gradient(135deg, #1f2937 0%, #111827 100%) !important;
     color: #f3f4f6 !important;
 }
 
@@ -355,6 +508,20 @@
     color: #9ca3af !important;
 }
 
+/* Стили для Select компонента (фильтр типа сделки) */
+[data-theme="dark"] :global(.ant-select),
+.dark :global(.ant-select) {
+    background-color: #374151 !important;
+    border-color: #4b5563 !important;
+}
+
+[data-theme="dark"] :global(.ant-select-selector),
+.dark :global(.ant-select-selector) {
+    background-color: #374151 !important;
+    border-color: #4b5563 !important;
+    color: #f3f4f6 !important;
+}
+
 [data-theme="dark"] :global(.ant-select-selection-item),
 .dark :global(.ant-select-selection-item) {
     color: #f3f4f6 !important;
@@ -363,6 +530,47 @@
 [data-theme="dark"] :global(.ant-select-selection-placeholder),
 .dark :global(.ant-select-selection-placeholder) {
     color: #9ca3af !important;
+}
+
+[data-theme="dark"] :global(.ant-select-arrow),
+.dark :global(.ant-select-arrow) {
+    color: #9ca3af !important;
+}
+
+[data-theme="dark"] :global(.ant-select:hover),
+.dark :global(.ant-select:hover) {
+    border-color: #60a5fa !important;
+}
+
+[data-theme="dark"] :global(.ant-select-focused),
+.dark :global(.ant-select-focused) {
+    border-color: #60a5fa !important;
+    box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.2) !important;
+}
+
+/* Стили для выпадающего списка Select */
+[data-theme="dark"] :global(.ant-select-dropdown),
+.dark :global(.ant-select-dropdown) {
+    background: linear-gradient(135deg, #1f2937 0%, #111827 100%) !important;
+    border-color: #374151 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5) !important;
+}
+
+[data-theme="dark"] :global(.ant-select-item),
+.dark :global(.ant-select-item) {
+    background: linear-gradient(135deg, #1f2937 0%, #111827 100%) !important;
+    color: #f3f4f6 !important;
+}
+
+[data-theme="dark"] :global(.ant-select-item:hover),
+.dark :global(.ant-select-item:hover) {
+    background: linear-gradient(135deg, #374151 0%, #1f2937 100%) !important;
+}
+
+[data-theme="dark"] :global(.ant-select-item-option-selected),
+.dark :global(.ant-select-item-option-selected) {
+    background-color: #3b82f6 !important;
+    color: #ffffff !important;
 }
 
 /* Стили для InputNumber компонентов */
@@ -401,18 +609,21 @@
 }
 
 [data-theme="dark"] .collapseButton,
-.dark .collapseButton {
+.dark .collapseButton,
+.filterContainer.dark .collapseButton {
     color: #ffffff;
 }
 
 [data-theme="dark"] .collapseButton:hover,
-.dark .collapseButton:hover {
+.dark .collapseButton:hover,
+.filterContainer.dark .collapseButton:hover {
     background: #333333;
     color: #ffffff;
 }
 
 [data-theme="dark"] .filterHeader h3,
-.dark .filterHeader h3 {
+.dark .filterHeader h3,
+.filterContainer.dark .filterHeader h3 {
     color: #ffffff;
 }
 
@@ -424,6 +635,42 @@
 [data-theme="dark"] .resultsCount,
 .dark .resultsCount {
     color: #cccccc;
+}
+
+/* Улучшенные стили для кнопок в темной теме */
+[data-theme="dark"] .applyButton,
+.dark .applyButton,
+.filterContainer.dark .applyButton {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%) !important;
+    border: none !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3) !important;
+}
+
+[data-theme="dark"] .applyButton:hover,
+.dark .applyButton:hover,
+.filterContainer.dark .applyButton:hover {
+    background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4) !important;
+}
+
+[data-theme="dark"] .clearButton,
+.dark .clearButton,
+.filterContainer.dark .clearButton {
+    background: #374151 !important;
+    border: 1px solid #4b5563 !important;
+    color: #f3f4f6 !important;
+    font-weight: 500 !important;
+}
+
+[data-theme="dark"] .clearButton:hover,
+.dark .clearButton:hover,
+.filterContainer.dark .clearButton:hover {
+    background: #4b5563 !important;
+    border-color: #60a5fa !important;
+    transform: translateY(-1px) !important;
 }
 
 

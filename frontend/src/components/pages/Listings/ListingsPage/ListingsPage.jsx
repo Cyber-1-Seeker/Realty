@@ -79,29 +79,10 @@ const ListingsPage = ({isAuthenticated, currentUser}) => { // Добавляем
                 }
             }
             
-            // 2. Фильтр по жилой площади
-            if (passesAllFilters && (filters.livingAreaFrom != null || filters.livingAreaTo != null)) {
-                const hasFrom = listing.living_area_from !== null && listing.living_area_from !== undefined;
-                const hasTo = listing.living_area_to !== null && listing.living_area_to !== undefined;
-                
-                if (!hasFrom && !hasTo) {
+            // 2. Фильтр по типу сделки
+            if (passesAllFilters && filters.dealType && filters.dealType !== 'all') {
+                if (listing.deal_type !== filters.dealType) {
                     passesAllFilters = false;
-                } else {
-                    let passesLivingAreaFilter = true;
-                    
-                    if (filters.livingAreaFrom != null && hasFrom) {
-                        const areaFrom = parseFloat(listing.living_area_from);
-                        passesLivingAreaFilter = passesLivingAreaFilter && areaFrom >= filters.livingAreaFrom;
-                    }
-                    
-                    if (filters.livingAreaTo != null && hasTo) {
-                        const areaTo = parseFloat(listing.living_area_to);
-                        passesLivingAreaFilter = passesLivingAreaFilter && areaTo <= filters.livingAreaTo;
-                    }
-                    
-                    if (!passesLivingAreaFilter) {
-                        passesAllFilters = false;
-                    }
                 }
             }
             

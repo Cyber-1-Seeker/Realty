@@ -1,24 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Slider, InputNumber, Collapse, Space, Divider } from 'antd';
+import { Button, Slider, InputNumber, Collapse, Space, Divider, Select } from 'antd';
 import { FilterOutlined, ClearOutlined, DownOutlined } from '@ant-design/icons';
 import styles from './ListingsFilter.module.css';
+import { useTheme } from '@/context/ThemeContext';
 
 const ListingsFilter = ({ onFilterChange, onClearFilters, totalCount, filteredCount, activeFilters }) => {
+    const { theme } = useTheme();
     const [isCollapsed, setIsCollapsed] = useState(true);
     const [filters, setFilters] = useState({
         totalAreaFrom: 1,
         totalAreaTo: 1000,
-        livingAreaFrom: 1,
-        livingAreaTo: 500,
         floorFrom: 1,
         floorTo: 50,
         totalFloorsFrom: 1,
         totalFloorsTo: 100,
+        dealType: 'all', // Новый фильтр по типу сделки
     });
 
     const [sliderValues, setSliderValues] = useState({
         totalArea: [1, 1000],
-        livingArea: [1, 500],
         floor: [1, 50],
         totalFloors: [1, 100],
     });
@@ -29,8 +29,6 @@ const ListingsFilter = ({ onFilterChange, onClearFilters, totalCount, filteredCo
         const [from, to] = values;
         if (type === 'totalArea') {
             setFilters(prev => ({ ...prev, totalAreaFrom: from, totalAreaTo: to }));
-        } else if (type === 'livingArea') {
-            setFilters(prev => ({ ...prev, livingAreaFrom: from, livingAreaTo: to }));
         } else if (type === 'floor') {
             setFilters(prev => ({ ...prev, floorFrom: from, floorTo: to }));
         } else if (type === 'totalFloors') {
@@ -45,13 +43,6 @@ const ListingsFilter = ({ onFilterChange, onClearFilters, totalCount, filteredCo
                 setSliderValues(prev => ({ ...prev, totalArea: [value, prev.totalArea[1]] }));
             } else {
                 setSliderValues(prev => ({ ...prev, totalArea: [prev.totalArea[0], value] }));
-            }
-        } else if (type === 'livingArea') {
-            setFilters(prev => ({ ...prev, [field]: value }));
-            if (field === 'livingAreaFrom') {
-                setSliderValues(prev => ({ ...prev, livingArea: [value, prev.livingArea[1]] }));
-            } else {
-                setSliderValues(prev => ({ ...prev, livingArea: [prev.livingArea[0], value] }));
             }
         } else if (type === 'floor') {
             setFilters(prev => ({ ...prev, [field]: value }));
@@ -70,6 +61,10 @@ const ListingsFilter = ({ onFilterChange, onClearFilters, totalCount, filteredCo
         }
     };
 
+    const handleDealTypeChange = (value) => {
+        setFilters(prev => ({ ...prev, dealType: value }));
+    };
+
     const applyFilters = () => {
         // Всегда передаем все фильтры, так как у нас есть значения по умолчанию
         onFilterChange(filters);
@@ -79,17 +74,15 @@ const ListingsFilter = ({ onFilterChange, onClearFilters, totalCount, filteredCo
         setFilters({
             totalAreaFrom: 1,
             totalAreaTo: 1000,
-            livingAreaFrom: 1,
-            livingAreaTo: 500,
             floorFrom: 1,
             floorTo: 50,
             totalFloorsFrom: 1,
             totalFloorsTo: 100,
+            dealType: 'all',
         });
         
         setSliderValues({
             totalArea: [1, 1000],
-            livingArea: [1, 500],
             floor: [1, 50],
             totalFloors: [1, 100],
         });
@@ -97,7 +90,9 @@ const ListingsFilter = ({ onFilterChange, onClearFilters, totalCount, filteredCo
         onClearFilters();
     };
 
-    const hasActiveFilters = Object.values(filters).some(value => value !== null && value !== undefined);
+    const hasActiveFilters = Object.values(filters).some(value => 
+        value !== null && value !== undefined && value !== 'all'
+    );
 
     // Автоматически применяем фильтры по умолчанию при загрузке
     useEffect(() => {
@@ -109,7 +104,10 @@ const ListingsFilter = ({ onFilterChange, onClearFilters, totalCount, filteredCo
     };
 
     return (
-        <div className={`${styles.filterContainer} ${isCollapsed ? styles.collapsed : ''}`}>
+        <div 
+            className={`${styles.filterContainer} ${isCollapsed ? styles.collapsed : ''} ${theme === 'dark' ? styles.dark : styles.light}`}
+            data-theme={theme}
+        >
             <div className={`${styles.filterHeader} ${isCollapsed ? styles.collapsed : ''}`}>
                 <div className={styles.filterTitle}>
                     <FilterOutlined className={styles.filterIcon} />
@@ -135,6 +133,24 @@ const ListingsFilter = ({ onFilterChange, onClearFilters, totalCount, filteredCo
             </div>
 
             <div className={styles.filterContent}>
+                {/* Фильтр по типу сделки */}
+                <div className={styles.filterSection}>
+                    <h4>Тип сделки</h4>
+                    <Select
+                        value={filters.dealType}
+                        onChange={handleDealTypeChange}
+                        style={{ width: '100%' }}
+                        options={[
+                            { value: 'all', label: 'Все типы' },
+                            { value: 'sale', label: 'Продажа' },
+                            { value: 'rent', label: 'Аренда' },
+                            { value: 'rent_daily', label: 'Посуточная аренда' },
+                        ]}
+                    />
+                </div>
+
+                <Divider />
+
                 <Collapse 
                     defaultActiveKey={['1']} 
                     ghost 
@@ -186,50 +202,6 @@ const ListingsFilter = ({ onFilterChange, onClearFilters, totalCount, filteredCo
                     },
                     {
                         key: '2',
-                        label: 'Жилая площадь',
-                        children: (
-                            <div className={styles.filterSection}>
-                                <div className={styles.rangeInputs}>
-                                    <Space>
-                                        <div className={styles.inputGroup}>
-                                            <InputNumber
-                                                min={1}
-                                                max={500}
-                                                value={filters.livingAreaFrom || 1}
-                                                onChange={(value) => handleInputChange('livingArea', 'livingAreaFrom', value)}
-                                                placeholder="1"
-                                                style={{ width: 80 }}
-                                            />
-                                        </div>
-                                        <div className={styles.inputGroup}>
-                                            <InputNumber
-                                                min={1}
-                                                max={500}
-                                                value={filters.livingAreaTo || 500}
-                                                onChange={(value) => handleInputChange('livingArea', 'livingAreaTo', value)}
-                                                placeholder="500"
-                                                style={{ width: 80 }}
-                                            />
-                                        </div>
-                                    </Space>
-                                </div>
-                                <Slider
-                                    range
-                                    min={1}
-                                    max={500}
-                                    value={sliderValues.livingArea}
-                                    onChange={(values) => handleSliderChange('livingArea', values)}
-                                    tooltip={{
-                                        formatter: (value) => `${value} м²`,
-                                        placement: 'top'
-                                    }}
-                                    className={styles.rangeSlider}
-                                />
-                            </div>
-                        )
-                    },
-                    {
-                        key: '3',
                         label: 'Этаж',
                         children: (
                             <div className={styles.filterSection}>
@@ -273,7 +245,7 @@ const ListingsFilter = ({ onFilterChange, onClearFilters, totalCount, filteredCo
                         )
                     },
                     {
-                        key: '4',
+                        key: '3',
                         label: 'Этажность дома',
                         children: (
                             <div className={styles.filterSection}>
@@ -337,8 +309,8 @@ const ListingsFilter = ({ onFilterChange, onClearFilters, totalCount, filteredCo
                         icon={<ClearOutlined />}
                         className={styles.clearButton}
                     >
-                                            Очистить
-                </Button>
+                        Очистить
+                    </Button>
                 )}
             </div>
         </div>
