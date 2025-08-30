@@ -28,6 +28,7 @@ urlpatterns = [
     path('api/monitoring/', include('monitoring.urls')),
     path('api/testimonials/', include('testimonials.urls')),
     path('health/', health_check, name='health_check'),
+    # path('test/', include('monitoring.urls')),  # Тестовая страница - убрал дублирование
     ]
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -1,6 +1,8 @@
 from django.urls import path
-from .views import DailyAnalyticsView
+from . import views
+
+app_name = 'monitoring'
 
 urlpatterns = [
-    path('daily/', DailyAnalyticsView.as_view(), name='daily_monitoring')
+    path('daily/', views.DailyAnalyticsView.as_view(), name='daily_monitoring'),
 ]

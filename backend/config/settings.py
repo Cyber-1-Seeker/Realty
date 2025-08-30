@@ -107,8 +107,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-if not DEBUG:
-    MIDDLEWARE.append('monitoring.middleware.UserVisitMiddleware')
+# Подключаем middleware для мониторинга в любом режиме
+# MIDDLEWARE.append('monitoring.middleware.UserVisitMiddleware')  # Старая версия
+MIDDLEWARE.append('monitoring.middleware_v2.SmartVisitMiddleware')  # Новая умная версия
 
 # Отключаем проблемные заголовки безопасности для HTTP
 if not DEBUG:
@@ -242,6 +243,11 @@ LOGGING = {
     },
     'loggers': {
         'django': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'monitoring': {
             'handlers': ['console', 'file'],
             'level': 'INFO',
             'propagate': True,

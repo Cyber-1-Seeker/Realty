@@ -4,3 +4,7 @@ from django.apps import AppConfig
 class MonitoringConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'monitoring'
+    
+    def ready(self):
+        """Импортируем сигналы при запуске приложения"""
+        import monitoring.signals
