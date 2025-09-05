@@ -17,6 +17,7 @@ import { API_PUBLIC } from '@/utils/api/axiosPublic.js';
 import { getCSRFTokenFromCookie } from "@/utils/api/csrf.js";
 import ModalForm from '@/components/pages/Listings/ListingsPage/ModalForm.jsx';
 import CalculatorLaunch from "@/components/pages/Home2/CalculatorLaunch.jsx";
+
 function Home2() {
     const { isAuthenticated = false } = useOutletContext() || {};
     const {theme, toggleTheme} = useTheme();
@@ -124,13 +125,6 @@ function Home2() {
             }
             style={{
                 backgroundColor: theme === 'dark' ? '#181a1b' : 'white',
-                minHeight: '100vh',
-                width: '100vw',
-                position: 'fixed',
-                inset: 0,
-                zIndex: 0,
-                overflowY: 'auto',
-                overflowX: 'hidden',
             }}
         >
 
@@ -151,30 +145,45 @@ function Home2() {
                             <div className={styles.filterCards}>
                                 <div
                                     className={styles.filterCard + ' ' + styles.checked}
-                                    onClick={() => navigate('/listings#listings')}
+                                    onClick={() => {
+                                        const element = document.getElementById('deal-timeline');
+                                        if (element) {
+                                            element.scrollIntoView({ behavior: 'smooth' });
+                                        }
+                                    }}
                                     role="button"
                                     tabIndex={0}
                                 >
                                     <span className={styles.checkIcon}>✓</span>
-                                    <span>Купить</span>
+                                    <span>Как купить</span>
                                 </div>
                                 <div
                                     className={styles.filterCard + ' ' + styles.checked}
-                                    onClick={() => navigate('/listings#add')}
+                                    onClick={() => {
+                                        const element = document.getElementById('calculator');
+                                        if (element) {
+                                            element.scrollIntoView({ behavior: 'smooth' });
+                                        }
+                                    }}
                                     role="button"
                                     tabIndex={0}
                                 >
                                     <span className={styles.checkIcon}>✓</span>
-                                    <span>Продать</span>
+                                    <span>Калькулятор</span>
                                 </div>
                                 <div
                                     className={styles.filterCard + ' ' + styles.checked}
-                                    onClick={() => navigate('/listings#listings')}
+                                    onClick={() => {
+                                        const element = document.getElementById('map-section');
+                                        if (element) {
+                                            element.scrollIntoView({ behavior: 'smooth' });
+                                        }
+                                    }}
                                     role="button"
                                     tabIndex={0}
                                 >
                                     <span className={styles.checkIcon}>✓</span>
-                                    <span>Арендовать</span>
+                                    <span>Карта</span>
                                 </div>
                             </div>
                             <section className={styles.searchBlock}>
@@ -222,7 +231,7 @@ function Home2() {
                     </section>
                 </div>
 
-                <section ref={dealRef} className={`${styles.animSection} ${dealInView ? styles.visible : ''}`}>
+                <section id="deal-timeline" ref={dealRef} className={`${styles.animSection} ${dealInView ? styles.visible : ''}`}>
                     <DealTimelinePage theme={theme}/>
                 </section>
                 <section><StatisticsSection theme={theme}/></section>
@@ -232,10 +241,10 @@ function Home2() {
                 <section ref={whyRef} className={`${styles.animSection} ${whyInView ? styles.visible : ''}`}>
                     <WhyChooseUs theme={theme}/>
                 </section>
-                <section ref={calcRef} className={`${styles.animSection} ${calcInView ? styles.visible : ''}`}>
+                <section id="calculator" ref={calcRef} className={`${styles.animSection} ${calcInView ? styles.visible : ''}`}>
                     <CalculatorLaunch theme={theme}/>
                 </section>
-                <section ref={mapRef} className={`${styles.animSection} ${mapInView ? styles.visible : ''}`}>
+                <section id="map-section" ref={mapRef} className={`${styles.animSection} ${mapInView ? styles.visible : ''}`}>
                     <MapSection theme={theme}/>
                 </section>
                 <section ref={testimonialRef}

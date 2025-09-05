@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './AboutUsSection.module.css';
 import { FaCheckCircle } from 'react-icons/fa';
 import aboutImage from '@/assets/Listings/about-livingroom.png';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const features = [
   {
@@ -26,6 +26,16 @@ const facts = [
 ];
 
 const AboutUsSection = ({ theme }) => {
+  const navigate = useNavigate();
+
+  const handleAboutClick = () => {
+    navigate('/about');
+    // Прокручиваем к началу страницы после перехода
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 100);
+  };
+
   return (
     <section className={styles.section + (theme === 'dark' ? ' ' + styles.dark : '')}>
       <div className={styles.container}>
@@ -46,7 +56,7 @@ const AboutUsSection = ({ theme }) => {
               </div>
             </div>
           ))}
-          <Link to="/about" className={styles.button}>Подробнее</Link>
+          <button onClick={handleAboutClick} className={styles.button}>Подробнее</button>
         </div>
       </div>
     </section>

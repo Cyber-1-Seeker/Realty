@@ -17,9 +17,13 @@ const Layout = ({ isAuthenticated, user }) => {
       <main className={styles.main}>
         <Outlet context={{ isAuthenticated, user }} />
       </main>
-      {!isHome2Page && <Home2Footer/>}
+      {!isHome2Page && <Home2Footer theme={theme}/>}
     </div>
   )
 }
 
 export default Layout
+
+
+
+

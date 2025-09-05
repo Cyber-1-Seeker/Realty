@@ -47,14 +47,17 @@ const Home2Header = ({ isAuthenticated = false }) => {
 
         if (menuOpen) {
             document.addEventListener('keydown', handleEscape);
+            // Блокируем скролл только для мобильного меню
             document.body.style.overflow = 'hidden';
         } else {
-            document.body.style.overflow = 'unset';
+            // Восстанавливаем нормальную прокрутку
+            document.body.style.overflow = '';
         }
 
         return () => {
             document.removeEventListener('keydown', handleEscape);
-            document.body.style.overflow = 'unset';
+            // При размонтировании всегда восстанавливаем прокрутку
+            document.body.style.overflow = '';
         };
     }, [menuOpen]);
 

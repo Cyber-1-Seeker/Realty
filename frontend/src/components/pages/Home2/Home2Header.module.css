@@ -73,24 +73,28 @@
 }
 
 .home2HeaderUnique .navMenu a[href="/home2"]:hover {
-    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3);
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
+    color: white !important;
+    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3) !important;
 }
 
 .home2HeaderUnique .navMenu a[href="/about"]:hover {
-    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
-    box-shadow: 0 4px 16px rgba(220, 38, 38, 0.3);
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
+    color: white !important;
+    box-shadow: 0 4px 16px rgba(220, 38, 38, 0.3) !important;
 }
 
 .home2HeaderUnique .navMenu a[href="/listings"]:hover {
-    background: linear-gradient(135deg, #059669 0%, #047857 100%);
-    box-shadow: 0 4px 16px rgba(5, 150, 105, 0.3);
+    background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+    color: white !important;
+    box-shadow: 0 4px 16px rgba(5, 150, 105, 0.3) !important;
 }
 
 .home2HeaderUnique .navMenu a[href="/profile"]:hover,
 .home2HeaderUnique .navMenu a[data-profile="true"]:hover {
-    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
-    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
+    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%) !important;
+    color: white !important;
+    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3) !important;
 }
 
 /* Убираем общие стили для active, чтобы работали специфичные */

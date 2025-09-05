@@ -14,18 +14,28 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Убираем нативную плавность, чтобы JavaScript полностью контролировал прокрутку */
+html {
+  scroll-behavior: auto;
+  /* Улучшаем рендеринг для более плавной анимации */
+  scroll-snap-type: none;
+}
+
 /* Убираем глобальные стили для ссылок, так как они конфликтуют с модульными стилями */
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
   transition: background-color 0.5s ease, color 0.5s ease;
+  /* Убираем flex и place-items для корректной прокрутки */
+  /* Оптимизация для плавности прокрутки */
+  -webkit-overflow-scrolling: auto;
+  transform: translateZ(0);
+  will-change: scroll-position;
 }
 
-/* Theme transition for all elements */
+/* Theme transition for all elements (исключая transform для избежания конфликтов прокрутки) */
 * {
   transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease;
 }

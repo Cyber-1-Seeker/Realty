@@ -27,3 +27,21 @@
 .footer a:hover {
   text-decoration: underline;
 }
+
+/* =========================== */
+/*       ТЕМНАЯ ТЕМА           */
+/* =========================== */
+
+.footer.dark {
+  background-color: #1f2937; /* Темный фон */
+  color: #d1d5db; /* Светлый текст */
+  border-top: 1px solid #374151; /* Темная граница */
+}
+
+.footer.dark a {
+  color: #60a5fa; /* Светло-синий акцент для темной темы */
+}
+
+.footer.dark a:hover {
+  color: #93c5fd; /* Более светлый оттенок при наведении */
+}

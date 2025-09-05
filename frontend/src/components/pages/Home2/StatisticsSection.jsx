@@ -2,7 +2,7 @@
 import React from 'react';
 import styles from './StatisticsSection.module.css';
 import CountUp from 'react-countup';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useInView } from 'react-intersection-observer';
 
 const stats = [
@@ -14,6 +14,15 @@ const stats = [
 
 const StatisticsSection = ({ theme }) => {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.3 });
+  const navigate = useNavigate();
+
+  const handleAboutClick = () => {
+    navigate('/about');
+    // Прокручиваем к началу страницы после перехода
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 100);
+  };
 
   return (
     <section className={styles.section + (theme === 'dark' ? ' ' + styles.dark : '')} ref={ref}>
@@ -29,7 +38,7 @@ const StatisticsSection = ({ theme }) => {
           <p className={styles.text}>
             Над проектами трудятся профессиональные команды, и цифры говорят сами за себя.
           </p>
-          <Link to="/about" className={styles.button}>Подробнее</Link>
+          <button onClick={handleAboutClick} className={styles.button}>Подробнее</button>
         </div>
 
         <div className={styles.card}>

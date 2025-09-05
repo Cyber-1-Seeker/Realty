@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion'; // 👈 добавить импорт
 import { YMaps, Map, Placemark } from '@pbe/react-yandex-maps';
 import styles from './MapSection.module.css';
@@ -12,12 +12,45 @@ const MapSection = ({ theme }) => {
   const coordinates = [55.751817, 37.599292];
   const [isMapInteractive, setIsMapInteractive] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const mapContainerRef = useRef(null);
 
   useEffect(() => {
     // Проверяем user agent на мобильное устройство
     const checkMobile = () => setIsMobile(isMobileDevice());
     checkMobile();
     // Можно добавить resize, если нужно, но user agent важнее
+  }, []);
+
+  // Обработчики для работы с плавной прокруткой
+  useEffect(() => {
+    const mapContainer = mapContainerRef.current;
+    if (!mapContainer) return;
+
+    const handleWheel = (e) => {
+      // Останавливаем всплытие события, чтобы плавная прокрутка не срабатывала
+      e.stopPropagation();
+    };
+
+    const handleMouseEnter = () => {
+      // Отключаем плавную прокрутку при наведении на карту
+      document.body.style.overflow = 'hidden';
+    };
+
+    const handleMouseLeave = () => {
+      // Включаем плавную прокрутку обратно при уходе с карты
+      document.body.style.overflow = 'unset';
+    };
+
+    mapContainer.addEventListener('wheel', handleWheel, { passive: false });
+    mapContainer.addEventListener('mouseenter', handleMouseEnter);
+    mapContainer.addEventListener('mouseleave', handleMouseLeave);
+
+    return () => {
+      mapContainer.removeEventListener('wheel', handleWheel);
+      mapContainer.removeEventListener('mouseenter', handleMouseEnter);
+      mapContainer.removeEventListener('mouseleave', handleMouseLeave);
+      document.body.style.overflow = 'unset';
+    };
   }, []);
 
   // Для мобильных: интерактивность по кнопке, для десктопа всегда интерактивна
@@ -40,7 +73,7 @@ const MapSection = ({ theme }) => {
         <p><strong>Telegram:</strong> <a href="https://t.me/youruser">@youruser</a></p>
       </div>
 
-      <div className={styles.mapContainer} style={{ position: 'relative' }}>
+      <div ref={mapContainerRef} className={`${styles.mapContainer} mapContainer`} style={{ position: 'relative' }}>
         <YMaps>
           <Map
             defaultState={{ center: coordinates, zoom: 16 }}

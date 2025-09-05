@@ -74,6 +74,7 @@ const Home2Header = ({ isAuthenticated = false }) => {
 
 
 
+
     return (
         <>
             <header className={`${styles.home2Header} ${styles.home2HeaderUnique} ${theme === 'dark' ? styles.dark : ''}`}>
@@ -100,19 +101,19 @@ const Home2Header = ({ isAuthenticated = false }) => {
                     <nav className={styles.navMenu}>
                     <Link 
                         to="/home2" 
-                        className={`${isActive(['/home2']) ? styles.active : ''} ${theme === 'dark' ? styles.dark : ''}`}
+                        className={`${isActive(['/home2']) ? styles.active : ''} ${theme === 'dark' ? styles.dark : ''} ${styles.home2Link}`}
                     >
                         Главная
                     </Link>
                     <Link 
                         to="/about" 
-                        className={`${isActive(['/about']) ? styles.active : ''} ${theme === 'dark' ? styles.dark : ''}`}
+                        className={`${isActive(['/about']) ? styles.active : ''} ${theme === 'dark' ? styles.dark : ''} ${styles.aboutLink}`}
                     >
                         О нас
                     </Link>
                     <Link 
                         to="/listings" 
-                        className={`${styles.dropdown} ${isActive(['/listings']) ? styles.active : ''} ${theme === 'dark' ? styles.dark : ''}`}
+                        className={`${styles.dropdown} ${isActive(['/listings']) ? styles.active : ''} ${theme === 'dark' ? styles.dark : ''} ${styles.listingsLink}`}
                     >
                         База квартир
                     </Link>
@@ -121,7 +122,7 @@ const Home2Header = ({ isAuthenticated = false }) => {
                         to="/profile"
                         onClick={handleProfileClick}
                         data-profile="true"
-                        className={`${isActive(['/profile']) ? styles.active : ''} ${theme === 'dark' ? styles.dark : ''}`}
+                        className={`${isActive(['/profile']) ? styles.active : ''} ${theme === 'dark' ? styles.dark : ''} ${styles.profileLink}`}
                     >
                         Профиль
                     </Link>

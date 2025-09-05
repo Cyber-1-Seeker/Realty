@@ -3,6 +3,10 @@ import { Link } from 'react-router-dom';
 import styles from './Home2Footer.module.css';
 
 const Home2Footer = ({ theme }) => {
+    const handleScrollToTop = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
     return (
         <footer className={styles.footer + (theme === 'dark' ? ' ' + styles.dark : '')}>
             <div className={styles.container}>
@@ -109,6 +113,24 @@ const Home2Footer = ({ theme }) => {
                     </div>
                 </div>
             </div>
+
+            {/* Кнопка "Наверх" */}
+            <button
+                onClick={handleScrollToTop}
+                className={styles.scrollToTopBtn}
+                aria-label="Прокрутить наверх"
+                title="Прокрутить наверх"
+            >
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path 
+                        d="M12 19V6M5 12L12 5L19 12" 
+                        stroke="currentColor" 
+                        strokeWidth="2" 
+                        strokeLinecap="round" 
+                        strokeLinejoin="round"
+                    />
+                </svg>
+            </button>
 
             {/* Декоративные элементы */}
             <div className={styles.decorativeElements}>

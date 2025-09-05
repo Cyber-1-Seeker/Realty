@@ -99,11 +99,14 @@
     font-size: 1rem;
     transition: all 0.3s ease;
     position: relative;
+    white-space: nowrap; /* Предотвращаем перенос текста */
 }
 
 .linksSection a:hover {
     color: #60a5fa;
     padding-left: 8px;
+    transform: none; /* Убираем любые трансформации */
+    white-space: nowrap; /* Предотвращаем перенос текста */
 }
 
 .linksSection a::before {
@@ -398,4 +401,74 @@
 .dark .bgDot2,
 .dark .bgDot3 {
     background: radial-gradient(circle, rgba(96, 165, 250, 0.1) 0%, transparent 70%);
+}
+
+/* Кнопка "Наверх" */
+.scrollToTopBtn {
+    position: absolute;
+    top: 40px;
+    right: 40px;
+    width: 56px;
+    height: 56px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    z-index: 10;
+    font-size: 0;
+}
+
+.scrollToTopBtn:hover {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.scrollToTopBtn:active {
+    transform: translateY(-1px);
+}
+
+.scrollToTopBtn svg {
+    transition: transform 0.3s ease;
+}
+
+.scrollToTopBtn:hover svg {
+    transform: translateY(-2px);
+}
+
+/* Темная тема для кнопки */
+.dark .scrollToTopBtn {
+    background: rgba(96, 165, 250, 0.2);
+    border-color: rgba(96, 165, 250, 0.4);
+    color: #60a5fa;
+}
+
+.dark .scrollToTopBtn:hover {
+    background: rgba(96, 165, 250, 0.3);
+    border-color: rgba(96, 165, 250, 0.6);
+    color: white;
+}
+
+/* Адаптивность для кнопки */
+@media (max-width: 768px) {
+    .scrollToTopBtn {
+        top: 20px;
+        right: 20px;
+        width: 48px;
+        height: 48px;
+    }
+}
+
+@media (max-width: 480px) {
+    .scrollToTopBtn {
+        width: 44px;
+        height: 44px;
+    }
 } 
