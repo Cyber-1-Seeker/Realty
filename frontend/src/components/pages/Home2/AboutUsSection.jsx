@@ -29,6 +29,12 @@ const AboutUsSection = ({ theme }) => {
   const navigate = useNavigate();
 
   const handleAboutClick = () => {
+    // Сначала устанавливаем флаг для сброса прокрутки при возврате
+    sessionStorage.setItem('shouldResetScroll', 'true');
+    // Затем очищаем сохраненную позицию прокрутки
+    sessionStorage.removeItem('scrollPosition');
+    sessionStorage.removeItem('isNavigationReload');
+    
     navigate('/about');
     // Прокручиваем к началу страницы после перехода
     setTimeout(() => {

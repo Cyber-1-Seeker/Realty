@@ -3,8 +3,8 @@ import { useEffect } from 'react';
 const useSmoothWheelScroll = () => {
     useEffect(() => {
         let isScrolling = false;
-        let scrollTarget = window.pageYOffset;
-        let currentScroll = window.pageYOffset;
+        let scrollTarget = 0;
+        let currentScroll = 0;
         
         // Более мягкие настройки для стабильности
         const scrollSpeed = 0.6; // Скорость прокрутки
@@ -35,6 +35,9 @@ const useSmoothWheelScroll = () => {
             // Устанавливаем позицию прокрутки
             window.scrollTo(0, currentScroll);
             
+            // Сохраняем текущую позицию в sessionStorage
+            sessionStorage.setItem('scrollPosition', Math.round(currentScroll).toString());
+            
             // Продолжаем анимацию, если есть заметная разница
             if (Math.abs(scrollTarget - currentScroll) > threshold) {
                 requestAnimationFrame(animateScroll);
@@ -43,12 +46,63 @@ const useSmoothWheelScroll = () => {
                 window.scrollTo(0, scrollTarget);
                 currentScroll = scrollTarget;
                 isScrolling = false;
+                // Сохраняем финальную позицию
+                sessionStorage.setItem('scrollPosition', Math.round(scrollTarget).toString());
             }
         };
 
-        // Синхронизируем с текущей позицией при монтировании
-        scrollTarget = window.pageYOffset;
-        currentScroll = window.pageYOffset;
+        // Определяем, была ли это перезагрузка или переход на новую страницу
+        const isPageReload = performance.navigation.type === 1; // TYPE_RELOAD
+        const savedScrollPosition = sessionStorage.getItem('scrollPosition');
+        const isNavigationReload = sessionStorage.getItem('isNavigationReload') === 'true';
+        const shouldResetScroll = sessionStorage.getItem('shouldResetScroll') === 'true';
+        
+        // Проверяем флаг сброса прокрутки сразу
+        if (shouldResetScroll) {
+            // Если нужно сбросить прокрутку, делаем это немедленно
+            console.log('useSmoothWheelScroll: Сбрасываем прокрутку из-за флага shouldResetScroll');
+            scrollTarget = 0;
+            currentScroll = 0;
+            window.scrollTo(0, 0);
+            sessionStorage.removeItem('shouldResetScroll');
+            return; // Выходим из функции, не устанавливая обработчики
+        }
+        
+        // Добавляем небольшую задержку, чтобы дать компонентам время установить флаги
+        setTimeout(() => {
+            const finalShouldResetScroll = sessionStorage.getItem('shouldResetScroll') === 'true';
+            
+            if (finalShouldResetScroll) {
+                // Если флаг установлен, сбрасываем прокрутку
+                scrollTarget = 0;
+                currentScroll = 0;
+                window.scrollTo(0, 0);
+                sessionStorage.removeItem('shouldResetScroll');
+                return;
+            }
+            
+            if ((isPageReload || isNavigationReload) && savedScrollPosition) {
+                // При перезагрузке восстанавливаем позицию
+                const position = parseInt(savedScrollPosition, 10);
+                scrollTarget = position;
+                currentScroll = position;
+                window.scrollTo(0, position);
+                // Очищаем флаг навигации
+                sessionStorage.removeItem('isNavigationReload');
+            } else {
+                // При переходе на новую страницу сбрасываем позицию
+                scrollTarget = 0;
+                currentScroll = 0;
+                window.scrollTo(0, 0);
+            }
+        }, 100); // Увеличиваем задержку для лучшей синхронизации
+        
+        // Обработчик для определения перезагрузки страницы
+        const handleBeforeUnload = () => {
+            sessionStorage.setItem('isNavigationReload', 'true');
+        };
+        
+        window.addEventListener('beforeunload', handleBeforeUnload);
 
         // Добавляем обработчик с passive: false для preventDefault
         document.addEventListener('wheel', handleWheel, { passive: false });
@@ -65,6 +119,10 @@ const useSmoothWheelScroll = () => {
         return () => {
             document.removeEventListener('wheel', handleWheel);
             window.removeEventListener('resize', handleResize);
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+            // Очищаем сохраненную позицию при размонтировании (переходе на другую страницу)
+            sessionStorage.removeItem('scrollPosition');
+            sessionStorage.removeItem('isNavigationReload');
         };
     }, []);
 };

@@ -22,11 +22,27 @@ function Home2() {
     const { isAuthenticated = false } = useOutletContext() || {};
     const {theme, toggleTheme} = useTheme();
     const navigate = useNavigate();
+    
+    // Устанавливаем флаг сброса прокрутки сразу при создании компонента
+    console.log('Home2: Устанавливаем флаг shouldResetScroll');
+    sessionStorage.setItem('shouldResetScroll', 'true');
+    
     const [formData, setFormData] = useState({
         name: '',
         phone: '',
         comment: '',
     });
+
+    // Очищаем сохраненную позицию прокрутки при загрузке Home2
+    useEffect(() => {
+        // Сначала устанавливаем флаг для сброса прокрутки в хуке
+        sessionStorage.setItem('shouldResetScroll', 'true');
+        // Затем очищаем остальные флаги
+        sessionStorage.removeItem('scrollPosition');
+        sessionStorage.removeItem('isNavigationReload');
+        // Убеждаемся, что страница начинается с верха
+        window.scrollTo(0, 0);
+    }, []);
     const [loading, setLoading] = useState(false);
     const [showCommentModal, setShowCommentModal] = useState(false);
     const [showSuccessModal, setShowSuccessModal] = useState(false);
