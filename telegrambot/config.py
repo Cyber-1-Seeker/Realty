@@ -25,6 +25,10 @@ BOT_TOKEN = os.getenv('BOT_TOKEN')
 WEBHOOK_TOKEN = os.getenv('WEBHOOK_TOKEN')
 API_URL = os.getenv('API_URL')
 API_TOKEN = os.getenv('API_TOKEN')
+DEBUG = os.getenv("DEBUG", "False") == "True"
+print(f"Режим работы: {'PRODUCTION' if is_production else 'DEVELOPMENT'}")
+print(f"Используемый файл окружения: {env_path}")
+print(f"DEBUG: {DEBUG}")
 
 # Проверка обязательных переменных
 required_vars = {

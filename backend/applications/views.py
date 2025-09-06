@@ -7,7 +7,6 @@ from django.utils.decorators import method_decorator
 from django_ratelimit.decorators import ratelimit
 from django.conf import settings
 from datetime import date
-import httpx
 from .models import Application
 from .serializers import ApplicationSerializer
 from monitoring.models import DailyStats
@@ -16,7 +15,6 @@ from accounts.models import CustomUser
 
 from django.http import JsonResponse
 import logging
-from django.conf import settings
 import httpx
 
 
